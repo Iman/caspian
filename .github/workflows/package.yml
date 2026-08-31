@@ -35,6 +35,15 @@ jobs:
       - uses: docker/setup-qemu-action@v3
       - uses: docker/setup-buildx-action@v3
 
+      # Container registries require a lowercase repository name and
+      # github.repository carries the owner's capitalisation, so
+      # ghcr.io/Iman/caspian is rejected outright with "repository name must be
+      # lowercase". Compute it once rather than hardcoding, so a rename or a
+      # transfer to an organisation does not silently break this again.
+      - name: Lowercase the image name
+        id: img
+        run: echo "name=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> "$GITHUB_OUTPUT"
+
       - name: Build and publish
         uses: docker/build-push-action@v6
         with:
@@ -42,7 +51,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ steps.img.outputs.name }}:${{ github.ref_name }}
+            ghcr.io/${{ steps.img.outputs.name }}:latest
           provenance: true
           sbom: true
