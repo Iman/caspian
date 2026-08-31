@@ -1,5 +1,7 @@
 # Security policy
 
+[🇮🇷 فارسی](SECURITY.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: سیاست امنیتی](SECURITY.fa.md)
 >
 > **[Read this in Persian](SECURITY.fa.md)**

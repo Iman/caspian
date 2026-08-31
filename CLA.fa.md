@@ -1,5 +1,7 @@
 # توافق‌نامهٔ مشارکت‌کننده
 
+🇮🇷 **فارسی** | [🇬🇧 English](CLA.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the operative text of this document](CLA.md)
 >
 > **این نسخهٔ فارسی فقط برای آگاهی است.** متنِ نافذ و معتبر همان `CLA.md`

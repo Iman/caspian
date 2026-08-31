@@ -1,5 +1,7 @@
 # Contributor agreement
 
+[🇮🇷 فارسی](CLA.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: توافق‌نامهٔ مشارکت‌کننده](CLA.fa.md)
 >
 > **[Read this in Persian](CLA.fa.md)**. That translation is informational.

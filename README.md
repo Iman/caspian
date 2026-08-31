@@ -1,5 +1,9 @@
 # Caspian-BYOC
 
+[🇮🇷 فارسی](README.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
+![Your devices join the box's Wi-Fi. The box connects with the config you pasted and tunnels everything to your own server abroad, so your home router and your internet provider see one encrypted connection to one address instead of what you open.](docs/images/flow-en.svg)
+
 > ### [فارسی: راهنمای کامل به زبان فارسی](README.fa.md)
 >
 > این صفحه به فارسی هم هست. اگر انگلیسی نمی‌خوانید، روی خط بالا بزنید.
@@ -26,6 +30,45 @@ This file describes what the code in this repository does, what it guarantees,
 and what it does not. Every capability below names the code, the test, or the
 recorded measurement it rests on. Where a claim rests on a test, the file names
 the test rather than a line number, because names survive refactors.
+
+---
+
+## What you can paste, and what it will refuse
+
+You bring the config. This is what the box accepts, taken from the code that
+does the accepting rather than from a wish list. Every row was measured against
+`internal/link` and the pinned engine.
+
+| | It works | It is refused |
+|---|---|---|
+| Share links | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://` (version 1) |
+| Pasted documents | Clash and Clash.Meta YAML, raw xray JSON, a list of links one per line, a base64 subscription blob | a subscription URL, a base64-wrapped Clash document, a JSON array, text whose first line is a comment |
+| Transports | `raw` (also written `tcp`), `ws`, `grpc`, `httpupgrade`, `xhttp` (also `splithttp`), `kcp` and `mkcp` | `h2`, `h3`, `http`, `quic`, `gun` |
+| Security | `none`, `tls`, `reality` | `xtls` (the legacy kind), `allowInsecure` |
+| VLESS flow | `xtls-rprx-vision`, `xtls-rprx-vision-udp443`, or none | every other value |
+
+`h2` and `h3` in that refused column are transport NAMES. HTTP/2 and HTTP/3
+themselves are carried: `type=xhttp` with `security=tls`, and the TLS ALPN
+decides which. See [HTTP/2 and HTTP/3 are carried, under a different
+name](#http2-and-http3-are-carried-under-a-different-name).
+
+Six things surprise people, so they are here rather than in a footnote:
+
+Only the FIRST link is used. Paste forty servers and you configure one; the
+panel tells you how many it found. `ss://` and `socks://` need the base64 form
+of their user information, and the plain `method:password@host` spelling is
+refused. REALITY works over `raw`, `xhttp` and `grpc` only, so pairing it with
+WebSocket is refused by the engine at paste time rather than failing later.
+`security=` has to be lowercase here even though the engine itself does not
+care, and an uppercase `TLS` is reported back to you as `none`. A `plugin=`
+parameter on an `ss://` link is ignored without saying so. And a subscription
+URL is refused because the panel fetches nothing from the internet, which is a
+deliberate property rather than a missing feature.
+
+The full picture, including which of these have carried real bytes and which
+have been proven end to end on hardware with an exit address captured, is under
+[Protocols and transports](#protocols-and-transports). Those are three different
+claims and this project does not let them blur.
 
 ---
 
@@ -493,8 +536,56 @@ The transports come from xray-core and are named in the vendored parser:
 - `httpupgrade`
 - `xhttp`, the protocol formerly called SplitHTTP. Both spellings parse
 - `grpc`
-- `h2` and `http`, for HTTP/2
 - `kcp` and `mkcp`, for mKCP
+
+`h2`, `http`, `h3` and `quic` are not on that list. The engine version this pins
+removed them, so a link asking for one is refused rather than carried, and
+`TestRemovedTransportsAreRefusedWithASentence` in `internal/link` holds that
+refusal in place.
+
+How well the refusal reads depends on the route in. A Clash document naming one
+gets a sentence about the transport. The same transport in a `type=` parameter
+on a share link arrives as the generic "nothing in the pasted text was a proxy
+link this box understands", which is correct and unhelpful.
+`TestRemovedTransportInAURIIsReportedLessWell` pins that difference so it is a
+known gap rather than a surprise.
+
+### HTTP/2 and HTTP/3 are carried, under a different name
+
+Being refused `type=h2` or `type=quic` does not mean the box cannot speak them.
+It means the spelling moved. XHTTP replaced both, and it chooses its HTTP
+version from the TLS ALPN rather than from the transport name:
+
+| What you want | What to write |
+|---|---|
+| HTTP/3, which is QUIC | `type=xhttp` with `security=tls`, `alpn=h3` and `mode=stream-one` |
+| HTTP/2 | `type=xhttp` with `security=tls` and any ALPN that is not exactly `h3` |
+| QUIC, without XHTTP | a `hysteria2://` link, which is QUIC underneath and needs `alpn=h3` |
+
+The keys reach the engine untouched: `internal/xcfg` carries the outbound as
+opaque JSON and never decodes it, so `alpn`, `mode`, `xmux` and the QUIC tuning
+block arrive exactly as pasted.
+
+Four details decide whether you get h3 or silently get something else:
+
+`alpn` must be exactly one value and that value must be `h3`. Writing
+`alpn=h3,h2` gives you HTTP/2 with no warning, because the engine takes a list
+of any other length as a request for version 2. REALITY forces HTTP/2 whenever
+it is present, so REALITY and h3 are mutually exclusive and pairing them gets
+you h2 rather than an error. `mode` has to be set explicitly, because the
+default resolves to `packet-up` rather than the `stream-one` shape the engine
+names as the QUIC replacement. And `downloadSettings`, for a split upload and
+download, is refused together with `mode: stream-one`; that combination needs
+`stream-up`.
+
+One collision in vocabulary is worth stating plainly, because it reads like a
+contradiction: `type=h3` is refused, and `alpn=h3` is required. They are
+different fields. The first names a transport that no longer exists; the second
+names the protocol negotiated inside TLS.
+
+These configurations are accepted and validated by the box. They have not yet
+been driven against a live server from here, so treat the row as the engine's
+capability rather than as something this project has watched work.
 
 The security layer is `reality`, `tls`, or `none`.
 
@@ -1156,7 +1247,26 @@ device cannot give itself an address. Scenario: "clients are never offered the
 IPv6 the tunnel cannot carry".
 
 `IPv6Forward` exists as an option and its own comment says not to set it. The
-engine's TUN inbound has not been shown to carry IPv6 on the target.
+engine's TUN inbound has not been shown to carry IPv6 on the target. It also
+adds no permit rule to the forward chain, deliberately: the IPv4 permits name
+the hotspot subnet on both directions, there is no v6 prefix anywhere in the
+plan to name, and a rule matching only the two interface names would accept any
+source address a client wrote. `TestRuleset_NoUnconstrainedIPv6AcceptInForward`
+holds that line.
+
+**"Blocked" is about routing, not about DNS, and the difference matters.** An
+AAAA query from a joined device is not suppressed and is not answered empty. It
+goes to the engine, through the tunnel, and comes back with real AAAA records,
+because the engine document asks for `UseIP` and dnsmasq sets no `filter-AAAA`.
+A device therefore learns IPv6 addresses it has no way to reach, and falls back
+to IPv4.
+
+That is harmless while nothing can give a client a v6 address, and it is the
+first thing that stops being harmless if anything ever does, because a client
+with a working v6 path prefers the AAAA answer and would leave by a route this
+box does not carry. It is written down here rather than left as a surprise, and
+`TestAAAAQueriesAreAnsweredAndNotSuppressed` pins both halves so that changing
+it has to be a decision.
 
 **The hardware rig cannot grade IPv6 at all, so no IPv6 result from it means
 anything.** `test/hardware/README.md` records, under "What this vantage cannot
@@ -1427,17 +1537,50 @@ reading. They are long on purpose.
 
 ## Licence
 
-AGPL-3.0-or-later, with two additional terms under section 7. Both are of a kind
-section 7 permits and neither restricts what you may do with the software:
+AGPL-3.0-or-later, with three additional terms under section 7. All three are of
+a kind section 7 permits and none restricts what you may do with the software:
 preserve the copyright notice, this attribution and a visible reference to the
-Caspian project in any user interface, and mark your version as changed if you
-modify it. The full text is in `LICENSE` and the terms are in `NOTICE`.
+Caspian project in any user interface; mark your version as changed if you
+modify it; and do not use the authors' or the project's names for publicity,
+which includes soliciting donations, sponsorship or grants in those names. The
+full text is in `LICENSE` and the terms are in `NOTICE`.
+
+That third term restricts the use of NAMES and nothing else. You remain free to
+run, study, modify and redistribute the software under the AGPL, for any
+purpose including a commercial one. What you may not do is raise money in the
+authors' name.
 
 The AGPL rather than the GPL, because this program is normally operated as a
 service other people connect to, and section 13 closes the gap the plain GPL
-leaves. Not a permissive licence, because the program links xray-core, whose
-distribution carries GPL-3.0-or-later terms through its dependencies, so the
-combined work must be on GPL-family terms.
+leaves. Not a permissive licence, because the binary statically links
+GPL-3.0-or-later code: `github.com/sagernet/sing` and
+`github.com/sagernet/sing-shadowsocks`, both reached through xray-core. So the
+combined work must be on GPL-family terms, and MIT or Apache-2.0 are not
+available for it.
 
-`third_party/libxray-share/` is MIT, Copyright (c) 2023-2025 XTLS, with its
-licence text kept beside the source. `NOTICE` is the full third-party record.
+## Built on
+
+Caspian is a small amount of code around other people's work. The engine is
+xray-core, and the share-link parser is XTLS's. Neither project endorses this
+one; they are credited because the work is theirs.
+
+| Project | Licence | What it does here |
+|---|---|---|
+| [xray-core](https://github.com/xtls/xray-core) | MPL-2.0 | The proxy engine, linked in-process rather than run as a separate program |
+| [libXray](https://github.com/XTLS/libXray) | MIT | The share-link parser, vendored under `third_party/libxray-share/` |
+| [REALITY](https://github.com/xtls/reality) | MPL-2.0 | The TLS camouflage transport |
+| [uTLS](https://github.com/refraction-networking/utls) | BSD-3-Clause | TLS fingerprint mimicry |
+| [quic-go](https://github.com/apernet/quic-go) | MIT | The QUIC stack Hysteria2 runs on |
+| [gVisor](https://github.com/google/gvisor) | Apache-2.0 | The userspace network stack the TUN inbound uses |
+| [sing](https://github.com/sagernet/sing) and [sing-shadowsocks](https://github.com/sagernet/sing-shadowsocks) | GPL-3.0-or-later | Shadowsocks 2022, and the reason this project is copyleft |
+| [netlink](https://github.com/vishvananda/netlink) | Apache-2.0 | Interfaces, addresses and routes |
+| [miekg/dns](https://github.com/miekg/dns) | BSD-3-Clause | DNS message handling |
+| [gorilla/websocket](https://github.com/gorilla/websocket) | BSD-2-Clause | The WebSocket transport |
+| [CIRCL](https://github.com/cloudflare/circl) | BSD-3-Clause | Post-quantum key exchange |
+
+It also needs `hostapd`, `dnsmasq`, `nftables`, `iw` and `iproute2` on the
+machine. Those run as separate programs rather than being linked, so their
+licences do not affect this one, but the appliance is nothing without them.
+
+`NOTICE` carries the full record: every module in the binary, the licence read
+from its own licence file, and the compatibility reasoning.

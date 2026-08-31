@@ -52,7 +52,7 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 			}
 			return nil
 		}
-		if !strings.HasSuffix(path, ".md") || strings.HasSuffix(path, ".fa.md") {
+		if !strings.HasSuffix(path, ".md") || isTranslationEdition(path) {
 			return nil
 		}
 		rel0, _ := filepath.Rel(root, path)
@@ -134,6 +134,30 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 	t.Logf("checked %d English and Persian document pairs", pairs)
 }
 
+// translationSuffixes are the language editions this repository publishes.
+//
+// A file carrying one of these is a TRANSLATION and not an English original, so
+// the walk must skip it rather than turn round and demand a Persian sibling for
+// it. Without this, adding README.ru.md makes the guard ask for
+// README.ru.fa.md, which is nonsense and would have to be silenced by deleting
+// the guard.
+//
+// Persian is the only language held to FULL parity with English. Russian and
+// Chinese are a README only. That asymmetry is deliberate: the Persian edition
+// was reviewed by somebody who reads Persian, and an unreviewed translation of
+// a security document does not become trustworthy by being long. Two honest
+// pages beat twelve that nobody can check.
+var translationSuffixes = []string{".fa.md", ".ru.md", ".zh.md"}
+
+func isTranslationEdition(path string) bool {
+	for _, suffix := range translationSuffixes {
+		if strings.HasSuffix(path, suffix) {
+			return true
+		}
+	}
+	return false
+}
+
 // isPublishedDocument says whether a markdown file is one a reader is meant to
 // read, as opposed to a record kept beside the code for whoever maintains it.
 //
@@ -156,4 +180,104 @@ func isPublishedDocument(rel string) bool {
 		return true
 	}
 	return false
+}
+
+// TestEveryPublishedDocumentOffersTheSameFourLanguages checks the language bar
+// is on every published page, in both the English and the Persian edition.
+//
+// Why a test and not a convention: a reader who lands on SECURITY.md and finds
+// no way back to their own language is stuck on that page, and the person who
+// adds the fifteenth document will not remember a rule written in CONTRIBUTING.
+// The failure mode is invisible to everyone who reads English, which is exactly
+// the kind of rot this repository has decided to catch mechanically.
+//
+// It checks that the links are PRESENT and that their targets EXIST. It cannot
+// check that the Russian actually says what the English says. Nothing can, and
+// claiming otherwise here would be the confident wrong sentence CONTRIBUTING.md
+// warns about.
+func TestEveryPublishedDocumentOffersTheSameFourLanguages(t *testing.T) {
+	root := moduleRoot(t)
+
+	// The four editions of the front page. Every published document links to
+	// all of them, so a reader can leave any page in their own language.
+	fronts := []string{"README.md", "README.fa.md", "README.ru.md", "README.zh.md"}
+	for _, f := range fronts {
+		if _, err := os.Stat(filepath.Join(root, f)); err != nil {
+			t.Fatalf("the language bar names %s but it does not exist: %v\n"+
+				"Either add the translation or take it out of the bar. A flag that "+
+				"leads to a 404 is worse than no flag, because it looks like the "+
+				"project supports a language it does not.", f, err)
+		}
+	}
+
+	var checked int
+	err := filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			base := info.Name()
+			if base == ".git" || base == "node_modules" || base == "local" || base == "bdd" {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		if !strings.HasSuffix(path, ".md") {
+			return nil
+		}
+		rel, _ := filepath.Rel(root, path)
+
+		// A translation is published if its English original is. Strip the
+		// language suffix to ask that question.
+		english := rel
+		for _, suffix := range translationSuffixes {
+			if strings.HasSuffix(rel, suffix) {
+				english = strings.TrimSuffix(rel, suffix) + ".md"
+				break
+			}
+		}
+		if !isPublishedDocument(english) {
+			return nil
+		}
+
+		body, readErr := os.ReadFile(path)
+		if readErr != nil {
+			t.Errorf("reading %s: %v", rel, readErr)
+			return nil
+		}
+		text := string(body)
+
+		// Persian and English are held to full parity, so on a page like
+		// SECURITY.md those two entries point at SECURITY.fa.md and at the page
+		// itself. Russian and Chinese exist as a front page only, so every page
+		// sends those readers there. Only the second pair is checked here; the
+		// first is what the parity test above already covers.
+		var missing []string
+		for _, f := range []string{"README.ru.md", "README.zh.md"} {
+			// A page does not need to link to itself.
+			if filepath.Base(rel) == f {
+				continue
+			}
+			if !strings.Contains(text, f) {
+				missing = append(missing, f)
+			}
+		}
+		if len(missing) > 0 {
+			sort.Strings(missing)
+			t.Errorf("%s does not offer %s.\n"+
+				"Every published page carries the same language bar. A reader who "+
+				"arrives here from a search engine and does not read English has no "+
+				"way out of this page without it.", rel, strings.Join(missing, ", "))
+		}
+		checked++
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("walking the repository: %v", err)
+	}
+	if checked < 20 {
+		t.Errorf("only %d published pages were checked, which is fewer than this "+
+			"repository has. The walk is not finding them.", checked)
+	}
+	t.Logf("checked the language bar on %d published pages", checked)
 }

@@ -1,5 +1,7 @@
 # تأمین مالی
 
+🇮🇷 **فارسی** | [🇬🇧 English](FUNDING.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the operative text of this document](FUNDING.md)
 >
 > **این نسخهٔ فارسی فقط برای آگاهی است.** متنِ نافذ و معتبر همان `FUNDING.md`

@@ -1,5 +1,7 @@
 # آیین‌نامهٔ رفتار
 
+🇮🇷 **فارسی** | [🇬🇧 English](CODE_OF_CONDUCT.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the original of this document](CODE_OF_CONDUCT.md)
 >
 > این نسخهٔ فارسیِ `CODE_OF_CONDUCT.md` است. متن انگلیسی سندِ معتبر است و همان

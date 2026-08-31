@@ -1,5 +1,7 @@
 # Code of conduct
 
+[🇮🇷 فارسی](CODE_OF_CONDUCT.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: آیین‌نامهٔ رفتار](CODE_OF_CONDUCT.fa.md)
 >
 > **[Read this in Persian](CODE_OF_CONDUCT.fa.md)**
