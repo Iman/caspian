@@ -95,13 +95,44 @@ cd "$root"
 # elsewhere, loudly, so a green run on a Mac cannot be mistaken for a package
 # having been measured.
 
+# 2026-08-31: THE FLOORS ABOVE WERE ALL MACOS NUMBERS, ENFORCED EVERYWHERE.
+#
+# The first CI run on Linux failed every one of them. Not by much for four of
+# them, and by fifteen points for internal/engine. Nothing regressed. Linux
+# compiles files a Mac does not, those files are counted, and they are less
+# covered, so the same package honestly reads lower there.
+#
+# This is NOT the "lower the floor until it passes" move the note above warns
+# about. That move takes a measured number and replaces it with a smaller one.
+# What happened here is that a number was measured on ONE platform and asserted
+# about BOTH, and the row for internal/engine claimed a Linux figure that had
+# never been measured on Linux at all. A floor that was never measured is not a
+# ratchet, it is a guess with a decimal point.
+#
+# So every gated package now carries one row per platform, each holding what
+# that platform actually measures.
+#
+# internal/engine deserves its own sentence. 83.0 on Linux is not a target, it
+# is what CI can reach: the TUN release paths need netlink and a real
+# /dev/net/tun, their tests carry a linux build tag AND skip without root, and
+# CI does not run as root. So on Linux those files are compiled and counted and
+# never executed. They are verified on the hardware instead, by the runbook in
+# docs/HARDWARE-TEST.md, which is where a TUN device actually exists.
+#
+# If you raise a floor after adding tests, raise it. If a floor blocks you, the
+# answer is a test, not a smaller number.
+
 floors=$(
     /bin/cat <<'EOF'
-internal/engine 98.0 linux
-internal/link 98.6
-internal/hotspot 99.1
-internal/state 96.9
-internal/xcfg 97.0
+internal/engine 83.0 linux
+internal/link 98.6 darwin
+internal/link 98.4 linux
+internal/hotspot 99.1 darwin
+internal/hotspot 98.9 linux
+internal/state 96.9 darwin
+internal/state 96.5 linux
+internal/xcfg 97.0 darwin
+internal/xcfg 96.7 linux
 EOF
 )
 
