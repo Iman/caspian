@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 512" width="100%" role="img" aria-labelledby="t p">
+<title id="t">How Caspian works</title>
+<desc id="p">Encrypted tunnel. The router and the internet provider see one connection to one address, not what you open.</desc>
+<style>.h{font:600 27px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#0f172a}.sub{font:400 16px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#5b6b7f}.n{font:600 17px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#0f172a}.d{font:400 13.5px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#5b6b7f}.a{font:500 12.5px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#5b6b7f}.tun{font:500 14.5px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#1d4e91}.f{font:400 13px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#5b6b7f}.p{font:600 11.5px Inter, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;fill:#1d4e91}</style>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5b6b7f"/></marker></defs>
+<rect x="0" y="0" width="1300" height="512" rx="18" fill="#f6f8fb" stroke="#dbe3ec"/>
+<text class="h" x="44" y="60" text-anchor="start">How Caspian works</text>
+<text class="sub" x="44" y="90" text-anchor="start">One box. Everything that joins its Wi-Fi comes out the other side.</text>
+<rect x="49" y="168" width="178" height="132" rx="13" fill="#ffffff" stroke="#c9d6e5" stroke-width="1.2"/>
+<g fill="none" stroke="#c9d6e5" stroke-width="1.7" stroke-linecap="round"><rect x="113.0" y="187" width="15" height="23" rx="3"/><rect x="134.0" y="188" width="27" height="17" rx="2"/><path d="M130.0 208 h35"/></g>
+<text class="n" x="138.0" y="234" text-anchor="middle">Your devices</text>
+<text class="d" x="138.0" y="257" text-anchor="middle">phone, laptop, TV,</text>
+<text class="d" x="138.0" y="276" text-anchor="middle">the whole family</text>
+<rect x="305" y="168" width="178" height="132" rx="13" fill="#eaf3ff" stroke="#2f6fd0" stroke-width="2"/>
+<g fill="none" stroke="#2f6fd0" stroke-width="1.7" stroke-linecap="round"><rect x="374.0" y="189" width="40" height="21" rx="3"/><path d="M383.0 196 h22 M383.0 203 h13"/><path d="M410.0 182 a11 11 0 0 1 0 15" /></g>
+<text class="n" x="394.0" y="234" text-anchor="middle">The Caspian box</text>
+<text class="d" x="394.0" y="257" text-anchor="middle">a Raspberry Pi holding</text>
+<text class="d" x="394.0" y="276" text-anchor="middle">the config you pasted</text>
+<rect x="561" y="168" width="178" height="132" rx="13" fill="#ffffff" stroke="#c9d6e5" stroke-width="1.2"/>
+<g fill="none" stroke="#c9d6e5" stroke-width="1.7" stroke-linecap="round"><rect x="629.0" y="195" width="42" height="16" rx="3"/><path d="M639.0 195 v-13 M661.0 195 v-13"/></g>
+<text class="n" x="650.0" y="234" text-anchor="middle">Your home router</text>
+<text class="d" x="650.0" y="257" text-anchor="middle">and your internet</text>
+<text class="d" x="650.0" y="276" text-anchor="middle">provider</text>
+<rect x="817" y="168" width="178" height="132" rx="13" fill="#eefaf1" stroke="#1f9254" stroke-width="2"/>
+<g fill="none" stroke="#1f9254" stroke-width="1.7" stroke-linecap="round"><rect x="887.0" y="185" width="38" height="12" rx="2"/><rect x="887.0" y="200" width="38" height="12" rx="2"/><path d="M893.0 191 h3 M893.0 206 h3"/></g>
+<text class="n" x="906.0" y="234" text-anchor="middle">Your server</text>
+<text class="d" x="906.0" y="257" text-anchor="middle">abroad, at the address</text>
+<text class="d" x="906.0" y="276" text-anchor="middle">inside your config</text>
+<rect x="1073" y="168" width="178" height="132" rx="13" fill="#fff8e8" stroke="#b9791a" stroke-width="1.2"/>
+<g fill="none" stroke="#b9791a" stroke-width="1.7" stroke-linecap="round"><circle cx="1162.0" cy="198" r="14"/><path d="M1148.0 198 h28 M1162.0 184 a20 20 0 0 0 0 28 a20 20 0 0 0 0 -28"/></g>
+<text class="n" x="1162.0" y="234" text-anchor="middle">The open internet</text>
+<rect x="214.0" y="314" width="360" height="25" rx="12.5" fill="#ffffff" stroke="#2f6fd0" stroke-dasharray="3 3"/>
+<text class="p" x="394.0" y="331" text-anchor="middle">VLESS   VMess   Trojan   Shadowsocks   SOCKS   Hysteria2</text>
+<rect x="260.0" y="344" width="268" height="25" rx="12.5" fill="#ffffff" stroke="#2f6fd0" stroke-dasharray="3 3"/>
+<text class="p" x="394.0" y="361" text-anchor="middle">share link  ·  Clash YAML  ·  xray JSON</text>
+<line x1="227" y1="234.0" x2="305" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="266.0" y="155" text-anchor="middle">Wi-Fi</text>
+<line x1="483" y1="234.0" x2="561" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="522.0" y="155" text-anchor="middle">encrypted</text>
+<line x1="739" y1="234.0" x2="817" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="778.0" y="155" text-anchor="middle">encrypted</text>
+<line x1="995" y1="234.0" x2="1073" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="1034.0" y="155" text-anchor="middle">ordinary traffic</text>
+<rect x="305" y="384" width="690" height="40" rx="10" fill="#e3edfb" stroke="#2f6fd0" stroke-dasharray="6 4"/>
+<text class="tun" x="650.0" y="409" text-anchor="middle">Encrypted tunnel. The router and the internet provider see one connection to one address, not what you open.</text>
+<text class="f" x="44" y="456" text-anchor="start">Nothing is installed on any device. They join a Wi-Fi network, and that is all they do.</text>
+<text class="f" x="44" y="477" text-anchor="start">Your server can see your traffic. Use one you trust, or one you run.</text>
+</svg>

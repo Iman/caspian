@@ -1,5 +1,7 @@
 # پرسش‌های پرتکرار Caspian-BYOC
 
+🇮🇷 **فارسی** | [🇬🇧 English](FAQ.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the original of this document](FAQ.md)
 >
 > این نسخهٔ فارسیِ `FAQ.md` است. متن انگلیسی سندِ معتبر است و همان چیزی است که

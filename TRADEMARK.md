@@ -1,5 +1,7 @@
 # Trademark and name
 
+[🇮🇷 فارسی](TRADEMARK.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: نشان تجاری و نام](TRADEMARK.fa.md)
 >
 > **[Read this in Persian](TRADEMARK.fa.md)**. That translation is

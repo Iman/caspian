@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 512" width="100%" role="img" aria-labelledby="t p">
+<title id="t">کاسپین چگونه کار می‌کند</title>
+<desc id="p">تونلِ رمزگذاری‌شده. مودم و شرکتِ اینترنتی فقط یک اتصال به یک آدرس می‌بینند، نه اینکه شما چه باز می‌کنید.</desc>
+<style>.h{font:600 27px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#0f172a}.sub{font:400 16px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#5b6b7f}.n{font:600 17px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#0f172a}.d{font:400 13.5px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#5b6b7f}.a{font:500 12.5px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#5b6b7f}.tun{font:500 14.5px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#1d4e91}.f{font:400 13px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#5b6b7f}.p{font:600 11.5px Vazirmatn, Tahoma, 'Segoe UI', 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;fill:#1d4e91}.h,.sub,.n,.d,.a,.tun,.f{direction:rtl;unicode-bidi:isolate}.p{direction:ltr;unicode-bidi:isolate}</style>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5b6b7f"/></marker></defs>
+<rect x="0" y="0" width="1300" height="512" rx="18" fill="#f6f8fb" stroke="#dbe3ec"/>
+<text class="h" x="1256" y="60" text-anchor="start">کاسپین چگونه کار می‌کند</text>
+<text class="sub" x="1256" y="90" text-anchor="start">یک جعبه. هر چه به وای‌فای آن وصل شود، از آن سوی تونل بیرون می‌آید.</text>
+<rect x="1073" y="168" width="178" height="132" rx="13" fill="#ffffff" stroke="#c9d6e5" stroke-width="1.2"/>
+<g fill="none" stroke="#c9d6e5" stroke-width="1.7" stroke-linecap="round"><rect x="1137.0" y="187" width="15" height="23" rx="3"/><rect x="1158.0" y="188" width="27" height="17" rx="2"/><path d="M1154.0 208 h35"/></g>
+<text class="n" x="1162.0" y="234" text-anchor="middle">دستگاه‌های شما</text>
+<text class="d" x="1162.0" y="257" text-anchor="middle">موبایل، لپ‌تاپ، تلویزیون،</text>
+<text class="d" x="1162.0" y="276" text-anchor="middle">همهٔ خانواده</text>
+<rect x="817" y="168" width="178" height="132" rx="13" fill="#eaf3ff" stroke="#2f6fd0" stroke-width="2"/>
+<g fill="none" stroke="#2f6fd0" stroke-width="1.7" stroke-linecap="round"><rect x="886.0" y="189" width="40" height="21" rx="3"/><path d="M895.0 196 h22 M895.0 203 h13"/><path d="M922.0 182 a11 11 0 0 1 0 15" /></g>
+<text class="n" x="906.0" y="234" text-anchor="middle">جعبهٔ کاسپین</text>
+<text class="d" x="906.0" y="257" text-anchor="middle">یک Raspberry Pi که کانفیگِ</text>
+<text class="d" x="906.0" y="276" text-anchor="middle">پیست‌شدهٔ شما را دارد</text>
+<rect x="561" y="168" width="178" height="132" rx="13" fill="#ffffff" stroke="#c9d6e5" stroke-width="1.2"/>
+<g fill="none" stroke="#c9d6e5" stroke-width="1.7" stroke-linecap="round"><rect x="629.0" y="195" width="42" height="16" rx="3"/><path d="M639.0 195 v-13 M661.0 195 v-13"/></g>
+<text class="n" x="650.0" y="234" text-anchor="middle">مودمِ خانهٔ شما</text>
+<text class="d" x="650.0" y="257" text-anchor="middle">و شرکتِ اینترنتی</text>
+<text class="d" x="650.0" y="276" text-anchor="middle">شما</text>
+<rect x="305" y="168" width="178" height="132" rx="13" fill="#eefaf1" stroke="#1f9254" stroke-width="2"/>
+<g fill="none" stroke="#1f9254" stroke-width="1.7" stroke-linecap="round"><rect x="375.0" y="185" width="38" height="12" rx="2"/><rect x="375.0" y="200" width="38" height="12" rx="2"/><path d="M381.0 191 h3 M381.0 206 h3"/></g>
+<text class="n" x="394.0" y="234" text-anchor="middle">سرورِ شما</text>
+<text class="d" x="394.0" y="257" text-anchor="middle">در خارج، روی آدرسی که</text>
+<text class="d" x="394.0" y="276" text-anchor="middle">داخلِ کانفیگ است</text>
+<rect x="49" y="168" width="178" height="132" rx="13" fill="#fff8e8" stroke="#b9791a" stroke-width="1.2"/>
+<g fill="none" stroke="#b9791a" stroke-width="1.7" stroke-linecap="round"><circle cx="138.0" cy="198" r="14"/><path d="M124.0 198 h28 M138.0 184 a20 20 0 0 0 0 28 a20 20 0 0 0 0 -28"/></g>
+<text class="n" x="138.0" y="234" text-anchor="middle">اینترنتِ آزاد</text>
+<rect x="726.0" y="314" width="360" height="25" rx="12.5" fill="#ffffff" stroke="#2f6fd0" stroke-dasharray="3 3"/>
+<text class="p" x="906.0" y="331" text-anchor="middle">VLESS   VMess   Trojan   Shadowsocks   SOCKS   Hysteria2</text>
+<rect x="772.0" y="344" width="268" height="25" rx="12.5" fill="#ffffff" stroke="#2f6fd0" stroke-dasharray="3 3"/>
+<text class="p" x="906.0" y="361" text-anchor="middle">لینک اشتراک  ·  Clash YAML  ·  xray JSON</text>
+<line x1="1073" y1="234.0" x2="995" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="1034.0" y="155" text-anchor="middle">وای‌فای</text>
+<line x1="817" y1="234.0" x2="739" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="778.0" y="155" text-anchor="middle">رمزگذاری‌شده</text>
+<line x1="561" y1="234.0" x2="483" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="522.0" y="155" text-anchor="middle">رمزگذاری‌شده</text>
+<line x1="305" y1="234.0" x2="227" y2="234.0" stroke="#5b6b7f" stroke-width="1.6" marker-end="url(#ar)"/>
+<text class="a" x="266.0" y="155" text-anchor="middle">ترافیکِ عادی</text>
+<rect x="305" y="384" width="690" height="40" rx="10" fill="#e3edfb" stroke="#2f6fd0" stroke-dasharray="6 4"/>
+<text class="tun" x="650.0" y="409" text-anchor="middle">تونلِ رمزگذاری‌شده. مودم و شرکتِ اینترنتی فقط یک اتصال به یک آدرس می‌بینند، نه اینکه شما چه باز می‌کنید.</text>
+<text class="f" x="1256" y="456" text-anchor="start">روی هیچ دستگاهی چیزی نصب نمی‌شود. فقط به یک شبکهٔ وای‌فای وصل می‌شوند، همین.</text>
+<text class="f" x="1256" y="477" text-anchor="start">سرورِ شما ترافیکتان را می‌بیند. سروری را به کار ببرید که به آن اعتماد دارید یا خودتان آن را می‌گردانید.</text>
+</svg>

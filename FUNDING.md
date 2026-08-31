@@ -1,5 +1,7 @@
 # Funding
 
+[🇮🇷 فارسی](FUNDING.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: تأمین مالی](FUNDING.fa.md)
 >
 > **[Read this in Persian](FUNDING.fa.md)**. That translation is

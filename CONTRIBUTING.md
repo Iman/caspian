@@ -1,5 +1,7 @@
 # Contributing
 
+[🇮🇷 فارسی](CONTRIBUTING.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: راهنمای مشارکت](CONTRIBUTING.fa.md)
 >
 > **[Read this in Persian](CONTRIBUTING.fa.md)**

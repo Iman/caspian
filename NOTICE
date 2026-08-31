@@ -9,8 +9,8 @@ later version. The full text is in LICENSE.
 ADDITIONAL TERMS under section 7 of the AGPL
 --------------------------------------------
 
-These are the only additional terms, and both are of a kind section 7 permits.
-Nothing here restricts what you may do with the software.
+These are the only additional terms, all three are of a kind section 7 permits,
+and nothing here restricts what you may do with the software.
 
   (a) Under section 7(b), you must preserve the copyright notice above, this
       NOTICE file, and the attribution it carries, in all copies and in all
@@ -45,10 +45,13 @@ service that other people connect to. Under the plain GPL, someone could modify
 it, run it for others, and never publish the changes. Section 13 of the AGPL
 closes that.
 
-Why not a permissive licence: the program links xray-core, whose distribution
-carries GNU GPL version 3 or later terms through its dependencies, so the
-combined work must be licensed on GPL-family terms. MIT and Apache-2.0 are not
-available for the work as a whole.
+Why not a permissive licence: the binary statically links code under the GNU GPL
+version 3 or later, so the combined work must be licensed on GPL-family terms.
+MIT and Apache-2.0 are not available for the work as a whole. The GPL-3.0-or-later
+modules are github.com/sagernet/sing and github.com/sagernet/sing-shadowsocks,
+both reached through xray-core's Shadowsocks 2022 support. GPL-3.0-or-later is
+one-way compatible with the AGPL, which is why AGPL-3.0-or-later is available
+and a permissive licence is not.
 
 THIRD-PARTY CODE
 ----------------
@@ -65,6 +68,84 @@ third_party/libxray-share/
     has already replaced its exported API wholesale and does not promise
     stability.
 
-github.com/xtls/xray-core
-    The proxy engine, linked as a dependency. MPL-2.0, with GPL-3.0-or-later
-    reaching it through github.com/sagernet/sing-shadowsocks.
+EVERY MODULE LINKED INTO THE BINARY
+
+Each licence below was read from that module's own licence file rather than
+recalled. Where a module ships more than one licence, the additional ones are
+noted in brackets.
+
+  COPYLEFT, and therefore the terms that decide the licence of the whole:
+
+    github.com/sagernet/sing                    GPL-3.0-or-later
+    github.com/sagernet/sing-shadowsocks        GPL-3.0-or-later
+        Shadowsocks 2022, reached through xray-core.
+    github.com/juju/ratelimit                   LGPL-3.0 WITH linking exception
+        Token-bucket rate limiting, reached through github.com/xtls/reality
+        rather than through xray-core. The linking exception waives the
+        relinking obligation that would otherwise be awkward for a statically
+        linked Go binary.
+    github.com/xtls/xray-core                   MPL-2.0
+        The proxy engine, linked in-process. MPL-2.0 is file-level copyleft and
+        is GPL and AGPL compatible by its own section 3.3.
+    github.com/xtls/reality                     MPL-2.0 (LICENSE-Go: BSD-3-Clause)
+        The REALITY transport.
+
+  PERMISSIVE:
+
+    github.com/andybalholm/brotli               MIT
+    github.com/apernet/quic-go                  MIT
+    github.com/cloudflare/circl                 BSD-3-Clause
+    github.com/ghodss/yaml                      MIT (portions BSD-3-Clause)
+    github.com/google/btree                     Apache-2.0
+    github.com/gorilla/websocket                BSD-2-Clause
+    github.com/klauspost/compress               BSD-3-Clause (portions Apache-2.0, MIT)
+    github.com/klauspost/cpuid/v2               MIT
+    github.com/miekg/dns                        BSD-3-Clause
+    github.com/pelletier/go-toml                MIT (two files Apache-2.0)
+    github.com/pires/go-proxyproto              Apache-2.0
+    github.com/quic-go/qpack                    MIT
+    github.com/refraction-networking/utls       BSD-3-Clause
+    github.com/vishvananda/netlink              Apache-2.0
+    github.com/vishvananda/netns                Apache-2.0
+    go4.org/netipx                              BSD-3-Clause
+    golang.org/x/crypto                         BSD-3-Clause
+    golang.org/x/exp                            BSD-3-Clause
+    golang.org/x/net                            BSD-3-Clause
+    golang.org/x/sync                           BSD-3-Clause
+    golang.org/x/sys                            BSD-3-Clause
+    golang.org/x/text                           BSD-3-Clause
+    golang.org/x/time                           BSD-3-Clause
+    golang.zx2c4.com/wireguard                  MIT
+    google.golang.org/genproto/googleapis/rpc   Apache-2.0
+    google.golang.org/grpc                      Apache-2.0
+    google.golang.org/protobuf                  BSD-3-Clause
+    gopkg.in/yaml.v2                            Apache-2.0 (libyaml files MIT)
+    gopkg.in/yaml.v3                            MIT AND Apache-2.0
+    gvisor.dev/gvisor                           Apache-2.0 (some files MIT, BSD-3-Clause)
+    lukechampine.com/blake3                     MIT
+
+  Apache-2.0 is compatible with AGPL-3.0 and GPL-3.0 but not with GPL-2.0.
+  Nothing here is GPL-2.0-only, so that incompatibility is inert. It would
+  become live if a GPL-2.0-only dependency were ever added.
+
+TEST AND BUILD TOOLING, NOT DISTRIBUTED
+
+    github.com/stretchr/testify                 MIT
+    github.com/davecgh/go-spew                  ISC
+    github.com/pmezard/go-difflib               BSD-2-Clause
+    golang.org/x/mod, golang.org/x/tools        BSD-3-Clause
+    golang.zx2c4.com/wintun                     MIT (Windows only, never built here)
+    @cucumber/cucumber                          MIT
+    selenium-webdriver                          Apache-2.0
+
+    These never form part of the conveyed work, so their terms do not enter the
+    combined licence.
+
+PROGRAMS THE APPLIANCE RUNS BUT DOES NOT LINK
+
+    hostapd, dnsmasq, nftables, iw, iproute2, procps-ng, NetworkManager,
+    util-linux.
+
+    These are separate programs invoked at arm's length, not libraries linked
+    into this work, so their licences do not affect the licensing of Caspian.
+    They are named because the appliance does not function without them.

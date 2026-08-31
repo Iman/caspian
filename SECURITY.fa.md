@@ -1,5 +1,7 @@
 # سیاست امنیتی
 
+🇮🇷 **فارسی** | [🇬🇧 English](SECURITY.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the original of this document](SECURITY.md)
 >
 > این نسخهٔ فارسیِ `SECURITY.md` است. متن انگلیسی سندِ معتبر است و همان چیزی

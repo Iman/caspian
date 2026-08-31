@@ -1,5 +1,7 @@
 # Open defects and accepted gaps
 
+[🇮🇷 فارسی](DEFECTS.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
+
 > Persian edition: [`docs/DEFECTS.fa.md`](DEFECTS.fa.md). The English file is
 > the one the tests read. If the two ever disagree, this one is correct.
 

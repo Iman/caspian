@@ -1,5 +1,7 @@
 # What Caspian-BYOC guarantees
 
+[🇮🇷 فارسی](BEHAVIOUR.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
+
 > Persian edition: [`docs/BEHAVIOUR.fa.md`](BEHAVIOUR.fa.md). The English file
 > is the one the tests read. If the two ever disagree, this one is correct.
 
@@ -123,6 +125,13 @@ and would bypass the tunnel entirely. Three separate things stop that: the box
 does not forward IPv6 at all, the firewall drops forwarded IPv6 on the hotspot in
 both directions, and the box never advertises an IPv6 prefix, so a device cannot
 give itself an address in the first place.
+
+What that does NOT cover is DNS. An AAAA question from a joined device is not
+suppressed and is not answered empty: it is resolved through the tunnel and
+comes back with real AAAA records. A device therefore learns IPv6 addresses it
+has no route to, and falls back to IPv4. That is harmless only for as long as
+nothing can give a client a working IPv6 address, which is the condition the
+three mechanisms above maintain.
 
 Goes red when: the IPv6 drop rules are taken out of the forward chain.
 

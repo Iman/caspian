@@ -1,5 +1,7 @@
 # نشان تجاری و نام
 
+🇮🇷 **فارسی** | [🇬🇧 English](TRADEMARK.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [English: the operative text of this document](TRADEMARK.md)
 >
 > **این نسخهٔ فارسی فقط برای آگاهی است.** متنِ نافذ و معتبر همان `TRADEMARK.md`

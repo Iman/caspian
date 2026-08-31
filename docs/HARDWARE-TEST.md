@@ -1,5 +1,7 @@
 # Hardware test: proving the appliance with a real phone
 
+[🇮🇷 فارسی](HARDWARE-TEST.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
+
 > Persian edition: [`docs/HARDWARE-TEST.fa.md`](HARDWARE-TEST.fa.md). The
 > English file is the one the tests read. If the two ever disagree, this one is
 > correct.

@@ -1,5 +1,7 @@
 # Layout and conventions
 
+[🇮🇷 فارسی](LAYOUT.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
+
 > Persian edition: [`docs/LAYOUT.fa.md`](LAYOUT.fa.md). The English file is the
 > one the tests read. If the two ever disagree, this one is correct.
 

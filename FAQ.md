@@ -1,5 +1,7 @@
 # Caspian-BYOC FAQ
 
+[🇮🇷 فارسی](FAQ.fa.md) | 🇬🇧 **English** | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
+
 > ### [فارسی: پرسش‌های پرتکرار](FAQ.fa.md)
 >
 > **[Read this in Persian](FAQ.fa.md)**
