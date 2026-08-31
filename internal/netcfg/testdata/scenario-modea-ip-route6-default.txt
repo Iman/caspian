@@ -1,0 +1,1 @@
+default via fe80::1 dev eth0 proto ra metric 1024 pref medium

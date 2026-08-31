@@ -1,0 +1,21 @@
+{
+  "connected": false,
+  "running": true,
+  "heroClass": "cut",
+  "powerClass": "danger",
+  "nextStep": "You cut the traffic yourself. Press Resume client traffic to put it back.",
+  "word": "Traffic cut",
+  "shape": "trouble",
+  "devices": 3,
+  "deviceLine": "3 devices connected",
+  "detected": "Internet: Ethernet. Hotspot: built-in WiFi.",
+  "problem": "",
+  "hasConfig": true,
+  "uptime": "Not running",
+  "powerLabel": "Switch off",
+  "trafficCut": true,
+  "cutLabel": "Resume client traffic",
+  "cutBanner": "Client traffic is cut. Your devices are still connected to this WiFi and can open this page, but nothing reaches the internet. Restarting this box clears this state, but Caspian comes back switched off, so traffic does not return until you press the switch.",
+  "events": null
+}
+

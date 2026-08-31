@@ -1,0 +1,4 @@
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             DOWN           
+wlan0            UP             10.0.0.57/24 fe80::dea6:32ff:fe11:2234/64 
+wlan1            DOWN           

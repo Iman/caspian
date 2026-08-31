@@ -1,0 +1,1588 @@
+/*
+ * SPDX-License-Identifier: AGPL-3.0-or-later
+ * Copyright (C) 2026 Iman Samizadeh
+ *
+ * The whole of the panel's styling. One stylesheet, no second file, no web
+ * font and no pulled-in resource of any kind: design section 5.7 says the panel
+ * fetches nothing, and an import rule or a font URL is a fetch. The at-rule
+ * that would do it is not spelled out anywhere in this file on purpose, because
+ * TestNoAssetReferencesAnExternalURL greps the raw bytes and does not strip
+ * comments, which is the right way round.
+ *
+ * ============================================================================
+ * THE SHAPE, AND WHY IT IS NOT A DOCUMENT
+ * ============================================================================
+ *
+ * This is an appliance dashboard, so it is laid out as one: a rail down the
+ * inline-start edge holding identity and jumps, and a column beside it holding
+ * a topbar, the page, and a footer. The first draft was a single centred column
+ * of stacked cards, which on a wide screen put a 700px ribbon of content in the
+ * middle of a 1440px window and left the state of the box below the fold as
+ * soon as the events grew.
+ *
+ * The reference for the shape is Pi-hole's admin interface, which is the thing
+ * the people who will use this have already seen on a Raspberry Pi. Borrowing
+ * its skeleton is deliberate: a rail, a row of summary tiles that answer the
+ * questions worth answering without scrolling, then cards, then the long list
+ * at the bottom. None of its code is here and none of its colours are; the
+ * palette below is this product's own.
+ *
+ * ============================================================================
+ * COLOUR
+ * ============================================================================
+ *
+ * The palette is Tropical jade sunrise, five colours, used strictly:
+ *
+ *   #097C87 teal     #23CED9 cyan     #A1CCA6 sage
+ *   #FCA47C coral    #F9D779 yellow
+ *
+ * Measured on 2026-08-30, as text on white, only one of them can carry text:
+ *
+ *   teal 4.95:1   coral 1.96:1   cyan 1.93:1   sage 1.79:1   yellow 1.40:1
+ *
+ * So the teal is the only supplied colour used as a foreground, and the other
+ * four are grounds and fills. Four neutrals stand beside them. White is the
+ * reference card's own surface and is taken from it rather than invented. The
+ * other three are the teal lightened or darkened, because a page needs more
+ * than one surface and nothing supplied is dark enough for body text at a
+ * comfortable margin:
+ *
+ *   --ground #E6F2F3   the teal lightened 90 per cent, the page
+ *   --edge   #C2DEE1   the teal lightened 75 per cent, hairlines
+ *   --ink-quiet #075D65 the teal darkened 25 per cent, 7.60:1 on white
+ *   --ink    #05444A   the teal darkened 45 per cent, 10.87:1 on white
+ *
+ * Every pair actually shipped is in shippedPairs in design_test.go, which
+ * recomputes the arithmetic on every build rather than leaving these numbers in
+ * a comment to rot. Twenty-five pairs, no failures.
+ *
+ * Two role assignments were changed by measurement rather than by taste, and
+ * they are worth knowing because the obvious version of each fails:
+ *
+ * The cyan is decoration only. As a 3px cap on a white card it is 1.93:1, which
+ * is under the 3:1 an interface component needs, so it is used only where
+ * nothing depends on seeing it and it never carries a state or a boundary.
+ *
+ * The lamp beside the state word is drawn entirely in --ink. The first version
+ * filled it with the teal on the soft green of the hero, which is 2.76:1 and
+ * under the same 3:1. Drawing ring and fill in one colour is also the better
+ * design: the state is the presence of the fill and the style of the ring, so
+ * colour carries nothing at all, which is what this scheme has claimed since
+ * the first draft.
+ *
+ * ============================================================================
+ * NO ALPHA, ANYWHERE
+ * ============================================================================
+ *
+ * There is no rgba, no opacity below 1 and no box-shadow in this file, by
+ * instruction. Depth comes from a line and from a change of ground, both of
+ * which are colours somebody measured.
+ *
+ * What that removed, so nobody puts it back thinking it was an oversight: the
+ * card and tile shadows, the ring of glow around the lit lamp, the dimming of
+ * the unlit one, and the faded placeholder text. Each was replaced rather than
+ * dropped. The watermark behind each tile is the soft green at full strength
+ * instead of a darker colour made transparent, which measures 1.79:1 on the
+ * card: visible as a shape and impossible to mistake for text.
+ *
+ * ============================================================================
+ * TYPE, PERSIAN FIRST
+ * ============================================================================
+ *
+ * The base size and line height are set for Persian and English inherits them,
+ * which is the right way round for a product whose default language is Persian.
+ * Persian script carries more of its meaning in small marks above and below the
+ * line, so it needs more size and more leading than Latin at the same nominal
+ * point size, and it needs both more in a low-contrast scheme than in a
+ * high-contrast one.
+ *
+ * The font stack lists Persian-capable faces first and is entirely system
+ * faces: Vazirmatn and IRANSans if the user has them, Noto Naskh Arabic on
+ * Android, Geeza Pro on Apple, Tahoma on Windows, which is the face Persian
+ * users have read on Windows for twenty years. Latin glyphs come from whichever
+ * of those matched, which is what "English inherits" means here.
+ *
+ * ============================================================================
+ * DIRECTION
+ * ============================================================================
+ *
+ * Every directional property in this file is logical: inline-start and
+ * inline-end rather than left and right, block-start and block-end rather than
+ * top and bottom, and text-align: start rather than left. One attribute on the
+ * root element flips the entire layout, and TestStylesheetUsesLogicalProperties
+ * fails the build on a physical property so that the rule cannot decay one
+ * declaration at a time.
+ */
+
+/* ==========================================================================
+   TOKENS
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* Tropical jade sunrise, the five supplied colours, unmodified. */
+  --teal: #097C87;
+  --cyan: #23CED9;
+  --sage: #A1CCA6;
+  --coral: #FCA47C;
+  --yellow: #F9D779;
+
+  /* The neutrals. White is the reference card's own ground and its own
+     surface, so it is taken from the palette rather than invented. The other
+     three are the teal, lightened or darkened, because nothing supplied except
+     the teal can carry a foreground and a page needs more than one surface. */
+  --surface: #FFFFFF;
+  --ground: #E6F2F3;
+  --edge: #C2DEE1;
+  --ink: #05444A;
+  --ink-quiet: #075D65;
+
+  /* Roles. Every one of these is one of the ten above; there is no eleventh
+     colour anywhere in this file. */
+  --rail: var(--teal);
+  --edge-strong: var(--teal);
+  --focus: var(--ink);
+  --tile: var(--sage);
+  --accent-on: var(--sage);
+  --accent-warn: var(--coral);
+  --accent-note: var(--yellow);
+  --accent-bright: var(--cyan);
+
+  --rail-w: 268px;
+  --content-max: 1180px;
+
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s7: 32px;
+  --s8: 44px;
+
+  --r-card: 12px;
+  --r-ctl: 9px;
+  --r-pill: 999px;
+
+  --fs-xs: 0.78rem;
+  --fs-sm: 0.86rem;
+  --fs-base: 1rem;
+  --fs-md: 1.06rem;
+  --fs-lg: 1.25rem;
+  --fs-num: 1.75rem;
+  --fs-xl: 2.3rem;
+
+  /* No shadows and no alpha anywhere in this file. A shadow is a black
+     overlay at low opacity, and this palette is flat by instruction: depth is
+     carried by a line and by a change of ground, which are both colours
+     somebody measured. These two names are kept and set to none so that a rule
+     which asks for one gets nothing rather than an error, and so that the
+     absence is visible here rather than being a thing you notice missing. */
+  --shadow-1: none;
+  --shadow-2: none;
+
+  --sans: "Vazirmatn", "IRANSans", "IRANYekan", "Noto Naskh Arabic",
+          "Geeza Pro", "Tahoma", system-ui, -apple-system, "Segoe UI",
+          "Roboto", sans-serif;
+  --mono: ui-monospace, "SF Mono", "Menlo", "Consolas",
+          "DejaVu Sans Mono", monospace;
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-block-size: 100vh;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--fs-base);
+  line-height: 1.75;
+}
+
+h1, h2, h3 {
+  margin: 0;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+p { margin: 0; }
+
+a {
+  color: var(--edge-strong);
+  text-underline-offset: 3px;
+}
+
+a:hover { color: var(--focus); }
+
+:where(a, button, input, select, textarea, summary, details):focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: var(--r-ctl);
+}
+
+.sprite { display: none; }
+
+.skip {
+  position: absolute;
+  inset-inline-start: -9999px;
+  inset-block-start: 0;
+  z-index: 10;
+  padding: var(--s3) var(--s5);
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--edge-strong);
+  border-radius: 0 0 var(--r-card) var(--r-card);
+}
+
+.skip:focus { inset-inline-start: var(--s4); }
+
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: var(--mono);
+  font-size: 0.94em;
+  font-variant-numeric: tabular-nums;
+}
+
+.selectable { user-select: all; }
+.muted { color: var(--ink-quiet); }
+
+/* ==========================================================================
+   SHELL
+   ========================================================================== */
+
+body.app {
+  display: grid;
+  grid-template-columns: var(--rail-w) minmax(0, 1fr);
+  align-items: start;
+}
+
+body.plain { display: block; }
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100vh;
+  min-inline-size: 0;
+}
+
+/* ---- the rail ---- */
+
+.rail {
+  position: sticky;
+  inset-block-start: 0;
+  block-size: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  padding: var(--s6) var(--s4);
+  background: var(--rail);
+  color: var(--ground);
+}
+
+.rail-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding-inline: var(--s3);
+  color: var(--surface);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  letter-spacing: 0.01em;
+}
+
+.rail-mark {
+  inline-size: 34px;
+  block-size: 34px;
+  flex: none;
+  color: var(--accent-on);
+}
+
+.rail-nav {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.rail-nav a,
+.rail-act {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  min-block-size: 44px;
+  padding-inline: var(--s3);
+  border-inline-start: 3px solid transparent;
+  border-radius: var(--r-ctl);
+  color: var(--ground);
+  text-decoration: none;
+  font-size: var(--fs-base);
+  font-weight: 500;
+}
+
+.rail-nav a svg,
+.rail-act svg {
+  inline-size: 21px;
+  block-size: 21px;
+  flex: none;
+  color: var(--accent-on);
+}
+
+.rail-nav a:hover,
+.rail-act:hover {
+  background: var(--focus);
+  border-inline-start-color: var(--accent-on);
+  color: var(--surface);
+}
+
+.rail-foot {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-block-start: var(--s4);
+  border-block-start: 1px solid var(--focus);
+}
+
+.rail-act {
+  inline-size: 100%;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+  text-align: start;
+}
+
+.rail :focus-visible {
+  outline-color: var(--surface);
+}
+
+/* ---- topbar ---- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s4);
+  flex-wrap: wrap;
+  padding: var(--s4) var(--s6);
+  background: var(--surface);
+  border-block-end: 1px solid var(--edge);
+}
+
+.topbar-title {
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.topbar-note {
+  font-size: var(--fs-sm);
+  color: var(--ink-quiet);
+}
+
+.topbar-plain {
+  justify-content: space-between;
+}
+
+.topbar-plain .rail-brand { color: var(--ink); }
+.topbar-plain .rail-mark { color: var(--edge-strong); }
+
+.langswitch {
+  font-size: var(--fs-base);
+  font-weight: 600;
+}
+
+/* ---- main and footer ---- */
+
+main {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: var(--content-max);
+  margin-inline: auto;
+  padding: var(--s6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+}
+
+body.plain main {
+  max-inline-size: 460px;
+  padding-block: var(--s8);
+}
+
+.foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s4);
+  flex-wrap: wrap;
+  padding: var(--s4) var(--s6);
+  border-block-start: 1px solid var(--edge);
+  color: var(--ink-quiet);
+  font-size: var(--fs-sm);
+}
+
+/* ==========================================================================
+   TILES
+   ========================================================================== */
+
+/* Six columns rather than auto-fit, because the row has to divide two ways:
+   the state and the switch take three each, and the three smaller tiles take
+   two each. An auto-fit row of four left a hole beside the third small tile at
+   exactly the width a laptop uses. */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: var(--s4);
+}
+
+.tile { grid-column: span 2; }
+
+.tile {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: var(--s4) var(--s5);
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-1);
+}
+
+.tile:hover .tile-icon { transform: scale(1.06); }
+
+.tile-icon {
+  position: absolute;
+  transition: transform 0.2s ease-out;
+  /* Anchored to the top corner, the way Pi-hole anchors its watermark. It was
+     at the bottom until the tiles gained a footer strip, and the strip cut the
+     glyph in half rather than covering it. */
+  inset-inline-end: -8px;
+  inset-block-start: -12px;
+  inline-size: 78px;
+  block-size: 78px;
+  /* The soft green at full strength rather than a darker colour made
+     transparent. It measures 1.79:1 on the card, which is what a watermark
+     should be: visible as a shape, incapable of being mistaken for text. */
+  color: var(--accent-on);
+  pointer-events: none;
+}
+
+.tile-label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-quiet);
+}
+
+.tile-value {
+  margin-block-start: var(--s1);
+  font-size: var(--fs-num);
+  font-weight: 700;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.tile-number { font-variant-numeric: tabular-nums; }
+
+/* Every tile ends in the place that answers the next question. Pi-hole's
+   tiles do this and it is the difference between a figure and a control: the
+   tile says how many devices have joined, and the link goes to the QR code
+   that joins another one. */
+.tile-more {
+  display: block;
+  /* Positioned so it paints above the watermark, which is absolute and would
+     otherwise show through the strip. */
+  position: relative;
+  margin-block-start: auto;
+  margin: var(--s3) calc(var(--s5) * -1) calc(var(--s4) * -1);
+  padding: var(--s2) var(--s5);
+  background: var(--ground);
+  color: var(--edge-strong);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: end;
+}
+
+/* The chevron is U+203A, which has the Unicode mirrored property, so the
+   browser turns it round in Persian on its own. A box drawn from two borders
+   and rotated would have needed a rule keyed on dir="rtl", which is the
+   mirror-by-hand this file exists to avoid. */
+.tile-more::after {
+  content: "\203A";
+  margin-inline-start: 0.4em;
+  font-weight: 700;
+}
+
+.tile-more:hover { background: var(--accent-on); color: var(--ink); }
+
+/* The state and the control are one panel rather than two tiles.
+   A dashboard that reports the state in one box and offers the switch in
+   another lets the two disagree on screen for as long as a request takes, and
+   the reader has to look in two places to answer one question. */
+/* Full width, and the empty middle is deliberate.
+   It was tried at four columns of six with the device count beside it, to use
+   that space. The count then stretched to the height of the switch and carried
+   a void of its own under the footer strip, which moved the emptiness rather
+   than removing it and made the row lopsided. A control bar is allowed to be
+   mostly air: the two things in it are the state and the switch, and putting a
+   third thing between them is what would make it hard to read. */
+/* The bar takes its ground from the state. It was the soft green in every
+   state, which meant a box that was off, a box that was working and a box whose
+   traffic had been cut all sat on the same green field and only the small print
+   differed. Colour is still never the carrier: the state word, the lamp's shape
+   and the switch's label each say it independently. */
+.hero-ok { background: var(--accent-on); }
+/* The cut state pulses. It is the one state where the box is deliberately doing
+   nothing for the user, and a still coral panel reads as decoration after ten
+   seconds. The animation alternates two MEASURED grounds, the coral and the
+   yellow, and the ink carries 5.56:1 on one and 7.78:1 on the other, so the
+   text is readable at every frame rather than at the ends only. No opacity and
+   no alpha: this scheme has none, and a fade would make the contrast at the
+   midpoint a number nobody has measured. */
+@keyframes cut-pulse {
+  0%, 100% { background-color: var(--accent-warn); }
+  50% { background-color: var(--accent-note); }
+}
+
+.hero-cut {
+  background: var(--accent-warn);
+  animation: cut-pulse 2.4s ease-in-out infinite;
+}
+
+.cut-banner {
+  animation: cut-pulse 2.4s ease-in-out infinite;
+}
+/* Switched on, tunnel not up yet. The one state that had no colour of its own:
+   a box that was starting drew the same plain page ground as a box that was
+   off, so the state somebody should WAIT through and the state somebody must
+   ACT on looked identical. The yellow is the measured note ground and carries
+   the ink at 7.78:1. It does not pulse; the cut does, and the pulse is what
+   separates "nothing is happening for you on purpose" from "something is
+   happening, give it a moment". */
+.hero-wait { background: var(--accent-note); }
+
+/* Switched off. Red rather than the page ground, because an appliance that is
+   doing nothing for you should not look like the page it sits on. Same coral
+   the cut uses, and still: the cut pulses, this does not. */
+.hero-off { background: var(--accent-warn); }
+
+.hero {
+  grid-column: 1 / -1;
+  display: flex;
+  /* Named, not inherited: .tile is a column so that its footer strip can be
+     pushed to the bottom, and without this the state and the switch stacked. */
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  /* Three groups sit in this bar and they are not equally related: the state
+     and its two sentences belong together, the controls belong together, and
+     the two halves want more air between them than within them. */
+  gap: var(--s5) var(--s7);
+  padding: var(--s6);
+  /* No background here. The four .hero-<state> rules above own it, and this
+     line silently beat all of them: same specificity, written later, so the bar
+     drew the page ground in EVERY state including connected. The comment above
+     those rules claimed the opposite and had claimed it since they were
+     written. TestTheBarsGroundComesFromItsStateAndNothingElse now fails if a
+     background comes back here. */
+  border-color: var(--edge-strong);
+}
+
+.hero-state {
+  min-inline-size: 0;
+  /* The state is the first thing read, so it gets its own column rather than
+     sharing the wrap with the sentences beside it. */
+  flex: 0 0 auto;
+}
+
+.hero .tile-label { font-size: var(--fs-base); }
+
+.hero .tile-value {
+  font-size: var(--fs-xl);
+  gap: var(--s3);
+  line-height: 1.2;
+}
+
+/* The two controls sit together at the far end, in one group, so the eye finds
+   "what can I do here" in one place rather than at both ends of a wide bar. */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s6);
+  flex-wrap: wrap;
+}
+
+/* One control and the sentence that says what it stops, as a column, so the
+   caption belongs to the button above it rather than to the bar.
+
+   Both controls stop the internet for the joined devices, and only one of them
+   takes the WiFi down as well. Nothing on this bar said so, and the person who
+   wrote this appliance still could not tell them apart from here, which is the
+   evidence that the sentence has to sit where the press happens and not only on
+   the help page.
+
+   The measure is in characters and not pixels, because the line has to wrap
+   into two or three short lines beside a 132px round button, and a character
+   measure does that in Persian as well as in English. */
+.hero-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  max-inline-size: 24ch;
+}
+
+/* The full ink, deliberately, and not the quieter one. This sits inside the
+   control bar, whose ground is one of four state colours, and only the full ink
+   is measured against all four at body-text strength (shippedPairs, "the
+   control bar's four grounds"). The quieter ink is measured on the white
+   surface and the page ground and nowhere else. */
+.hero-caption {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink);
+}
+
+.hero-since {
+  margin-block-start: var(--s2);
+  font-size: var(--fs-sm);
+  color: var(--ink-quiet);
+}
+
+.hero-switch { display: flex; }
+
+/* Round, because a power control on an appliance is round: the shape says
+   what the control does before the word is read, and it is the same shape on
+   the wall socket, the router and the kettle.
+   The selector names the form as well as the button because .go and .danger
+   are declared after this block and set a radius of their own; at equal
+   specificity the later rule wins, and the button came out as a rounded
+   square. */
+.hero-switch .big {
+  flex-direction: column;
+  gap: 2px;
+  inline-size: 132px;
+  block-size: 132px;
+  padding: 0;
+  border-radius: 50%;
+  font-size: var(--fs-sm);
+  line-height: 1.25;
+  text-align: center;
+  box-shadow: var(--shadow-2);
+}
+
+.switch-glyph {
+  inline-size: 34px;
+  block-size: 34px;
+}
+
+/* The marker beside the state word. Two shapes, never colour alone: a ring
+   when the box is off, a filled disc when it is on, and a broken ring when
+   something is wrong. TestStateIsNotCarriedByColourAlone pins that. */
+/* An indicator lamp, read the way the lamp on a router is read: lit, dark,
+   flickering, or faulty. The ring is the bezel and the fill is the lamp, so
+   the four states differ in fill and in border style and never in colour
+   alone. TestStateIsNotCarriedByColourAlone pins that. */
+.dot {
+  inline-size: 16px;
+  block-size: 16px;
+  flex: none;
+  border-radius: 50%;
+  border: 3px solid var(--edge-strong);
+  background: transparent;
+}
+
+/* Filled, and filled with the ring colour rather than with a second colour:
+   the state is the presence of the fill, not its hue. The glow this had was an
+   alpha ring, and the dimming on the off state was an opacity, and both are
+   gone. Neither was carrying anything the shape does not. */
+.dot-on {
+  background: var(--ink);
+}
+
+.dot-off {
+  background: transparent;
+}
+
+.dot-working {
+  border-style: dotted;
+}
+
+.dot-trouble {
+  border-style: dashed;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+button {
+  font-family: inherit;
+  font-size: var(--fs-base);
+}
+
+.go,
+.danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-block-size: 46px;
+  padding: 0 var(--s6);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--r-ctl);
+  background: var(--edge-strong);
+  color: var(--surface);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.danger {
+  border-color: var(--ink);
+  background: var(--accent-warn);
+  color: var(--ink);
+}
+
+/* The switch when the box is on AND carrying traffic. A lit power control on
+   an appliance means it is on and well; this button was the dusty brown for
+   every running state, so a working box and a cut one looked identical. */
+.ok {
+  border-color: var(--ink);
+  background: var(--accent-on);
+  color: var(--ink);
+}
+
+.go:hover,
+.danger:hover { filter: brightness(1.12); }
+
+.go:active,
+.danger:active { filter: brightness(0.92); }
+
+.go:focus-visible,
+.danger:focus-visible { outline-color: var(--surface); }
+
+/* The emergency control, beside the switch and deliberately smaller than it.
+   Cutting traffic is not the same size of decision as switching the appliance
+   off, and a second round button would read as one. */
+/* Named apart from the .hero-cut STATE class on the bar itself. They collided:
+   this rule's display and align-items were landing on the bar whenever it was
+   cut, and the state rule's coral ground and infinite pulse were landing on
+   this form in EVERY state, including green. Two different things must not
+   share a class name just because they are both about cutting. */
+.hero-cut-control { display: flex; align-items: center; }
+
+/* The client-traffic control is a switch, because it reports a state as well as
+   offering an action, and that is what a switch is for. On means traffic is
+   flowing, the way round every switch a reader has already met.
+   The knob is placed with logical properties, so it sits on the correct side in
+   Persian without a rule that knows about right and left. */
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s3);
+  /* A control with a label needs room around it or it reads as part of the
+     thing beside it. */
+  padding-block: var(--s2);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--fs-base);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.toggle-track {
+  position: relative;
+  flex: none;
+  inline-size: 58px;
+  block-size: 32px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  background: var(--accent-warn);
+  transition: background-color 0.18s ease-out;
+}
+
+.toggle-knob {
+  position: absolute;
+  inset-block-start: 3px;
+  inset-inline-start: 3px;
+  inline-size: 22px;
+  block-size: 22px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  transition: inset-inline-start 0.18s ease-out;
+}
+
+/* On: traffic is flowing. The knob travels to the far end and the track takes
+   the soft green, which is the same green the switch above it uses for a box
+   that is carrying. */
+.toggle-on .toggle-track { background: var(--accent-on); }
+.toggle-on .toggle-knob { inset-inline-start: 29px; }
+
+.toggle:hover .toggle-track { filter: brightness(1.06); }
+
+.toggle:focus-visible { outline-offset: 4px; }
+
+/* It has to look pressable. As a hairline pill with a light fill it read as a
+   status label, and the one control somebody reaches for in a hurry is the
+   worst place for something that does not look like a button. Two-pixel
+   border, a mark, and a fill in both states. */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  min-block-size: 44px;
+  padding: 0 var(--s5);
+  border: 2px solid var(--edge-strong);
+  border-radius: var(--r-pill);
+  background: var(--ground);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chip svg {
+  inline-size: 20px;
+  block-size: 20px;
+  flex: none;
+}
+
+.chip:hover { background: var(--surface); }
+
+.chip:active { filter: brightness(0.94); }
+
+/* In force, the control is the loudest thing in the bar apart from the switch,
+   because a cut nobody can see is a cut somebody power-cycles the box over. */
+.chip-on {
+  background: var(--accent-warn);
+  border-color: var(--ink);
+}
+
+.chip-on:hover { filter: brightness(1.06); background: var(--accent-warn); }
+
+.cut-banner {
+  padding: var(--s4) var(--s5);
+  background: var(--accent-warn);
+  border: 1px solid var(--ink);
+  border-radius: var(--r-card);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.linkish {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--edge-strong);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ==========================================================================
+   CARDS
+   ========================================================================== */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-block-start: 3px solid var(--accent-bright);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-1);
+  overflow: hidden;
+}
+
+.card > h2,
+.card > h1 {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin: 0;
+  padding: var(--s4) var(--s5);
+  font-size: var(--fs-md);
+  border-block-end: 1px solid var(--edge);
+}
+
+.card > h2 svg,
+.card > h1 svg {
+  inline-size: 22px;
+  block-size: 22px;
+  flex: none;
+  color: var(--edge-strong);
+}
+
+.card > :not(h1):not(h2) {
+  margin-inline: var(--s5);
+}
+
+.card > :not(h1):not(h2):first-of-type { margin-block-start: var(--s5); }
+
+.card > *:last-child { margin-block-end: var(--s5); }
+
+.card h3 {
+  margin-block: var(--s6) var(--s2);
+  font-size: var(--fs-base);
+  color: var(--ink-quiet);
+}
+
+.card p + p,
+.card p + dl,
+.card p + form,
+.card p + details,
+.card p + ol { margin-block-start: var(--s3); }
+
+.narrow {
+  margin-inline: auto;
+}
+
+/* Two columns on a wide screen: the hotspot card, which is tall because it
+   carries a QR code, beside a column holding the config, what was detected and
+   the events. An earlier version put the hotspot and the config side by side
+   and left a column of empty page under the shorter of the two. The wrapper
+   changes nothing about document order, so the page still reads hotspot,
+   config, detected, events on a phone. */
+.pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: var(--s5);
+  align-items: start;
+}
+
+.column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  min-inline-size: 0;
+}
+
+/* ==========================================================================
+   FORMS
+   ========================================================================== */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+}
+
+.stack + .stack { margin-block-start: var(--s5); }
+
+label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-quiet);
+  margin-block-start: var(--s3);
+}
+
+.stack > label:first-child { margin-block-start: 0; }
+
+input[type="text"],
+input[type="password"],
+textarea,
+select {
+  inline-size: 100%;
+  min-block-size: 46px;
+  padding: var(--s2) var(--s3);
+  font-family: inherit;
+  font-size: var(--fs-base);
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--r-ctl);
+}
+
+textarea {
+  min-block-size: 128px;
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--ink-quiet);
+  opacity: 1;
+}
+
+.stack button { margin-block-start: var(--s4); }
+
+.checkline {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.checkline input { inline-size: 20px; block-size: 20px; }
+
+.hint {
+  font-size: var(--fs-sm);
+  color: var(--ink-quiet);
+}
+
+/* ==========================================================================
+   DISCLOSURE
+   ========================================================================== */
+
+.disclose {
+  border-block-start: 1px solid var(--edge);
+  padding-block-start: var(--s3);
+}
+
+.disclose > summary {
+  padding-block: var(--s2);
+  font-weight: 600;
+  color: var(--edge-strong);
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.disclose > :not(summary) {
+  margin-block-start: var(--s3);
+}
+
+/* ==========================================================================
+   THE HOTSPOT CARD
+   ========================================================================== */
+
+/* The QR sits above the two credentials rather than beside them. Beside them
+   is the better use of a wide card, and this card is half the page on a laptop:
+   at that width the code keeps its 168px and the network name is left with
+   about 90px, which broke "Caspian-Home" across two lines. A name broken mid
+   word is worse than a taller card, because the name is the thing the reader
+   has to copy onto a phone. */
+.join {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  align-items: center;
+}
+
+.qr-figure {
+  margin: 0;
+  padding: var(--s3);
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-ctl);
+  text-align: center;
+}
+
+.qr-figure svg {
+  inline-size: 196px;
+  block-size: 196px;
+  display: block;
+}
+
+/* The symbol's own black and white, and the only two colours in this file that
+   are not palette tokens. A QR code is read by a camera rather than by a
+   person, and tinting either half of it makes some readers refuse it. The
+   quiet zone is PAINTED by the generator, so it needs a fill here: left
+   undeclared it takes the SVG default, which is black, and the whole symbol
+   renders as a dark square with no border. */
+.qr-bg { fill: #FFFFFF; }
+.qr { color: #000000; }
+
+.qr-figure figcaption {
+  margin-block-start: var(--s2);
+  font-size: var(--fs-xs);
+  color: var(--ink-quiet);
+}
+
+.creds {
+  margin: 0;
+  inline-size: 100%;
+  display: grid;
+  gap: var(--s1);
+}
+
+.creds dt {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-quiet);
+}
+
+.creds dd {
+  margin: 0 0 var(--s3);
+  padding: var(--s2) var(--s3);
+  background: var(--ground);
+  border-radius: var(--r-ctl);
+  font-size: var(--fs-md);
+  /* anywhere, not break-all: a value only breaks when it cannot fit, so a
+     name that does fit is never split. */
+  overflow-wrap: anywhere;
+}
+
+
+.devices {
+  margin-block-start: var(--s4);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   CONFIG AND DETECTION
+   ========================================================================== */
+
+.config-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s2);
+  padding: var(--s3) var(--s4);
+  background: var(--ground);
+  border-radius: var(--r-ctl);
+}
+
+.config-name { font-weight: 700; }
+
+/* The instruction. Every other line on this page reports a state; this one says
+   what to do about it, for the reader who has never seen the page and will
+   press something before reading anything. It sits directly under the control
+   bar because that is where the eye already is after looking at the switch. */
+/* The instruction sits in the control bar, between the state and the controls,
+   because it is about to be acted on with one of them. It was under the tile
+   row, which put the sentence telling somebody to press the switch a scroll
+   away from the switch. It also fills the middle of the bar, which was empty.
+
+   No box of its own: it is already inside one, and a card within a card reads
+   as a separate thing to deal with rather than as a caption on this one. */
+.hero-notes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  flex: 1 1 280px;
+  min-inline-size: 0;
+}
+
+.hero-guide {
+  display: flex;
+  /* Centre, not baseline: the badge is a filled pill and a baseline alignment
+     hangs it below the line of the sentence it labels. */
+  align-items: center;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* Inside the bar it is a caption on what is already there, so it loses the
+   ground and the border it carries when it stands alone. */
+.hero .assurance {
+  padding: 0;
+  background: none;
+  border-radius: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  align-items: center;
+}
+
+.hero .assurance svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.nextstep-label {
+  flex: none;
+  padding: 2px var(--s3);
+  border-radius: var(--r-pill);
+  background: var(--accent-bright);
+  color: var(--ink);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+/* The one thing the appliance does that a user cannot see happening.
+   The firewall stops forwarded client traffic the moment the tunnel goes, and
+   until now the only place that was written down was the advanced view, so on
+   the dashboard it looked like the internet had broken rather than like the box
+   protecting them. It sits under the tile row rather than in a card because it
+   is a property of the whole appliance and not of any one section. */
+.assurance {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4);
+  background: var(--ground);
+  border-radius: var(--r-ctl);
+  font-size: var(--fs-sm);
+  color: var(--ink);
+}
+
+.assurance svg {
+  inline-size: 22px;
+  block-size: 22px;
+  flex: none;
+  color: var(--edge-strong);
+}
+
+.detected {
+  padding: var(--s3) var(--s4);
+  color: var(--ink-quiet);
+  font-size: var(--fs-sm);
+  background: var(--surface);
+  border: 1px dashed var(--edge);
+  border-radius: var(--r-ctl);
+}
+
+/* ==========================================================================
+   EVENTS AND LOG
+   ========================================================================== */
+
+.events,
+.log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--edge);
+  border-radius: var(--r-ctl);
+  overflow: hidden;
+}
+
+.events li,
+.log li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--s3);
+  align-items: baseline;
+  padding: var(--s2) var(--s4);
+}
+
+.events li:nth-child(odd),
+.log li:nth-child(odd) { background: var(--ground); }
+
+.event-time {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-quiet);
+}
+
+.log li {
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.log { max-block-size: 420px; overflow-y: auto; }
+
+/* ==========================================================================
+   FACTS
+   ========================================================================== */
+
+/* Label in one column, value in the next, one pair per row.
+   The earlier version was auto-fit across the width, which reflowed a flat
+   definition list into three columns and put a label from one pair next to a
+   value from another: on the advanced page it read "type | vless | server",
+   which is three facts pretending to be one row. A definition list has no
+   element around each pair to grid, so the columns have to be fixed at two. */
+.facts {
+  margin: 0;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0 var(--s5);
+  align-items: baseline;
+}
+
+.facts dt,
+.facts dd {
+  padding-block: var(--s2);
+  border-block-end: 1px solid var(--edge);
+}
+
+.facts dt {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--ink-quiet);
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ==========================================================================
+   MESSAGES
+   ========================================================================== */
+
+/* Every banner that reports or warns carries a mark, so the kind of message is
+   readable before the sentence is: a triangle for something wrong, a circle for
+   something that merely happened, a crossed circle for traffic deliberately
+   stopped. The mark is decoration and never the only carrier: each banner
+   states its case in words, and the shapes differ from each other so the
+   distinction survives being printed or seen by somebody who cannot separate
+   the colours. */
+.banner-mark {
+  inline-size: 24px;
+  block-size: 24px;
+  flex: none;
+  color: var(--ink);
+}
+
+.banner-body { min-inline-size: 0; }
+
+.cut-banner {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.notice,
+.problem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+}
+
+/* The notice is a flash: it says what just happened and then it is gone on the
+   next action. It sits after the control bar and the three tiles, because it is
+   a consequence of something pressed up there, and it is centred and narrower
+   than the page so it reads as a message rather than as another panel of the
+   dashboard competing with the cards below it. */
+.notice {
+  align-items: center;
+  justify-content: center;
+  max-inline-size: 640px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.notice,
+.problem {
+  padding: var(--s4) var(--s5);
+  border-radius: var(--r-card);
+  border: 1px solid var(--edge-strong);
+  background: var(--accent-note);
+}
+
+.problem {
+  border-color: var(--ink);
+  background: var(--accent-warn);
+}
+
+.problem-head { font-weight: 700; }
+.problem-advice { margin-block-start: var(--s2); }
+
+.problem-detail {
+  margin-block-start: var(--s3);
+  font-size: var(--fs-sm);
+  word-break: break-all;
+}
+
+.problem-detail .label {
+  font-weight: 600;
+  margin-inline-end: var(--s2);
+}
+
+/* ==========================================================================
+   THE HELP PAGE
+   ========================================================================== */
+
+/* The diagrams carry no text of their own. Labels are HTML beside the drawing,
+   so they translate with everything else and cannot fall out of step with the
+   sentences around them, and a reader using a screen reader gets the title
+   element rather than a picture of words. */
+.diagram {
+  margin: var(--s5) 0;
+  padding: var(--s4);
+  background: var(--ground);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-card);
+}
+
+.diagram svg {
+  inline-size: 100%;
+  block-size: auto;
+  display: block;
+}
+
+.d-box {
+  fill: var(--surface);
+  stroke: var(--edge-strong);
+  stroke-width: 2;
+}
+
+.d-ours { fill: var(--accent-on); }
+.d-usb { fill: var(--accent-note); }
+
+.d-arrow {
+  fill: none;
+  stroke: var(--edge-strong);
+  stroke-width: 3;
+}
+
+/* The tunnel leg is drawn as a dashed line and the wireless legs as dotted
+   ones, so the three kinds of link differ in shape and not only in colour. */
+.d-tunnel { stroke-dasharray: 10 6; }
+.d-air { stroke-dasharray: 2 6; stroke-linecap: round; }
+.d-dot { fill: var(--edge-strong); }
+
+.diagram figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2) var(--s4);
+  margin-block-start: var(--s3);
+  font-size: var(--fs-sm);
+  color: var(--ink-quiet);
+}
+
+.d-key { display: flex; align-items: center; gap: var(--s2); }
+
+.d-swatch {
+  inline-size: 14px;
+  block-size: 14px;
+  border: 2px solid var(--edge-strong);
+  border-radius: 3px;
+}
+
+.d-swatch-ours { background: var(--accent-on); }
+.d-swatch-tunnel { background: var(--surface); border-style: dashed; }
+.d-swatch-plain { background: var(--surface); }
+
+.arrangement h3 {
+  margin-block: 0 var(--s2);
+  font-size: var(--fs-base);
+  color: var(--ink);
+}
+
+.plain-list {
+  margin: var(--s3) 0;
+  padding-inline-start: var(--s5);
+}
+
+.plain-list li { margin-block-end: var(--s3); }
+
+.advanced-toggle {
+  text-align: center;
+  padding-block: var(--s2);
+}
+
+.advanced-toggle a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: 42px;
+  padding-inline: var(--s5);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.advanced-toggle a:hover { background: var(--tile); }
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  body.app { grid-template-columns: minmax(0, 1fr); }
+
+  .rail {
+    position: static;
+    block-size: auto;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--s3);
+    overflow-x: auto;
+    padding: var(--s3) var(--s4);
+  }
+
+  .rail-brand { padding-inline: 0; font-size: var(--fs-md); }
+  .rail-mark { inline-size: 28px; block-size: 28px; }
+
+  .rail-nav {
+    flex-direction: row;
+    flex: 1;
+    gap: var(--s1);
+  }
+
+  .rail-nav a span,
+  .rail-foot .rail-act span { display: none; }
+
+  .rail-nav a,
+  .rail-act { padding-inline: var(--s3); }
+
+  .rail-foot {
+    flex-direction: row;
+    padding-block-start: 0;
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--focus);
+    padding-inline-start: var(--s3);
+  }
+
+  .rail-foot .rail-act { inline-size: auto; }
+
+  .column { min-block-size: auto; }
+
+  main { padding: var(--s4); gap: var(--s4); }
+}
+
+@media (max-width: 640px) {
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .tile { grid-column: span 1; }
+
+  .hero {
+    grid-column: 1 / -1;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .join { grid-template-columns: minmax(0, 1fr); justify-items: center; }
+
+  .creds { inline-size: 100%; }
+
+  .topbar { padding: var(--s3) var(--s4); }
+
+  .card > h2,
+  .card > h1 { padding: var(--s3) var(--s4); }
+
+  .card > :not(h1):not(h2) { margin-inline: var(--s4); }
+}
+
+/* Somebody who has asked their system not to animate things has usually asked
+   for a reason. The state still has to be unmissable without motion, so the
+   pulse stops on its loud frame rather than on the quiet one, and the banner,
+   the word and the mark carry it as they do everywhere else. */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .hero-cut,
+  .cut-banner { background: var(--accent-warn); }
+}

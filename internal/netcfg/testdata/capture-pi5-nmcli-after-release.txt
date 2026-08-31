@@ -1,0 +1,2 @@
+wlan0:unmanaged
+p2p-dev-wlan0:unavailable

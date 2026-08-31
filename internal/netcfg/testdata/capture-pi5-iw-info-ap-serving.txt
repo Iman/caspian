@@ -1,0 +1,5 @@
+Interface wlan0
+	ssid Caspian-Probe
+	type AP
+	channel 6 (2437 MHz)
+	txpower 31.00 dBm

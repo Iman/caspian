@@ -1,0 +1,211 @@
+# Caspian-BYOC, privileged network service.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Iman Samizadeh
+#
+# Installed by install.sh to /etc/systemd/system/caspian.service. This copy in
+# packaging/ is the source of truth. install.sh carries a byte-identical copy
+# inline, because a script piped from curl has no repository to read from, and
+# packaging/test-install.sh proves the two are still identical.
+#
+# This is the half that holds root. It owns routes, the firewall, the access
+# point and the engine (LAYOUT.md, "Two processes, one binary"). The hardening
+# below is written to keep that job possible: several obvious directives are
+# switched off on purpose and each one says what it would have broken, because
+# a directive that silently disables the product is worse than no directive.
+
+[Unit]
+Description=Caspian-BYOC privileged network service
+
+# network.target only, deliberately not network-online.target. Waiting for the
+# network to be up would add a boot delay of up to 90 seconds on a box with no
+# cable plugged in, and it would buy nothing: the uplink can change under the
+# service at any time (design section 9, "Uplink change"), so the address and
+# gateway have to be re-derived at runtime regardless of what was true at boot.
+After=network.target
+
+# /run is a tmpfs, so /run/caspian does not survive a reboot. It is recreated
+# on every boot by /etc/tmpfiles.d/caspian.conf, which runs as part of
+# sysinit.target. Ordering after that is already implied by the default
+# dependencies, and is stated here so that removing DefaultDependencies later
+# does not silently break the socket directory.
+After=systemd-tmpfiles-setup.service
+
+# A crash loop must not hammer the radio. Five starts in five minutes, then
+# stop and wait for a human or a reboot.
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+# Type=exec, not simple: systemd then treats the unit as started only once the
+# execve has actually succeeded, so a missing or non-executable binary is a
+# failed start rather than a start that reports success and dies. Requires
+# systemd 240 or newer, which install.sh checks for before writing this file.
+Type=exec
+ExecStart=/usr/local/bin/caspian serve --privileged
+
+Restart=on-failure
+RestartSec=2s
+
+# The teardown journal on disk (/var/lib/caspian/netcfg.journal) exists
+# because this stop can be a SIGKILL, and a process that has been killed cannot
+# put the routes back (design section 5.5). The generous stop timeout gives the
+# ordinary path a chance to run first.
+TimeoutStopSec=20s
+
+# Default KillMode is control-group, which is what is wanted here: hostapd and
+# dnsmasq are started with -B and daemonize away from this process, but they
+# stay in the unit's cgroup, so stopping this unit takes the hotspot down with
+# it instead of leaving an access point beaconing with no tunnel behind it.
+
+# --- hardening: what is granted, and why each grant is needed --------------
+
+# The full root capability set is not needed. This list is the whole of it.
+#
+#   CAP_NET_ADMIN        routes, ip rules, the nftables ruleset, interface
+#                        state, creating the tunnel device, and unblocking the
+#                        radio through rfkill. This is the capability the unit
+#                        exists for.
+#   CAP_NET_RAW          dnsmasq asks for it when it drops privileges; without
+#                        it in the bounding set the drop fails and dnsmasq
+#                        exits, which shows up as "the hotspot has no DHCP".
+#   CAP_NET_BIND_SERVICE dnsmasq binds port 53 for client DNS. Design section 6
+#                        requires client DNS to be answered on the box.
+#   CAP_SETUID/SETGID    dnsmasq drops from root to its own unprivileged user
+#                        after binding. Removing these does not make it safer,
+#                        it makes it stay root.
+#   CAP_KILL             the supervisor kills stray hostapd and dnsmasq
+#                        processes left by a previous run
+#                        (internal/hotspot/supervisor.go, stopStrays). A
+#                        dnsmasq that has already dropped to another uid is a
+#                        different-uid signal target, which needs CAP_KILL.
+#   CAP_DAC_OVERRIDE     two directories in docs/LAYOUT.md are 0700 and
+#                        owned by caspian while this service runs as root:
+#                        /var/lib/caspian, where it writes netcfg.journal and
+#                        reads the dnsmasq lease file, and /run/caspian/dnsmasq,
+#                        where it reads the pid file dnsmasq wrote after
+#                        dropping privileges. Without this, root cannot even
+#                        traverse either one.
+# CAP_CHOWN is here because the service gives /run/caspian/priv.sock to
+# root:caspian, and that ownership is what makes mode 0660 a boundary instead of
+# a decoration: it is what lets the unprivileged panel account reach the socket
+# while nobody else can. Without this capability the chown fails with EPERM even
+# though the service runs as root, and the service exits at startup rather than
+# serving a socket anyone could open. Measured on the target on 2026-08-30: that
+# is exactly what happened, and it is why this line names eight capabilities and
+# not seven.
+CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_NET_BIND_SERVICE CAP_SETUID CAP_SETGID CAP_KILL CAP_DAC_OVERRIDE CAP_CHOWN
+
+# Nothing this service or its children execute should ever gain privilege from
+# a setuid bit or a file capability. Protects against a compromised or
+# substituted hostapd/dnsmasq binary escalating beyond the set above.
+NoNewPrivileges=yes
+
+# The filesystem is read-only except for the four places that are written.
+# Protects against a compromised engine or a hostile generated config file
+# writing to /usr, /boot or /etc.
+ProtectSystem=strict
+ReadWritePaths=/var/lib/caspian /run/caspian
+# hostapd puts its control socket here. Optional with the leading dash so that
+# a box where the directory does not exist yet still starts.
+ReadWritePaths=-/run/hostapd
+
+# No home directory is used by anything here. Protects the user's own files
+# from a fault in a network-facing process running as root.
+ProtectHome=yes
+
+# A private /tmp and /var/tmp. Protects against a symlink attack on a
+# predictable temporary path, which is a classic way to turn a root process
+# into an arbitrary-file-write.
+PrivateTmp=yes
+
+# --- hardening: what is deliberately NOT set, and what it would have broken -
+
+# PrivateDevices=yes is NOT set. It would give this service a private /dev
+# containing only a minimal set of pseudo devices, and /dev/net/tun would not
+# be in it. The engine's TUN inbound opens /dev/net/tun to create the tunnel
+# (design section 4.2), so this would stop the product working entirely.
+#
+# Instead of the blunt switch, the device list is closed and reopened for
+# exactly the two nodes that are needed. DevicePolicy=closed still permits the
+# standard pseudo devices (null, zero, full, random, urandom, tty).
+DevicePolicy=closed
+DeviceAllow=/dev/net/tun rw
+# rfkill: the built-in radio on a Pi is frequently soft blocked, and hostapd's
+# own failure in that state is unreadable (internal/hotspot/supervisor.go,
+# ensureRadioUnblocked).
+DeviceAllow=/dev/rfkill rw
+
+# ProtectKernelTunables=yes is NOT set. It mounts /proc/sys read-only, and this
+# service has to write net.ipv4.conf.*.rp_filter. Design section 4.2 is
+# explicit that getting rp_filter wrong produces a tunnel that connects and
+# carries nothing, which is the hardest failure in this product to diagnose.
+ProtectKernelTunables=no
+
+# ProtectKernelModules=yes is NOT set. The kernel on the target carries
+# NF_TABLES, NFT_NAT, NFT_MASQ, NFT_REDIR and CONFIG_TUN as modules (design
+# section 4.6), and they are autoloaded on demand when the ruleset is applied
+# and when the tunnel device is created. Denying module loading would fail at
+# ruleset-load time, after forwarding has been enabled.
+# /etc/modules-load.d/caspian.conf pre-loads the two that are needed earliest,
+# so the common path does not depend on autoload succeeding.
+ProtectKernelModules=no
+
+# ProtectProc=invisible is NOT set. The supervisor runs pgrep to find stray
+# hostapd and dnsmasq processes from a previous run that are holding the radio
+# or port 53. Hiding other processes would make that search always come back
+# empty, and the symptom would be an access point that will not start with no
+# explanation.
+ProtectProc=default
+
+# --- hardening: the rest, none of which restricts the job -------------------
+
+# The cgroup hierarchy is read-only. Protects against a compromised process
+# editing its own resource limits or escaping its cgroup.
+ProtectControlGroups=yes
+
+# The kernel ring buffer is not readable. Protects against reading kernel
+# addresses and other hosts' traffic metadata out of dmesg.
+ProtectKernelLogs=yes
+
+# No new namespaces. Protects against a compromised process building a user
+# namespace and using it to get capabilities it was not granted here.
+RestrictNamespaces=yes
+
+# Cannot set the setuid or setgid bit on any file it creates. Protects against
+# leaving a permanent root backdoor on disk.
+RestrictSUIDSGID=yes
+
+# No realtime scheduling. Protects against a busy loop at realtime priority
+# making the box unresponsive, on a machine with four cores and no console.
+RestrictRealtime=yes
+
+# The personality(2) syscall is locked. Protects against switching to an
+# emulated or legacy execution domain to dodge the syscall filter below.
+LockPersonality=yes
+
+# System V IPC objects belonging to this service are removed when it stops.
+RemoveIPC=yes
+
+# Only the address families that are actually used:
+#   AF_UNIX    the privileged socket at /run/caspian/priv.sock
+#   AF_INET    IPv4, the tunnel and everything the engine dials
+#   AF_INET6   IPv6, which is blocked for clients but still used by the box
+#   AF_NETLINK ip, nft, iw and the engine's own netlink work
+#   AF_PACKET  hostapd speaks 802.11 management frames over a packet socket
+# Protects against a compromised process reaching a kernel subsystem it has no
+# business in, for example AF_BLUETOOTH or AF_VSOCK.
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6 AF_NETLINK AF_PACKET
+
+# Only this machine's own syscall ABI. Protects against a 32-bit compatibility
+# entry point being used to reach a syscall the filter below does not cover.
+SystemCallArchitectures=native
+
+# The ordinary system-service syscall set. Protects against a compromised
+# process reaching @swap, @reboot, @mount, @raw-io and the other groups a
+# network daemon never needs.
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+[Install]
+WantedBy=multi-user.target

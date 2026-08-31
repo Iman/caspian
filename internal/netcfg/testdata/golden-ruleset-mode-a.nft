@@ -1,0 +1,211 @@
+# Caspian-BYOC generated firewall ruleset. Do not edit by hand:
+# it is regenerated and replaced atomically on every start.
+#
+# uplink=eth0 hotspot=ap0 tunnel=xray0 hotspot-subnet=10.83.51.0/24
+# egress=restricted forward=normal
+#
+# egress=restricted means this box's OWN outbound traffic is dropped
+# unless the output chain names it. "apt update" from a shell here will
+# fail while the appliance is on. That is intended and was accepted.
+#
+# Every interface match below is by NAME and never by index. Index matching
+# is resolved when the ruleset loads, so a ruleset naming xray0 by index cannot
+# be loaded while the tunnel is down, and that is exactly when it has to be
+# in force. Name matching is resolved per packet and loads with no tunnel.
+
+table inet caspian
+delete table inet caspian
+
+table inet caspian {
+	chain input {
+		type filter hook input priority filter; policy accept;
+
+		# THE POLICY IS ACCEPT, DELIBERATELY, AND THIS IS THE PART TO READ
+		# BEFORE CHANGING ANYTHING IN THIS CHAIN.
+		#
+		# This appliance controls FORWARDED client traffic. It does not decide
+		# what the owner may run on their own machine, and it does not close
+		# their administrative access to it.
+		#
+		# An earlier version had policy drop and accepted nothing arriving on
+		# eth0. Measured on the target on 2026-08-30: the moment it loaded,
+		# every NEW inbound connection to the box was dropped and SSH stopped
+		# answering. Existing connections kept working, because of the
+		# conntrack rule that used to sit here, so the box looked healthy from
+		# the session that was already open while being unreachable to every
+		# new one. On a headless machine in another room that is indistinguishable
+		# from a crash, and the remaining recovery is a power cycle and a card
+		# reader.
+		#
+		# Accepting here does NOT weaken a host firewall the owner installs.
+		# Every base chain registered at this hook is traversed, so a drop in
+		# their own table still drops. This policy only stops THIS program
+		# from installing a host firewall nobody asked it for.
+		#
+		# What is still guarded is the hotspot, where the untrusted devices
+		# are. A joined device reaches the services this box offers it and
+		# nothing else.
+
+		# Before the conntrack check, so loopback is never subject to a
+		# conntrack edge case.
+		iifname "lo" accept
+		ct state invalid drop comment "malformed or out-of-state, not new inbound"
+
+		# The tunnel device. Redundant under an accept policy and kept
+		# explicit: the design calls for an INPUT permit for it, and it is
+		# what would carry the engine's own traffic if this policy were ever
+		# tightened.
+		iifname "xray0" accept comment "tunnel: a router's own traffic is INPUT, not FORWARD"
+
+		# The hotspot side, and the only place this chain restricts anything.
+		# These are the services the box actually serves to joined devices.
+		iifname "ap0" ct state established,related accept
+		iifname "ap0" udp dport 67 accept comment "DHCP server for clients"
+		iifname "ap0" udp dport 53 accept comment "client DNS, after the prerouting redirect"
+		iifname "ap0" tcp dport 53 accept comment "client DNS over TCP"
+		iifname "ap0" tcp dport 8088 accept comment "panel"
+		meta nfproto ipv4 iifname "ap0" icmp type echo-request accept
+		iifname "ap0" drop comment "a joined device reaches nothing else on this box"
+	}
+
+	chain forward {
+		type filter hook forward priority filter; policy drop;
+
+		# THE LEAK BLOCK, and the reason this whole file exists.
+		# When the tunnel device disappears the kernel withdraws every route
+		# through it and client traffic falls back to the main table and out of
+		# the uplink, so "the engine stopped" leaks by default instead of
+		# stopping. This rule names only the hotspot and the uplink, so the
+		# tunnel's absence cannot affect it, and it is first so that nothing
+		# added below can precede it.
+		iifname "ap0" oifname "eth0" drop comment "fail-closed: client traffic never leaves by the uplink"
+
+		# There is no IPv6 tunnel. A client with a working IPv6 path prefers
+		# it over IPv4 and would bypass the tunnel entirely.
+		meta nfproto ipv6 iifname "ap0" drop comment "no IPv6 tunnel: clients get no IPv6"
+		meta nfproto ipv6 oifname "ap0" drop
+
+		# DNS over TLS and DNS over QUIC would carry a client's queries past the
+		# resolver on this box. Rejecting 853 makes a client fall back to port
+		# 53, which prerouting redirects. DNS over HTTPS on 443 is not
+		# distinguishable from other HTTPS and is carried through the tunnel
+		# like anything else, which is a limit of this design and not an
+		# oversight.
+		iifname "ap0" tcp dport 853 reject with tcp reset comment "DNS over TLS"
+		iifname "ap0" udp dport 853 drop comment "DNS over QUIC"
+
+		iifname "ap0" oifname "ap0" drop comment "client isolation"
+
+		ct state invalid drop
+
+		# The only way out for a client, and the only way back in. Both name
+		# the tunnel, so both stop matching when it is gone, leaving the policy
+		# above to drop everything.
+		meta nfproto ipv4 iifname "ap0" oifname "xray0" ip saddr 10.83.51.0/24 accept
+		meta nfproto ipv4 iifname "xray0" oifname "ap0" ip daddr 10.83.51.0/24 accept
+	}
+
+	chain output {
+		type filter hook output priority filter; policy drop;
+
+		# THE KILL SWITCH COVERS THIS BOX TOO.
+		#
+		# Everything the Pi sends that is not named below is dropped while the
+		# appliance is on. That includes apt: "apt update" from a shell on this
+		# box will fail until the appliance is switched off. That cost is known
+		# and was accepted; it is not a fault to be worked around by widening
+		# this list.
+		#
+		# Residual worth knowing: DNS below is a hole. Anything on this box can
+		# still reach the network on port 53, and the server's hostname is
+		# resolved in the clear on the local network before any tunnel exists.
+		# Neither is a leak of client traffic and neither is made worse here.
+
+		# FIRST, and it has to be first. Every outbound reply to an inbound
+		# connection is here, including the administrator's SSH session. A drop
+		# policy without this line kills that session the moment it loads.
+		ct state established,related accept
+		oifname "lo" accept
+		oifname "xray0" accept comment "tunnel: a router's own traffic is OUTPUT, not FORWARD"
+
+		# Never advertise an IPv6 prefix to clients while there is no IPv6
+		# tunnel. Redundant under the drop policy above and kept explicit
+		# because it is load-bearing if that policy is ever loosened.
+		oifname "ap0" icmpv6 type nd-router-advert drop
+
+		# DHCP, in BOTH directions, and the asymmetry with DNS below is the
+		# point rather than an oversight.
+		#
+		# As a CLIENT: measured on the target, NetworkManager holds a DHCP
+		# socket per interface. Blocking this costs the box its address at the
+		# next renewal, hours after the rule loads, with nothing to connect the
+		# two events.
+		#
+		# As a SERVER on the hotspot: these replies are NOT covered by the
+		# established rule above, because a DHCP reply goes to a broadcast
+		# address or to a client that has no address yet, so the request and the
+		# reply share no tuple for conntrack to match. Without this line the
+		# hotspot beacons, devices associate, and not one of them gets an
+		# address, which looks like a broken radio rather than a firewall.
+		#
+		# DNS needs no such line: a client's query creates the conntrack entry
+		# and the answer matches its reply direction. That is the difference.
+		udp sport 68 udp dport 67 accept comment "DHCP client: renew this box's own lease"
+		udp sport 67 udp dport 68 accept comment "DHCP server: answer joined devices"
+
+		# systemd-timesyncd. Measured active on the target with NTP=yes. A
+		# drifted clock fails REALITY and TLS in a way that reads as a rejected
+		# configuration, so the symptom points at the user's config rather than
+		# at this rule.
+		udp dport 123 accept comment "NTP"
+
+		# DNS. The box resolves the server's hostname, and timesyncd resolves
+		# its pool names. See the residual in the header.
+		udp dport 53 accept
+		tcp dport 53 accept
+
+		# The engine's own connection to the server, by ADDRESS and not by
+		# port. Some transports are UDP on 443, so a TCP-only permit would
+		# break them silently. This is the same address the plan pins a host
+		# route to, for the same reason: it is the one connection that must
+		# reach the uplink directly or there is no tunnel at all.
+		ip daddr 203.0.113.10 accept comment "the proxy server"
+
+		# IPv6 does not work at all without neighbour discovery, and an inet
+		# table's output chain filters IPv6. Blocking this breaks the box's
+		# own IPv6 silently. It costs nothing: these are link-local and cannot
+		# carry a client's traffic. Router advertisement is deliberately not in
+		# the set; the rule above drops it on the hotspot.
+		meta nfproto ipv6 icmpv6 type { nd-neighbor-solicit, nd-neighbor-advert, nd-router-solicit, destination-unreachable, packet-too-big, time-exceeded, parameter-problem } accept
+
+		# Deliberately absent: mDNS and the IGMP membership reports avahi sends
+		# for 224.0.0.251. avahi will not reach the network. Nothing this
+		# product does needs it, and that is a decision rather than an
+		# oversight.
+	}
+
+	chain prerouting {
+		type nat hook prerouting priority dstnat; policy accept;
+
+		# Redirected, not merely permitted. A client with a resolver hardcoded
+		# into it must be answered by this box rather than allowed out to reach
+		# the one it was told to use: redirect rewrites the destination address
+		# to this box, so the query is answered here whatever it was aimed at.
+		iifname "ap0" udp dport 53 redirect to :53
+		iifname "ap0" tcp dport 53 redirect to :53
+	}
+
+	chain postrouting {
+		type nat hook postrouting priority srcnat; policy accept;
+
+		# Deliberately empty.
+		# No masquerade towards eth0: source NAT there is the leak this whole
+		# ruleset exists to prevent, and it is the single line that would
+		# quietly turn the appliance into an ordinary router.
+		# No masquerade towards xray0 either: that device is a userspace netstack
+		# which terminates TCP and UDP flows and dials out itself, so a
+		# client's source address never reaches the wire and there is nothing
+		# to translate. Options.MasqueradeToTunnel turns it on for the case
+		# where the tunnel is a real layer 3 interface.
+	}
+}

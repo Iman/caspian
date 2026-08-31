@@ -1,0 +1,9 @@
+phy#1
+	Interface wlan1
+		ifindex 70
+		wdev 0x100000001
+		addr 02:00:5e:00:00:12
+		ssid HomeNet
+		type managed
+		channel 10 (2457 MHz), width: 20 MHz, center1: 2457 MHz
+		txpower 20.00 dBm

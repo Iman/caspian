@@ -1,0 +1,21 @@
+{
+  "connected": true,
+  "running": true,
+  "heroClass": "ok",
+  "powerClass": "ok",
+  "nextStep": "Everything is working. The devices that have joined are leaving through the tunnel.",
+  "word": "Connected",
+  "shape": "on",
+  "devices": 3,
+  "deviceLine": "3 devices connected",
+  "detected": "Internet: Ethernet. Hotspot: built-in WiFi.",
+  "problem": "",
+  "hasConfig": true,
+  "uptime": "2 hours",
+  "powerLabel": "Switch off",
+  "trafficCut": false,
+  "cutLabel": "Cut client traffic",
+  "cutBanner": "Client traffic is cut. Your devices are still connected to this WiFi and can open this page, but nothing reaches the internet. Restarting this box clears this state, but Caspian comes back switched off, so traffic does not return until you press the switch.",
+  "events": null
+}
+

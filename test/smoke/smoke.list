@@ -1,0 +1,79 @@
+# The smoke subset.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# WHAT THIS IS. The smallest set of Go tests that would catch a broken build,
+# runnable in well under a minute. It is the check you run before you walk away
+# from a change, not the check that lets you ship it. The full gate is
+# scripts/gate.sh and it is the only thing that gates anything.
+#
+# WHAT IT DELIBERATELY DOES NOT DO, stated here so a green smoke run cannot be
+# mistaken for a green gate:
+#
+#   - no race detector. The race detector is what turns internal/xcfg from
+#     roughly 15 seconds into 327 (measured 2026-08-30, on this machine, in the
+#     two runs recorded in that day's gate log and in a plain run of the same
+#     package). A smoke subset that carries it is not a smoke subset.
+#   - no coverage floors.
+#   - one or two tests per package, not the package.
+#
+# So: smoke green and gate red is an ordinary outcome, not a contradiction.
+#
+# HOW TO RUN IT
+#
+#     bash scripts/smoke.sh
+#
+# FORMAT
+#
+#   <package path from the module root>  <regex passed to go test -run>
+#
+# One package per line. Blank lines and lines beginning with # are ignored.
+#
+# WHY A FILE AND NOT A BUILD TAG. A //go:build smoke tag would need a separate
+# file per package and would put the membership decision in the file being
+# tested, where it is invisible from anywhere else. This list is one place,
+# readable without grepping, and test/smoke/registry_test.go checks every entry
+# against the source: a test named here that no longer exists is a failure, not
+# a silently empty -run pattern. That last part is the whole point. "go test
+# -run TestThatWasRenamed" exits 0 having executed nothing, which is the exact
+# shape of a green run that tested no code.
+
+# Compiles, parses and validates a real share link end to end, which is the
+# fastest thing in the repository that would notice a broken parser.
+internal/link          ^TestEmittedConfigPassesEngineValidate$
+
+# The engine's own lifecycle. If this fails the appliance cannot start at all.
+internal/engine        ^TestStartAndStop$|^TestStopBeforeStartIsNotAnError$
+
+# The state file round trip, both directions, plus the redaction rule.
+internal/state         ^TestRoundTripEveryField$|^TestNothingRendersASecret$
+
+# The two generated configuration files, and the committed engine documents
+# put back through the engine's own loader.
+internal/hotspot       ^TestRenderHostapdGolden$|^TestRenderDnsmasqGolden$|^TestGoldenVariants_Hostapd$
+internal/xcfg          ^TestGoldenFilesAreAcceptedByTheEngine$
+
+# The firewall the box installs.
+internal/netcfg        ^TestGolden_RulesetCaptured$
+
+# The panel: the polled document and the route table. TestGolden_RenderedPages
+# is deliberately NOT here; it renders eighteen pages and belongs in the gate.
+internal/panel         ^TestGolden_StatusJSON$|^TestGolden_RouteInventory$
+
+# The privileged service's start ordering, which is where a fail-open would
+# live if one existed.
+internal/privsvc       ^TestStartAppliesThingsInTheRequiredOrder$|^TestAFailedStartLeavesNothingApplied$
+
+# Real traffic through a real xray-core server: one row per protocol the parser
+# accepts, driven from a pasted share link. The passing direction is well under a
+# second. The mutation half, TestEveryCarriageProofCanFail, runs the whole table
+# again once per injected defect and is deliberately left to the gate.
+test/tunnel            ^TestEachProtocolCarriesRealTrafficThroughARealServer$|^TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel$
+
+# The leak scan over every committed fixture, including the planted-secret
+# proof that the scanner can still fail.
+test/goldenscan        ^TestNoCommittedFixtureCarriesACredential$|^TestScannerCatchesAPlantedSecretOfEveryClass$
+
+# The command line: it must still build and its check subcommand must still run
+# without touching the box.
+cmd/caspian            ^TestCheckChangesNothingAndSaysWhatItLookedAt$

@@ -1,0 +1,74 @@
+Wiphy phy1
+	wiphy index: 1
+	Supported interface modes:
+		 * IBSS
+		 * managed
+		 * AP
+		 * AP/VLAN
+		 * monitor
+	Band 1:
+		Frequencies:
+			* 2412 MHz [1] (20.0 dBm)
+			* 2437 MHz [6] (20.0 dBm)
+			* 2462 MHz [11] (20.0 dBm)
+	Supported commands:
+		 * new_interface
+		 * set_interface
+		 * start_ap
+	valid interface combinations:
+		 * #{ AP, mesh point } <= 8,
+		   total <= 8, #channels <= 1
+	Device supports scan flush.
+Wiphy phy0
+	wiphy index: 0
+	max # scan SSIDs: 10
+	max scan IEs length: 2048 bytes
+	Retry short limit: 7
+	Retry long limit: 4
+	Coverage class: 0 (up to 0m)
+	Supported Ciphers:
+		* WEP40 (00-0f-ac:1)
+		* TKIP (00-0f-ac:2)
+		* CCMP-128 (00-0f-ac:4)
+	Available Antennas: TX 0 RX 0
+	Supported interface modes:
+		 * IBSS
+		 * managed
+		 * AP
+		 * P2P-client
+		 * P2P-GO
+		 * P2P-device
+	Band 1:
+		Capabilities: 0x1063
+			RX LDPC
+			HT20/HT40
+		Bitrates (non-HT):
+			* 1.0 Mbps
+			* 11.0 Mbps
+		Frequencies:
+			* 2412 MHz [1] (20.0 dBm)
+			* 2437 MHz [6] (20.0 dBm)
+			* 2457 MHz [10] (20.0 dBm)
+			* 2472 MHz [13] (20.0 dBm)
+	Band 2:
+		Frequencies:
+			* 5180 MHz [36] (23.0 dBm)
+			* 5260 MHz [52] (23.0 dBm) (radar detection)
+			* 5745 MHz [149] (30.0 dBm) (no IR)
+			* 5825 MHz [165] (disabled)
+	Supported commands:
+		 * new_interface
+		 * set_interface
+		 * new_key
+		 * start_ap
+		 * join_ibss
+		 * set_pmksa
+	software interface modes (can always be added):
+	valid interface combinations:
+		 * #{ managed } <= 1, #{ P2P-device } <= 1, #{ P2P-client, P2P-GO } <= 1,
+		   total <= 3, #channels <= 2
+		 * #{ managed } <= 1, #{ AP } <= 1, #{ P2P-client } <= 1, #{ P2P-device } <= 1,
+		   total <= 4, #channels <= 1
+	Device supports scan flush.
+	max # scan plans: 1
+	max scan plan interval: 508

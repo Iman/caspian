@@ -1,0 +1,388 @@
+{{- /*
+SPDX-License-Identifier: AGPL-3.0-or-later
+Copyright (C) 2026 Iman Samizadeh
+
+The dashboard.
+
+A row of summary tiles at the top answering the few questions that matter
+without scrolling, and the detail below them. The switch lives INSIDE the first
+tile rather than under the row: a dashboard that shows state beautifully and
+buries the control is a worse product than one that does not, and putting the
+control in the tile that reports the state keeps the two from disagreeing on
+screen.
+
+Below the tiles the order is the one the design already argued for: the hotspot
+with its join code and passphrase, the config box, the detected line, the
+events, and the link into advanced.
+
+Bidirectional layout. Every value that must not have its parts reordered is
+wrapped in a bdi element. Technical values that can never be Persian carry an
+explicit dir="ltr"; names the user chose are left at bdi's own dir="auto", so a
+Persian network name still reads as Persian. Inputs carry dir="ltr" on the
+element, because an attribute value cannot be wrapped.
+TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
+*/ -}}
+{{define "main"}}
+
+<section class="tiles" aria-labelledby="status-heading">
+  <h1 id="status-heading" class="visually-hidden">{{.T "status.heading"}}</h1>
+
+  <div class="tile hero hero-{{.HeroClass}}" id="hero">
+    {{with index .Tiles 0}}
+    <div class="hero-state">
+      <p class="tile-label">{{.Label}}</p>
+      <p class="tile-value" id="status">
+        <span class="dot dot-{{.Shape}}" id="status-dot" aria-hidden="true"></span>
+        <span id="status-word">{{.Value}}</span>
+      </p>
+    </div>
+    {{end}}
+
+    {{- /*
+      The two sentences that belong together: what to do now, and what happens
+      if the tunnel goes. Both are about this bar and about the switch beside
+      them, and they were a scroll apart with the tile row in between.
+    */ -}}
+    <div class="hero-notes">
+      <p class="hero-guide" id="nextstep">
+        <span class="nextstep-label">{{.NextLabel}}</span>
+        <span id="nextstep-text">{{.NextStep}}</span>
+      </p>
+      <p class="assurance">
+        <svg aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>
+        <span><strong>{{.T "advanced.drop.label"}}:</strong> {{.T "advanced.drop.value"}}</span>
+      </p>
+    </div>
+
+    <div class="hero-actions">
+    {{- /*
+      One line under each control, saying what that control stops.
+
+      Both controls stop the internet for the joined devices, and only one of
+      them also takes the WiFi down. That difference was written down only on
+      the help page, and the person who wrote this appliance still could not
+      tell the two apart from this bar, which is the evidence that a control
+      with no sentence under it is a control whose meaning is guessed at.
+
+      The sentences are static: they describe what the control does, not what
+      the box is doing, so the poll in panel.js has nothing to keep current and
+      the pair cannot drift out of step with the state words above them. The
+      long form, including what each one tears down and how a person locks
+      themselves out with the switch, is on the help page.
+    */ -}}
+    <div class="hero-control">
+    <form class="hero-switch" method="post" action="/power">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <input type="hidden" name="on" value="{{if .Running}}0{{else}}1{{end}}" id="power-value">
+      <button type="submit" class="big {{.PowerClass}}" id="power-button">
+        <svg class="switch-glyph" aria-hidden="true" focusable="false"><use href="#i-power"/></svg>
+        <span id="power-label">{{if .Running}}{{.T "power.off"}}{{else}}{{.T "power.on"}}{{end}}</span>
+      </button>
+    </form>
+    <p class="hero-caption">{{.T "power.caption"}}</p>
+    </div>
+
+    {{if .Running}}
+    <div class="hero-control">
+    <form class="hero-cut-control" method="post" action="/cut">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <input type="hidden" name="cut" value="{{if .TrafficCut}}0{{else}}1{{end}}" id="cut-value">
+      {{- /*
+        A switch, not a button, because it reports a state as well as offering
+        an action, and a control that does both is a switch everywhere else a
+        person has met one. It is still a submit: the form posts, so it works
+        with no scripting, and the value it posts is the OPPOSITE of the state
+        it shows.
+
+        On means traffic is flowing, which is the way round every switch a
+        reader has used works. So the label names the thing being switched
+        rather than the action, and the action goes to aria-label where a
+        screen reader announces it along with the state.
+      */ -}}
+      <button type="submit" class="toggle {{if not .TrafficCut}}toggle-on{{end}}"
+              id="cut-button" role="switch"
+              aria-checked="{{if .TrafficCut}}false{{else}}true{{end}}"
+              aria-label="{{if .TrafficCut}}{{.T "cut.restore"}}{{else}}{{.T "cut.button"}}{{end}}">
+        <span class="toggle-track" aria-hidden="true"><span class="toggle-knob"></span></span>
+        <span class="toggle-text">{{.T "cut.switchlabel"}}</span>
+      </button>
+    </form>
+    <p class="hero-caption">{{.T "cut.caption"}}</p>
+    </div>
+    {{end}}
+    </div>
+  </div>
+
+  {{range $i, $t := .Tiles}}{{if $i}}
+  <div class="tile">
+    <p class="tile-label">{{$t.Label}}</p>
+    <p class="tile-value{{if eq $i 1}} tile-number{{end}}"{{if eq $i 1}} id="device-count"{{end}}>
+      {{- if $t.ValueLTR}}<bdi dir="ltr">{{$t.ValueLTR}}</bdi>{{else}}{{$t.Value}}{{end -}}
+    </p>
+    <svg class="tile-icon" aria-hidden="true" focusable="false">
+      <use href="#i-{{if eq $i 1}}devices{{else if eq $i 2}}key{{else}}clock{{end}}"/></svg>
+    <a class="tile-more" href="#{{if eq $i 1}}wifi-heading{{else if eq $i 2}}config-heading{{else}}events-heading{{end}}">
+      {{- if eq $i 1}}{{$.T "wifi.heading"}}{{else if eq $i 2}}{{$.T "config.heading"}}{{else}}{{$.T "events.heading"}}{{end -}}
+    </a>
+  </div>
+  {{end}}{{end}}
+</section>
+
+{{if .TrafficCut}}
+<p class="cut-banner" role="status" id="cut-banner">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-cut"/></svg>
+  <span>{{.T "cut.banner"}}</span></p>
+{{end}}
+
+{{if .Notice}}
+<p class="notice" role="status">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>
+  <span>{{.Notice}}</span></p>
+{{end}}
+
+{{if .HasProblem}}
+<div class="problem" role="alert">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+  <div class="banner-body">
+  {{if .ProblemHeadline}}<p class="problem-head">{{.ProblemHeadline}}</p>{{end}}
+  {{if .ProblemAdvice}}<p class="problem-advice">{{.ProblemAdvice}}</p>{{end}}
+  {{if and .Advanced .ProblemDetail}}
+  <p class="problem-detail"><span class="label">{{.T "problem.detail.label"}}</span>
+    <bdi dir="ltr" class="mono">{{.ProblemDetail}}</bdi></p>
+  {{end}}
+  </div>
+</div>
+{{end}}
+
+<div class="pair">
+<section class="card" aria-labelledby="wifi-heading">
+  <h2 id="wifi-heading"><svg aria-hidden="true" focusable="false"><use href="#i-wifi"/></svg>{{.T "wifi.heading"}}</h2>
+
+  {{if .HotspotReady}}
+  <div class="join">
+    <div class="qr-holder">
+      {{if .QR}}
+      <figure class="qr-figure">
+        {{.QR}}
+        <figcaption>{{.T "wifi.qr.caption"}}</figcaption>
+      </figure>
+      {{else}}
+      <p class="problem-head">{{.QRProblem}}</p>
+      {{end}}
+    </div>
+    <dl class="creds">
+      <dt>{{.T "wifi.name"}}</dt>
+      <dd class="mono selectable"><bdi>{{.SSID}}</bdi></dd>
+      <dt>{{.T "wifi.password"}}</dt>
+      <dd class="mono selectable"><bdi dir="ltr">{{.Passphrase}}</bdi></dd>
+    </dl>
+  </div>
+  <p class="devices" id="device-line">{{.DeviceLine}}</p>
+
+  <details class="disclose">
+    <summary>{{.T "wifi.change"}}</summary>
+    {{template "hotspotform" .}}
+  </details>
+  {{else}}
+  <p>{{.T "wifi.intro"}}</p>
+  {{template "hotspotform" .}}
+  {{end}}
+</section>
+
+<div class="column-stack">
+<section class="card" aria-labelledby="config-heading">
+  <h2 id="config-heading"><svg aria-hidden="true" focusable="false"><use href="#i-key"/></svg>{{.T "config.heading"}}</h2>
+  {{if .HasConfig}}
+  <p class="config-line">
+    {{if .ConfigName}}<span class="config-name">{{.ConfigName}}</span>{{end}}
+    <bdi dir="ltr" class="mono muted">{{.ConfigSummary}}</bdi>
+  </p>
+  {{else}}
+  <p>{{.T "config.none"}}</p>
+  {{end}}
+
+  <details class="disclose" {{if .SetupIncomplete}}open{{end}}>
+    <summary>{{if .HasConfig}}{{.T "config.replace"}}{{else}}{{.T "config.add"}}{{end}}</summary>
+    <form method="post" action="/config" class="stack">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label for="config">{{.T "config.paste.label"}}</label>
+      <textarea id="config" name="config" rows="4" required dir="ltr" autocapitalize="off"
+                autocorrect="off" spellcheck="false"
+                placeholder="{{.T "config.placeholder"}}"></textarea>
+      <p class="hint">{{.T "config.paste.hint"}}</p>
+      <label for="label">{{.T "config.name.label"}}</label>
+      <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <button type="submit" class="go">{{.T "config.submit"}}</button>
+    </form>
+  </details>
+</section>
+
+<p class="detected" id="detected">{{.DetectedLine}}</p>
+
+<section class="card" aria-labelledby="events-heading">
+  <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>{{.T "events.heading"}}</h2>
+  {{if .Events}}
+  <ol class="events" id="events">
+    {{range .Events}}
+    <li><bdi dir="ltr" class="event-time">{{.At}}</bdi> <span class="event-text">{{.Text}}</span></li>
+    {{end}}
+  </ol>
+  {{else}}
+  <p class="hint" id="events">{{.T "events.empty"}}</p>
+  {{end}}
+  <p class="hint">{{.T "events.note"}}</p>
+</section>
+</div>
+</div>
+
+<p class="advanced-toggle">
+  <a href="{{.AdvancedHref}}">{{if .Advanced}}{{.T "advanced.hide"}}{{else}}{{.T "advanced.show"}}{{end}}</a>
+</p>
+
+{{if .Advanced}}
+<section class="card advanced" aria-labelledby="advanced-heading">
+  <h2 id="advanced-heading"><svg aria-hidden="true" focusable="false"><use href="#i-sliders"/></svg>{{.T "advanced.heading"}}</h2>
+  <p class="hint">{{.T "advanced.hint"}}</p>
+
+  <form method="post" action="/advanced" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+
+    <label for="internet_interface">{{.T "advanced.internet"}}</label>
+    <select id="internet_interface" name="internet_interface" dir="ltr">
+      <option value="">{{.AutoInternet}}</option>
+      {{range .Interfaces}}
+      <option dir="ltr" value="{{.Name}}" {{if eq $.CurrentInternet .Name}}selected{{end}}>{{.Name}}{{if .Kind}} - {{.Kind}}{{end}}{{if .Note}} ({{.Note}}){{end}}</option>
+      {{end}}
+    </select>
+
+    <label for="hotspot_interface">{{.T "advanced.hotspotiface"}}</label>
+    <select id="hotspot_interface" name="hotspot_interface" dir="ltr">
+      <option value="">{{.AutoHotspot}}</option>
+      {{range .Interfaces}}
+      <option dir="ltr" value="{{.Name}}" {{if eq $.CurrentHotspot .Name}}selected{{end}} {{if not .CanHost}}disabled{{end}}>{{.Name}}{{if .Kind}} - {{.Kind}}{{end}}{{if .Note}} ({{.Note}}){{end}}</option>
+      {{end}}
+    </select>
+
+    <label for="channel">{{.T "advanced.channel"}}</label>
+    <select id="channel" name="channel" dir="ltr">
+      <option value="">{{.AutoChannel}}</option>
+      {{range .Channels}}
+      <option dir="ltr" value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Value}}</option>
+      {{end}}
+    </select>
+    {{if .ChannelPinned}}<p class="hint">{{.T "advanced.channelpinned"}}</p>{{end}}
+
+    <label for="band">{{.T "advanced.band"}}</label>
+    <select id="band" name="band">
+      <option value="">{{.AutoBand}}</option>
+      {{range .Bands}}
+      <option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Words}}</option>
+      {{end}}
+    </select>
+
+    {{- /*
+      The country code is carried and not shown. It decides which channels and
+      what power are legal, and getting it wrong can silence the radio, but the
+      box already reads the regulatory domain from the machine and picks a
+      channel that is legal there, so asking the user is asking a question whose
+      right answer is the one already in the field.
+
+      It is hidden rather than deleted, and hidden as a value rather than with
+      CSS, so an existing setting round-trips instead of being wiped by a form
+      that no longer mentions it. Everything behind it stays: the state field,
+      the validation, and the hostapd line it produces. If a radio is ever met
+      that needs a human to say where it is, this becomes an input again and
+      nothing else has to change.
+    */ -}}
+    <input type="hidden" name="country" dir="ltr" value="{{.CurrentCountry}}">
+
+    <label for="subnet">{{.T "advanced.subnet"}}</label>
+    <input id="subnet" name="subnet" type="text" dir="ltr" value="{{.CurrentSubnet}}"
+           placeholder="{{.PlaceSubnet}}" autocomplete="off" spellcheck="false">
+    <p class="hint">{{.T "advanced.subnet.hint"}}</p>
+
+    <label for="engine_log_level">{{.T "advanced.loglevel"}}</label>
+    <select id="engine_log_level" name="engine_log_level" dir="ltr">
+      <option value="">{{.AutoLogLevel}}</option>
+      {{range .LogLevels}}
+      <option dir="ltr" value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Value}}</option>
+      {{end}}
+    </select>
+    <p class="hint">{{.T "advanced.loglevel.hint"}}</p>
+
+    <label class="checkline">
+      <input type="checkbox" name="panel_on_lan" value="1" {{if .PanelOnLAN}}checked{{end}}>
+      {{.T "advanced.panelonlan"}}
+    </label>
+    <p class="hint">{{.T "advanced.panelonlan.hint"}}</p>
+
+    <button type="submit" class="go">{{.T "advanced.save"}}</button>
+  </form>
+
+  {{- /*
+    The recovery control, in its own form so that pressing it cannot carry the
+    settings form's fields with it. It is the way out of a state that would
+    otherwise need somebody with a terminal on the box: everything down, every
+    change to this machine's network undone from the journal, then up again on
+    the saved settings. It is not a reboot and it does not restart the two
+    services, so this page and any SSH session survive it, which is the whole
+    point for a person holding only a phone.
+  */ -}}
+  <h3>{{.T "advanced.recover.heading"}}</h3>
+  <form method="post" action="/recover" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <p class="hint">{{.T "advanced.recover.hint"}}</p>
+    <button type="submit" class="go" id="recover-button">{{.T "advanced.recover.button"}}</button>
+  </form>
+
+  <h3>{{.T "advanced.fixed.heading"}}</h3>
+  <dl class="facts">
+    {{range .FixedFacts}}
+    <dt>{{.Label}}</dt>
+    <dd>{{if .Words}}{{.Words}}{{else}}<bdi dir="ltr">{{.Value}}</bdi>{{end}}</dd>
+    {{end}}
+  </dl>
+
+  {{if .ConfigFacts}}
+  <h3>{{.T "advanced.config.heading"}}</h3>
+  <dl class="facts">
+    {{range .ConfigFacts}}
+    <dt>{{.Label}}</dt>
+    <dd>{{if .Words}}{{.Words}}{{else}}<bdi dir="ltr" class="mono">{{.Value}}</bdi>{{end}}</dd>
+    {{end}}
+  </dl>
+  <p class="hint">{{.T "advanced.nosecrets"}}</p>
+  {{end}}
+
+  <h3>{{.T "advanced.log.heading"}}</h3>
+  <p class="hint">{{.EnginePhase}}
+    {{if .EngineReason}}{{.T "advanced.log.reason"}} <bdi dir="ltr" class="mono">{{.EngineReason}}</bdi>{{end}}</p>
+  {{if .EngineLog}}
+  <ol class="log">
+    {{range .EngineLog}}
+    <li><bdi dir="ltr" class="event-time">{{.At}}</bdi> <bdi dir="ltr" class="mono">{{.Text}}</bdi></li>
+    {{end}}
+  </ol>
+  {{else}}
+  <p class="hint">{{.T "advanced.log.empty"}}</p>
+  {{end}}
+</section>
+{{end}}
+
+{{end}}
+
+{{define "hotspotform"}}
+<form method="post" action="/hotspot" class="stack">
+  <input type="hidden" name="csrf" value="{{.CSRF}}">
+  <label for="ssid">{{.T "wifi.form.name"}}</label>
+  <input id="ssid" name="ssid" type="text" maxlength="32" required dir="auto"
+         autocomplete="off" spellcheck="false"
+         value="{{if .SSID}}{{.SSID}}{{else}}{{.SuggestedSSID}}{{end}}">
+  <label for="passphrase">{{.T "wifi.form.password"}}</label>
+  <input id="passphrase" name="passphrase" type="text" minlength="8" maxlength="63" required
+         dir="ltr" autocomplete="off" spellcheck="false" autocapitalize="off"
+         value="{{if .Passphrase}}{{.Passphrase}}{{else}}{{.SuggestedPassphrase}}{{end}}">
+  <p class="hint">{{.T "wifi.form.hint"}}</p>
+  <button type="submit" class="go">{{.T "wifi.form.save"}}</button>
+</form>
+{{end}}

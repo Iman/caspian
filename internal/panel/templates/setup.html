@@ -1,0 +1,46 @@
+{{- /*
+SPDX-License-Identifier: AGPL-3.0-or-later
+Copyright (C) 2026 Iman Samizadeh
+
+First run. A box with no panel password shows this rather than a login form,
+because a login form on a box with no password is a dead end.
+
+It is reachable without a session by necessity, so it is the one route that has
+to defend itself: the handler refuses outright once a password exists, and the
+form carries a token a page on another site cannot produce.
+*/ -}}
+{{define "main"}}
+<section class="card narrow">
+  <h1>{{.T "setup.heading"}}</h1>
+
+  {{if .Notice}}<p class="notice" role="status">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>
+  <span>{{.Notice}}</span></p>{{end}}
+
+  {{if .HasProblem}}
+  <div class="problem" role="alert">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+  <div class="banner-body">
+    {{if .ProblemHeadline}}<p class="problem-head">{{.ProblemHeadline}}</p>{{end}}
+    {{if .ProblemAdvice}}<p class="problem-advice">{{.ProblemAdvice}}</p>{{end}}
+  </div>
+  </div>
+  {{end}}
+
+  <p>{{.T "setup.intro"}}</p>
+
+  <form method="post" action="/setup" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <label for="password">{{.T "setup.password"}}</label>
+    <input id="password" name="password" type="password" required autofocus dir="ltr"
+           minlength="8" autocomplete="new-password" autocapitalize="off" spellcheck="false">
+    <label for="confirm">{{.T "setup.confirm"}}</label>
+    <input id="confirm" name="confirm" type="password" required dir="ltr"
+           minlength="8" autocomplete="new-password" autocapitalize="off" spellcheck="false">
+    <p class="hint">{{.T "setup.hint"}}</p>
+    <button type="submit" class="go">{{.T "setup.submit"}}</button>
+  </form>
+
+  <p class="hint">{{.T "setup.writeitdown"}}</p>
+</section>
+{{end}}

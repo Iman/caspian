@@ -1,0 +1,16 @@
+Wiphy phy0
+	wiphy index: 0
+	Supported interface modes:
+		 * managed
+		 * monitor
+	Band 1:
+		Frequencies:
+			* 2412 MHz [1] (20.0 dBm)
+			* 2437 MHz [6] (20.0 dBm)
+	Supported commands:
+		 * new_interface
+		 * set_interface
+	valid interface combinations:
+		 * #{ managed } <= 1, #{ monitor } <= 1,
+		   total <= 2, #channels <= 1
+	Device supports scan flush.

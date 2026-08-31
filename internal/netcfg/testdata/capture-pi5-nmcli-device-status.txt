@@ -1,0 +1,5 @@
+eth0:connected
+wlan0:connected
+lo:connected (externally)
+xray0:connected (externally)
+p2p-dev-wlan0:disconnected

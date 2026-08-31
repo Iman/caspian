@@ -1,0 +1,21 @@
+phy#1
+	Interface wlan1
+		ifindex 70
+		wdev 0x100000001
+		addr 02:00:5e:00:00:12
+		ssid HomeNet
+		type managed
+		channel 10 (2457 MHz), width: 20 MHz, center1: 2457 MHz
+		txpower 20.00 dBm
+		multicast TXQ:
+			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
+			0	0	0	0	0	0	0	0		0
+phy#0
+	Interface wlan0
+		ifindex 3
+		wdev 0x1
+		addr 02:00:5e:00:00:11
+		ssid Caspian-Wifi
+		type AP
+		channel 1 (2412 MHz), width: 20 MHz, center1: 2412 MHz
+		txpower 31.00 dBm

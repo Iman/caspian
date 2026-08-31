@@ -1,0 +1,14 @@
+phy#0
+	Unnamed/non-netdev interface
+		wdev 0x2
+		addr 02:00:5e:00:00:13
+		type P2P-device
+		txpower 31.00 dBm
+	Interface wlan0
+		ifindex 3
+		wdev 0x1
+		addr 02:00:5e:00:00:11
+		ssid HomeNet
+		type managed
+		channel 10 (2457 MHz), width: 20 MHz, center1: 2457 MHz
+		txpower 31.00 dBm

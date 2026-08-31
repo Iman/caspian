@@ -1,0 +1,11 @@
+Connected to 02:00:5e:00:00:01 (on wlan1)
+	SSID: HomeNet
+	freq: 2457.0
+	RX: 4123026 bytes (21286 packets)
+	TX: 10735 bytes (74 packets)
+	signal: -48 dBm
+	rx bitrate: 130.0 MBit/s MCS 15
+	tx bitrate: 144.4 MBit/s MCS 15 short GI
+	bss flags: short-slot-time
+	dtim period: 1
+	beacon int: 100

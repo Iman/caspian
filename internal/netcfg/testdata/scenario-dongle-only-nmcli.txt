@@ -1,0 +1,2 @@
+wlan1:connected
+lo:connected (externally)

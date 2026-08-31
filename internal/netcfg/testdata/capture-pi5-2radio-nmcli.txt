@@ -1,0 +1,6 @@
+eth0:connected
+wlan1:connected
+lo:connected (externally)
+xray0:connected (externally)
+p2p-dev-wlan0:unavailable
+wlan0:unmanaged

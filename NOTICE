@@ -1,0 +1,70 @@
+Caspian-BYOC
+Copyright (C) 2026 Iman Samizadeh
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version. The full text is in LICENSE.
+
+ADDITIONAL TERMS under section 7 of the AGPL
+--------------------------------------------
+
+These are the only additional terms, and both are of a kind section 7 permits.
+Nothing here restricts what you may do with the software.
+
+  (a) Under section 7(b), you must preserve the copyright notice above, this
+      NOTICE file, and the attribution it carries, in all copies and in all
+      modified versions you convey. Where the software presents a user
+      interface, that interface must keep a visible reference to the Caspian
+      project.
+
+  (b) Under section 7(c), if you modify this software you must mark your
+      version as changed, and you must not present it in a way that suggests
+      the original authors endorse or produced your version.
+
+  (c) Under section 7(d), you may not use the names of the licensors or the
+      authors of this material for publicity purposes without their prior
+      written permission. This includes, and is not limited to, using those
+      names or the project name to solicit donations, sponsorship, grants or
+      any other funding, and using them in a way that implies affiliation with
+      or endorsement by the original project.
+
+      This term restricts the use of NAMES. It does not restrict what you may
+      do with the software. You remain free to run it, study it, modify it,
+      and redistribute it under the AGPL, for any purpose including a
+      commercial one. What you may not do is raise money in the authors' name.
+
+      Section 7 permits this term and no more than this. If you receive the
+      work with this term attached and you would rather not carry it, section 7
+      lets you remove it from your copy; what you cannot do is remove the
+      obligations it protects, because the project name and logo are not
+      licensed to you by this licence at all. See TRADEMARK.md.
+
+Why the AGPL rather than the GPL: this program is normally operated as a
+service that other people connect to. Under the plain GPL, someone could modify
+it, run it for others, and never publish the changes. Section 13 of the AGPL
+closes that.
+
+Why not a permissive licence: the program links xray-core, whose distribution
+carries GNU GPL version 3 or later terms through its dependencies, so the
+combined work must be licensed on GPL-family terms. MIT and Apache-2.0 are not
+available for the work as a whole.
+
+THIRD-PARTY CODE
+----------------
+
+third_party/libxray-share/
+    Share-link parser, taken from XTLS/libXray at tag v26.3.27, package
+    "share". Licensed MIT, Copyright (c) 2023-2025 XTLS. The MIT text is kept
+    beside the source in third_party/libxray-share/LICENSE. MIT is compatible
+    with the AGPL, so these files keep their own notice while the combined work
+    is licensed as above.
+
+    Vendored rather than imported because the upstream module declares a path
+    that Go cannot resolve at its major version. Pinned deliberately: upstream
+    has already replaced its exported API wholesale and does not promise
+    stability.
+
+github.com/xtls/xray-core
+    The proxy engine, linked as a dependency. MPL-2.0, with GPL-3.0-or-later
+    reaching it through github.com/sagernet/sing-shadowsocks.

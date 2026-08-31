@@ -1,0 +1,23 @@
+{{- /*
+SPDX-License-Identifier: AGPL-3.0-or-later
+Copyright (C) 2026 Iman Samizadeh
+
+The page for a request that could not be served at all: a wrong address, a form
+that did not come from this panel, or a fault inside Caspian.
+
+It shows the sentence and nothing else. No stack, no error value, no request
+detail. An error page is a document people photograph and send to somebody for
+help, so nothing that has been near a credential is allowed on one.
+*/ -}}
+{{define "main"}}
+<section class="card narrow">
+  <div class="problem" role="alert">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+  <div class="banner-body">
+    {{if .ProblemHeadline}}<p class="problem-head">{{.ProblemHeadline}}</p>{{end}}
+    {{if .ProblemAdvice}}<p class="problem-advice">{{.ProblemAdvice}}</p>{{end}}
+  </div>
+  </div>
+  <p><a href="/">{{.T "nav.back"}}</a></p>
+</section>
+{{end}}

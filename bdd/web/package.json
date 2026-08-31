@@ -1,0 +1,15 @@
+{
+  "name": "caspian-bdd-web",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Browser BDD for the Caspian-BYOC panel: Cucumber feature files driven through a real headless Chrome.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "test": "cucumber-js",
+    "smoke": "cucumber-js --tags @smoke"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^13.2.1",
+    "selenium-webdriver": "^4.48.0"
+  }
+}

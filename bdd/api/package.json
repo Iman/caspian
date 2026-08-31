@@ -1,0 +1,14 @@
+{
+  "name": "caspian-bdd-api",
+  "version": "0.0.1",
+  "private": true,
+  "description": "HTTP BDD for the Caspian-BYOC panel: Cucumber feature files against the panel's endpoints, with no browser.",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "test": "cucumber-js",
+    "smoke": "cucumber-js --tags @smoke"
+  },
+  "dependencies": {
+    "@cucumber/cucumber": "^13.2.1"
+  }
+}
