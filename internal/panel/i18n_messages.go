@@ -235,7 +235,7 @@ var messagesFA = map[Key]string{
 	"problem.parse.address.advice":   "در آن نوشته نشده به کدام سرور وصل شود. از کسی که لینک را به شما داده یک نسخه تازه بخواهید.",
 	"problem.parse.port.advice":      "شماره پورت قابل استفاده‌ای ندارد. از کسی که لینک را به شما داده یک نسخه تازه بخواهید.",
 	"problem.parse.reality.advice":   "یکی از تنظیمات امنیتی آن شکل درستی ندارد، پس احتمالاً بخشی از آن هنگام کپی از دست رفته است. از کسی که لینک را به شما داده یک نسخه تازه بخواهید.",
-	"problem.parse.transport.advice": "این لینک از روش اتصالی استفاده می‌کند که این نسخه کاسپین دیگر ندارد. از کسی که لینک را به شما داده لینکی بخواهید که از آن استفاده نکند.",
+	"problem.parse.transport.advice": "این لینک از روش اتصالی استفاده می‌کند که این نسخه کاسپین دیگر ندارد. از کسی که لینک را به شما داده بخواهید لینکی بدهد که از xhttp استفاده کند، و اگر نوع QUIC را می‌خواهید با alpn=h3.",
 	"problem.parse.other.advice":     "تمام آن را از اولین حرف تا آخرین حرف دوباره کپی کنید و یک بار دیگر پیست کنید.",
 
 	// Faults.
@@ -619,7 +619,7 @@ var messagesEN = map[Key]string{
 	"problem.parse.address.advice":   "It does not say which server to connect to. Ask whoever gave you the link for a fresh copy.",
 	"problem.parse.port.advice":      "It does not have a usable port number. Ask whoever gave you the link for a fresh copy.",
 	"problem.parse.reality.advice":   "One of its security settings has the wrong shape. Part of the link was probably lost when it was copied. Ask whoever gave you the link for a fresh copy.",
-	"problem.parse.transport.advice": "It uses a connection method this version of Caspian no longer carries. Ask whoever gave you the link for one that does not.",
+	"problem.parse.transport.advice": "It uses a connection method this version of Caspian no longer carries. Ask whoever gave you the link for one that uses xhttp instead, with alpn=h3 if you want the QUIC kind.",
 	"problem.parse.other.advice":     "Copy the whole thing again, from the first character to the last, and paste it once more.",
 
 	// Faults.

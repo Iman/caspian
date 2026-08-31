@@ -177,28 +177,67 @@ func TestRemovedTransportsAreRefusedWithASentence(t *testing.T) {
 	}
 }
 
-// TestRemovedTransportInAURIIsReportedLessWell records a MEASURED GAP rather
-// than a guarantee, so that it is visible and cannot be mistaken for working.
+// TestRemovedTransportInAURINamesTheTransportAndItsReplacement replaces the
+// gap-recording test that used to sit here.
 //
-// A user pasting a share-link URI with type=quic gets ErrNoLink, "nothing in
-// the pasted text was a proxy link this box understands". The more useful
-// sentence, ErrUnsupportedTransport, is what the same configuration produces
-// when it arrives as Clash YAML. Fixing that means classifying the vendored
-// parser's dropped per-line errors, which is a change to the parse path and
-// not to this package's guards; it is left for a decision rather than done
-// quietly here.
+// A share-link URI naming a removed transport used to reach the vendored
+// parser, which drops per-line errors, so the user got the generic ErrNoLink:
+// "nothing in the pasted text was a proxy link this box understands". Accurate,
+// and useless to somebody holding a link that says quic. Clash documents
+// naming the same transport already got the specific error, because that path
+// reaches the engine. checkTransport gives the URI path parity.
 //
-// This test exists so that if somebody does fix it, this test fails and tells
-// them to delete it.
-func TestRemovedTransportInAURIIsReportedLessWell(t *testing.T) {
-	raw := "vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=quic#box"
-	_, err := Parse(raw)
-	if errors.Is(err, ErrUnsupportedTransport) {
-		t.Fatal("a URI naming a removed transport now reports ErrUnsupportedTransport; " +
-			"that is an improvement, so delete this test and the note above it")
+// The replacement string matters as much as the error value. HTTP/2 and HTTP/3
+// are still carried, through XHTTP with the version selected by the TLS ALPN,
+// so a user refused type=quic has somewhere to go.
+func TestRemovedTransportInAURINamesTheTransportAndItsReplacement(t *testing.T) {
+	for _, tc := range []struct {
+		transport string
+		wantHint  string
+	}{
+		{"quic", "alpn=h3"},
+		{"h3", "alpn=h3"},
+		{"h2", "xhttp"},
+		{"http", "xhttp"},
+		{"gun", "grpc"},
+	} {
+		t.Run(tc.transport, func(t *testing.T) {
+			raw := "vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=" + tc.transport + "#box"
+			_, err := Parse(raw)
+			if !errors.Is(err, ErrUnsupportedTransport) {
+				t.Fatalf("type=%s returned %v, want ErrUnsupportedTransport", tc.transport, err)
+			}
+			if !strings.Contains(err.Error(), tc.transport) {
+				t.Errorf("the error does not name the transport the user wrote: %v", err)
+			}
+			if !strings.Contains(err.Error(), tc.wantHint) {
+				t.Errorf("the error does not say what to use instead (want %q): %v", tc.wantHint, err)
+			}
+		})
 	}
-	if !errors.Is(err, ErrNoLink) {
-		t.Fatalf("a URI naming a removed transport returned %v, want ErrNoLink as measured on 2026-08-30", err)
+
+	// A transport the engine still carries must be untouched by this check,
+	// or it would reject everything and look like a working guard.
+	for _, ok := range []string{"ws", "grpc", "xhttp", "httpupgrade", "kcp", "tcp"} {
+		raw := "vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=" + ok + "#box"
+		if _, err := Parse(raw); errors.Is(err, ErrUnsupportedTransport) {
+			t.Errorf("type=%s was refused as a removed transport: %v", ok, err)
+		}
+	}
+
+	// No type= at all must not be read as a removed transport.
+	raw := "vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls#box"
+	if _, err := Parse(raw); errors.Is(err, ErrUnsupportedTransport) {
+		t.Errorf("a link with no type= was refused as a removed transport: %v", err)
+	}
+
+	// URI-shaped but not parseable as a URI. checkTransport cannot read the
+	// query, so it must decline to judge and leave the text to the parser,
+	// which reports that nothing usable was found. Guessing from a substring
+	// here would let a link be refused for naming quic inside a password.
+	malformed := "vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=quic\x7f#box"
+	if _, err := Parse(malformed); errors.Is(err, ErrUnsupportedTransport) {
+		t.Errorf("an unparseable URI was judged as naming a removed transport: %v", err)
 	}
 }
 

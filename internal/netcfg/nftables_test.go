@@ -217,13 +217,33 @@ func TestRuleset_CoversIPv6WithItsOwnRules(t *testing.T) {
 	notContains(t, in, `iifname "eth0"`)
 }
 
-func TestRuleset_IPv6ForwardAddsTheTunnelPermits(t *testing.T) {
+// IPv6Forward lifts the blanket client-IPv6 drops, and deliberately does NOT
+// add accepts in their place.
+//
+// It used to add a pair naming only the two interfaces. The IPv4 accepts beside
+// them constrain the source and the destination to the hotspot subnet, and the
+// v6 pair constrained nothing, so a client could have forwarded any source
+// address it wrote. There is no v6 prefix in the plan to constrain to, because
+// nothing here assigns one, so the honest rule is no rule: the drop policy
+// covers IPv6 and the flag changes one sysctl.
+//
+// TestRuleset_NoUnconstrainedIPv6AcceptInForward is the guard that keeps an
+// unconstrained pair from coming back.
+func TestRuleset_IPv6ForwardLiftsTheDropsAndAddsNoUnconstrainedPermit(t *testing.T) {
 	o := DefaultOptions()
 	o.IPv6 = IPv6Forward
 	_, p := mustPlan(t, modeAScenario(), o)
 	fwd := strings.Join(chainBody(t, p.Ruleset(), "forward"), "\n")
-	contains(t, fwd, `meta nfproto ipv6 iifname "ap0" oifname "xray0" accept`)
+
+	// The blanket client-IPv6 drops are gone, which is what the flag means.
 	notContains(t, fwd, `meta nfproto ipv6 iifname "ap0" drop`)
+
+	// And nothing was put in their place that accepts an unconstrained source.
+	notContains(t, fwd, `meta nfproto ipv6 iifname "ap0" oifname "xray0" accept`)
+	notContains(t, fwd, `meta nfproto ipv6 iifname "xray0" oifname "ap0" accept`)
+
+	// The leak block still stands in front of everything, whatever the policy.
+	contains(t, fwd, `iifname "ap0" oifname "eth0" drop`)
 }
 
 // The uplink side is the owner's own network and the owner's own machine, and

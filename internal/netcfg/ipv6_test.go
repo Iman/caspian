@@ -115,3 +115,45 @@ func TestIPv6Forward_InstallsNoIPv6AddressingOrRouting(t *testing.T) {
 		}
 	}
 }
+
+// TestRuleset_NoUnconstrainedIPv6AcceptInForward stops an IPv6 accept from being
+// added to the forward chain without a source or destination constraint.
+//
+// The IPv4 accepts name the hotspot subnet in both directions, so a client can
+// only push its own addresses into the tunnel. The IPv6Forward branch used to
+// emit the same pair with NO address match at all, which would have let a client
+// forward any source address it liked. The asymmetry was invisible because
+// IPv6Forward is refused higher up, in privsvc/validate.go, so nothing ever
+// rendered it in production.
+//
+// There is no v6 prefix in the plan to constrain to, so the branch now emits no
+// accept and the drop policy covers IPv6. This test does not require that
+// forever. It requires that IF an IPv6 accept appears in the forward chain, it
+// carries an ip6 saddr or ip6 daddr match, the same way the v4 rules do.
+func TestRuleset_NoUnconstrainedIPv6AcceptInForward(t *testing.T) {
+	for _, pol := range []IPv6Policy{IPv6Block, IPv6Forward} {
+		for _, eg := range []EgressPolicy{EgressRestricted, EgressOpen} {
+			o := DefaultOptions()
+			o.IPv6, o.Egress = pol, eg
+			_, p := mustPlan(t, modeAScenario(), o)
+
+			for _, line := range chainBody(t, p.Ruleset(), "forward") {
+				trimmed := strings.TrimSpace(line)
+				if strings.HasPrefix(trimmed, "#") {
+					continue
+				}
+				if !strings.Contains(trimmed, "nfproto ipv6") || !strings.HasSuffix(trimmed, "accept") {
+					continue
+				}
+				if !strings.Contains(trimmed, "ip6 saddr") && !strings.Contains(trimmed, "ip6 daddr") {
+					t.Errorf("ipv6=%v egress=%v: the forward chain accepts IPv6 with no address "+
+						"constraint:\n  %s\n"+
+						"The IPv4 accepts beside it name the hotspot subnet, so a client can only "+
+						"send its own addresses into the tunnel. An IPv6 accept naming only the "+
+						"interfaces admits any source a client writes. Add an ip6 saddr match on "+
+						"the way in and an ip6 daddr match on the way back.", pol, eg, trimmed)
+				}
+			}
+		}
+	}
+}

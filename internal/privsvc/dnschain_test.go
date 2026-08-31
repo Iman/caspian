@@ -13,7 +13,9 @@ import (
 	"time"
 
 	"caspianbyoc.org/caspian/internal/hotspot"
+	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/netcfg"
+	"caspianbyoc.org/caspian/internal/xcfg"
 )
 
 // The client DNS chain, tested where the halves are joined.
@@ -327,5 +329,77 @@ func TestTheResolverPathDoesNotDependOnAPacketMarkNothingSets(t *testing.T) {
 	if !found {
 		t.Log("no fwmark policy rule was installed; if it was removed deliberately, this test and the " +
 			"comment in netcfg.TunnelRouteSteps can both go")
+	}
+}
+
+// TestAAAAQueriesAreAnsweredAndNotSuppressed pins a behaviour that no document
+// described until it was measured, and that the panel's own wording invites a
+// reader to get wrong.
+//
+// The panel tells users "IPv6 for your devices is always blocked". That is true
+// of ROUTING: the forward chain drops client IPv6 in both directions, the box
+// advertises no prefix, and nothing assigns a client a v6 address. It is NOT
+// true of RESOLUTION. An AAAA query from a joined device is forwarded to the
+// engine and answered with real AAAA records, because the engine document
+// carries queryStrategy UseIP and dnsmasq sets no filter-AAAA.
+//
+// That is inert today. A client holding an AAAA record it cannot route simply
+// falls back to IPv4. It stops being inert the moment anything gives a client a
+// working v6 path, because RFC 6724 and Happy Eyeballs make a client PREFER the
+// v6 answer, and it would then leave by a route this appliance does not carry.
+//
+// So this test does not assert that answering AAAA is correct. It asserts that
+// the behaviour is what the documentation now says it is, in both halves of the
+// chain, so that changing it is a decision somebody makes rather than a side
+// effect somebody ships. If you change either half, change the documentation in
+// the same commit: README.md, README.fa.md and docs/BEHAVIOUR.md all describe
+// this.
+func TestAAAAQueriesAreAnsweredAndNotSuppressed(t *testing.T) {
+	// Half one: dnsmasq does not filter AAAA out on the way past.
+	conf, err := hotspot.RenderDnsmasq(hotspot.DNSConfig{
+		Interface:    "ap0",
+		Subnet:       netip.MustParsePrefix("10.83.51.0/24"),
+		Gateway:      netip.MustParseAddr("10.83.51.1"),
+		RangeStart:   netip.MustParseAddr("10.83.51.50"),
+		RangeEnd:     netip.MustParseAddr("10.83.51.200"),
+		LeaseTime:    12 * time.Hour,
+		LeaseFile:    "/var/lib/caspian/dnsmasq.leases",
+		Upstream:     netip.MustParseAddrPort("127.0.0.1:5354"),
+		CacheSize:    150,
+		ServiceUser:  hotspot.DefaultServiceUser,
+		ServiceGroup: hotspot.DefaultServiceGroup,
+	})
+	if err != nil {
+		t.Fatalf("rendering a dnsmasq configuration: %v", err)
+	}
+	if strings.Contains(conf, "filter-AAAA") {
+		t.Error("the generated dnsmasq configuration now sets filter-AAAA. That changes " +
+			"what a client gets back for an AAAA query, so it is a behaviour change and " +
+			"not a tidy-up. Note also that filter-AAAA is a dnsmasq 2.81 addition and an " +
+			"unknown option is fatal, so an older dnsmasq would refuse to start and the " +
+			"hotspot would not come up at all.")
+	}
+
+	// Half two: the engine is told to resolve every family.
+	l, err := link.Parse("vless://b7f8c2a1-4d3e-4f5a-9b8c-1d2e3f4a5b6c@front.invalid:443" +
+		"?type=ws&security=tls&sni=front.invalid&host=front.invalid&path=%2Fw#box")
+	if err != nil {
+		t.Fatalf("parsing the probe link: %v", err)
+	}
+	o := xcfg.Defaults()
+	o.Link = l
+	o.TUN.Disabled = true
+	o.LocalDNS.Enabled = true
+	o.LocalDNS.Port = 5354
+	doc, err := xcfg.Build(o)
+	if err != nil {
+		t.Fatalf("building the engine document: %v", err)
+	}
+	if !strings.Contains(string(doc), `"queryStrategy": "UseIP"`) &&
+		!strings.Contains(string(doc), `"queryStrategy":"UseIP"`) {
+		t.Error("the engine document no longer asks for UseIP. If it was changed to " +
+			"UseIPv4 then AAAA queries now come back empty, which is a user-visible " +
+			"change and the opposite of what the documentation describes. Update the " +
+			"documentation in the same commit, or put this back.")
 	}
 }

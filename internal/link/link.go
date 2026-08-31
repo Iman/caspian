@@ -17,6 +17,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"regexp"
 	"strings"
 
@@ -136,6 +137,9 @@ func Parse(raw string) (*Link, error) {
 	if err := checkScheme(text); err != nil {
 		return nil, err
 	}
+	if err := checkTransport(text); err != nil {
+		return nil, err
+	}
 
 	// The vendored parser's errors quote the user's input, so its error value
 	// is dropped rather than wrapped. See the comment in errors.go.
@@ -178,6 +182,55 @@ func checkScheme(text string) error {
 	// The scheme is a fixed vocabulary word, not credential material, so it is
 	// safe to name. Nothing after it is quoted.
 	return fmt.Errorf("%w: %s", ErrUnsupportedScheme, scheme)
+}
+
+// removedTransports are transports a link may still ask for that the engine no
+// longer has, mapped to the shape that replaced each one.
+//
+// Without this a link naming one reaches the vendored parser, which drops it
+// per-line and reports the generic ErrNoLink: accurate, and no help at all to
+// somebody holding a link that says quic. A Clash document naming the same
+// transport already gets a transport-specific error, because that path reaches
+// the engine's own TransportProtocol.Build. This gives the URI path parity.
+//
+// The replacement text is not a guess. The engine names it in its own removal
+// message: HTTP and QUIC were "migrated to XHTTP stream-one H2 & H3", and XHTTP
+// selects the HTTP version from the TLS ALPN, so alpn=h3 is what asks for the
+// QUIC shape. gun is different: the vendored parser maps it onto gRPC settings
+// but leaves the network name as "gun", which the engine does not know.
+//
+// The keys are a fixed vocabulary, so naming the matched one back to the user
+// discloses nothing from the pasted text. That is the same reasoning that lets
+// checkScheme name the scheme.
+var removedTransports = map[string]string{
+	"quic": "xhttp with security=tls and alpn=h3",
+	"h3":   "xhttp with security=tls and alpn=h3",
+	"h2":   "xhttp with security=tls",
+	"http": "xhttp with security=tls",
+	"gun":  "grpc",
+}
+
+// checkTransport reports a link asking for a removed transport, by name.
+func checkTransport(text string) error {
+	first := text
+	if i := strings.IndexByte(first, '\n'); i >= 0 {
+		first = strings.TrimSpace(first[:i])
+	}
+	if schemeRE.FindStringSubmatch(first) == nil {
+		return nil
+	}
+	u, err := url.Parse(first)
+	if err != nil {
+		// Not parseable as a URI. Leave it to the parser, which will report
+		// that nothing usable was found.
+		return nil
+	}
+	name := strings.ToLower(strings.TrimSpace(u.Query().Get("type")))
+	replacement, removed := removedTransports[name]
+	if !removed {
+		return nil
+	}
+	return fmt.Errorf("%w: %s, replaced by %s", ErrUnsupportedTransport, name, replacement)
 }
 
 // clearSendThrough removes the display name the vendored parser stores in the
