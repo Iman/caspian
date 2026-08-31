@@ -205,8 +205,27 @@ func (p *Plan) RulesetFor(state ForwardState) string {
 		fmt.Fprintf(&b, "\t\tmeta nfproto ipv4 iifname %q oifname %q ip saddr %s accept\n", hot, tun, p.HotspotSubnet)
 		fmt.Fprintf(&b, "\t\tmeta nfproto ipv4 iifname %q oifname %q ip daddr %s accept\n", tun, hot, p.HotspotSubnet)
 		if o.IPv6 == IPv6Forward {
-			fmt.Fprintf(&b, "\t\tmeta nfproto ipv6 iifname %q oifname %q accept\n", hot, tun)
-			fmt.Fprintf(&b, "\t\tmeta nfproto ipv6 iifname %q oifname %q accept\n", tun, hot)
+			// NO ACCEPT IS EMITTED HERE, and that is deliberate.
+			//
+			// The IPv4 pair above constrains both the source and the
+			// destination to the hotspot's own subnet. There is nothing to
+			// constrain an IPv6 rule to: the plan carries no v6 prefix,
+			// because nothing in this appliance assigns one, which is what
+			// TestIPv6Forward_InstallsNoIPv6AddressingOrRouting records.
+			//
+			// A rule naming only the two interfaces would therefore accept any
+			// source address a client cared to write, while the IPv4 rule
+			// beside it accepts one subnet. That asymmetry is not what the flag
+			// is meant to mean, and a rule that looks like a constraint and is
+			// not one is worse than no rule, because it reads as safe.
+			//
+			// So IPv6Forward changes one sysctl and nothing in this chain, and
+			// the drop policy above still covers v6. When a v6 prefix exists,
+			// the accepts belong here constrained exactly as the v4 pair is.
+			// TestRuleset_NoUnconstrainedIPv6AcceptInForward fails if they are
+			// added without that constraint.
+			fmt.Fprintf(&b, "\t\t# IPv6Forward emits no accept here: there is no v6 prefix to\n")
+			fmt.Fprintf(&b, "\t\t# constrain one to, so the drop policy above stands for IPv6.\n")
 		}
 		fmt.Fprintf(&b, "\t}\n\n")
 	}
