@@ -74,12 +74,12 @@ jobs:
           set -eu
           # If this ever reports ARMv7, install.sh's armv6l row is wrong and Pi
           # Zero users get a binary that dies on first run. Fail here instead.
-          readelf -A dist/caspian-linux-arm | grep -q 'Tag_CPU_arch: v6' || {
-            echo "the 32-bit artefact is not ARMv6. install.sh maps armv6l onto it." >&2
-            readelf -A dist/caspian-linux-arm | head -20 >&2
-            exit 1
-          }
-          echo "confirmed ARMv6"
+          #
+          # The arm64 artefact is passed as a negative control, so the run also
+          # proves the check can still reject something. The version of this step
+          # it replaces read "readelf -A", which Go never emits, so it could not
+          # pass for any input. See the header of the script for the measurements.
+          bash scripts/check-armv6.sh dist/caspian-linux-arm dist/caspian-linux-arm64
 
       - name: Checksums
         run: |
