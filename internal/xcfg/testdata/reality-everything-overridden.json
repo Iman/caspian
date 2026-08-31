@@ -1,0 +1,173 @@
+{
+  "log": {
+    "loglevel": "debug",
+    "access": "none",
+    "dnsLog": false
+  },
+  "dns": {
+    "servers": [
+      "9.9.9.11",
+      "2620:fe::fe"
+    ],
+    "queryStrategy": "UseIPv4",
+    "tag": "resolver-in"
+  },
+  "inbounds": [
+    {
+      "tag": "tun-in",
+      "protocol": "tun",
+      "settings": {
+        "name": "csp0",
+        "MTU": 1420,
+        "userLevel": 1
+      }
+    },
+    {
+      "tag": "socks-in",
+      "protocol": "socks",
+      "listen": "::1",
+      "port": 19999,
+      "settings": {
+        "auth": "noauth",
+        "udp": true
+      }
+    },
+    {
+      "tag": "local-dns-in",
+      "protocol": "dokodemo-door",
+      "listen": "::1",
+      "port": 15353,
+      "settings": {
+        "address": "9.9.9.11",
+        "port": 53,
+        "network": "tcp,udp"
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "settings": {
+        "address": "example.invalid",
+        "email": "",
+        "encryption": "none",
+        "flow": "xtls-rprx-vision",
+        "id": "11111111-2222-4333-8444-555555555555",
+        "level": 0,
+        "port": 443,
+        "seed": "",
+        "testpre": 0
+      },
+      "streamSettings": {
+        "network": "raw",
+        "port": 0,
+        "realitySettings": {
+          "fingerprint": "chrome",
+          "limitFallbackDownload": {
+            "AfterBytes": 0,
+            "BurstBytesPerSec": 0,
+            "BytesPerSec": 0
+          },
+          "limitFallbackUpload": {
+            "AfterBytes": 0,
+            "BurstBytesPerSec": 0,
+            "BytesPerSec": 0
+          },
+          "masterKeyLog": "",
+          "maxClientVer": "",
+          "maxTimeDiff": 0,
+          "minClientVer": "",
+          "mldsa65Seed": "",
+          "mldsa65Verify": "Q0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS1DQVNQSUFOLUZBS0UtTUxEU0E2NS1WRVJJRlktS0VZLUNBU1BJQU4tRkFLRS1NTERTQTY1LVZFUklGWS1LRVktQ0FTUElBTi1GQUtFLU1MRFNBNjUtVkVSSUZZLUtFWS0",
+          "password": "Q0FTUElBTi1GQUtFLVJFQUxJVFktUFVCS0VZLTMyMzI",
+          "privateKey": "",
+          "publicKey": "Q0FTUElBTi1GQUtFLVJFQUxJVFktUFVCS0VZLTMyMzI",
+          "serverName": "www.fake-front.invalid",
+          "shortId": "0a1b2c3d4e",
+          "show": false,
+          "spiderX": "/spider",
+          "type": "",
+          "xver": 0
+        },
+        "security": "reality"
+      },
+      "tag": "proxy",
+      "targetStrategy": ""
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "none"
+        }
+      }
+    },
+    {
+      "tag": "dns-out",
+      "protocol": "dns",
+      "settings": {
+        "nonIPQuery": "reject"
+      }
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "ruleTag": "local-dns-to-tunnel",
+        "inboundTag": [
+          "local-dns-in"
+        ],
+        "outboundTag": "dns-out"
+      },
+      {
+        "ruleTag": "resolver-through-tunnel",
+        "inboundTag": [
+          "resolver-in"
+        ],
+        "outboundTag": "proxy"
+      },
+      {
+        "ruleTag": "private-direct",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "224.0.0.0/4",
+          "240.0.0.0/4",
+          "255.255.255.255/32",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10",
+          "ff00::/8"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "ruleTag": "client-dns-intercept",
+        "port": "53",
+        "network": "tcp,udp",
+        "outboundTag": "dns-out"
+      },
+      {
+        "ruleTag": "everything-else",
+        "network": "tcp,udp",
+        "outboundTag": "proxy"
+      }
+    ]
+  }
+}

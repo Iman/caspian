@@ -1,0 +1,1 @@
+default via 10.0.0.1 dev wlan1 proto dhcp src 10.0.0.160 metric 600 

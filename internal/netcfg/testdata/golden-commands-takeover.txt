@@ -1,0 +1,42 @@
+# Generated command sequence for the CAPTURED target, TAKEOVER path.
+# The radio refuses to create a second interface, so the access point
+# takes over wlan0. Left column is applied in order; right column is the
+# inverse recorded in the journal before the change is made.
+
+## before the engine starts
+do   nft -f -  <stdin: 10286 bytes, load the generated table; first line "# Caspian-BYOC generated firewall ruleset. Do not edit by hand:">
+undo nft -f -  <stdin: 261 bytes, remove the generated table; first line "# Caspian-BYOC firewall teardown. The bare declaration makes the delete">
+do   sysctl -w net.ipv4.ip_forward=1
+undo sysctl -w net.ipv4.ip_forward=0
+do   sysctl -w net.ipv4.conf.all.rp_filter=2
+undo sysctl -w net.ipv4.conf.all.rp_filter=0
+do   sysctl -w net.ipv4.conf.default.rp_filter=2
+undo sysctl -w net.ipv4.conf.default.rp_filter=2
+do   sysctl -w net.ipv6.conf.all.forwarding=0
+undo sysctl -w net.ipv6.conf.all.forwarding=0
+do   nmcli device set wlan0 managed no
+undo nmcli device set wlan0 managed yes
+do   ip address del 10.0.0.222/24 dev wlan0
+undo ip address add 10.0.0.222/24 dev wlan0
+do   ip link set dev wlan0 down
+undo ip link set dev wlan0 up
+do   iw dev wlan0 set type __ap
+undo iw dev wlan0 set type managed
+do   ip link set dev wlan0 up
+undo (none)
+do   ip address add 10.83.51.1/24 dev wlan0
+undo ip address del 10.83.51.1/24 dev wlan0
+do   ip route add 203.0.113.10/32 via 10.0.0.1 dev eth0 proto static metric 5
+undo ip route del 203.0.113.10/32 via 10.0.0.1 dev eth0 metric 5
+
+## after the engine has created the tunnel device
+do   ip address add 198.18.51.1/30 dev xray0
+undo ip address del 198.18.51.1/30 dev xray0
+do   ip route add 10.83.51.0/24 dev wlan0 scope link table 8410
+undo ip route del 10.83.51.0/24 dev wlan0 table 8410
+do   ip route add default dev xray0 proto static table 8410
+undo ip route del default dev xray0 table 8410
+do   ip rule add from 10.83.51.0/24 lookup 8410 priority 8410
+undo ip rule del from 10.83.51.0/24 lookup 8410 priority 8410
+do   ip rule add fwmark 0x20da lookup 8410 priority 8409
+undo ip rule del fwmark 0x20da lookup 8410 priority 8409

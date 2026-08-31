@@ -1,0 +1,195 @@
+{{- /*
+SPDX-License-Identifier: AGPL-3.0-or-later
+Copyright (C) 2026 Iman Samizadeh
+
+The help page.
+
+It is a page and not a set of tooltips because the questions it answers are
+about the arrangement rather than about a control: which adapter should carry
+the internet, what happens to a joined device when the tunnel drops, and what
+this box does not protect. An answer split across six hover texts is one nobody
+reads.
+
+The diagrams are inline SVG drawn from the palette tokens, like everything else
+here: the panel fetches nothing, and that does not bend for a picture. They
+carry no text of their own, so they need no translation and cannot fall out of
+step with the sentences beside them; the labels are HTML next to the drawing,
+not inside it.
+*/ -}}
+{{define "main"}}
+
+<section class="card" aria-labelledby="help-what">
+  <h2 id="help-what"><svg aria-hidden="true" focusable="false"><use href="#i-help"/></svg>{{.T "help.what.heading"}}</h2>
+  <p>{{.T "help.what.body"}}</p>
+
+  <figure class="diagram">
+    <svg viewBox="0 0 640 150" role="img" aria-labelledby="dia-flow-title">
+      <title id="dia-flow-title">{{.T "help.flow.caption"}}</title>
+      <rect x="8" y="46" width="104" height="58" rx="9" class="d-box"/>
+      <rect x="168" y="46" width="120" height="58" rx="9" class="d-box d-ours"/>
+      <rect x="344" y="46" width="112" height="58" rx="9" class="d-box"/>
+      <rect x="512" y="46" width="120" height="58" rx="9" class="d-box"/>
+      <path d="M112 75 H168" class="d-arrow"/>
+      <path d="M288 75 H344" class="d-arrow d-tunnel"/>
+      <path d="M456 75 H512" class="d-arrow"/>
+      <circle cx="228" cy="26" r="9" class="d-dot"/>
+    </svg>
+    <figcaption>
+      <span class="d-key"><span class="d-swatch d-swatch-plain"></span>{{.T "help.flow.device"}}</span>
+      <span class="d-key"><span class="d-swatch d-swatch-ours"></span>{{.T "help.flow.box"}}</span>
+      <span class="d-key"><span class="d-swatch d-swatch-tunnel"></span>{{.T "help.flow.tunnel"}}</span>
+      <span class="d-key"><span class="d-swatch d-swatch-plain"></span>{{.T "help.flow.server"}}</span>
+    </figcaption>
+  </figure>
+  <p class="hint">{{.T "help.flow.note"}}</p>
+</section>
+
+<section class="card" aria-labelledby="help-arrange">
+  <h2 id="help-arrange"><svg aria-hidden="true" focusable="false"><use href="#i-sliders"/></svg>{{.T "help.arrange.heading"}}</h2>
+  <p>{{.T "help.arrange.body"}}</p>
+
+  <div class="pair">
+    <div class="arrangement">
+      <h3>{{.T "help.arrange.a.heading"}}</h3>
+      <figure class="diagram">
+        <svg viewBox="0 0 300 168" role="img" aria-labelledby="dia-a-title">
+          <title id="dia-a-title">{{.T "help.arrange.a.heading"}}</title>
+          <rect x="96" y="58" width="108" height="52" rx="9" class="d-box d-ours"/>
+          <path d="M150 58 V26" class="d-arrow"/>
+          <rect x="108" y="6" width="84" height="20" rx="6" class="d-box"/>
+          <path d="M150 110 V142" class="d-arrow d-air"/>
+          <rect x="108" y="142" width="84" height="20" rx="6" class="d-box"/>
+        </svg>
+        <figcaption>
+          <span class="d-key">{{.T "help.arrange.a.top"}}</span>
+          <span class="d-key">{{.T "help.arrange.a.bottom"}}</span>
+        </figcaption>
+      </figure>
+      <p>{{.T "help.arrange.a.when"}}</p>
+    </div>
+
+    <div class="arrangement">
+      <h3>{{.T "help.arrange.b.heading"}}</h3>
+      <figure class="diagram">
+        <svg viewBox="0 0 300 168" role="img" aria-labelledby="dia-b-title">
+          <title id="dia-b-title">{{.T "help.arrange.b.heading"}}</title>
+          <rect x="96" y="58" width="108" height="52" rx="9" class="d-box d-ours"/>
+          <path d="M150 58 V26" class="d-arrow d-air"/>
+          <rect x="108" y="6" width="84" height="20" rx="6" class="d-box"/>
+          <path d="M150 110 V142" class="d-arrow d-air"/>
+          <rect x="108" y="142" width="84" height="20" rx="6" class="d-box"/>
+          <rect x="212" y="70" width="30" height="28" rx="6" class="d-box d-usb"/>
+        </svg>
+        <figcaption>
+          <span class="d-key">{{.T "help.arrange.b.top"}}</span>
+          <span class="d-key">{{.T "help.arrange.b.bottom"}}</span>
+        </figcaption>
+      </figure>
+      <p>{{.T "help.arrange.b.when"}}</p>
+    </div>
+  </div>
+
+  <p class="assurance">
+    <svg aria-hidden="true" focusable="false"><use href="#i-info"/></svg>
+    <span>{{.T "help.arrange.nounplug"}}</span>
+  </p>
+</section>
+
+{{- /*
+  Why there are two controls.
+
+  This card is ahead of the glossary card below it on purpose. That card names
+  every control in one line each, which is the right shape for looking one up
+  and the wrong shape for the question people actually arrive with: there are
+  two things here that stop my internet, so why are there two, and which one do
+  I press.
+
+  The reason it is its own card rather than a longer line in the glossary is
+  that the answer is not about either control on its own. It is about what one
+  of them takes down that the other leaves standing, and about the lockout that
+  follows: a person holding only a phone that is ON the hotspot cannot undo a
+  switch-off from that phone, because the network they were reaching the panel
+  over has gone with it. That is the whole reason the cut exists, and it was
+  written down in internal/privsvc/cut.go and nowhere a user could read it.
+
+  The two halves are a .pair, so they sit side by side on a screen wide enough
+  and stack in document order on a phone. The hazard is an .assurance under
+  both, because it is a property of the pair and not of either column.
+*/ -}}
+<section class="card" aria-labelledby="help-two">
+  <h2 id="help-two"><svg aria-hidden="true" focusable="false"><use href="#i-cut"/></svg>{{.T "help.two.heading"}}</h2>
+  <p>{{.T "help.two.intro"}}</p>
+
+  <div class="pair">
+    <div class="arrangement">
+      <h3>{{.T "help.two.power.heading"}}</h3>
+      <p>{{.T "help.two.power.body"}}</p>
+    </div>
+
+    <div class="arrangement">
+      <h3>{{.T "help.two.cut.heading"}}</h3>
+      <p>{{.T "help.two.cut.body"}}</p>
+    </div>
+  </div>
+
+  <p class="assurance">
+    <svg aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+    <span>{{.T "help.two.lockout"}}</span>
+  </p>
+
+  <p>{{.T "help.two.which"}}</p>
+  <p class="hint">{{.T "help.two.restart"}}</p>
+</section>
+
+<section class="card" aria-labelledby="help-controls">
+  <h2 id="help-controls"><svg aria-hidden="true" focusable="false"><use href="#i-power"/></svg>{{.T "help.controls.heading"}}</h2>
+  <dl class="facts">
+    <dt>{{.T "power.on"}}</dt><dd>{{.T "help.controls.switch"}}</dd>
+    <dt>{{.T "cut.button"}}</dt><dd>{{.T "help.controls.cut"}}</dd>
+    <dt>{{.T "config.heading"}}</dt><dd>{{.T "help.controls.config"}}</dd>
+    <dt>{{.T "wifi.heading"}}</dt><dd>{{.T "help.controls.wifi"}}</dd>
+    <dt>{{.T "advanced.internet"}}</dt><dd>{{.T "help.controls.uplink"}}</dd>
+    <dt>{{.T "advanced.hotspotiface"}}</dt><dd>{{.T "help.controls.hotspotiface"}}</dd>
+    <dt>{{.T "advanced.channel"}}</dt><dd>{{.T "help.controls.channel"}}</dd>
+    <dt>{{.T "advanced.country"}}</dt><dd>{{.T "help.controls.country"}}</dd>
+    <dt>{{.T "advanced.subnet"}}</dt><dd>{{.T "help.controls.subnet"}}</dd>
+    <dt>{{.T "advanced.panelonlan"}}</dt><dd>{{.T "help.controls.panelonlan"}}</dd>
+  </dl>
+</section>
+
+<section class="card" aria-labelledby="help-security">
+  <h2 id="help-security"><svg aria-hidden="true" focusable="false"><use href="#i-shield"/></svg>{{.T "help.security.heading"}}</h2>
+  <h3>{{.T "help.security.does.heading"}}</h3>
+  <ul class="plain-list">
+    <li>{{.T "help.security.does.failclosed"}}</li>
+    <li>{{.T "help.security.does.dns"}}</li>
+    <li>{{.T "help.security.does.egress"}}</li>
+    <li>{{.T "help.security.does.isolation"}}</li>
+    <li>{{.T "help.security.does.secrets"}}</li>
+    <li>{{.T "help.security.does.giveback"}}</li>
+  </ul>
+
+  <h3>{{.T "help.security.not.heading"}}</h3>
+  <p class="hint">{{.T "help.security.not.intro"}}</p>
+  <ul class="plain-list">
+    <li>{{.T "help.security.not.doh"}}</li>
+    <li>{{.T "help.security.not.ipv6"}}</li>
+    <li>{{.T "help.security.not.ownbox"}}</li>
+    <li>{{.T "help.security.not.endpoints"}}</li>
+    <li>{{.T "help.security.not.wifi"}}</li>
+  </ul>
+</section>
+
+<section class="card" aria-labelledby="help-trouble">
+  <h2 id="help-trouble"><svg aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>{{.T "help.trouble.heading"}}</h2>
+  <dl class="facts">
+    <dt>{{.T "help.trouble.nossid.q"}}</dt><dd>{{.T "help.trouble.nossid.a"}}</dd>
+    <dt>{{.T "help.trouble.nointernet.q"}}</dt><dd>{{.T "help.trouble.nointernet.a"}}</dd>
+    <dt>{{.T "help.trouble.slow.q"}}</dt><dd>{{.T "help.trouble.slow.a"}}</dd>
+    <dt>{{.T "help.trouble.lostpanel.q"}}</dt><dd>{{.T "help.trouble.lostpanel.a"}}</dd>
+    <dt>{{.T "help.trouble.forgot.q"}}</dt><dd>{{.T "help.trouble.forgot.a"}}</dd>
+  </dl>
+</section>
+
+<p class="advanced-toggle"><a href="/">{{.T "nav.back"}}</a></p>
+{{end}}

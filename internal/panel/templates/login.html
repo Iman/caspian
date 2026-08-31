@@ -1,0 +1,41 @@
+{{- /*
+SPDX-License-Identifier: AGPL-3.0-or-later
+Copyright (C) 2026 Iman Samizadeh
+
+The sign-in screen. Design section 5.6: a password is required in every case, on
+the first screen.
+
+There is no "forgot password" link, and that is not an omission. Nothing here can
+verify who is asking, so a reset link would be a way past the password rather
+than a way through it. The recovery path needs a terminal on the box, and the
+page says so plainly rather than leaving the user to guess.
+*/ -}}
+{{define "main"}}
+<section class="card narrow">
+  <h1>{{.T "login.heading"}}</h1>
+
+  {{if .Notice}}<p class="notice" role="status">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-info"/></svg>
+  <span>{{.Notice}}</span></p>{{end}}
+
+  {{if .HasProblem}}
+  <div class="problem" role="alert">
+  <svg class="banner-mark" aria-hidden="true" focusable="false"><use href="#i-alert"/></svg>
+  <div class="banner-body">
+    {{if .ProblemHeadline}}<p class="problem-head">{{.ProblemHeadline}}</p>{{end}}
+    {{if .ProblemAdvice}}<p class="problem-advice">{{.ProblemAdvice}}</p>{{end}}
+  </div>
+  </div>
+  {{end}}
+
+  <form method="post" action="/login" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <label for="password">{{.T "login.password"}}</label>
+    <input id="password" name="password" type="password" required autofocus dir="ltr"
+           autocomplete="current-password" autocapitalize="off" spellcheck="false">
+    <button type="submit" class="go">{{.T "login.submit"}}</button>
+  </form>
+
+  <p class="hint">{{.T "login.hint"}}</p>
+</section>
+{{end}}

@@ -1,0 +1,26 @@
+# The gate, on every push and every pull request.
+#
+# It is the same script a developer runs locally, not a reimplementation of it.
+# A CI that checks something different from the local gate teaches people to
+# ignore one of the two.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          check-latest: true
+      - name: Run the build gate
+        run: bash scripts/gate.sh

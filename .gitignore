@@ -1,0 +1,57 @@
+# What must never be committed, and why.
+#
+# The first group is the reason this file matters. This is
+# censorship-circumvention software, developed by testing against a real home
+# network and real proxy servers, and those artefacts identify a person and a
+# location. Nothing in this group is recoverable once published: a fork, a
+# cache or a crawler has it within the hour.
+
+# Everything produced by testing against real hardware and real servers.
+# /local/ holds pasted proxy configurations, hardware run artefacts, captured
+# baselines and the panel password used during testing.
+/local/
+# Proxy configurations in any shape, wherever they land.
+*.vless
+*.vmess
+*.trojan
+*.subscription
+configs-local/
+key.txt
+
+# Editor and OS noise.
+.idea/
+*.iml
+.DS_Store
+.vscode/
+*.swp
+*~
+
+# Tooling state that belongs to a working copy rather than to the project.
+.claude/
+.codegraph/
+
+# Go build output. The binary is produced by the release workflow or by the
+# reader; it is not a source artefact.
+/caspian
+/caspian-linux-*
+/dist/
+*.test
+*.out
+coverage.txt
+
+# Node dependency trees for the Cucumber suites. bdd/README.md says how to
+# install them.
+bdd/**/node_modules/
+
+# NOTE for whoever edits this next.
+#
+# This file used to carry a bare "docs" rule, inherited from an Android
+# project's gitignore along with .gradle, *.apk and *.jks. On a fresh clone it
+# excluded the entire docs/ directory, so the repository would have published
+# with every documentation link in README.md pointing at a file that was never
+# committed. It was invisible because the directory had been tracked before the
+# rule arrived, and gitignore does not apply to files already tracked.
+#
+# If you add a rule here, run: git status --porcelain --ignored
+# and read what it excludes, rather than trusting the pattern to mean what you
+# meant.

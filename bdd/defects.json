@@ -1,0 +1,54 @@
+{
+  "_comment": [
+    "One named defect per scenario tag. This file is the registry that makes",
+    "bdd/mutation.sh possible, and it is the JavaScript half of a pair: the",
+    "names on the right are implemented in defectsByName in bdd/harness/main.go,",
+    "which refuses an unknown one with a 400, so a typo here fails loudly at the",
+    "first scenario rather than silently testing nothing.",
+    "",
+    "expect is 'red' for every scenario that passes on the real build, which is",
+    "all of them but one. The exception is device-count, which is already red",
+    "because it pins an open defect; its row expects 'green' under a defect that",
+    "simulates the fix, which proves the scenario is a real assertion rather",
+    "than one that can never pass.",
+    "",
+    "A scenario whose tag is not in here fails in mutation mode with a message",
+    "saying so. That is the same rule test/bdd holds with",
+    "TestEveryScenarioNamesADefect: a scenario nobody has watched fail is not",
+    "evidence, and there must be no way to add one without adding the watching."
+  ],
+
+  "web": {
+    "@right-password": { "defect": "every-password-rejected", "expect": "red" },
+    "@wrong-password": { "defect": "any-password-accepted", "expect": "red" },
+    "@persian-default": { "defect": "always-english", "expect": "red" },
+    "@english-switch": { "defect": "language-choice-ignored", "expect": "red" },
+    "@hero-ok": { "defect": "hero-ground-overridden", "expect": "red" },
+    "@hero-off": { "defect": "hero-ground-overridden", "expect": "red" },
+    "@hero-wait": { "defect": "hero-ground-overridden", "expect": "red" },
+    "@hero-cut": { "defect": "cut-state-flattened", "expect": "red" },
+    "@power-label": { "defect": "power-label-frozen", "expect": "red" },
+    "@cut-switch": { "defect": "cut-role-removed", "expect": "red" },
+    "@cut-state": { "defect": "cut-state-frozen", "expect": "red" },
+    "@qr-render": { "defect": "quiet-zone-painted-dark", "expect": "red" },
+    "@advanced": { "defect": "no-interfaces-reported", "expect": "red" },
+    "@help": { "defect": "help-page-broken", "expect": "red" },
+    "@skip-link": { "defect": "skip-link-removed", "expect": "red" },
+    "@labels": { "defect": "labels-unhooked", "expect": "red" },
+    "@device-count": { "defect": "device-count-gated", "expect": "green" }
+  },
+
+  "api": {
+    "@api-login-ok": { "defect": "every-password-rejected", "expect": "red" },
+    "@api-login-wrong": { "defect": "any-password-accepted", "expect": "red" },
+    "@api-status-json": { "defect": "status-json-field-lost", "expect": "red" },
+    "@api-status-hero": { "defect": "status-json-field-lost", "expect": "red" },
+    "@api-status-cut": { "defect": "status-json-field-lost", "expect": "red" },
+    "@api-help": { "defect": "help-page-broken", "expect": "red" },
+    "@api-advanced-save": { "defect": "advanced-save-ignored", "expect": "red" },
+    "@api-advanced-bad": { "defect": "advanced-save-ignored", "expect": "red" },
+    "@api-unauthenticated": { "defect": "session-gate-open", "expect": "red" },
+    "@api-csrf": { "defect": "csrf-check-disabled", "expect": "red" },
+    "@api-secrets": { "defect": "secrets-echoed", "expect": "red" }
+  }
+}

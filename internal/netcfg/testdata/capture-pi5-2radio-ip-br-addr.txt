@@ -1,0 +1,5 @@
+lo               UNKNOWN        127.0.0.1/8 ::1/128 
+eth0             UP             10.0.0.221/24 fe80::2ecf:67ff:fe72:51f6/64 
+wlan0            UP             10.83.51.1/24 fe80::2ecf:67ff:fe72:51f7/64 
+xray0            UNKNOWN        198.18.51.1/30 fe80::703d:1fb3:1f12:f9f/64 
+wlan1            UP             10.90.1.1/24 10.0.0.160/24 fe80::5ee9:31ff:fe98:9cba/64 

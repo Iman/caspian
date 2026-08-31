@@ -1,0 +1,15 @@
+Wiphy phy0
+	wiphy index: 0
+	Supported interface modes:
+		 * managed
+		 * AP
+	Band 1:
+		Frequencies:
+			* 2412 MHz [1] (20.0 dBm)
+			* 2437 MHz [6] (20.0 dBm)
+	valid interface combinations:
+		 * #{ managed } <= 1,
+		   total <= 1, #channels <= 1
+		 * #{ AP } <= 1,
+		   total <= 1, #channels <= 1
+	Device supports scan flush.

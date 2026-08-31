@@ -1,0 +1,375 @@
+#!/usr/bin/env bash
+#
+# Caspian-BYOC hardware test harness.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Iman Samizadeh
+#
+# The runbook is docs/HARDWARE-TEST.md. This is the only thing you run.
+#
+# It is written so that a session with the phone is a MEASUREMENT rather than an
+# improvisation: every step says what it is about to do before it does it, every
+# failure names the step and the next thing to check, and a run that stops
+# halfway says PARTIAL rather than ending quietly on a short log.
+#
+# Nothing here calls anything working without an exit IP. See
+# docs/2026-08-29-design.md section 6, last line.
+
+set -u
+
+HW_HARNESS_DIR="$(cd -- "$(dirname -- "$0")" && pwd)"
+HW_LIB_DIR="$HW_HARNESS_DIR/lib"
+export HW_HARNESS_DIR HW_LIB_DIR
+
+# shellcheck source=lib/common.sh
+. "$HW_LIB_DIR/common.sh"
+# shellcheck source=lib/config.sh
+. "$HW_LIB_DIR/config.sh"
+# shellcheck source=lib/control.sh
+. "$HW_LIB_DIR/control.sh"
+# shellcheck source=lib/phone.sh
+. "$HW_LIB_DIR/phone.sh"
+# shellcheck source=lib/pi.sh
+. "$HW_LIB_DIR/pi.sh"
+# shellcheck source=lib/exitip.sh
+. "$HW_LIB_DIR/exitip.sh"
+# shellcheck source=steps/baseline.sh
+. "$HW_HARNESS_DIR/steps/baseline.sh"
+# shellcheck source=steps/prove.sh
+. "$HW_HARNESS_DIR/steps/prove.sh"
+# shellcheck source=steps/switch.sh
+. "$HW_HARNESS_DIR/steps/switch.sh"
+# shellcheck source=steps/failclosed.sh
+. "$HW_HARNESS_DIR/steps/failclosed.sh"
+# shellcheck source=steps/dnsleak.sh
+. "$HW_HARNESS_DIR/steps/dnsleak.sh"
+
+usage() {
+  cat <<'USAGE'
+caspian-hw -- hardware proof for the Caspian-BYOC appliance
+
+  caspian-hw [options] <command> [arguments]
+
+Commands
+
+  preflight                 check the phone, the tooling and the configs, change nothing
+  configs                   list the configs in local/configs and say which are in scope
+  baseline                  START HERE. Phone on its ORDINARY network, not the hotspot
+  prove <label>             bring the box up with one config and prove the exit IP
+  switch <first> <second>   two configs in sequence; the exit IP must change
+  fail-closed <label>       engine stopped, hotspot up: the phone must reach nothing
+  dns-leak                  watch the Pi's uplink while the phone browses
+  all <first> <second>      baseline, prove both, switch, fail-closed, dns-leak
+  selftest                  offline checks of the harness logic. No phone needed
+  leakscan [dir]            re-read every artefact of a run and prove no config,
+                            server address, user id or key reached it. Defaults
+                            to the current run
+
+Options
+
+  --dry-run        print every action and perform none. Produces no verdicts
+  --wifi-only      for fail-closed: force airplane mode with the wifi radio back on,
+                   so the phone cannot quietly fall back to mobile data
+  --unattended     refuse to wait for a human. Requires CASPIAN_HW_CONTROL=hook
+  --serial <id>    which device, when more than one is attached
+  -h, --help       this
+
+Files it reads, all inside the gitignored /local/ tree
+
+  local/configs/<label>.conf   one share link per file. The label is the filename
+  local/boxes.tsv              <label> TAB <addr>[,<addr>] . Optional, authority for names
+  local/box.env                HOTSPOT_SSID, HOTSPOT_ADDR, PANEL_URL, PI_SSH
+  local/control.local.sh       only for CASPIAN_HW_CONTROL=hook
+
+Where it writes
+
+  local/hardware-runs/run-<timestamp>/    everything. Gitignored by .gitignore:25
+
+Exit codes
+
+  0 PASS   1 UNPROVEN   2 FAIL   3 LEAK   4 PRECONDITION   5 VOID
+USAGE
+}
+
+WIFI_ONLY=0
+SERIAL_OPT=""
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --dry-run)    HW_DRY=1; shift ;;
+    --wifi-only)  WIFI_ONLY=1; shift ;;
+    --unattended) CTL_UNATTENDED=1; CASPIAN_HW_UNATTENDED=1; shift ;;
+    --serial)     SERIAL_OPT="${2:-}"; shift 2 ;;
+    -h|--help)    usage; exit 0 ;;
+    --)           shift; break ;;
+    -*)           usage >&2; printf '\nunknown option: %s\n' "$1" >&2; exit "$HW_PRECONDITION" ;;
+    *)            break ;;
+  esac
+done
+
+[ $# -ge 1 ] || { usage >&2; exit "$HW_PRECONDITION"; }
+CMD="$1"; shift
+
+[ -n "$SERIAL_OPT" ] && CASPIAN_HW_SERIAL="$SERIAL_OPT"
+export CASPIAN_HW_SERIAL="${CASPIAN_HW_SERIAL:-}"
+export HW_DRY CTL_UNATTENDED
+
+# ---------------------------------------------------------------------------
+# The scratch directory.
+#
+# The redaction table and the captured exit addresses live HERE and never in the
+# run directory. Both hold server addresses, and the constraint is that no file
+# the harness writes may carry one -- gitignored or not. The run directory is
+# what a person looks at and might copy out of; this is a 0700 temporary that
+# goes away when the process does.
+# ---------------------------------------------------------------------------
+HW_TMPDIR="$(mktemp -d -t caspian-hw)"
+chmod 700 "$HW_TMPDIR" 2>/dev/null || true
+export HW_TMPDIR
+trap 'rm -rf "$HW_TMPDIR"' EXIT INT TERM
+
+ctl_load
+
+# ---------------------------------------------------------------------------
+# Run directory. Every command except selftest, configs and preflight needs one.
+# "current" points at the newest, so prove/switch/fail-closed/dns-leak all land
+# in the same run as the baseline they are graded against.
+# ---------------------------------------------------------------------------
+hw_current_link() { printf '%s/local/hardware-runs/current\n' "$(hw_repo_root)"; }
+
+hw_open_run() {
+  local dir
+  dir="$(hw_new_run_dir)"
+  ln -snf "$dir" "$(hw_current_link)" 2>/dev/null || true
+  printf '%s\n' "$dir"
+}
+
+hw_use_run() {
+  local link
+  link="$(hw_current_link)"
+  if [ -L "$link" ] || [ -d "$link" ]; then
+    (cd -- "$link" && pwd)
+    return 0
+  fi
+  hw_die "there is no open run" \
+    "run 'caspian-hw baseline' first. Every verdict is a comparison against a baseline, and a run with no baseline is not a run."
+}
+
+hw_banner() {
+  hw_say "caspian-hw: $1"
+  hw_say "run directory: $2"
+  if hw_is_dry; then
+    hw_say ""
+    hw_say "DRY RUN. Every action below is printed and none is performed."
+    hw_say "No verdict produced here means anything. Nothing was measured."
+  fi
+}
+
+# hw_summary writes the shareable summary. It goes through hw_write, so every
+# registered secret in it becomes a placeholder, and hw_guard deletes the file
+# rather than leave one in it.
+hw_summary() {
+  local run="$1"
+  {
+    printf 'Caspian-BYOC hardware run\n'
+    printf 'finished\t%s\n' "$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    printf 'dry_run\t%s\n' "$HW_DRY"
+    printf '\n'
+    cat "$run/steps.tsv" 2>/dev/null
+    printf '\n'
+    find "$run" -name 'result.tsv' -print 2>/dev/null | sort | while IFS= read -r f; do
+      printf -- '--- %s\n' "${f#"$run"/}"
+      cat "$f"
+    done
+  } | hw_write "$run/summary.txt"
+  hw_say ""
+  hw_say "summary: $run/summary.txt"
+}
+
+# ---------------------------------------------------------------------------
+main() {
+  local run serial fw rc=0
+
+  case "$CMD" in
+    selftest)
+      exec "$HW_HARNESS_DIR/selftest/run.sh"
+      ;;
+
+    leakscan)
+      run="${1:-$(hw_use_run)}"
+      hw_secrets_init "$HW_TMPDIR/secrets.tsv"
+      cfg_register_all_secrets
+      [ -f "$run/baseline.ip" ] && hw_secret "$(cat "$run/baseline.ip")" "<baseline>"
+      hw_say "scanning $run"
+      hw_say ""
+      hw_leakscan "$run"; rc=$?
+      exit "$rc"
+      ;;
+
+    configs)
+      hw_say "configs in $(cfg_dir)"
+      hw_say ""
+      if [ -z "$(cfg_list)" ]; then
+        hw_say "  (none). Put one share link in local/configs/<label>.conf"
+        exit "$HW_PRECONDITION"
+      fi
+      cfg_list | while IFS= read -r l; do
+        s="$(cfg_scheme "$l")"
+        case " $CFG_SCHEMES_IN " in
+          *" $s "*) printf '  %-24s %-12s in scope\n' "$l" "$s" ;;
+          *)
+            case " $CFG_SCHEMES_OUT " in
+              *" $s "*) printf '  %-24s %-12s OUT OF SCOPE: xray-core does not carry it\n' "$l" "$s" ;;
+              *)        printf '  %-24s %-12s UNKNOWN scheme\n' "$l" "${s:-<none>}" ;;
+            esac
+            ;;
+        esac
+      done
+      hw_say ""
+      hw_say "in scope: $CFG_SCHEMES_IN"
+      exit 0
+      ;;
+
+    preflight)
+      serial="$(ph_serial)"
+      hw_secrets_init "$HW_TMPDIR/secrets.tsv"
+      cfg_register_all_secrets
+      hw_banner "preflight" "(none: preflight writes nothing)"
+      ph_preflight "$serial"
+      hw_step "tooling on this machine"
+      hw_need adb "install Android platform-tools"
+      hw_info "adb: $(adb version | head -1)"
+      if command -v python3 >/dev/null 2>&1; then
+        hw_info "python3: $(python3 -V 2>&1)"
+      else
+        hw_warn "no python3, so the CDP readback is unavailable and Chrome will be read"
+        hw_warn "with uiautomator only, which a modal dialog can cover."
+      fi
+      hw_step "the box"
+      hw_info "control mode: $CTL_MODE"
+      hw_info "hotspot ssid: ${HOTSPOT_SSID:-<unset in local/box.env>}"
+      hw_info "hotspot addr: ${HOTSPOT_ADDR:-<unset in local/box.env>}"
+      if pi_have; then
+        hw_info "pi: $PI_SSH"
+        hw_info "uplink: $(pi_uplink)"
+        fw="$(pi_firewall_loaded)"
+        hw_info "firewall table: $fw"
+        case "$fw" in
+          unreachable) hw_warn "the Pi did not answer. Check: ssh -o BatchMode=yes $PI_SSH true" ;;
+          absent)      hw_warn "the generated nftables table is not loaded. The fail-closed step cannot be graded until it is." ;;
+        esac
+      else
+        hw_warn "PI_SSH unset: the DNS check cannot run and the firewall cannot be checked."
+      fi
+      hw_step "configs"
+      "$0" configs || true
+      exit 0
+      ;;
+
+    baseline)
+      run="$(hw_open_run)"
+      serial="$(ph_serial)"
+      hw_secrets_init "$HW_TMPDIR/secrets.tsv"
+      cfg_register_all_secrets
+      hw_banner "baseline" "$run"
+      hw_ledger_init "$run" 1
+      ph_preflight "$serial"
+      step_baseline "$serial" "$run"; rc=$?
+      hw_ledger_report "$run" || true
+      hw_summary "$run"
+      exit "$rc"
+      ;;
+
+    prove|fail-closed|dns-leak|switch)
+      run="$(hw_use_run)"
+      serial="$(ph_serial)"
+      hw_secrets_init "$HW_TMPDIR/secrets.tsv"
+      cfg_register_all_secrets
+      [ -f "$run/baseline.ip" ] && hw_secret "$(cat "$run/baseline.ip")" "<baseline>"
+      hw_banner "$CMD" "$run"
+      ph_preflight "$serial"
+      case "$CMD" in
+        prove)
+          [ $# -ge 1 ] || hw_die "prove needs a config label" "run 'caspian-hw configs' to see them"
+          step_prove "$serial" "$run" "$1"; rc=$?
+          ;;
+        switch)
+          [ $# -ge 2 ] || hw_die "switch needs two config labels" "run 'caspian-hw configs' to see them"
+          step_switch "$serial" "$run" "$1" "$2"; rc=$?
+          ;;
+        fail-closed)
+          [ $# -ge 1 ] || hw_die "fail-closed needs the config label that is running" "run 'caspian-hw configs' to see them"
+          step_failclosed "$serial" "$run" "$1" "$WIFI_ONLY"; rc=$?
+          ;;
+        dns-leak)
+          step_dnsleak "$serial" "$run" "${1:-30}"; rc=$?
+          ;;
+      esac
+      hw_ledger_report "$run" || true
+      hw_summary "$run"
+      exit "$rc"
+      ;;
+
+    all)
+      [ $# -ge 2 ] || hw_die "'all' needs two config labels" \
+        "the switch test needs two. Run 'caspian-hw configs' to see them."
+      run="$(hw_open_run)"
+      serial="$(ph_serial)"
+      hw_secrets_init "$HW_TMPDIR/secrets.tsv"
+      cfg_register_all_secrets
+      hw_banner "full session: $1 and $2" "$run"
+      # Six ledger rows, not five: baseline, prove:first and prove:second (both
+      # written by step_switch), switch itself, dns-leak, fail-closed.
+      hw_ledger_init "$run" 6
+      ph_preflight "$serial"
+
+      local worst=0
+      step_baseline "$serial" "$run" || {
+        rc=$?
+        if ! hw_is_dry; then
+          hw_say ""
+          hw_say "the baseline did not complete, so nothing after it can be graded."
+          hw_ledger_report "$run" || true
+          hw_summary "$run"
+          exit "$rc"
+        fi
+        # Under --dry-run the baseline "fails" by design: it fetched nothing, so
+        # it produced no verdict. Keep walking, because printing every action is
+        # the whole job of a dry run.
+      }
+
+      hw_say ""
+      hw_say "================================================================"
+      hw_say "MOVE THE PHONE ONTO THE HOTSPOT NOW."
+      hw_say "This handset has no scriptable wifi join, so it is a human step."
+      hw_say "================================================================"
+      if [ "$CTL_UNATTENDED" != "1" ] && ! hw_is_dry; then
+        printf '     press Enter once the phone is on %s: ' "${HOTSPOT_SSID:-the hotspot}"
+        read -r _ignored || true
+      fi
+
+      step_switch "$serial" "$run" "$1" "$2" || { rc=$?; [ "$rc" -gt "$worst" ] && worst=$rc; }
+      step_dnsleak "$serial" "$run" 30 || { rc=$?; [ "$rc" -gt "$worst" ] && worst=$rc; }
+      step_failclosed "$serial" "$run" "$2" "$WIFI_ONLY" || { rc=$?; [ "$rc" -gt "$worst" ] && worst=$rc; }
+
+      hw_ledger_report "$run" || worst="$HW_PRECONDITION"
+      hw_summary "$run"
+      hw_say ""
+      if hw_is_dry; then
+        hw_say "DRY RUN COMPLETE. Every action above was printed and none was performed."
+        hw_say "No measurement was taken, so this run has no verdict at all."
+        exit "$HW_PRECONDITION"
+      fi
+      hw_say "worst verdict in this run: $(hw_verdict_name "$worst")"
+      exit "$worst"
+      ;;
+
+    *)
+      usage >&2
+      printf '\nunknown command: %s\n' "$CMD" >&2
+      exit "$HW_PRECONDITION"
+      ;;
+  esac
+}
+
+main "$@"

@@ -1,0 +1,3 @@
+Interface wlan0
+	type AP
+	channel 10 (2457 MHz), width: 20 MHz, center1: 2457 MHz

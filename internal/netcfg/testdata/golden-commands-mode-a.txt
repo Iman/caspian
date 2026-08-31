@@ -1,0 +1,37 @@
+# Generated command sequence, mode A (wired uplink).
+# Left column is applied in order; right column is the inverse recorded
+# in the journal before the change is made.
+
+## before the engine starts
+do   nft -f -  <stdin: 10246 bytes, load the generated table; first line "# Caspian-BYOC generated firewall ruleset. Do not edit by hand:">
+undo nft -f -  <stdin: 261 bytes, remove the generated table; first line "# Caspian-BYOC firewall teardown. The bare declaration makes the delete">
+do   sysctl -w net.ipv4.ip_forward=1
+undo sysctl -w net.ipv4.ip_forward=0
+do   sysctl -w net.ipv4.conf.all.rp_filter=2
+undo sysctl -w net.ipv4.conf.all.rp_filter=1
+do   sysctl -w net.ipv4.conf.default.rp_filter=2
+undo sysctl -w net.ipv4.conf.default.rp_filter=1
+do   sysctl -w net.ipv6.conf.all.forwarding=0
+undo sysctl -w net.ipv6.conf.all.forwarding=0
+do   iw phy phy0 interface add ap0 type __ap
+undo iw dev ap0 del
+do   nmcli device set ap0 managed no
+undo (none)
+do   ip link set dev ap0 up
+undo (none)
+do   ip address add 10.83.51.1/24 dev ap0
+undo ip address del 10.83.51.1/24 dev ap0
+do   ip route add 203.0.113.10/32 via 192.168.1.1 dev eth0 proto static metric 5
+undo ip route del 203.0.113.10/32 via 192.168.1.1 dev eth0 metric 5
+
+## after the engine has created the tunnel device
+do   ip address add 198.18.51.1/30 dev xray0
+undo ip address del 198.18.51.1/30 dev xray0
+do   ip route add 10.83.51.0/24 dev ap0 scope link table 8410
+undo ip route del 10.83.51.0/24 dev ap0 table 8410
+do   ip route add default dev xray0 proto static table 8410
+undo ip route del default dev xray0 table 8410
+do   ip rule add from 10.83.51.0/24 lookup 8410 priority 8410
+undo ip rule del from 10.83.51.0/24 lookup 8410 priority 8410
+do   ip rule add fwmark 0x20da lookup 8410 priority 8409
+undo ip rule del fwmark 0x20da lookup 8410 priority 8409

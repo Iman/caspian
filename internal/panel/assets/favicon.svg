@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Caspian">
+  <title>Caspian</title>
+  <!--
+    SPDX-License-Identifier: AGPL-3.0-or-later
+    Copyright (C) 2026 Iman Samizadeh
+
+    Served from this box, like everything else. A favicon left undeclared is a
+    request to /favicon.ico that the panel would answer with a 404 on every
+    page load, and a favicon named at a CDN would be exactly the outbound
+    request design section 5.7 forbids.
+
+    A shield over a signal arc: the two things the box does, in the one size a
+    browser tab gives.
+  -->
+  <rect width="32" height="32" rx="7" fill="#1d222a"/>
+  <path d="M16 5 L25 9 v7c0 5.5-3.7 9.6-9 11.4C10.7 25.6 7 21.5 7 16V9z"
+        fill="none" stroke="#4fbd85" stroke-width="2.2" stroke-linejoin="round"/>
+  <path d="M11.5 16.5a6.4 6.4 0 0 1 9 0" fill="none" stroke="#4fbd85"
+        stroke-width="2" stroke-linecap="round"/>
+  <circle cx="16" cy="20.4" r="1.7" fill="#4fbd85"/>
+</svg>

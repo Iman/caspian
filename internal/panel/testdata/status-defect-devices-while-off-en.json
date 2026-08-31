@@ -1,0 +1,21 @@
+{
+  "connected": false,
+  "running": false,
+  "heroClass": "off",
+  "powerClass": "go",
+  "nextStep": "Next: press the switch to turn it on. It takes a few seconds.",
+  "word": "Off",
+  "shape": "off",
+  "devices": 1,
+  "deviceLine": "1 device connected",
+  "detected": "Internet: Ethernet. Hotspot: built-in WiFi.",
+  "problem": "",
+  "hasConfig": true,
+  "uptime": "Not running",
+  "powerLabel": "Switch on",
+  "trafficCut": false,
+  "cutLabel": "Cut client traffic",
+  "cutBanner": "Client traffic is cut. Your devices are still connected to this WiFi and can open this page, but nothing reaches the internet. Restarting this box clears this state, but Caspian comes back switched off, so traffic does not return until you press the switch.",
+  "events": null
+}
+

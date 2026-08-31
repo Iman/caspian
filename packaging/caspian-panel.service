@@ -1,0 +1,117 @@
+# Caspian-BYOC, web panel.
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+# Copyright (C) 2026 Iman Samizadeh
+#
+# Installed by install.sh to /etc/systemd/system/caspian-panel.service. This
+# copy in packaging/ is the source of truth. install.sh carries a
+# byte-identical copy inline, and packaging/test-install.sh proves they match.
+#
+# This is the half that holds no privilege. It parses everything a user typed
+# and serves HTTP; the split exists so that a fault here is not a fault in the
+# part that holds root (LAYOUT.md, "Two processes, one binary"). Because it
+# needs nothing privileged, its hardening can be as tight as systemd allows,
+# and where the privileged unit has to switch a directive off, this one does
+# not.
+
+[Unit]
+Description=Caspian-BYOC web panel
+
+# Ordered after the privileged service but only Wants=, never Requires=.
+# Design section 5.6 records the hazard that a user who cannot reach the panel
+# cannot fix anything, so the panel must come up and be able to say what is
+# wrong even when the privileged side has failed to start. Requires= would take
+# the panel down with it and leave the user with a box and no way in.
+After=caspian.service
+Wants=caspian.service
+
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+# See the note in caspian.service. Requires systemd 240 or newer.
+Type=exec
+User=caspian
+Group=caspian
+ExecStart=/usr/local/bin/caspian serve --panel
+
+Restart=on-failure
+RestartSec=2s
+
+# --- hardening -------------------------------------------------------------
+
+# No capabilities at all, in either set. The panel listens on port 8088
+# (internal/netcfg/plan.go, DefaultOptions), which is above 1024, so it does
+# not even need CAP_NET_BIND_SERVICE. Anything privileged goes over the socket
+# to caspian.service, which is the whole point of the split.
+CapabilityBoundingSet=
+AmbientCapabilities=
+
+# Protects against a setuid binary or a file capability turning a bug in the
+# HTTP surface into a privilege escalation. This is the directive that makes
+# the empty capability set above stick across an exec.
+NoNewPrivileges=yes
+
+# The filesystem is read-only except for the two places the panel writes.
+# Protects against a path-traversal or template bug in the panel writing
+# anywhere outside its own state.
+ProtectSystem=strict
+# state.json, written atomically by internal/state (LAYOUT.md, "Paths").
+ReadWritePaths=/var/lib/caspian
+# The socket to the privileged service. Connecting to a unix socket needs write
+# access to the socket inode, so a read-only /run would break the split.
+ReadWritePaths=/run/caspian
+
+# No home directories. Protects the user's own files from a bug in a process
+# that parses untrusted input (design section 6).
+ProtectHome=yes
+
+# A private /tmp. Protects against symlink attacks on predictable temporary
+# paths, which matters here because the panel accepts an uploaded QR image
+# (design section 9, "QR": untrusted image parsing inside the panel process).
+PrivateTmp=yes
+
+# A private /dev with only the standard pseudo devices. The panel opens no
+# device node; unlike the privileged unit it has no reason to see /dev/net/tun
+# or /dev/rfkill, so the blunt switch is correct here.
+PrivateDevices=yes
+
+# /proc/sys, /sys, the module loader and the kernel log are all closed.
+# Protects against a compromised panel reaching kernel state that only the
+# privileged half is allowed to touch.
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+
+# The panel cannot see any process but its own. Protects against reading the
+# engine's command line or environment, which is where credentials would be if
+# anyone ever put them there.
+ProtectProc=invisible
+ProcSubset=pid
+
+# No new namespaces, no setuid files, no realtime, no personality switch, no
+# leftover IPC. Same reasons as in caspian.service.
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+LockPersonality=yes
+RemoveIPC=yes
+
+# No writable-and-executable memory. Go does not generate code at runtime, so
+# this costs nothing here and removes the easiest route from a memory bug to
+# arbitrary code.
+MemoryDenyWriteExecute=yes
+
+# The panel speaks HTTP over TCP and the privileged socket over AF_UNIX, and
+# nothing else. No AF_NETLINK: the panel has no business enumerating or
+# changing interfaces, and if it ever appears to need it, that is a sign the
+# work belongs on the other side of the socket.
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallErrorNumber=EPERM
+
+[Install]
+WantedBy=multi-user.target

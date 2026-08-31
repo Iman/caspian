@@ -1,0 +1,136 @@
+{
+  "log": {
+    "loglevel": "warning",
+    "access": "none",
+    "dnsLog": false
+  },
+  "dns": {
+    "servers": [
+      "9.9.9.9",
+      "1.1.1.3",
+      "185.228.168.9"
+    ],
+    "queryStrategy": "UseIP",
+    "tag": "resolver-in"
+  },
+  "inbounds": [
+    {
+      "tag": "tun-in",
+      "protocol": "tun",
+      "settings": {
+        "name": "xray0",
+        "MTU": 1500,
+        "userLevel": 0
+      }
+    },
+    {
+      "tag": "socks-in",
+      "protocol": "socks",
+      "listen": "127.0.0.1",
+      "port": 10808,
+      "settings": {
+        "auth": "noauth",
+        "udp": false
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "vmess",
+      "settings": {
+        "address": "example.invalid",
+        "email": "",
+        "experiments": "",
+        "id": "11111111-2222-4333-8444-555555555555",
+        "level": 0,
+        "port": 443,
+        "security": "auto"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "port": 0,
+        "security": "tls",
+        "tlsSettings": {
+          "allowInsecure": false,
+          "cipherSuites": "",
+          "disableSystemRoot": false,
+          "echConfigList": "",
+          "echForceQuery": "",
+          "echServerKeys": "",
+          "enableSessionResumption": false,
+          "fingerprint": "chrome",
+          "masterKeyLog": "",
+          "maxVersion": "",
+          "minVersion": "",
+          "pinnedPeerCertSha256": "",
+          "rejectUnknownSni": false,
+          "serverName": "cdn.fake.invalid",
+          "verifyPeerCertByName": ""
+        },
+        "wsSettings": {
+          "acceptProxyProtocol": false,
+          "heartbeatPeriod": 0,
+          "host": "cdn.fake.invalid",
+          "path": "/vm"
+        }
+      },
+      "tag": "proxy",
+      "targetStrategy": ""
+    },
+    {
+      "tag": "direct",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
+    },
+    {
+      "tag": "block",
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "none"
+        }
+      }
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "ruleTag": "resolver-through-tunnel",
+        "inboundTag": [
+          "resolver-in"
+        ],
+        "outboundTag": "proxy"
+      },
+      {
+        "ruleTag": "private-direct",
+        "ip": [
+          "0.0.0.0/8",
+          "10.0.0.0/8",
+          "100.64.0.0/10",
+          "127.0.0.0/8",
+          "169.254.0.0/16",
+          "172.16.0.0/12",
+          "192.0.0.0/24",
+          "192.168.0.0/16",
+          "198.18.0.0/15",
+          "224.0.0.0/4",
+          "240.0.0.0/4",
+          "255.255.255.255/32",
+          "::1/128",
+          "fc00::/7",
+          "fe80::/10",
+          "ff00::/8"
+        ],
+        "outboundTag": "direct"
+      },
+      {
+        "ruleTag": "everything-else",
+        "network": "tcp,udp",
+        "outboundTag": "proxy"
+      }
+    ]
+  }
+}
