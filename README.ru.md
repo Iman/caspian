@@ -2,6 +2,13 @@
 
 [🇮🇷 فارسی](README.fa.md) | [🇬🇧 English](README.md) | 🇷🇺 **Русский** | [🇨🇳 中文](README.zh.md)
 
+[![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
+[![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
+[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
+
 ![Ваши устройства подключаются к Wi-Fi этой коробки. Коробка соединяется по вставленному вами конфигу и туннелирует всё на ваш собственный сервер за границей, поэтому домашний роутер и интернет-провайдер видят одно зашифрованное соединение с одним адресом, а не то, что вы открываете.](docs/images/flow-ru.svg)
 
 > ### [English: the full guide in English](README.md)

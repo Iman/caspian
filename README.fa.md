@@ -2,6 +2,13 @@
 
 🇮🇷 **فارسی** | [🇬🇧 English](README.md) | [🇷🇺 Русский](README.ru.md) | [🇨🇳 中文](README.zh.md)
 
+[![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
+[![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
+[![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
+[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
+
 ![دستگاه‌های شما به وای‌فای جعبه وصل می‌شوند. جعبه با کانفیگی که پیست کرده‌اید وصل می‌شود و همه چیز را به سرورِ خودتان در خارج تونل می‌کند، پس مودمِ خانه و شرکتِ اینترنتی فقط یک اتصالِ رمزگذاری‌شده به یک آدرس می‌بینند، نه اینکه شما چه باز می‌کنید.](docs/images/flow-fa.svg)
 
 > ### [English: the full guide in English](README.md)
