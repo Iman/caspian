@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SPDX-License-Identifier: AGPL-3.0-or-later
+    Copyright (C) 2026 Iman Samizadeh
+
+    The Windows tethering helper. One process per action, one JSON request on
+    standard input, one JSON line on standard output. See Program.cs and
+    internal/hotspot/mobilehotspot.go for the contract.
+
+    The target framework carries a Windows SDK version because the WinRT
+    projection (Windows.Networking.NetworkOperators) comes from the
+    Microsoft.Windows.SDK.NET.Ref targeting pack that the SDK restores for a
+    windows10.0.* TFM. 19041 is the first build with TetheringWiFiBand and the
+    no-connections-timeout switch. EnableWindowsTargeting lets the project
+    build on macOS and Linux for a compile check; the release build is made on
+    Windows.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>caspian-tethering</AssemblyName>
+    <RootNamespace>Caspian.Tethering</RootNamespace>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+</Project>

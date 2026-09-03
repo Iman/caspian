@@ -28,6 +28,12 @@ type Status struct {
 	// actually beaconing. A half-started hotspot is not running.
 	Running bool
 
+	// reasonSSID is the network name the access point reports itself as
+	// broadcasting, where the platform can say (Windows reports it directly).
+	// Unexported: the panel takes the name from the plan, and this is only
+	// for a driver to tell "on with our name" from "on with somebody else's".
+	reasonSSID string
+
 	// AccessPoint and DHCP are the two processes.
 	AccessPoint ProcState
 	DHCP        ProcState
