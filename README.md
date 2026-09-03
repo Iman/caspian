@@ -25,10 +25,10 @@ hotspot, so every device that joins is tunnelled without installing anything.
 ![The Caspian panel, connected](docs/images/panel-en.png)
 
 The panel above is a real screenshot from a running box, taken on a Raspberry Pi
-5 with the tunnel up and one device joined. The network passphrase, the
-configuration name and the server address in it are substituted, and the join
-code is blurred, because that code encodes the network name and its password.
-Nothing else is altered.
+5 on 2026-09-03 with the tunnel up, before any device had joined. The network
+passphrase, the configuration name and the server address in it are substituted,
+and the join code is blurred, because that code encodes the network name and its
+password. Nothing else is altered.
 
 The panel is Persian first and English second. There is no account, no
 telemetry, and the panel fetches nothing from the internet.
