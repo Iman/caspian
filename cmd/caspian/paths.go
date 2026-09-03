@@ -17,49 +17,102 @@ import (
 // below is either taken from the package that owns it, or, where LAYOUT.md
 // fixes it and no package owns it, written here once and passed in.
 //
-// TestLayoutValuesMatchTheDocument checks each one against docs/LAYOUT.md, so a
-// change to the document that is not made here is a failing test rather than a
-// box that comes up on the wrong port.
+// The values differ per operating system and the ports do not. The paths, the
+// account and the service manager's verbs live in a layoutTable, filled by
+// platformLayout in paths_linux.go, paths_darwin.go and paths_windows.go. The
+// Linux table is the one docs/LAYOUT.md documents today and the one the tests
+// read; TestLayoutPathsMatchTheDocument checks it against the document on
+// every platform, so a change to the document that is not made here is a
+// failing test rather than a box that comes up on the wrong path.
 // ---------------------------------------------------------------------------
 
-const (
-	// serviceAccount is the system account the panel runs as, and one of the
-	// two accounts permitted to drive the privileged service.
-	// LAYOUT.md, "Names": "Service user and group | caspian".
-	serviceAccount = "caspian"
-	serviceGroup   = "caspian"
+// layoutTable is what docs/LAYOUT.md fixes for one operating system.
+type layoutTable struct {
+	// ServiceAccount is the account the panel runs as, and one of the two
+	// accounts permitted to drive the privileged service.
+	ServiceAccount string
+	ServiceGroup   string
 
-	// socketPath is the panel-to-privileged socket. LAYOUT.md, "Paths":
-	// /run/caspian/priv.sock, 0660, root:caspian.
-	socketPath = "/run/caspian/priv.sock"
+	// PrivEndpoint is the panel-to-privileged endpoint: a unix socket path on
+	// Linux and macOS, a named pipe on Windows.
+	PrivEndpoint string
 
-	// firstRunPasswordPath is where the installer leaves the plaintext panel
-	// password for the panel to consume. docs/INSTALL.md, "The handoff".
-	firstRunPasswordPath = "/var/lib/caspian/first-run-password"
+	// RuntimeDir holds the endpoint and the generated hotspot files on the
+	// platforms that have such a directory; empty where there is none.
+	RuntimeDir string
+
+	// StateDir is the persistent state directory. FirstRunPasswordPath and
+	// JournalPath are inside it.
+	StateDir             string
+	FirstRunPasswordPath string
+	JournalPath          string
+
+	// BinaryPath is where the installer puts this binary.
+	BinaryPath string
+
+	// ServiceManager names what starts the two roles, and the two advice
+	// strings are the verbs a person types to start or stop the privileged
+	// service by hand.
+	ServiceManager        string
+	StartPrivilegedAdvice string
+	StopPrivilegedAdvice  string
+}
+
+// layout is the table for the platform this binary was built for.
+var layout = platformLayout()
+
+// The names the rest of this command has always used, now read from the
+// table. Keeping them means the code that passes the values in did not change
+// when the values gained a second and third platform.
+var (
+	serviceAccount       = layout.ServiceAccount
+	serviceGroup         = layout.ServiceGroup
+	socketPath           = layout.PrivEndpoint
+	firstRunPasswordPath = layout.FirstRunPasswordPath
+	stateDir             = layout.StateDir
+	journalPath          = layout.JournalPath
 )
 
-// stateDir is the persistent state directory. It is internal/state's constant
-// rather than a copy, because that package owns the file in it.
-const stateDir = state.DefaultDir
+// linuxLayout is the table docs/LAYOUT.md documents. It is a function on every
+// platform, not only Linux, because the tests compare it with the document
+// wherever they run.
+func linuxLayout() layoutTable {
+	return layoutTable{
+		// LAYOUT.md, "Names": "Service user and group | caspian".
+		ServiceAccount: "caspian",
+		ServiceGroup:   "caspian",
+		// LAYOUT.md, "Paths": /run/caspian/priv.sock, 0660, root:caspian.
+		PrivEndpoint: "/run/caspian/priv.sock",
+		RuntimeDir:   "/run/caspian",
+		// internal/state's constant rather than a copy, because that package
+		// owns the file in it.
+		StateDir: state.DefaultDir,
+		// docs/INSTALL.md, "The handoff".
+		FirstRunPasswordPath: "/var/lib/caspian/first-run-password",
+		// internal/netcfg's constant rather than a copy: LAYOUT.md and that
+		// package agreed on the name on 2026-08-30, and a second spelling here
+		// is how they would come to disagree again.
+		JournalPath:           netcfg.DefaultJournalPath,
+		BinaryPath:            "/usr/local/bin/caspian",
+		ServiceManager:        "systemd",
+		StartPrivilegedAdvice: "systemctl start caspian.service",
+		StopPrivilegedAdvice:  "systemctl stop caspian.service",
+	}
+}
 
-// journalPath is the teardown journal. It is internal/netcfg's constant rather
-// than a copy: LAYOUT.md and that package agreed on the name on 2026-08-30, and
-// a second spelling here is how they would come to disagree again.
-const journalPath = netcfg.DefaultJournalPath
-
-// The ports, from docs/LAYOUT.md, "Ports".
+// The ports, from docs/LAYOUT.md, "Ports". The same on every platform.
 const (
-	// dnsPort is dnsmasq on the hotspot interface: DHCP and DNS for joined
-	// devices.
+	// dnsPort is DHCP and DNS for joined devices on the hotspot interface:
+	// dnsmasq on Linux, the operating system's own server elsewhere.
 	dnsPort = 53
 
-	// localDNSPort is the engine's local DNS listener on 127.0.0.1, and
-	// dnsmasq's only permitted upstream.
+	// localDNSPort is the engine's local DNS listener on 127.0.0.1, and the
+	// only upstream client DNS is forwarded or redirected to.
 	//
 	// THIS IS THE PAIRING THAT BREAKS QUIETLY. If the two ends drift, DNS stops
 	// resolving for every joined device while the hotspot and the tunnel both
 	// look healthy. It is passed to internal/privsvc as ONE value, which gives
-	// it to internal/xcfg to listen on and to internal/hotspot to forward to.
+	// it to internal/xcfg to listen on and to the hotspot side to forward to.
 	localDNSPort = 5354
 
 	// panelPort is the web panel.
@@ -77,9 +130,10 @@ const (
 	socksPort = 10808
 )
 
-// hotspotPaths are where hostapd and dnsmasq keep their files.
+// hotspotPaths are where hostapd and dnsmasq keep their files on Linux.
 //
 // internal/hotspot's DefaultPaths already matches docs/LAYOUT.md, including the
 // reason dnsmasq gets a directory of its own, so they are taken from there
-// rather than restated.
+// rather than restated. On the platforms whose access point is the operating
+// system's, these paths are passed in and never used.
 func hotspotPaths() hotspot.Paths { return hotspot.DefaultPaths() }

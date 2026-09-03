@@ -74,6 +74,12 @@ type APConfig struct {
 	// example "wlan0". Supplied by the caller, never detected here.
 	Interface string
 
+	// Uplink is the interface the shared connection comes in on. hostapd has
+	// no use for it and the renderer ignores it; the access point drivers
+	// that share a connection themselves (Apple's Internet Sharing, Windows
+	// Mobile Hotspot) need to be told which one. Optional.
+	Uplink string
+
 	// SSID is the network name, at most MaxSSIDLen octets.
 	SSID string
 

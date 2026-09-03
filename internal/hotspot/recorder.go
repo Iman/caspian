@@ -74,6 +74,9 @@ func (e Event) String() string {
 type Call struct {
 	Name string
 	Args []string
+
+	// Stdin is what RunInput was given, and empty for Run.
+	Stdin string
 }
 
 // String renders the call as a command line, for assertions and failure
@@ -108,6 +111,9 @@ type Recorder struct {
 	Calls []Call
 	// Files is the file system as this recorder sees it.
 	Files map[string][]byte
+	// WriteErr, when set, is what every WriteFile returns, for tests that
+	// need a disk that refuses.
+	WriteErr error
 	// Perms is the mode each file was written with. Recorded because the
 	// mode is part of the contract: the hostapd configuration carries the
 	// WPA2 passphrase, and docs/LAYOUT.md fixes a mode for both generated
@@ -203,12 +209,18 @@ func (r *Recorder) NextPID() int {
 }
 
 func (r *Recorder) Run(ctx context.Context, name string, args ...string) (Result, error) {
+	return r.RunInput(ctx, "", name, args...)
+}
+
+// RunInput implements System. The responder sees the name and arguments only;
+// the standard input is recorded on the Call for assertions.
+func (r *Recorder) RunInput(ctx context.Context, stdin string, name string, args ...string) (Result, error) {
 	if err := ctx.Err(); err != nil {
 		return Result{}, err
 	}
 	r.mu.Lock()
 	argsCopy := append([]string(nil), args...)
-	r.Calls = append(r.Calls, Call{Name: name, Args: argsCopy})
+	r.Calls = append(r.Calls, Call{Name: name, Args: argsCopy, Stdin: stdin})
 	r.Events = append(r.Events, Event{Kind: EventRun, Name: name, Args: argsCopy})
 	responder := r.Responder
 	r.mu.Unlock()
@@ -222,6 +234,9 @@ func (r *Recorder) Run(ctx context.Context, name string, args ...string) (Result
 func (r *Recorder) WriteFile(path string, data []byte, perm fs.FileMode) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+	if r.WriteErr != nil {
+		return r.WriteErr
+	}
 	r.Files[path] = append([]byte(nil), data...)
 	r.Perms[path] = perm
 	r.Events = append(r.Events, Event{Kind: EventWrite, Path: path, Perm: perm})

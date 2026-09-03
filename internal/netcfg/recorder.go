@@ -19,6 +19,10 @@ type RecordingRunner struct {
 	mu   sync.Mutex
 	cmds []Command
 
+	// Platform decides which allowlist a recorded command is checked
+	// against. Empty means Linux, as every recorder before the port meant.
+	Platform Platform
+
 	// Responses maps a key built by RunnerKey to the result to return. A
 	// command with no entry gets an empty successful result.
 	Responses map[string]Result
@@ -84,7 +88,7 @@ func CommandLine(c Command) string {
 
 // Run implements Runner.
 func (r *RecordingRunner) Run(_ context.Context, c Command) (Result, error) {
-	if err := ValidateCommand(c); err != nil {
+	if err := ValidateCommandOn(r.Platform, c); err != nil {
 		return Result{}, err
 	}
 	r.mu.Lock()

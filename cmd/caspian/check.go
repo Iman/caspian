@@ -48,7 +48,8 @@ func runCheck(args []string, stdout, stderr io.Writer) int {
 	w := stdout
 	section(w, "This binary")
 	writeVersion(w)
-	fmt.Fprintf(w, "running as: user id %d\n", os.Geteuid())
+	_, who := runningPrivileged()
+	fmt.Fprintf(w, "running as: %s\n", who)
 
 	checkPrograms(w)
 	checkPaths(w)
@@ -70,36 +71,30 @@ func section(w io.Writer, title string) {
 // it: "Presence is decided by the command each one provides, not by asking a
 // package database, because 'is nft on this box' has the same answer
 // everywhere."
+// checkedProgram is one row of the programs table: a binary this platform's
+// backend runs, and what it is for.
+type checkedProgram struct {
+	name string
+	what string
+}
+
 func checkPrograms(w io.Writer) {
 	section(w, "Programs this box needs")
-	type prog struct {
-		name string
-		what string
+	progs := platformPrograms()
+	if len(progs) == 0 {
+		fmt.Fprintf(w, "  none: this build has no network backend for %s\n", runtime.GOOS)
+		return
 	}
-	for _, p := range []prog{
-		{netcfg.BinIP, "addresses, routes and rules"},
-		{netcfg.BinIw, "which interfaces are wireless, and what the radio can do"},
-		{netcfg.BinNft, "the fail-closed firewall"},
-		{netcfg.BinSysctl, "forwarding and reverse-path filtering"},
-		{"hostapd", "the access point"},
-		{"dnsmasq", "DHCP and DNS for joined devices"},
-		{"hostapd_cli", "asking hostapd whether the network is actually being broadcast"},
-		{"rfkill", "switching the radio back on when it is soft blocked"},
-		{"pgrep", "finding a leftover hostapd or dnsmasq from a previous run"},
-	} {
+	for _, p := range progs {
 		if path, ok := findProgram(p.name); ok {
-			fmt.Fprintf(w, "  found    %-12s %s (%s)\n", p.name, path, p.what)
+			fmt.Fprintf(w, "  found    %-14s %s (%s)\n", p.name, path, p.what)
 			continue
 		}
-		fmt.Fprintf(w, "  MISSING  %-12s needed for %s\n", p.name, p.what)
+		fmt.Fprintf(w, "  MISSING  %-14s needed for %s\n", p.name, p.what)
 	}
 }
 
-// programSearchPath is where internal/netcfg looks, and it is fixed rather than
-// inherited from the environment so that a PATH cannot decide which binary
-// called "ip" gets root. This command looks in the same places so its answer is
-// the answer the service will get.
-var programSearchPath = []string{"/sbin", "/usr/sbin", "/bin", "/usr/bin", "/usr/local/sbin", "/usr/local/bin"}
+var programSearchPath = platformProgramSearchPath()
 
 func findProgram(name string) (string, bool) {
 	for _, dir := range programSearchPath {
@@ -122,15 +117,21 @@ func checkPaths(w io.Writer) {
 		who  string
 		note string
 	}
+	acct := layout.ServiceAccount
 	paths := []want{
-		{"/usr/local/bin/caspian", 0o755, "root", "the single binary"},
-		{stateDir, 0o700, "caspian", "persistent state; holds a credential"},
-		{filepath.Join(stateDir, state.FileName), 0o600, "caspian", "written by the panel"},
+		{layout.BinaryPath, 0o755, "root", "the single binary"},
+		{stateDir, 0o700, acct, "persistent state; holds a credential"},
+		{filepath.Join(stateDir, state.FileName), 0o600, acct, "written by the panel"},
 		{journalPath, 0o600, "root", "written by the privileged service"},
-		{firstRunPasswordPath, 0o600, "caspian", "consumed and deleted by the panel on first start"},
-		{"/run/caspian", 0o750, "root:caspian", "runtime sockets"},
-		{socketPath, 0o660, "root:caspian", "panel to privileged service"},
-		{"/run/caspian/dnsmasq", 0o700, "caspian", "dnsmasq's own directory for its pid file"},
+		{firstRunPasswordPath, 0o600, acct, "consumed and deleted by the panel on first start"},
+	}
+	if layout.RuntimeDir != "" {
+		paths = append(paths,
+			want{layout.RuntimeDir, 0o750, "root:" + acct, "runtime sockets"},
+			want{socketPath, 0o660, "root:" + acct, "panel to privileged service"})
+	}
+	if runtime.GOOS == "linux" {
+		paths = append(paths, want{filepath.Join(layout.RuntimeDir, "dnsmasq"), 0o700, acct, "dnsmasq's own directory for its pid file"})
 	}
 	for _, p := range paths {
 		fi, err := os.Stat(p.path)
@@ -169,9 +170,9 @@ func checkPorts(w io.Writer) {
 // panel would.
 func checkPrivilegedService(ctx context.Context, w io.Writer) {
 	section(w, "The privileged service, asked over the socket")
-	if _, err := os.Stat(socketPath); errors.Is(err, fs.ErrNotExist) {
-		fmt.Fprintf(w, "  There is no socket at %s, so the privileged service is not running.\n", socketPath)
-		fmt.Fprintf(w, "  Start it with: systemctl start caspian.service\n")
+	if !privsvc.EndpointPresent(socketPath) {
+		fmt.Fprintf(w, "  Nothing answers at %s, so the privileged service is not running.\n", socketPath)
+		fmt.Fprintf(w, "  Start it with: %s\n", layout.StartPrivilegedAdvice)
 		return
 	}
 
@@ -217,12 +218,13 @@ func checkLocalDetection(ctx context.Context, w io.Writer) {
 	section(w, "This machine, measured directly by this command")
 
 	runner := netcfg.NewSystemRunner()
-	facts, err := netcfg.Detect(ctx, runner, netcfg.BaseSysctlKnobs())
+	backend := netcfg.SystemBackend()
+	facts, err := backend.Detect(ctx, runner, backend.BaseSysctlKnobs())
 	if err != nil {
 		fmt.Fprintf(w, "  Could not read this machine: %v\n", err)
-		if runtime.GOOS != "linux" {
-			fmt.Fprintf(w, "  This is %s. The appliance is Linux, so only the parts of this report that\n", runtime.GOOS)
-			fmt.Fprintf(w, "  do not run a command are meaningful here.\n")
+		if errors.Is(err, netcfg.ErrUnsupportedPlatform) || errors.Is(err, netcfg.ErrUnsupportedBackend) {
+			fmt.Fprintf(w, "  This is %s, and this build has no network backend for it, so only the parts of\n", runtime.GOOS)
+			fmt.Fprintf(w, "  this report that do not run a command are meaningful here.\n")
 		}
 		return
 	}
@@ -271,7 +273,7 @@ func checkLocalDetection(ctx context.Context, w io.Writer) {
 	}
 
 	fmt.Fprintf(w, "  kernel settings that decide whether traffic flows:\n")
-	for _, k := range netcfg.BaseSysctlKnobs() {
+	for _, k := range backend.BaseSysctlKnobs() {
 		v, ok := facts.Sysctl[k]
 		if !ok {
 			v = "could not be read"

@@ -75,6 +75,26 @@ If the two drift, DNS stops resolving for every joined device while the hotspot
 and the tunnel both look healthy. A cross-check test exists in `internal/xcfg`.
 The values above are the reason it can check anything.
 
+## Other platforms
+
+The tables above are the Linux appliance's and are the ones the tests read.
+The macOS and Windows ports (branch `port/platforms`, see `docs/PORTS.md`)
+keep the same names and ports and change only what the operating system
+forces; each value below is fixed in `cmd/caspian/paths_darwin.go` and
+`cmd/caspian/paths_windows.go`.
+
+| Thing | macOS | Windows |
+|---|---|---|
+| Binary | `/usr/local/bin/caspian` | `%ProgramFiles%\Caspian\caspian.exe`, with `caspian-tethering.exe` and `wintun.dll` beside it |
+| Persistent state | `/Library/Application Support/Caspian` 0700 `_caspian` | `%ProgramData%\Caspian`, ACL: SYSTEM, Administrators, the panel account |
+| Runtime directory | `/var/run/caspian` 0750 root:`_caspian` | none |
+| Panel to privileged service | `/var/run/caspian/priv.sock` 0660 | named pipe `\\.\pipe\caspian-priv`, descriptor admitting SYSTEM, Administrators and the panel account |
+| Service account | `_caspian`, a role account (UID 450 to 499, no shell) | `NT SERVICE\caspian-panel`, a virtual service account |
+| Service manager | launchd: `org.caspianbyoc.caspian`, `org.caspianbyoc.caspian-panel` | Service Control Manager: `caspian`, `caspian-panel` |
+| Tunnel device | `utun100` (xray-core's darwin TUN insists on `utunN`) | `xray0`, a Wintun adapter |
+| Access point | Apple Internet Sharing on the built-in radio | Mobile Hotspot, through the tethering helper |
+| Client subnet | chosen by the planner, given to Internet Sharing | 192.168.137.0/24, fixed by Internet Connection Sharing |
+
 ## Two processes, one binary
 
 `caspian serve --privileged` runs as root. It owns routes, the firewall, the

@@ -172,7 +172,7 @@ func (s *Service) validateStatic(req panel.StartRequest) error {
 // rather than trusting it."
 func (s *Service) validateAgainstFacts(req panel.StartRequest, f netcfg.Facts) error {
 	if name := req.Network.InternetInterface; name != "" {
-		if !netcfg.ValidInterfaceName(name) {
+		if !netcfg.ValidInterfaceNameOn(s.cfg.netOptions().Platform, name) {
 			return fail("internet interface", panel.FaultNoInternetInterface,
 				errors.New("the chosen internet interface is not a usable interface name"))
 		}
@@ -194,7 +194,7 @@ func (s *Service) validateAgainstFacts(req panel.StartRequest, f netcfg.Facts) e
 	}
 
 	if name := req.Hotspot.Interface; name != "" && !s.isVirtualAPName(name) {
-		if !netcfg.ValidInterfaceName(name) {
+		if !netcfg.ValidInterfaceNameOn(s.cfg.netOptions().Platform, name) {
 			return fail("hotspot interface", panel.FaultNoAPAdapter,
 				errors.New("the chosen hotspot interface is not a usable interface name"))
 		}

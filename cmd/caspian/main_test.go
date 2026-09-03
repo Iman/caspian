@@ -5,6 +5,7 @@ package main
 
 import (
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -243,7 +244,8 @@ func TestLayoutPortsMatchTheDocument(t *testing.T) {
 // names.
 func TestLayoutPathsMatchTheDocument(t *testing.T) {
 	doc := readLayout(t)
-	for _, p := range []string{socketPath, stateDir, journalPath} {
+	l := linuxLayout()
+	for _, p := range []string{l.PrivEndpoint, l.StateDir, l.JournalPath} {
 		if !strings.Contains(doc, "`"+p+"`") {
 			t.Errorf("docs/LAYOUT.md does not name %s, which this command uses", p)
 		}
@@ -253,20 +255,21 @@ func TestLayoutPathsMatchTheDocument(t *testing.T) {
 	if err != nil {
 		t.Fatalf("reading docs/INSTALL.md: %v", err)
 	}
-	if !strings.Contains(string(install), firstRunPasswordPath) {
-		t.Errorf("docs/INSTALL.md does not name %s, which the panel role consumes", firstRunPasswordPath)
+	if !strings.Contains(string(install), l.FirstRunPasswordPath) {
+		t.Errorf("docs/INSTALL.md does not name %s, which the panel role consumes", l.FirstRunPasswordPath)
 	}
 }
 
 // TestTheServiceAccountIsTheOneLayoutFixes.
 func TestTheServiceAccountIsTheOneLayoutFixes(t *testing.T) {
 	doc := readLayout(t)
-	if !strings.Contains(doc, "| Service user and group | `"+serviceAccount+"`") {
-		t.Errorf("docs/LAYOUT.md does not fix the service account as %q", serviceAccount)
+	l := linuxLayout()
+	if !strings.Contains(doc, "| Service user and group | `"+l.ServiceAccount+"`") {
+		t.Errorf("docs/LAYOUT.md does not fix the service account as %q", l.ServiceAccount)
 	}
-	if serviceGroup != serviceAccount {
+	if l.ServiceGroup != l.ServiceAccount {
 		t.Errorf("the service user and group are one entry in docs/LAYOUT.md and differ here: %q and %q",
-			serviceAccount, serviceGroup)
+			l.ServiceAccount, l.ServiceGroup)
 	}
 }
 
@@ -290,4 +293,25 @@ func between(t *testing.T, doc, from, to string) string {
 		return rest[:j]
 	}
 	return rest
+}
+
+// TestThisPlatformsLayoutIsWellFormed checks the table the binary actually
+// runs with, whichever platform the test runs on: absolute paths, the state
+// files inside the state directory, and a service manager named.
+func TestThisPlatformsLayoutIsWellFormed(t *testing.T) {
+	l := layout
+	for name, p := range map[string]string{"state": l.StateDir, "journal": l.JournalPath, "first-run": l.FirstRunPasswordPath, "binary": l.BinaryPath} {
+		if !filepath.IsAbs(p) {
+			t.Errorf("%s path %q is not absolute", name, p)
+		}
+	}
+	if !strings.HasPrefix(l.JournalPath, l.StateDir) || !strings.HasPrefix(l.FirstRunPasswordPath, l.StateDir) {
+		t.Errorf("the journal and the first-run file must live in the state directory: %q %q in %q", l.JournalPath, l.FirstRunPasswordPath, l.StateDir)
+	}
+	if l.PrivEndpoint == "" || l.ServiceAccount == "" || l.ServiceManager == "" || l.StartPrivilegedAdvice == "" || l.StopPrivilegedAdvice == "" {
+		t.Errorf("layout has an empty field: %+v", l)
+	}
+	if socketPath != l.PrivEndpoint || stateDir != l.StateDir || serviceAccount != l.ServiceAccount {
+		t.Fatal("the package variables must read from the platform table")
+	}
 }

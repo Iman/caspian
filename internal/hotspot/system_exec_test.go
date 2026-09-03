@@ -133,3 +133,18 @@ func TestExecSystemSleepRespectsCancellation(t *testing.T) {
 		t.Errorf("Sleep waited %s on a cancelled context", elapsed)
 	}
 }
+
+func TestExecSystemRunInputFeedsStandardInput(t *testing.T) {
+	res, err := NewExecSystem().RunInput(context.Background(), "hello from stdin", "/bin/cat")
+	if err != nil || res.ExitCode != 0 || res.Stdout != "hello from stdin" {
+		t.Fatalf("res = %+v err = %v", res, err)
+	}
+}
+
+func TestExecSystemWriteFileCannotReplaceADirectory(t *testing.T) {
+	dir := t.TempDir()
+	err := NewExecSystem().WriteFile(dir, []byte("x"), 0o600)
+	if err == nil || !strings.Contains(err.Error(), "could not replace") {
+		t.Fatalf("err = %v", err)
+	}
+}

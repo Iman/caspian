@@ -133,3 +133,19 @@ var ifaceNamePattern = regexp.MustCompile(`^[A-Za-z0-9_.:-]{1,15}$`)
 func ValidInterfaceName(name string) bool {
 	return ifaceNamePattern.MatchString(name)
 }
+
+// windowsIfaceNamePattern is what Windows accepts for an adapter alias: up to
+// 255 characters, spaces and an asterisk included ("Wi-Fi 2", "Local Area
+// Connection* 12"). Quotes, control characters and slashes are still refused;
+// no Windows command here goes through a shell, so the concern is only that
+// an alias round-trips through the journal intact.
+var windowsIfaceNamePattern = regexp.MustCompile(`^[A-Za-z0-9 _.()#*:-]{1,255}$`)
+
+// ValidInterfaceNameOn is ValidInterfaceName for a platform: the kernel rule
+// on Linux and macOS, the adapter alias rule on Windows.
+func ValidInterfaceNameOn(pl Platform, name string) bool {
+	if pl == PlatformWindows {
+		return windowsIfaceNamePattern.MatchString(name)
+	}
+	return ifaceNamePattern.MatchString(name)
+}

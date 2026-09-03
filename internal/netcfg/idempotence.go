@@ -196,6 +196,7 @@ var notFoundMarkers = []string{
 	"no such process",                 // ip route del with no match
 	"cannot find device",              // ip, named device absent
 	"cannot assign requested address", // ip addr del, address not on the device
+	"not in table",                    // route(8) on macOS: delete of a route that is not there
 }
 
 // commandRemoves reports whether a command's job is to take something away.

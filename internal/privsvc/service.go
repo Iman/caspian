@@ -30,7 +30,7 @@ import (
 // same shape internal/engine uses for the same reason.
 type Service struct {
 	cfg  Config
-	sup  *hotspot.Supervisor
+	sup  hotspot.AccessPoint
 	diag *diagRing
 	opMu sync.Mutex
 
@@ -70,7 +70,7 @@ func New(cfg Config) (*Service, error) {
 	cfg = cfg.withDefaults()
 	return &Service{
 		cfg:     cfg,
-		sup:     hotspot.NewSupervisor(cfg.System, cfg.HotspotPaths),
+		sup:     cfg.AccessPoint,
 		diag:    newDiagRing(diagCapacity, cfg.Now),
 		country: cfg.Country,
 	}, nil
@@ -125,7 +125,7 @@ func (s *Service) Detect(ctx context.Context) (panel.Detection, error) {
 
 // detect runs a full detection and turns it into the panel's vocabulary.
 func (s *Service) detect(ctx context.Context) (panel.Detection, error) {
-	facts, err := netcfg.Detect(ctx, s.cfg.Runner, netcfg.BaseSysctlKnobs())
+	facts, err := s.cfg.Backend.Detect(ctx, s.cfg.Runner, s.cfg.Backend.BaseSysctlKnobs())
 	if err != nil {
 		return panel.Detection{}, fail("detect", faultOf(err), err)
 	}
@@ -423,14 +423,7 @@ func (s *Service) recordStepFailure(where string, servers []netip.Addr, rep netc
 // beaconing is not permitted on most channels there and passing it through
 // would produce a hotspot that never appears.
 func (s *Service) regulatoryDomain(ctx context.Context) string {
-	res, err := s.cfg.Runner.Run(ctx, netcfg.Command{
-		Path: netcfg.BinIw, Args: []string{"reg", "get"},
-		Why: "the regulatory domain, which hostapd needs before it will beacon on any channel",
-	})
-	if err != nil {
-		return s.cfg.Country
-	}
-	if cc, ok := parseRegDomain(res.Stdout); ok {
+	if cc, ok := s.cfg.Backend.RegulatoryDomain(ctx, s.cfg.Runner); ok {
 		return cc
 	}
 	return s.cfg.Country

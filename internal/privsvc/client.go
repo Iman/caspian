@@ -8,7 +8,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"net"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/panel"
@@ -119,8 +118,7 @@ func (c *Client) call(ctx context.Context, req wireRequest) (wireResponse, error
 		req.DeadlineUnixNano = dl.UnixNano()
 	}
 
-	d := net.Dialer{Timeout: c.dialTimeout}
-	conn, err := d.DialContext(ctx, "unix", c.path)
+	conn, err := dialEndpoint(ctx, c.path, c.dialTimeout)
 	if err != nil {
 		// The one place this package produces a panel.Fault on the client
 		// side. internal/panel/priv.go: FaultUnavailable "is raised by this

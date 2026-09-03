@@ -77,6 +77,26 @@
 `internal/xcfg` هست. مقدارهای بالا دلیل این هستند که آن آزمون اصلاً چیزی برای
 مقابله‌کردن دارد.
 
+## پلتفرم‌های دیگر
+
+جدول‌های بالا مالِ دستگاه لینوکسی‌اند و همان‌هایی‌اند که آزمون‌ها می‌خوانند.
+پورت‌های macOS و Windows (شاخهٔ `port/platforms`، ببینید `docs/PORTS.md`) همان
+نام‌ها و پورت‌ها را نگه می‌دارند و تنها آنچه را تغییر می‌دهند که سیستم‌عامل ناچار
+می‌کند؛ هر مقدارِ زیر در `cmd/caspian/paths_darwin.go` و
+`cmd/caspian/paths_windows.go` تثبیت شده است.
+
+| چیز | macOS | Windows |
+|---|---|---|
+| باینری | `/usr/local/bin/caspian` | `%ProgramFiles%\Caspian\caspian.exe`، با `caspian-tethering.exe` و `wintun.dll` کنارش |
+| وضعیت ماندگار | `/Library/Application Support/Caspian` با 0700 برای `_caspian` | `%ProgramData%\Caspian`، ACL: SYSTEM، Administrators، حساب پنل |
+| دایرکتوری زمان اجرا | `/var/run/caspian` با 0750 و root:`_caspian` | ندارد |
+| پنل به سرویس ممتاز | `/var/run/caspian/priv.sock` با 0660 | named pipe در `\\.\pipe\caspian-priv`، توصیف‌گری که SYSTEM، Administrators و حساب پنل را می‌پذیرد |
+| حساب سرویس | `_caspian`، یک role account (UID از 450 تا 499، بدون شل) | `NT SERVICE\caspian-panel`، یک حساب سرویس مجازی |
+| مدیر سرویس | launchd: `org.caspianbyoc.caspian`، `org.caspianbyoc.caspian-panel` | Service Control Manager: `caspian`، `caspian-panel` |
+| دستگاه تونل | `utun100` (TUN داروینِ xray-core بر `utunN` اصرار دارد) | `xray0`، یک آداپتور Wintun |
+| نقطهٔ دسترسی | Internet Sharing اپل روی رادیوی داخلی | Mobile Hotspot، از راه کمک‌برنامهٔ tethering |
+| زیرشبکهٔ کلاینت | برنامه‌ریز انتخاب می‌کند و به Internet Sharing می‌دهد | 192.168.137.0/24، تثبیت‌شده توسط Internet Connection Sharing |
+
 ## دو فرایند، یک باینری
 
 `caspian serve --privileged` با root اجرا می‌شود. مسیرها، فایروال، اکسس‌پوینت و

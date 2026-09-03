@@ -4,7 +4,6 @@
 package privsvc
 
 import (
-	"strings"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/hotspot"
@@ -143,50 +142,9 @@ func bandForChannel(ch int) hotspot.Band {
 	return hotspot.Band2GHz
 }
 
-// parseRegDomain reads the country out of "iw reg get".
-//
-// The output looks like:
-//
-//	global
-//	country GB: DFS-ETSI
-//		(2402 - 2482 @ 40), (N/A, 20), (N/A)
-//
-// and on a box where nothing has set a domain the country line reads
-// "country 00: DFS-UNSET". A machine with several phys prints a block per phy;
-// the first country line that is not the world domain is taken, because a
-// hotspot that is legal under one domain and not another is a situation this
-// program cannot resolve and should not pretend to.
-func parseRegDomain(out string) (string, bool) {
-	for _, raw := range strings.Split(out, "\n") {
-		line := strings.TrimSpace(raw)
-		rest, ok := strings.CutPrefix(line, "country ")
-		if !ok {
-			continue
-		}
-		cc, _, ok := strings.Cut(rest, ":")
-		if !ok {
-			continue
-		}
-		cc = strings.TrimSpace(cc)
-		if len(cc) != 2 || cc == "00" {
-			continue
-		}
-		if !isUpperAlpha2(cc) {
-			continue
-		}
-		return cc, true
-	}
-	return "", false
-}
+// parseRegDomain and isUpperAlpha2 live in internal/netcfg now, beside the
+// Linux backend that runs "iw reg get"; these names stay so the tests that
+// pin the parsing keep reading.
+func parseRegDomain(out string) (string, bool) { return netcfg.ParseRegDomain(out) }
 
-func isUpperAlpha2(s string) bool {
-	if len(s) != 2 {
-		return false
-	}
-	for i := 0; i < 2; i++ {
-		if s[i] < 'A' || s[i] > 'Z' {
-			return false
-		}
-	}
-	return true
-}
+func isUpperAlpha2(s string) bool { return netcfg.IsUpperAlpha2(s) }
