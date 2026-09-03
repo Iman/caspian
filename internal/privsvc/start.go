@@ -113,7 +113,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// -----------------------------------------------------------------------
 	// 4. Look at the machine, and check the request against what it says.
 	// -----------------------------------------------------------------------
-	facts, err := netcfg.Detect(ctx, s.cfg.Runner, netcfg.BaseSysctlKnobs())
+	facts, err := s.cfg.Backend.Detect(ctx, s.cfg.Runner, s.cfg.Backend.BaseSysctlKnobs())
 	if err != nil {
 		return fail("detect", faultOf(err), err)
 	}
@@ -166,7 +166,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// that names an interface, this is where it is noticed instead of the knob
 	// being changed with no value to restore.
 	if missingKnobs(facts, plan.SysctlKnobs()) {
-		facts, err = netcfg.Detect(ctx, s.cfg.Runner, plan.SysctlKnobs())
+		facts, err = s.cfg.Backend.Detect(ctx, s.cfg.Runner, plan.SysctlKnobs())
 		if err != nil {
 			return fail("detect", faultOf(err), err)
 		}
@@ -725,7 +725,7 @@ func (s *Service) applyPreEngine(
 	}
 	s.setApplier(nil)
 
-	fresh, err := netcfg.Detect(ctx, s.cfg.Runner, netcfg.BaseSysctlKnobs())
+	fresh, err := s.cfg.Backend.Detect(ctx, s.cfg.Runner, s.cfg.Backend.BaseSysctlKnobs())
 	if err != nil {
 		return nil, hp, facts, fail("detect", faultOf(err), err)
 	}

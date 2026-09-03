@@ -4,4 +4,7 @@
 
 package netcfg
 
-const isLinux = false
+const (
+	isLinux         = false
+	hasSystemRunner = false
+)

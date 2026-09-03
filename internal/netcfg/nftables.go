@@ -473,7 +473,10 @@ func (p *Plan) writeRestrictedOutput(b *strings.Builder) {
 //
 // The action that decides when to cut belongs to the privileged service. This
 // is only the ruleset side.
-func (p *Plan) CutStep() Step {
+func (p *Plan) CutStep() Step { return p.backend().CutStep(p) }
+
+// linuxCutStep reloads the nftables ruleset with the forward accepts removed.
+func (p *Plan) linuxCutStep() Step {
 	why := "cut forwarded client traffic without taking the hotspot down, so a joined device stays " +
 		"joined and can still reach the panel to turn it back on"
 	return Step{
@@ -485,7 +488,10 @@ func (p *Plan) CutStep() Step {
 }
 
 // RestoreStep puts forwarding back.
-func (p *Plan) RestoreStep() Step {
+func (p *Plan) RestoreStep() Step { return p.backend().RestoreStep(p) }
+
+// linuxRestoreStep reloads the normal nftables ruleset.
+func (p *Plan) linuxRestoreStep() Step {
 	why := "resume forwarding client traffic through the tunnel"
 	return Step{
 		Op:   OpNft,

@@ -64,20 +64,32 @@ func TestGeneratedSteps_AllPassValidation(t *testing.T) {
 	}
 }
 
-// On anything that is not Linux the runner refuses rather than quietly doing
+// On a platform with no runner the runner refuses rather than quietly doing
 // nothing. A no-op runner would make an apply on a development machine report
-// success, which is a false green.
+// success, which is a false green. On Linux and macOS there IS a runner, and
+// it attempts a command from its own allowlist and refuses one from another
+// platform's.
 func TestNewSystemRunner_RefusesOffLinux(t *testing.T) {
 	r := NewSystemRunner()
 	_, err := r.Run(context.Background(), Command{Path: BinIP, Args: []string{"link"}})
-	if isLinux {
-		if errors.Is(err, ErrUnsupportedPlatform) {
-			t.Error("on linux the runner must attempt the command")
+	if !hasSystemRunner {
+		if !errors.Is(err, ErrUnsupportedPlatform) {
+			t.Fatalf("err = %v, want ErrUnsupportedPlatform", err)
 		}
 		return
 	}
-	if !errors.Is(err, ErrUnsupportedPlatform) {
-		t.Fatalf("err = %v, want ErrUnsupportedPlatform", err)
+	if errors.Is(err, ErrUnsupportedPlatform) {
+		t.Error("on a platform with a runner it must attempt or refuse the command by allowlist, not by platform")
+	}
+	if isLinux {
+		return
+	}
+	// macOS: "ip" is Linux's and is not on this runner's list.
+	if !errors.Is(err, ErrDisallowedBinary) {
+		t.Errorf("err = %v, want ErrDisallowedBinary for a Linux binary on a non-Linux runner", err)
+	}
+	if _, err := r.Run(context.Background(), Command{Path: "ifconfig", Args: []string{"lo0"}}); err != nil {
+		t.Errorf("ifconfig lo0 on the macOS runner: %v", err)
 	}
 }
 

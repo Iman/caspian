@@ -53,6 +53,11 @@ type System interface {
 	// difference matters when explaining a failure to the user.
 	Run(ctx context.Context, name string, args ...string) (Result, error)
 
+	// RunInput is Run with text on standard input, for a tool that takes its
+	// script there (scutil). It is a second method rather than a parameter on
+	// Run so that every existing caller and every test double stays as it was.
+	RunInput(ctx context.Context, stdin string, name string, args ...string) (Result, error)
+
 	// WriteFile writes a file, creating parent directories as needed.
 	WriteFile(path string, data []byte, perm fs.FileMode) error
 

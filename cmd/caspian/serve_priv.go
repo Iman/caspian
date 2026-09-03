@@ -8,11 +8,8 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"os"
 	"time"
 
-	"caspianbyoc.org/caspian/internal/hotspot"
-	"caspianbyoc.org/caspian/internal/netcfg"
 	"caspianbyoc.org/caspian/internal/privsvc"
 )
 
@@ -28,23 +25,28 @@ func servePrivileged(ctx context.Context, log *slog.Logger) error {
 	// ---------------------------------------------------------------------
 	// Refuse early, and say what is wrong.
 	// ---------------------------------------------------------------------
-	if os.Geteuid() != 0 {
-		return fmt.Errorf("the privileged service has to run as root, and this process is running as user id %d. "+
-			"It is started by caspian.service, which does that; running it by hand needs sudo", os.Geteuid())
+	if ok, who := runningPrivileged(); !ok {
+		return fmt.Errorf("the privileged service has to run with the operating system's full privileges, "+
+			"and this process is running as %s. It is started by %s, which does that; running it by hand "+
+			"needs sudo or an elevated prompt", who, layout.ServiceManager)
 	}
 
-	sys, err := hotspot.NewSystemRunner()
+	plat, err := newPlatformPrivileged()
 	if err != nil {
-		// internal/hotspot's message on a non-Linux machine already says the
-		// configuration can be generated and checked but not started, which is
-		// exactly what "caspian check" is for.
+		// The refusal already says what this machine lacks. "caspian check"
+		// runs the read-only half of the same code and is the thing to run
+		// instead.
 		return fmt.Errorf("%w. Use \"caspian check\" on this machine instead", err)
 	}
 
 	svc, err := privsvc.New(privsvc.Config{
-		Runner:       netcfg.NewSystemRunner(),
-		System:       sys,
+		Runner:       plat.runner,
+		Backend:      plat.backend,
+		System:       plat.system,
+		AccessPoint:  plat.ap,
 		HotspotPaths: hotspotPaths(),
+		TunName:      plat.tunName,
+		Country:      plat.country,
 		JournalPath:  journalPath,
 		SocksPort:    socksPort,
 		LocalDNSPort: localDNSPort,
@@ -96,7 +98,7 @@ func servePrivileged(ctx context.Context, log *slog.Logger) error {
 	if err != nil {
 		if errors.Is(err, privsvc.ErrAlreadyRunning) {
 			return fmt.Errorf("cannot open the socket at %s because another copy of the privileged service "+
-				"is already listening on it. Stop it first: systemctl stop caspian.service", socketPath)
+				"is already listening on it. Stop it first: %s", socketPath, layout.StopPrivilegedAdvice)
 		}
 		return err
 	}

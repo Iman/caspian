@@ -1,7 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-//go:build unix
-
 package hotspot
 
 import (
@@ -13,15 +11,17 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"syscall"
+	"strings"
 	"time"
 )
 
 // execSystem is the real System: it runs commands and touches real files.
 //
-// Built on unix so that it compiles, vets and can be exercised on darwin
-// during development. Only NewSystemRunner is gated to Linux, because the
-// appliance is Linux and the DefaultPaths are Linux paths.
+// Untagged: everything here is portable Go. The two process operations that
+// differ per operating system, ProcessAlive and SignalProcess, live in
+// system_exec_unix.go and system_exec_windows.go. Only NewSystemRunner is
+// gated to Linux, because the hostapd and dnsmasq Supervisor is Linux; the
+// other platforms build their access points over the same execSystem.
 type execSystem struct{}
 
 // NewExecSystem returns a System backed by real processes and real files.
@@ -30,8 +30,15 @@ type execSystem struct{}
 // tests. Use NewSystemRunner for the appliance.
 func NewExecSystem() System { return execSystem{} }
 
-func (execSystem) Run(ctx context.Context, name string, args ...string) (Result, error) {
+func (e execSystem) Run(ctx context.Context, name string, args ...string) (Result, error) {
+	return e.RunInput(ctx, "", name, args...)
+}
+
+func (execSystem) RunInput(ctx context.Context, stdin string, name string, args ...string) (Result, error) {
 	cmd := exec.CommandContext(ctx, name, args...)
+	if stdin != "" {
+		cmd.Stdin = strings.NewReader(stdin)
+	}
 	var stdout, stderr bytes.Buffer
 	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
@@ -89,49 +96,6 @@ func (execSystem) Remove(path string) error {
 	err := os.Remove(path)
 	if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		return fmt.Errorf("hotspot: could not remove %s: %w", path, err)
-	}
-	return nil
-}
-
-func (execSystem) ProcessAlive(pid int) (bool, error) {
-	if pid <= 0 {
-		return false, nil
-	}
-	// Signal 0 performs the permission and existence check without sending
-	// anything. ESRCH means no such process; EPERM means it exists and
-	// belongs to someone else, which for our purposes is alive.
-	err := syscall.Kill(pid, 0)
-	switch {
-	case err == nil:
-		return true, nil
-	case errors.Is(err, syscall.ESRCH):
-		return false, nil
-	case errors.Is(err, syscall.EPERM):
-		return true, nil
-	default:
-		return false, fmt.Errorf("hotspot: could not check process %d: %w", pid, err)
-	}
-}
-
-func (execSystem) SignalProcess(pid int, sig Signal) error {
-	if pid <= 0 {
-		return fmt.Errorf("hotspot: refusing to signal process id %d", pid)
-	}
-	var s syscall.Signal
-	switch sig {
-	case SignalTerm:
-		s = syscall.SIGTERM
-	case SignalKill:
-		s = syscall.SIGKILL
-	default:
-		return fmt.Errorf("hotspot: unknown signal %d", int(sig))
-	}
-	if err := syscall.Kill(pid, s); err != nil {
-		if errors.Is(err, syscall.ESRCH) {
-			// Already gone. Stopping something that has stopped is success.
-			return nil
-		}
-		return fmt.Errorf("hotspot: could not send %s to process %d: %w", sig, pid, err)
 	}
 	return nil
 }

@@ -608,6 +608,11 @@ func (p *Plan) FirewallStep() Step {
 // host route is last of the routing work and still before the engine, so the
 // engine's very first connection to the server is already outside the tunnel.
 func (p *Plan) PreEngineSteps(current map[string]string) []Step {
+	return p.backend().PreEngineSteps(p, current)
+}
+
+// linuxPreEngineSteps is the Linux order. See PreEngineSteps.
+func (p *Plan) linuxPreEngineSteps(current map[string]string) []Step {
 	steps := []Step{p.FirewallStep()}
 	steps = append(steps, p.SysctlSteps(current)...)
 	steps = append(steps, p.VirtualIfaceSteps()...)
@@ -623,6 +628,11 @@ func (p *Plan) PreEngineSteps(current map[string]string) []Step {
 // the device in a way that requires it to exist, which is the property the
 // whole fail-closed design rests on.
 func (p *Plan) PostEngineSteps(current map[string]string) []Step {
+	return p.backend().PostEngineSteps(p, current)
+}
+
+// linuxPostEngineSteps is the Linux list. See PostEngineSteps.
+func (p *Plan) linuxPostEngineSteps(current map[string]string) []Step {
 	steps := p.TunnelAddrSteps()
 	steps = append(steps, p.TunnelRouteSteps()...)
 	return steps
@@ -667,7 +677,7 @@ func (p *Plan) AllSteps(current map[string]string) []Step {
 // same set today only because no knob names an interface; if that ever stops
 // being true this method is where the difference goes, and
 // TestSysctlKnobs_AreGlobalAndFullyMeasured is what will notice.
-func (p *Plan) SysctlKnobs() []string { return BaseSysctlKnobs() }
+func (p *Plan) SysctlKnobs() []string { return p.backend().SysctlKnobs(p) }
 
 // String renders a step for a log line.
 func (s Step) String() string {

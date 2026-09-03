@@ -388,14 +388,4 @@ func (s *Store) ensureDir() error {
 // the drive but does not order the drive's own write cache. Full durability
 // there needs fcntl F_FULLFSYNC. The target for v1 is Linux on a Raspberry Pi,
 // where fsync is sufficient, so that is not implemented.
-func syncDir(dir string) error {
-	d, err := os.Open(dir)
-	if err != nil {
-		return fmt.Errorf("state: opening %s to flush it: %w", dir, err)
-	}
-	defer d.Close()
-	if err := d.Sync(); err != nil {
-		return fmt.Errorf("state: flushing directory %s: %w", dir, err)
-	}
-	return nil
-}
+// syncDir is in sync_unix.go and sync_windows.go; see the note above.

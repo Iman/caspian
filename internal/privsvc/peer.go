@@ -17,9 +17,20 @@ type Peer struct {
 	// line and never for a decision: a pid can be reused between the moment it
 	// is read and the moment anything is done with it.
 	PID int
+
+	// SID is the account on Windows, where a UID means nothing; Admin is set
+	// when that account is LocalSystem or a member of Administrators. Both
+	// are empty on unix. See transport_windows.go.
+	SID   string
+	Admin bool
 }
 
-func (p Peer) String() string { return "uid " + strconv.FormatUint(uint64(p.UID), 10) }
+func (p Peer) String() string {
+	if p.SID != "" {
+		return "sid " + p.SID
+	}
+	return "uid " + strconv.FormatUint(uint64(p.UID), 10)
+}
 
 // ErrPeerNotAllowed is returned for a connection from an account this service
 // does not answer.
@@ -43,6 +54,11 @@ var ErrPeerUnknown = errors.New("privsvc: this platform cannot report who is on 
 type Allowed struct {
 	// UIDs is the set of user ids that may connect.
 	UIDs map[uint32]bool
+
+	// SIDs are the Windows accounts permitted besides administrators, filled
+	// by AllowedFor from the service account's name where the platform
+	// resolves names to SIDs.
+	SIDs map[string]bool
 }
 
 // AllowedFor builds the permitted set: root, plus the named service account if
@@ -53,8 +69,12 @@ type Allowed struct {
 // caspian account on this machine" rather than as a silent refusal of every
 // connection.
 func AllowedFor(serviceAccount string) (Allowed, error) {
-	a := Allowed{UIDs: map[uint32]bool{0: true}}
+	a := Allowed{UIDs: map[uint32]bool{0: true}, SIDs: map[string]bool{}}
 	if serviceAccount == "" {
+		return a, nil
+	}
+	if sid, ok := lookupAccountSID(serviceAccount); ok {
+		a.SIDs[sid] = true
 		return a, nil
 	}
 	u, err := user.Lookup(serviceAccount)
@@ -70,7 +90,12 @@ func AllowedFor(serviceAccount string) (Allowed, error) {
 }
 
 // Permits reports whether this peer may drive the service.
-func (a Allowed) Permits(p Peer) bool { return a.UIDs[p.UID] }
+func (a Allowed) Permits(p Peer) bool {
+	if p.SID != "" {
+		return p.Admin || a.SIDs[p.SID]
+	}
+	return a.UIDs[p.UID]
+}
 
 // The credential itself is read by peerCredential, which is platform specific:
 // SO_PEERCRED on Linux, LOCAL_PEERCRED on Darwin, and a refusal everywhere

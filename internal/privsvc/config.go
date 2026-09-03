@@ -67,6 +67,18 @@ type Config struct {
 	// in a test.
 	Runner netcfg.Runner
 
+	// Backend is the operating system's network backend: how the machine is
+	// read, what a plan turns into, and how it is read back. nil means Linux,
+	// which is what every caller before the port meant. cmd/caspian passes
+	// netcfg.SystemBackend() so the service plans for the machine it is on.
+	Backend netcfg.Backend
+
+	// AccessPoint brings the rendered hotspot on the air. nil means the Linux
+	// hostapd and dnsmasq Supervisor over System and HotspotPaths, which is
+	// why those two stay required in that case. A macOS or Windows build
+	// passes its own.
+	AccessPoint hotspot.AccessPoint
+
 	// System executes the hotspot's effects. Required.
 	// Use hotspot.NewSystemRunner on the appliance and hotspot.Recorder in a
 	// test.
@@ -163,11 +175,11 @@ func (c Config) check() error {
 	switch {
 	case c.Runner == nil:
 		return errors.New("privsvc: Config.Runner is required")
-	case c.System == nil:
-		return errors.New("privsvc: Config.System is required")
+	case c.AccessPoint == nil && c.System == nil:
+		return errors.New("privsvc: Config.System is required when no AccessPoint is given")
 	case c.JournalPath == "":
 		return errors.New("privsvc: Config.JournalPath is required; docs/LAYOUT.md fixes /var/lib/caspian/netcfg.journal")
-	case c.HotspotPaths.HostapdConf == "" || c.HotspotPaths.DnsmasqConf == "":
+	case c.AccessPoint == nil && (c.HotspotPaths.HostapdConf == "" || c.HotspotPaths.DnsmasqConf == ""):
 		return errors.New("privsvc: Config.HotspotPaths is required; it decides which processes the supervisor may stop")
 	case c.SocksPort == 0:
 		return errors.New("privsvc: Config.SocksPort is required; docs/LAYOUT.md fixes 10808")
@@ -182,8 +194,14 @@ func (c Config) check() error {
 }
 
 func (c Config) withDefaults() Config {
+	if c.Backend == nil {
+		c.Backend = netcfg.BackendFor(netcfg.PlatformLinux)
+	}
 	if c.TunName == "" {
 		c.TunName = netcfg.DefaultOptions().TunName
+	}
+	if c.AccessPoint == nil {
+		c.AccessPoint = hotspot.NewSupervisor(c.System, c.HotspotPaths)
 	}
 	if c.Engine == nil {
 		c.Engine = engine.NewWithLogCapacity(DefaultEngineLogCapacity)
@@ -213,6 +231,17 @@ func (c Config) withDefaults() Config {
 // so that no value is written twice.
 func (c Config) netOptions() netcfg.Options {
 	o := netcfg.DefaultOptions()
+	// A Config that has not been through withDefaults (a test building one by
+	// hand) still means Linux.
+	if c.Backend != nil {
+		o.Platform = c.Backend.Platform()
+		// A backend whose access point decides the subnet itself (Windows
+		// Mobile Hotspot) pins the plan to it; a subnet the plan chose and the
+		// hotspot ignored would be a firewall guarding the wrong network.
+		if fixed, ok := c.Backend.(interface{ FixedHotspotSubnet() netip.Prefix }); ok {
+			o.HotspotSubnet = fixed.FixedHotspotSubnet()
+		}
+	}
 	if c.TunName != "" {
 		// Guarded rather than assigned. netcfg.PlanNetwork replaces the WHOLE
 		// options value when TunName is empty, which would silently discard

@@ -23,13 +23,10 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"io"
 	"log/slog"
 	"os"
-	"os/signal"
-	"syscall"
 )
 
 // Exit codes. They are few on purpose: a script can tell "it would not start"
@@ -135,7 +132,11 @@ func runServe(args []string, stdout, stderr io.Writer) int {
 		return exitUsage
 	}
 
-	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	role := "caspian-panel"
+	if privileged {
+		role = "caspian"
+	}
+	ctx, stop := serviceContext(role)
 	defer stop()
 
 	log := newLogger(stderr)

@@ -67,7 +67,7 @@ const (
 // Listener serves one Service on a unix socket.
 type Listener struct {
 	svc     *Service
-	ln      *net.UnixListener
+	ln      net.Listener
 	path    string
 	log     *slog.Logger
 	allowed Allowed
@@ -125,21 +125,8 @@ func Listen(svc *Service, cfg ListenConfig) (*Listener, error) {
 		log.Warn("the service account could not be resolved", "error", err.Error())
 	}
 
-	if err := prepareSocketPath(cfg.Path); err != nil {
-		return nil, err
-	}
-
-	addr := &net.UnixAddr{Name: cfg.Path, Net: "unix"}
-	ln, err := net.ListenUnix("unix", addr)
+	ln, err := listenEndpoint(cfg)
 	if err != nil {
-		return nil, fmt.Errorf("privsvc: could not open the socket at %s: %w", cfg.Path, err)
-	}
-	// SetUnlinkOnClose is on by default for a listener that created the file;
-	// it is stated so that a later reader does not have to know the default.
-	ln.SetUnlinkOnClose(true)
-
-	if err := secureSocket(cfg.Path, cfg.Group); err != nil {
-		ln.Close()
 		return nil, err
 	}
 
@@ -228,7 +215,7 @@ func (l *Listener) Serve(ctx context.Context) error {
 	}()
 
 	for {
-		conn, err := l.ln.AcceptUnix()
+		conn, err := l.ln.Accept()
 		if err != nil {
 			l.wg.Wait()
 			if ctx.Err() != nil || errors.Is(err, net.ErrClosed) {
@@ -265,7 +252,7 @@ func (l *Listener) Close() error {
 }
 
 // handle serves one connection: one request, one response, then close.
-func (l *Listener) handle(ctx context.Context, conn *net.UnixConn) {
+func (l *Listener) handle(ctx context.Context, conn net.Conn) {
 	defer conn.Close()
 
 	// ---------------------------------------------------------------------
@@ -276,7 +263,7 @@ func (l *Listener) handle(ctx context.Context, conn *net.UnixConn) {
 	// there is nothing to say to it, and a refusal message would only confirm
 	// that something is listening.
 	// ---------------------------------------------------------------------
-	peer, err := peerCredential(conn)
+	peer, err := peerOf(conn)
 	if err != nil {
 		l.log.Warn("refused a connection: the account on the other end could not be established",
 			"error", err.Error())
@@ -401,7 +388,7 @@ func (l *Listener) faultResponse(action panel.Action, err error) wireResponse {
 	return wireResponse{Fault: f}
 }
 
-func (l *Listener) reply(conn *net.UnixConn, resp wireResponse) {
+func (l *Listener) reply(conn net.Conn, resp wireResponse) {
 	b, err := json.Marshal(resp)
 	if err != nil {
 		// Every field of wireResponse is a plain type from internal/panel, so

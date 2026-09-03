@@ -65,6 +65,15 @@ var ErrFirewallUnrecognised = errors.New("netcfg: the loaded firewall table does
 // any service on the interface, and treat a failure as fatal: a box that
 // cannot prove the interface is its own must not serve on it.
 func AssertHotspotInterfaceReleased(ctx context.Context, r Runner, p *Plan) error {
+	if p == nil {
+		return errors.New("netcfg: no hotspot interface to check")
+	}
+	return p.backend().AssertHotspotInterfaceReleased(ctx, r, p)
+}
+
+// linuxAssertHotspotInterfaceReleased reads iw and ip. See
+// AssertHotspotInterfaceReleased.
+func linuxAssertHotspotInterfaceReleased(ctx context.Context, r Runner, p *Plan) error {
 	if p == nil || p.Hotspot == "" {
 		return errors.New("netcfg: no hotspot interface to check")
 	}
@@ -203,6 +212,15 @@ func describePrefixes(addrs []netip.Prefix) string {
 // handset joins. NOT MEASURED for the RTL8192EU dongle, which declares AP
 // among its modes and has never been asked to serve on this box.
 func AssertHotspotIsAccessPoint(ctx context.Context, r Runner, p *Plan, ssid string) error {
+	if p == nil {
+		return errors.New("netcfg: no hotspot interface to check")
+	}
+	return p.backend().AssertHotspotIsAccessPoint(ctx, r, p, ssid)
+}
+
+// linuxAssertHotspotIsAccessPoint reads "iw dev". See
+// AssertHotspotIsAccessPoint.
+func linuxAssertHotspotIsAccessPoint(ctx context.Context, r Runner, p *Plan, ssid string) error {
 	if p == nil || p.Hotspot == "" {
 		return errors.New("netcfg: no hotspot interface to check")
 	}

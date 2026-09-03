@@ -121,6 +121,11 @@ const (
 type Options struct {
 	// TunName is the tunnel device the engine creates. The engine's JSON
 	// surface defaults it to xray0.
+	// Platform is the operating system this plan is for. Empty means Linux.
+	// It decides which Backend turns the plan into commands and reads the
+	// result back; see platform.go.
+	Platform Platform
+
 	TunName string
 
 	HotspotPool []netip.Prefix
@@ -258,6 +263,10 @@ var (
 // turned into commands by PreEngineSteps and PostEngineSteps and into firewall
 // text by Ruleset.
 type Plan struct {
+	// Platform is copied from Options at planning time, so a Plan carries the
+	// backend that made its commands wherever it is handed.
+	Platform Platform
+
 	Mode Mode
 
 	Uplink        string
@@ -390,11 +399,11 @@ func PlanNetwork(f Facts, servers []netip.Addr, o Options) (*Plan, error) {
 	if len(o.TunnelPool) == 0 {
 		o.TunnelPool = DefaultTunnelPool()
 	}
-	if !ValidInterfaceName(o.TunName) {
+	if !ValidInterfaceNameOn(o.Platform, o.TunName) {
 		return nil, fmt.Errorf("netcfg: tunnel device name %q is not a valid interface name", o.TunName)
 	}
 
-	p := &Plan{Tun: o.TunName, Opts: o, NetworkManagerPresent: f.NetworkManagerPresent}
+	p := &Plan{Platform: o.Platform, Tun: o.TunName, Opts: o, NetworkManagerPresent: f.NetworkManagerPresent}
 
 	// 1. The uplink is whichever interface carries the default route. The
 	//    name is never assumed: a Pi presents its wired port as eth0, end0 or
@@ -1256,6 +1265,9 @@ func (p *Plan) HotspotTakeover(f Facts) (*Plan, error) {
 // neither is something this package measured: what it read was that the
 // interface carrying the default route is not in the wireless list, and which
 // radio the access point landed on.
+// backend is the Backend for this plan's platform.
+func (p *Plan) backend() Backend { return BackendFor(p.Platform) }
+
 func (p *Plan) Explain() string {
 	var b strings.Builder
 	if p.Mode == ModeWiredUplink {

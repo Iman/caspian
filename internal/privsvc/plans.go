@@ -150,6 +150,7 @@ func (s *Service) hotspotPlanFor(p *netcfg.Plan, f netcfg.Facts, req panel.Start
 
 	ap := hotspot.APConfig{
 		Interface:   p.Hotspot,
+		Uplink:      p.Uplink,
 		SSID:        req.Hotspot.SSID,
 		Passphrase:  req.Hotspot.Passphrase,
 		CountryCode: country,
