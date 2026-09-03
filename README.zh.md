@@ -166,7 +166,7 @@ Caspian-BYOC 把一台 Raspberry Pi 变成一个「自带配置」的网关。�
 上网。他不会开终端、不会看日志、不会编辑文件。装好之后，所有操作都在面板里完成。见
 `docs/2026-08-29-design.md` 的 5.1 和 5.2 节。
 
-引擎是 xray-core v1.260327.0，编译进二进制而不是下载下来的。分享链接的解析器是
+引擎是 xray-core v26.4.15 (Go module version `v1.260327.1-0.20260415235634-c5edc122b70e`)，编译进二进制而不是下载下来的。分享链接的解析器是
 XTLS/libXray 里 MIT 许可的 `share` 包，以 v26.3.27 标签内置在
 `third_party/libxray-share/` 下，并在旁边保留了它自己的许可证。
 

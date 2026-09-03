@@ -140,10 +140,10 @@ To finish on the Windows machine, in this order:
 
 ## Not done on any platform yet
 
-- xray-core is still v1.260327.0. v26.4.15 adds `Handler.Close`, which makes
-  the engine release its TUN device on every platform and would let the
-  Linux-only release path in `internal/engine/tundevice_linux.go` go. It is a
-  pinned-version change the README documents, so it is a separate decision.
+- xray-core is v26.4.15 since 2026-09-03. Its `Handler.Close` makes the engine
+  release its TUN device on every platform; the Linux-only release path in
+  `internal/engine/tundevice_linux.go` is kept as a measured safety net until it
+  is re-measured on the appliance as redundant.
 - `docs/LAYOUT.md` documents the Linux table only. `cmd/caspian/paths_*.go`
   hold the macOS and Windows tables; the document should gain both.
 - `install.sh` still refuses anything that is not Linux, by design; the

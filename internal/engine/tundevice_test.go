@@ -3,41 +3,65 @@
 package engine
 
 import (
+	"os"
+	"os/exec"
+	"path/filepath"
 	"reflect"
+	"strings"
 	"testing"
 
 	xtun "github.com/xtls/xray-core/proxy/tun"
 )
 
-// TestTheTunInboundStillHasNoCloseMethod is the guard under the whole of
-// tundevice.go.
+// TestTheTunInboundReleasesItselfOnClose is the guard under tundevice.go.
 //
-// This package removes the TUN device itself only because xray-core does not.
-// The proxy object that owns the device, proxy/tun.Handler, has no Close
-// method at all, so the inbound handler manager closing its handlers
-// (app/proxyman/inbound Manager.Close, then AlwaysOnInboundHandler.Close,
-// which closes workers and mux) reaches nothing that would release it. The TUN
-// inbound has no workers either: infra/conf/xray.go skips the port branch for
-// protocol "tun", so ReceiverConfig.PortList is nil and no worker is built.
+// Until xray-core v26.4.15 the proxy object that owns the device,
+// proxy/tun.Handler, had no Close method, so core.Instance.Close reached
+// nothing that released the device and this package removed it itself. That
+// commit (c5edc122b70e) gave Handler a Close that closes the gVisor stack and
+// the device, and app/proxyman/inbound's AlwaysOnInboundHandler.Close calls
+// common.Close on its proxy, which is how the instance's Close reaches it.
 //
-// If this test fails, xray-core has gained a Close on that type and the
-// workaround in tundevice.go may now be unnecessary or, worse, duplicated. Do
-// not delete the release code on the strength of the method existing: check
-// that something CALLS it during core.Instance.Close, then delete
-// Engine.releaseTunDevices and this test together.
-func TestTheTunInboundStillHasNoCloseMethod(t *testing.T) {
+// Both halves are checked: the method through reflection, the call through
+// the engine's own source in the module cache, because a method nobody calls
+// releases nothing. tundevice.go's release path is kept as the measured
+// safety net (TestReleaseIsSafeWhenTheDeviceIsAlreadyGone): on the appliance
+// the device is now gone before it runs, and it finds nothing to remove.
+func TestTheTunInboundReleasesItselfOnClose(t *testing.T) {
 	typ := reflect.TypeOf(&xtun.Handler{})
-	if m, ok := typ.MethodByName("Close"); ok {
-		t.Fatalf("proxy/tun.Handler now has a %v method: re-read the comment above this test before changing anything", m.Type)
+	m, ok := typ.MethodByName("Close")
+	if !ok {
+		t.Fatalf("proxy/tun.Handler has no Close method; the engine in go.mod is older than v26.4.15 and tundevice.go is the only thing releasing the device")
+	}
+	if m.Type.NumIn() != 1 || m.Type.NumOut() != 1 || m.Type.Out(0).String() != "error" {
+		t.Fatalf("proxy/tun.Handler.Close has the shape %v, not func() error", m.Type)
 	}
 
-	// Naming the methods that ARE there makes the failure above readable: it
-	// says what the type looks like now, not just what is missing.
-	var got []string
-	for i := 0; i < typ.NumMethod(); i++ {
-		got = append(got, typ.Method(i).Name)
+	dir := xrayModuleDir(t)
+	always, err := os.ReadFile(filepath.Join(dir, "app", "proxyman", "inbound", "always.go"))
+	if err != nil {
+		t.Fatalf("reading the inbound manager's source: %v", err)
 	}
-	t.Logf("proxy/tun.Handler exported methods: %v", got)
+	if !strings.Contains(string(always), "common.Close(h.proxy)") {
+		t.Fatal("app/proxyman/inbound/always.go no longer closes the proxy from AlwaysOnInboundHandler.Close, " +
+			"so Handler.Close is not reached from core.Instance.Close and tundevice.go is load bearing again")
+	}
+}
+
+// xrayModuleDir is where the engine's source is, asked of the toolchain
+// rather than assumed, so a replace directive or a different cache location
+// still points here.
+func xrayModuleDir(t *testing.T) string {
+	t.Helper()
+	out, err := exec.Command("go", "list", "-m", "-f", "{{.Dir}}", "github.com/xtls/xray-core").Output()
+	if err != nil {
+		t.Skipf("go list is not available here: %v", err)
+	}
+	dir := strings.TrimSpace(string(out))
+	if dir == "" {
+		t.Skip("go list reported no directory for the engine module")
+	}
+	return dir
 }
 
 // TestTheLoaderDefaultsTheTunDeviceName pins the behaviour tunInboundNames
