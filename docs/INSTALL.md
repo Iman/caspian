@@ -241,7 +241,7 @@ The installer prints:
 That address and that password are the whole handover. Everything after them
 happens on this page:
 
-![The panel, with the tunnel up and one device joined](images/panel-en.png)
+![The panel, with the tunnel up, before any device has joined](images/panel-en.png)
 
 The port is 8088, from `docs/LAYOUT.md`, "Ports". See the Ports section above.
 
