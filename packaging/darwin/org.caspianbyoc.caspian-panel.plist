@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	SPDX-License-Identifier: AGPL-3.0-or-later
+	Copyright (C) 2026 Iman Samizadeh
+
+	The web panel on macOS, as the _caspian role account. launchd has no
+	ordering key equivalent to After=; the panel already tolerates the
+	privileged service being absent and reports it, which is the behaviour
+	docs/2026-08-29-design.md section 5.6 asks for.
+	-->
+	<key>Label</key>
+	<string>org.caspianbyoc.caspian-panel</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/local/bin/caspian</string>
+		<string>serve</string>
+		<string>--panel</string>
+	</array>
+	<key>UserName</key>
+	<string>_caspian</string>
+	<key>GroupName</key>
+	<string>_caspian</string>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>ThrottleInterval</key>
+	<integer>2</integer>
+	<key>ExitTimeOut</key>
+	<integer>20</integer>
+	<key>StandardErrorPath</key>
+	<string>/Library/Logs/Caspian/caspian-panel.log</string>
+	<key>StandardOutPath</key>
+	<string>/Library/Logs/Caspian/caspian-panel.log</string>
+</dict>
+</plist>

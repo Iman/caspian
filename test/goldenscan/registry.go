@@ -259,6 +259,13 @@ func allowlist() []Allow {
 				"claim uncheckable",
 		},
 		{
+			PathGlob: "internal/netcfg/darwinnet_steps.go",
+			Class:    ClassPublicIPv4,
+			Literals: []string{"128.0.0.0"},
+			Reason: "the same 128.0.0.0/1 half, written by the macOS backend under StrategySplitDefault " +
+				"with route(8) spelling; see darwinPostEngineSteps in that file",
+		},
+		{
 			PathGlob: "internal/netcfg/route.go",
 			Class:    ClassPublicIPv4,
 			Literals: []string{"128.0.0.0"},
