@@ -6,12 +6,14 @@ package engine
 
 import "errors"
 
-// On anything that is not Linux there is no TUN device to release, because
-// xray-core's TUN inbound is only reached on a machine that has one and this
-// appliance is Linux. The engine still builds and runs everywhere else, with
-// its release path a no-op: captureTunHold records no device, because
-// lookupLinkIndex fails for every name, and no descriptors, because
-// tunDescriptors is empty.
+// On anything that is not Linux this package releases no TUN device itself.
+// Since xray-core v26.4.15 the engine's own Close releases it on every
+// platform (proxy/tun.Handler.Close closes the stack and the device, reached
+// from the inbound manager; TestTheTunInboundReleasesItselfOnClose pins
+// both halves), and the Linux release path in tundevice_linux.go is kept only
+// as the measured safety net for the appliance. Here the path is a no-op:
+// captureTunHold records no device, because lookupLinkIndex fails for every
+// name, and no descriptors, because tunDescriptors is empty.
 //
 // This file exists so that tundevice.go has no platform branch in it. The
 // alternative, a runtime.GOOS check, would compile netlink into a macOS build

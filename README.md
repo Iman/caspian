@@ -190,7 +190,7 @@ and who wants the devices in the room to work. They will not open a terminal,
 read a log, or edit a file. After the install, every action happens in the
 panel. See `docs/2026-08-29-design.md`, sections 5.1 and 5.2.
 
-The engine is xray-core v1.260327.0, linked into the binary rather than
+The engine is xray-core v26.4.15 (Go module version `v1.260327.1-0.20260415235634-c5edc122b70e`), linked into the binary rather than
 downloaded. The share-link parser is the MIT `share` package from XTLS/libXray,
 vendored at tag v26.3.27 under `third_party/libxray-share/` with its own licence
 kept beside it.

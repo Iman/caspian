@@ -296,6 +296,14 @@ func startXrayServer(t *testing.T, configJSON string) {
 // a name to get there (infra/conf/freedom.go, Build sets DestinationOverride
 // from Redirect). The origin's port enters the test HERE and nowhere the
 // client can see.
+// The empty "ipsBlocked" list is load bearing since xray-core v26.4.15. From
+// that version the freedom outbound behind a vless, vmess, trojan,
+// shadowsocks or hysteria INBOUND refuses private and loopback destinations
+// by default (proxy/freedom/freedom.go, "applying default private IP
+// blocking policy"), which is exactly what this loopback server does when it
+// forwards to the origin on 127.0.0.1. An explicit empty list is the
+// documented opt-out. The appliance itself is not affected: its inbounds are
+// tun, socks and dokodemo, none of which the default names.
 func serverConfig(inbound string, originPort int) string {
 	return fmt.Sprintf(`{
   "log": {"loglevel": "warning"},
@@ -303,7 +311,7 @@ func serverConfig(inbound string, originPort int) string {
   "outbounds": [{
     "tag": "to-origin",
     "protocol": "freedom",
-    "settings": {"domainStrategy": "AsIs", "redirect": "127.0.0.1:%d"}
+    "settings": {"domainStrategy": "AsIs", "redirect": "127.0.0.1:%d", "ipsBlocked": []}
   }]
 }`, inbound, originPort)
 }

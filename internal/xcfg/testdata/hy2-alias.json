@@ -45,6 +45,7 @@
       "streamSettings": {
         "finalmask": {
           "quicParams": {
+            "bbrProfile": "",
             "brutalDown": "200mbps",
             "brutalUp": "50mbps",
             "congestion": "brutal",
