@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	SPDX-License-Identifier: AGPL-3.0-or-later
+	Copyright (C) 2026 Iman Samizadeh
+
+	The privileged half on macOS: routes, pf, Internet Sharing, the engine.
+	Runs as root, which is what a LaunchDaemon in the system domain does when
+	UserName is not set. KeepAlive in its dictionary form is launchd's
+	Restart=on-failure; ThrottleInterval is its RestartSec; ExitTimeOut is
+	the stop grace, matching cmd/caspian's shutdownGrace of 15 seconds with
+	room to spare.
+	-->
+	<key>Label</key>
+	<string>org.caspianbyoc.caspian</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/local/bin/caspian</string>
+		<string>serve</string>
+		<string>--privileged</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<dict>
+		<key>SuccessfulExit</key>
+		<false/>
+	</dict>
+	<key>ThrottleInterval</key>
+	<integer>2</integer>
+	<key>ExitTimeOut</key>
+	<integer>20</integer>
+	<key>StandardErrorPath</key>
+	<string>/Library/Logs/Caspian/caspian.log</string>
+	<key>StandardOutPath</key>
+	<string>/Library/Logs/Caspian/caspian.log</string>
+</dict>
+</plist>

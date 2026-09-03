@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
+// Copyright (C) 2026 Iman Samizadeh
 
-//go:build !linux && !darwin
+//go:build darwin
 
 package netcfg
 
 const (
 	isLinux         = false
-	hasSystemRunner = false
+	hasSystemRunner = true
 )
