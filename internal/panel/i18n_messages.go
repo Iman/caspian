@@ -36,7 +36,7 @@ var messagesFA = map[Key]string{
 	"nav.outside":      "دیده‌بان شبکه",
 	"nav.back":         "بازگشت به صفحه اصلی",
 	"footer.note":      "این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.",
-	"footer.developer": "توسعه‌دهنده: Iman Samizadeh",
+	"footer.developer": "توسعه‌دهنده: ایمان سمیع زاده",
 	"footer.github":    "پروژه در GitHub",
 	"lang.other":       "English",
 
