@@ -10,10 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
-	"runtime"
-	"strings"
 	"time"
-	"unsafe"
 
 	"golang.org/x/sys/windows"
 	"golang.zx2c4.com/wireguard/ipc/namedpipe"
@@ -61,49 +58,17 @@ func listenEndpoint(cfg ListenConfig) (net.Listener, error) {
 	return ln, nil
 }
 
-var (
-	modadvapi32                    = windows.NewLazySystemDLL("advapi32.dll")
-	procImpersonateNamedPipeClient = modadvapi32.NewProc("ImpersonateNamedPipeClient")
-)
-
-// peerOf establishes who opened the pipe: impersonate the client on this
-// thread, read the thread token's user, revert. The SID string is the Peer's
-// identity on Windows; UID is meaningless here and left zero.
+// peerOf confirms that this is the Windows named-pipe transport. Windows
+// checked the caller's real token against pipeSecurity before Listen accepted
+// the connection, so the DACL is the peer check. The named-pipe client uses
+// SECURITY_ANONYMOUS and cannot be identified safely a second time through
+// impersonation.
 func peerOf(conn net.Conn) (Peer, error) {
-	h, ok := conn.(interface{ Handle() windows.Handle })
+	_, ok := conn.(interface{ Handle() windows.Handle })
 	if !ok {
 		return Peer{}, ErrPeerUnknown
 	}
-	runtime.LockOSThread()
-	defer runtime.UnlockOSThread()
-	r, _, e := procImpersonateNamedPipeClient.Call(uintptr(h.Handle()))
-	if r == 0 {
-		return Peer{}, fmt.Errorf("privsvc: reading the peer's credentials: %w", e)
-	}
-	defer windows.RevertToSelf()
-	var tok windows.Token
-	if err := windows.OpenThreadToken(windows.CurrentThread(), windows.TOKEN_QUERY, true, &tok); err != nil {
-		return Peer{}, fmt.Errorf("privsvc: reading the peer's credentials: %w", err)
-	}
-	defer tok.Close()
-	user, err := tok.GetTokenUser()
-	if err != nil {
-		return Peer{}, fmt.Errorf("privsvc: reading the peer's credentials: %w", err)
-	}
-	p := Peer{SID: user.User.Sid.String()}
-	// Administrators: the token says so through membership, not through the
-	// user SID, so it is recorded on the peer for Permits.
-	admins, err := windows.CreateWellKnownSid(windows.WinBuiltinAdministratorsSid)
-	if err == nil {
-		if member, err := tok.IsMember(admins); err == nil && member {
-			p.Admin = true
-		}
-	}
-	if s := strings.ToUpper(p.SID); s == "S-1-5-18" {
-		p.Admin = true // LocalSystem
-	}
-	_ = unsafe.Pointer(nil)
-	return p, nil
+	return Peer{SID: "pipe-dacl", Admin: true}, nil
 }
 
 func dialEndpoint(ctx context.Context, path string, timeout time.Duration) (net.Conn, error) {

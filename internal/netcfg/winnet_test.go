@@ -21,6 +21,7 @@ const winInventory = `{"adapters":[
 const winInventoryHotspotUp = `{"adapters":[
  {"alias":"Ethernet","index":5,"type":"ethernet","up":true,"prefixes":["198.51.100.23/24"],"forwarding":false},
  {"alias":"Wi-Fi","index":7,"type":"wifi","up":true,"prefixes":[],"forwarding":false},
+ {"alias":"Local Area Connection* 1","index":11,"type":"wifi","wifiDirect":true,"up":false,"prefixes":[],"forwarding":false},
  {"alias":"Local Area Connection* 2","index":12,"type":"wifi","wifiDirect":true,"up":true,"prefixes":["192.168.137.1/24"],"forwarding":true}
 ],"defaults":[{"alias":"Ethernet","gateway":"198.51.100.1","metric":25,"family":4,"up":true}]}`
 
@@ -144,6 +145,10 @@ func TestWindowsReadbacks_UseTheHotspotAdapter(t *testing.T) {
 	r = winRunner(winInventoryHotspotUp)
 	if err := be.AssertHotspotIsAccessPoint(context.Background(), r, p, ""); err != nil {
 		t.Fatalf("hotspot up: %v", err)
+	}
+	unlabelled := strings.Replace(winInventoryHotspotUp, `"type":"wifi","wifiDirect":true,"up":true`, `"type":"ethernet","up":true`, 1)
+	if err := be.AssertHotspotIsAccessPoint(context.Background(), winRunner(unlabelled), p, ""); err != nil {
+		t.Fatalf("hotspot with an unlabelled virtual adapter: %v", err)
 	}
 	if err := be.AssertHotspotInterfaceReleased(context.Background(), r, p); err != nil {
 		t.Fatalf("our own subnet is not foreign: %v", err)

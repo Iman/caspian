@@ -400,7 +400,7 @@ func (windowsBackend) RestoreStep(p *Plan) Step { return p.windowsRestoreStep() 
 
 // windowsHotspotAdapter finds the Wi-Fi Direct virtual adapter Mobile Hotspot
 // serves clients on, from a fresh inventory.
-func windowsHotspotAdapter(ctx context.Context, r Runner) (WindowsAdapter, bool, error) {
+func windowsHotspotAdapter(ctx context.Context, r Runner, gateway netip.Addr) (WindowsAdapter, bool, error) {
 	res, err := r.Run(ctx, Command{
 		Path: BinIPHelper, Args: []string{"adapters"},
 		Why: "read back what the interface actually is, rather than trusting that a command to change it succeeded",
@@ -412,12 +412,39 @@ func windowsHotspotAdapter(ctx context.Context, r Runner) (WindowsAdapter, bool,
 	if err != nil {
 		return WindowsAdapter{}, false, err
 	}
-	for _, a := range inv.Adapters {
-		if a.WiFiDirect {
-			return a, true, nil
+	// The active Mobile Hotspot adapter is the interface that owns the
+	// configured gateway. Some Windows drivers do not describe this virtual
+	// interface as "Wi-Fi Direct", so the address is the stronger readback.
+	if gateway.IsValid() {
+		for _, a := range inv.Adapters {
+			for _, s := range a.Prefixes {
+				if p, err := netip.ParsePrefix(s); err == nil && p.Addr() == gateway {
+					return a, true, nil
+				}
+			}
 		}
 	}
-	return WindowsAdapter{}, false, nil
+	var first WindowsAdapter
+	found := false
+	for _, a := range inv.Adapters {
+		if !a.WiFiDirect {
+			continue
+		}
+		if !found {
+			first, found = a, true
+		}
+		// Windows keeps stale Wi-Fi Direct virtual adapters. Prefer the one
+		// that is up and carries a non-link-local IPv4 address, which is the
+		// adapter Mobile Hotspot is serving on now.
+		if a.Up {
+			for _, s := range a.Prefixes {
+				if p, err := netip.ParsePrefix(s); err == nil && p.Addr().Is4() && !p.Addr().IsLinkLocalUnicast() {
+					return a, true, nil
+				}
+			}
+		}
+	}
+	return first, found, nil
 }
 
 // AssertHotspotInterfaceReleased on Windows checks the adapter clients will
@@ -427,7 +454,7 @@ func (windowsBackend) AssertHotspotInterfaceReleased(ctx context.Context, r Runn
 	if p == nil || p.Hotspot == "" {
 		return errors.New("netcfg: no hotspot interface to check")
 	}
-	a, present, err := windowsHotspotAdapter(ctx, r)
+	a, present, err := windowsHotspotAdapter(ctx, r, netip.Addr{})
 	if err != nil || !present {
 		return err
 	}
@@ -452,7 +479,7 @@ func (windowsBackend) AssertHotspotIsAccessPoint(ctx context.Context, r Runner, 
 	if p == nil || p.Hotspot == "" {
 		return errors.New("netcfg: no hotspot interface to check")
 	}
-	a, present, err := windowsHotspotAdapter(ctx, r)
+	a, present, err := windowsHotspotAdapter(ctx, r, p.HotspotGateway)
 	if err != nil {
 		return err
 	}

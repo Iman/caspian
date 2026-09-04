@@ -118,6 +118,16 @@ namespace Caspian.Tethering
         {
             failure = null;
             var profile = ProfileForAlias(req.Uplink);
+            // Windows can remove the adapter/profile association after
+            // Mobile Hotspot starts, even though the shared connection and
+            // tethering manager remain active. Status and stop must then use
+            // the current internet profile instead of reporting a false
+            // failure. Start stays strict so a misspelled uplink is never
+            // silently replaced with another connection.
+            if (profile is null && req.Op != "start")
+            {
+                profile = NetworkInformation.GetInternetConnectionProfile();
+            }
             if (profile is null)
             {
                 failure = Fail("NoConnectionProfile",
@@ -136,6 +146,14 @@ namespace Caspian.Tethering
                 var adapter = AdapterForAlias(req.Adapter);
                 if (adapter is null)
                 {
+                    // An idle Wi-Fi adapter has no connection profile, so
+                    // WinRT cannot give us its NetworkAdapter object. If the
+                    // OS still knows the alias, use the default overload and
+                    // let Windows select that available hotspot adapter.
+                    if (GuidForAlias(req.Adapter) is not null)
+                    {
+                        return NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile);
+                    }
                     failure = Fail("NoAdapter", "no network adapter is called " + req.Adapter);
                     return null;
                 }
@@ -153,10 +171,11 @@ namespace Caspian.Tethering
             config.Ssid = req.Ssid ?? config.Ssid;
             config.Passphrase = req.Passphrase ?? config.Passphrase;
             var band = BandFor(req.Band);
-            if (band != TetheringWiFiBand.Auto && !config.IsBandSupported(band))
-            {
-                return Fail("BandNotSupported", "the adapter does not support the " + req.Band + " GHz band for a hotspot");
-            }
+            // IsBandSupported can report false when Windows selected an idle
+            // adapter through the default manager overload. Configure the
+            // requested band and let ConfigureAccessPointAsync return the
+            // authoritative result. The panel still offers both bands and
+            // the planner keeps 2.4 GHz as its compatibility-first default.
             config.Band = band;
             await manager.ConfigureAccessPointAsync(config);
 

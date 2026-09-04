@@ -27,7 +27,9 @@
     <AssemblyName>caspian-tethering</AssemblyName>
     <RootNamespace>Caspian.Tethering</RootNamespace>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <SelfContained>false</SelfContained>
+    <!-- The Windows service must work on a clean appliance without requiring
+         an exact major version of the .NET runtime to be installed. -->
+    <SelfContained>true</SelfContained>
     <PublishSingleFile>true</PublishSingleFile>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
