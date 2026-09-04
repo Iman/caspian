@@ -1,0 +1,9 @@
+Caspian turns this Windows computer into a protected Wi-Fi hotspot.
+
+Setup installs two automatic Windows services and the Caspian Control tray app.
+Windows asks for administrator access because Caspian manages network routes,
+firewall rules, Mobile Hotspot, and a Wintun network adapter.
+
+Setup keeps the saved panel configuration during an update.
+The panel uses 2.4 GHz by default for older client devices.
+You can select 5 GHz in the advanced panel configuration.

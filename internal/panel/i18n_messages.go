@@ -30,13 +30,15 @@ var messages = map[Lang]map[Key]string{
 // sentences are the ones where that matters.
 var messagesFA = map[Key]string{
 	// Chrome.
-	"app.name":    "Caspian",
-	"nav.skip":    "رفتن به بخش اصلی",
-	"nav.signout": "خروج",
-	"nav.outside": "دیده‌بان شبکه",
-	"nav.back":    "بازگشت به صفحه اصلی",
-	"footer.note": "این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.",
-	"lang.other":  "English",
+	"app.name":         "Caspian",
+	"nav.skip":         "رفتن به بخش اصلی",
+	"nav.signout":      "خروج",
+	"nav.outside":      "دیده‌بان شبکه",
+	"nav.back":         "بازگشت به صفحه اصلی",
+	"footer.note":      "این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.",
+	"footer.developer": "توسعه‌دهنده: Iman Samizadeh",
+	"footer.github":    "پروژه در GitHub",
+	"lang.other":       "English",
 
 	// Status and the switch.
 	"status.heading":      "وضعیت اتصال",
@@ -414,13 +416,15 @@ var messagesFA = map[Key]string{
 // messagesEN is English, the alternative.
 var messagesEN = map[Key]string{
 	// Chrome.
-	"app.name":    "Caspian",
-	"nav.skip":    "Skip to the controls",
-	"nav.signout": "Sign out",
-	"nav.outside": "Network watch",
-	"nav.back":    "Back to the main screen",
-	"footer.note": "This panel comes from this box itself. It fetches nothing from the internet.",
-	"lang.other":  "فارسی",
+	"app.name":         "Caspian",
+	"nav.skip":         "Skip to the controls",
+	"nav.signout":      "Sign out",
+	"nav.outside":      "Network watch",
+	"nav.back":         "Back to the main screen",
+	"footer.note":      "This panel comes from this box itself. It fetches nothing from the internet.",
+	"footer.developer": "Developed by Iman Samizadeh",
+	"footer.github":    "GitHub project",
+	"lang.other":       "فارسی",
 
 	// Status and the switch.
 	"status.heading":      "Connection status",

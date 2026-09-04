@@ -56,9 +56,10 @@ type LTR string
 // material at all.
 type pageData struct {
 	// Lang and Dir drive the html element.
-	Lang  Lang
-	Dir   string
-	Title string
+	Lang    Lang
+	Dir     string
+	Title   string
+	Version string
 
 	// LangSwitchHref and LangSwitchLabel offer the other language.
 	LangSwitchHref  string
@@ -286,6 +287,7 @@ func (p *Panel) newPageData(l Lang, title Key, csrf string, advanced bool) pageD
 		Lang:            l,
 		Dir:             l.Dir(),
 		Title:           T(l, title),
+		Version:         Version,
 		LangSwitchHref:  "/?lang=" + string(other),
 		LangSwitchLabel: T(l, MsgOtherLanguage),
 		CSRF:            csrf,

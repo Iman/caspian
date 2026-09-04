@@ -442,6 +442,20 @@ body.plain main {
   font-size: var(--fs-sm);
 }
 
+.about-box {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  padding: var(--s3) var(--s4);
+  border: 1px solid var(--edge);
+  border-radius: var(--r-card);
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.about-box a { font-weight: 700; }
+
 /* ==========================================================================
    TILES
    ========================================================================== */

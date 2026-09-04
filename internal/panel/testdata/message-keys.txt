@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 338 keys
+## fa: 340 keys
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -137,6 +137,8 @@
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  footer.developer
+  footer.github
   footer.note
   help.arrange.a.bottom
   help.arrange.a.heading
@@ -345,7 +347,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 338 keys
+## en: 340 keys
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -477,6 +479,8 @@
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  footer.developer
+  footer.github
   footer.note
   help.arrange.a.bottom
   help.arrange.a.heading

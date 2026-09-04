@@ -118,6 +118,25 @@ C# helper compiles against the real WinRT projection on this Mac:
 - `packaging/windows/install.ps1`: two services, ACLs, the first-run
   password.
 
+MEASURED on a real Windows box on 2026-09-03: `readInventory`
+(`exec_windows.go`) read every row `GetIfTable2Ex` returns, and NDIS layers a
+filter driver's own pseudo-adapter beside the real one it is bound to (a WiFi
+radio carries four or five: the WFP native and 802.3 MAC-layer LWFs, the QoS
+packet scheduler, the Virtual and Native WiFi filter drivers). Each reports as
+an ordinary IEEE 802.11 or Ethernet row with its own index, so `windowsDetect`
+counted every one as another radio, and the planner picked one of them
+(`"...-WFP Native MAC Layer LightWeight Filter-0000"`) for the hotspot and
+refused with "hotspot interface name ... is not usable". The check command's
+program-presence test had a matching bug: `findProgram` required the Unix
+execute bit, which `os.Stat` never sets on Windows regardless of extension, so
+`caspian-tethering.exe` and `wintun.dll` read MISSING even sitting right next
+to the binary. Both are fixed: `readInventory` now skips any row carrying
+`FilterInterface` in `InterfaceAndOperStatusFlags` (measured: every LWF
+pseudo-adapter on this box carries it and no real one does), and `findProgram`
+only asks for the execute bit on the platforms that have one. With both fixed,
+`caspian.exe check` on this box resolves a real plan: Ethernet as uplink,
+the machine's own idle Wi-Fi radio as the hotspot.
+
 To finish on the Windows machine, in this order:
 
 1. Build: `go build -o caspian.exe ./cmd/caspian` and
