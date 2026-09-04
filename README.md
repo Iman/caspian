@@ -5,7 +5,7 @@
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
-[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![platform Windows, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
 [![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
 
@@ -17,10 +17,13 @@
 >
 > **[Read this in Persian](README.fa.md)**
 
-Caspian-BYOC turns a Raspberry Pi into a bring-your-own-config gateway. You
-paste a proxy share link you already hold into a web panel on the box and press
-one switch. The box connects with that link and shares the connection as a WiFi
-hotspot, so every device that joins is tunnelled without installing anything.
+Caspian-BYOC turns a Windows 11 PC, Raspberry Pi, or Linux computer into a
+bring-your-own-config WiFi gateway. Paste a V2Ray or Xray-compatible proxy
+configuration into the web panel and press one switch. Caspian accepts VLESS,
+VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 share links. It also accepts
+Clash and Clash.Meta YAML, raw Xray JSON, link lists, and base64 subscription
+data. Caspian connects through Xray-core and shares the tunnel as a WiFi
+hotspot, so every device that joins is protected without installing an app.
 
 ![The Caspian panel, connected](docs/images/panel-en.png)
 
