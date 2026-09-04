@@ -2,6 +2,12 @@
 #ifndef AppVersion
 #define AppVersion "0.2.1"
 #endif
+#ifndef BuildArchitecture
+#define BuildArchitecture "x64"
+#endif
+#ifndef AllowedArchitecture
+#define AllowedArchitecture "x64os"
+#endif
 #define Publisher "Caspian project"
 
 [Setup]
@@ -11,11 +17,11 @@ AppVersion={#AppVersion}
 AppPublisher={#Publisher}
 DefaultDirName={autopf}\Caspian
 DefaultGroupName=Caspian
-ArchitecturesAllowed=x64compatible
-ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed={#AllowedArchitecture}
+ArchitecturesInstallIn64BitMode={#AllowedArchitecture}
 PrivilegesRequired=admin
 OutputDir=..\..\..\out\installer
-OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-x64
+OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-{#BuildArchitecture}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -38,10 +44,10 @@ Name: "startupicon"; Description: "Start Caspian Control when I sign in"; GroupD
 Name: "{commonappdata}\Caspian"
 
 [Files]
-Source: "payload\caspian.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopCaspianProcesses
-Source: "payload\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "payload\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "payload\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\caspian.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopCaspianProcesses
+Source: "payload\{#BuildArchitecture}\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\..\NOTICE"; DestDir: "{app}"; DestName: "NOTICE.txt"; Flags: ignoreversion
 Source: "..\..\..\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
 Source: "..\..\..\third_party\wintun\PREBUILT-BINARIES-LICENSE.txt"; DestDir: "{app}"; DestName: "WINTUN-LICENSE.txt"; Flags: ignoreversion
@@ -68,6 +74,52 @@ Filename: "{sys}\sc.exe"; Parameters: "delete caspian-panel"; Flags: runhidden w
 Filename: "{sys}\sc.exe"; Parameters: "delete caspian"; Flags: runhidden waituntilterminated; RunOnceId: "DeleteCore"
 
 [Code]
+var
+  PasswordPage: TInputQueryWizardPage;
+
+procedure InitializeWizard;
+begin
+  PasswordPage := CreateInputQueryPage(wpSelectTasks,
+    'Protect the Caspian web panel',
+    'Choose the password for the web panel.',
+    'Use at least 8 characters. You will type this password in your web browser.');
+  PasswordPage.Add('Panel password:', True);
+  PasswordPage.Add('Type the password again:', True);
+end;
+
+function IsFreshInstall: Boolean;
+begin
+  Result := not FileExists(ExpandConstant('{commonappdata}\Caspian\state.json'));
+end;
+
+function ShouldSkipPage(PageID: Integer): Boolean;
+begin
+  Result := (PageID = PasswordPage.ID) and not IsFreshInstall;
+end;
+
+function NextButtonClick(CurPageID: Integer): Boolean;
+var
+  Password: String;
+begin
+  Result := True;
+  if (CurPageID <> PasswordPage.ID) then
+    exit;
+
+  Password := Trim(PasswordPage.Values[0]);
+  PasswordPage.Values[0] := Password;
+  PasswordPage.Values[1] := Trim(PasswordPage.Values[1]);
+  if Length(Password) < 8 then
+  begin
+    MsgBox('Use at least 8 characters for the panel password.', mbError, MB_OK);
+    Result := False;
+  end
+  else if Password <> PasswordPage.Values[1] then
+  begin
+    MsgBox('The two passwords do not match. Type them again.', mbError, MB_OK);
+    Result := False;
+  end;
+end;
+
 procedure InstallServices;
 var
   ResultCode: Integer;
@@ -75,7 +127,8 @@ begin
   WizardForm.StatusLabel.Caption := 'Installing and starting Caspian services...';
   if not Exec(ExpandConstant('{sys}\WindowsPowerShell\v1.0\powershell.exe'),
     '-NoProfile -ExecutionPolicy Bypass -File "' + ExpandConstant('{tmp}\service-install.ps1') +
-    '" -InstallDirectory "' + ExpandConstant('{app}') + '"', '', SW_HIDE,
+    '" -InstallDirectory "' + ExpandConstant('{app}') + '" -PasswordFile "' +
+    ExpandConstant('{tmp}\panel-password.txt') + '"', '', SW_HIDE,
     ewWaitUntilTerminated, ResultCode) or (ResultCode <> 0) then
     RaiseException('Caspian service setup failed with exit code ' + IntToStr(ResultCode) + '.');
 end;
@@ -95,7 +148,17 @@ begin
 end;
 
 function PrepareToInstall(var NeedsRestart: Boolean): String;
+var
+  PasswordLines: TArrayOfString;
 begin
+  if IsFreshInstall then
+  begin
+    SetArrayLength(PasswordLines, 1);
+    PasswordLines[0] := PasswordPage.Values[0];
+    if not SaveStringsToUTF8FileWithoutBOM(
+      ExpandConstant('{tmp}\panel-password.txt'), PasswordLines, False) then
+      RaiseException('Setup could not prepare the panel password.');
+  end;
   StopCaspianProcesses;
   Result := '';
 end;

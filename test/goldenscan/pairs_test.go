@@ -102,6 +102,7 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 		// rather than drift.
 		delete(want, filepath.Base(fa))
 		delete(want, relFa)
+		delete(want, filepath.ToSlash(relFa))
 		delete(want, filepath.Base(path))
 
 		var missing []string
@@ -168,6 +169,7 @@ func isTranslationEdition(path string) bool {
 // those would produce a guard that fails constantly for no reader's benefit,
 // and a guard that cries wolf is one somebody deletes.
 func isPublishedDocument(rel string) bool {
+	rel = filepath.ToSlash(rel)
 	if strings.HasPrefix(rel, "docs/") {
 		return true
 	}

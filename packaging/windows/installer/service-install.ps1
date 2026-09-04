@@ -1,4 +1,7 @@
-param([Parameter(Mandatory = $true)][string]$InstallDirectory)
+param(
+    [Parameter(Mandatory = $true)][string]$InstallDirectory,
+    [string]$PasswordFile = ""
+)
 $ErrorActionPreference = "Stop"
 
 function Invoke-SC([string[]]$ServiceArgs) {
@@ -30,10 +33,16 @@ if ($LASTEXITCODE -ne 0) { throw "icacls.exe failed for $state" }
 
 $stateFile = Join-Path $state "state.json"
 $seed = Join-Path $state "first-run-password"
-if (-not (Test-Path $stateFile) -and -not (Test-Path $seed)) {
-    $bytes = New-Object byte[] 15
-    [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($bytes)
-    $password = ([Convert]::ToBase64String($bytes)).ToLower() -replace '[^a-z0-9]', ''
+if (-not (Test-Path $stateFile)) {
+    if (-not $PasswordFile -or -not (Test-Path -LiteralPath $PasswordFile)) {
+        throw "A fresh installation needs a panel password from Setup."
+    }
+    try {
+        $password = ([IO.File]::ReadAllText($PasswordFile, [Text.Encoding]::UTF8)) -replace "`r?`n$", ""
+    } finally {
+        Remove-Item -LiteralPath $PasswordFile -Force -ErrorAction SilentlyContinue
+    }
+    if ($password.Length -lt 8) { throw "The panel password must contain at least 8 characters." }
     [IO.File]::WriteAllText($seed, $password)
     & icacls.exe $seed /inheritance:r /grant:r "${panelAccount}:F" "*S-1-5-18:F" | Out-Null
 }
