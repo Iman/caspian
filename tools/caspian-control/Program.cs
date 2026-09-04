@@ -108,7 +108,7 @@ internal sealed class ControlWindow : Form
             Font = new Font("Segoe UI Semibold", 10), AutoSize = true, Location = new Point(16, 10)
         };
         var aboutDeveloper = new Label {
-            Text = "توسعه‌دهنده: Iman Samizadeh", ForeColor = Ink,
+            Text = "توسعه‌دهنده: ایمان سمیع زاده", ForeColor = Ink,
             AutoSize = true, Location = new Point(160, 11), RightToLeft = RightToLeft.Yes
         };
         var aboutGitHub = new LinkLabel {
