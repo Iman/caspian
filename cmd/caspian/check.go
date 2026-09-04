@@ -100,9 +100,18 @@ func findProgram(name string) (string, bool) {
 	for _, dir := range programSearchPath {
 		p := filepath.Join(dir, name)
 		fi, err := os.Stat(p)
-		if err == nil && fi.Mode().IsRegular() && fi.Mode().Perm()&0o111 != 0 {
-			return p, true
+		if err != nil || !fi.Mode().IsRegular() {
+			continue
 		}
+		// Windows has no execute bit: os.Stat reports every regular file as
+		// rw-rw-rw- regardless of extension, so the permission check below
+		// would never pass there and every program would read MISSING. The
+		// unix build still asks for it, because a non-executable file beside
+		// the binary there really is one that will fail to run.
+		if runtime.GOOS != "windows" && fi.Mode().Perm()&0o111 == 0 {
+			continue
+		}
+		return p, true
 	}
 	return "", false
 }
