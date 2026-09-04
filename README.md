@@ -89,10 +89,47 @@ who want to check it first.
 
 ### Windows 11
 
-For most users, download and run `CaspianSetup-0.2.1-windows-x64.exe` from the
-release page. No PowerShell command, Go installation, or .NET SDK is needed.
-The setup wizard asks for administrator access and then shows two optional
-choices:
+The setup program installs everything that Caspian needs. You do not need
+PowerShell, Go, or the .NET SDK.
+
+#### What you need
+
+- A Windows 11 computer.
+- An administrator account on that computer.
+- A Wi-Fi adapter that supports Windows Mobile Hotspot.
+- An internet connection.
+- A supported proxy link or configuration.
+
+#### Choose the correct download
+
+Most Intel and AMD computers use the x64 installer:
+
+- `CaspianSetup-0.2.1-windows-x64.exe`
+
+Windows computers with a Snapdragon or another ARM processor use the ARM64
+installer:
+
+- `CaspianSetup-0.2.1-windows-arm64.exe`
+
+If you do not know your computer type, open **Settings**. Select **System**,
+then **About**. Read the **System type** line.
+
+#### Install Caspian
+
+1. Open the [Caspian release page](https://github.com/Iman/caspian/releases/latest).
+2. Expand **Assets** under the newest release.
+3. Download the correct Windows installer.
+4. Double-click the downloaded file.
+5. If SmartScreen appears, select **More info**.
+6. Make sure that the publisher warning names the file that you downloaded.
+7. Select **Run anyway**.
+8. Select **Yes** when Windows requests administrator access.
+9. Read the licence page, then continue.
+10. Choose a password for the Caspian web panel.
+11. Type the same password again.
+12. Keep this password in a safe place.
+
+The setup wizard also shows two optional choices:
 
 - **Create a desktop shortcut**
 - **Start Caspian Control when I sign in**
@@ -105,19 +142,79 @@ Windows can show an **Unknown publisher** warning until the installer has a
 code-signing certificate. Check that the file came from the official Caspian
 release page before you continue.
 
-The PowerShell method below is for developers. It builds Caspian from this
-repository, then installs two Windows services and the `CaspianControl.exe`
-tray app.
-
 ![Caspian Control on Windows](docs/images/caspian-control-windows.png)
 
-#### Requirements
+#### The two Caspian windows
 
-The downloaded setup program needs a 64-bit Intel or AMD Windows 11 computer,
-an administrator account, an active internet connection, and a Wi-Fi adapter
-that supports Windows Mobile Hotspot.
+Caspian has two different control screens on Windows.
 
-The developer method also needs these items:
+| Screen | Where it opens | What it controls |
+|---|---|---|
+| **Caspian Control** | A small Windows app and notification-area icon | Starts, stops, or restarts the Caspian background services |
+| **Caspian web panel** | Your web browser at `http://127.0.0.1:8088/` | Sets the Wi-Fi name, Wi-Fi password, frequency band, and proxy connection |
+
+Use **Caspian Control** first. Wait for **Ready**, then select **Open panel**.
+The web panel is the second screen. Use it to start the hotspot and tunnel.
+
+**Ready** in Caspian Control means that the two background services answer.
+It does not mean that the proxy tunnel is connected. The web panel turns green
+when the hotspot and tunnel are ready.
+
+#### First start
+
+1. Open **Caspian Control** from the Windows Start menu or desktop.
+2. Select **Yes** when Windows requests administrator access.
+3. Select **Start all**.
+4. Wait until the large card says **Ready**.
+5. Select **Open panel**.
+6. Type the panel password that you chose during setup.
+7. Select **Sign in**.
+8. Enter a name for the new Wi-Fi network.
+9. Enter a Wi-Fi password with at least eight characters.
+10. Keep **2.4 GHz** for the best support with old devices.
+11. Paste your proxy link or configuration.
+12. Select the switch to start Caspian.
+13. Wait until the web panel status turns green.
+14. Connect your phone or other device to the new Wi-Fi network.
+15. Open a website on that device to test the connection.
+
+The panel shows each connected device. Windows gives these devices addresses
+from `192.168.137.0/24`. Caspian sends their internet traffic through the
+`xray0` tunnel.
+
+The panel password and Wi-Fi password are different. The panel password opens
+the web panel. The Wi-Fi password connects phones and other devices.
+
+#### What the Caspian Control buttons do
+
+| Control | Result |
+|---|---|
+| **Start all** | Starts both Caspian background services |
+| **Stop all** | Stops both services and keeps them stopped |
+| **Restart all** | Stops and starts both services |
+| **Open panel** | Opens the Caspian web panel in your browser |
+
+The app stays in the Windows notification area after you close its window.
+The notification area is beside the clock. Double-click the Caspian icon to
+open the app again.
+
+#### What to expect
+
+Windows requests administrator access because Caspian changes network routes,
+the firewall, Mobile Hotspot, and the Wintun network adapter.
+
+Windows disconnects devices when you stop or restart the hotspot. Wait for the
+web panel to turn green, then connect each device again.
+
+If Caspian Control says **Ready** but the web panel is red, read the message in
+the web panel. The web panel tests the hotspot and the proxy tunnel.
+
+#### Developer requirements
+
+The PowerShell method below is for developers. It builds Caspian from this
+repository and installs the Windows services.
+
+This method needs these additional programs:
 
 - An administrator account.
 - An active internet connection.
@@ -126,8 +223,7 @@ The developer method also needs these items:
 - [Go 1.26 or later](https://go.dev/dl/).
 - [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
 
-The developer PowerShell method supports AMD64 and ARM64 Windows systems. The
-current setup program is for AMD64 Windows only.
+The setup program and developer method support x64 and ARM64 Windows systems.
 
 #### Developer install
 
@@ -164,60 +260,6 @@ Use `-NoOpen` to install without opening the tray app:
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\install.ps1 -NoOpen
 ```
-
-#### Start Caspian
-
-1. Open **Caspian Control** from the desktop.
-2. Click **Yes** when Windows requests administrator access.
-3. Wait until the large status card says **Ready**.
-4. Click **Open panel**.
-5. Sign in to the local panel.
-6. Paste one supported proxy link.
-7. Enter the Wi-Fi name and password.
-8. Keep 2.4 GHz for older devices.
-9. Select 5 GHz only when all client devices support it.
-10. Switch Caspian on.
-11. Wait until the panel status is green.
-12. Connect a phone or computer to the new Caspian Wi-Fi network.
-
-The panel shows each connected device. Windows gives these devices addresses
-from `192.168.137.0/24` and sends their traffic through the `xray0` tunnel.
-
-#### Caspian Control
-
-The tray app controls the two Windows services. It does not store the panel
-password or the proxy link.
-
-| Control | Result |
-|---|---|
-| **Start all** | Sets both services to automatic startup, then starts them |
-| **Stop all** | Stops both services and keeps them stopped until **Start all** |
-| **Restart all** | Restarts both services and waits for them to answer |
-| **Open panel** | Opens `http://127.0.0.1:8088/` in the default browser |
-
-The app stays in the Windows notification area when you minimize or close its
-window. Double-click its icon to open the window again. Right-click the icon to
-use all four controls or exit the app.
-
-The green **Ready** state means both services run and the local panel port
-answers. The red state names which service or port is off. A service operation
-has a 45-second limit, so the window stays responsive during a Windows delay.
-
-#### What to expect
-
-Windows requests administrator access because Caspian controls services,
-routes, the firewall, Mobile Hotspot, and the Wintun adapter. This request
-appears when you run the installer or open Caspian Control.
-
-The panel uses 2.4 GHz by default. This band supports more old devices. The
-advanced panel also offers 5 GHz.
-
-Windows disconnects connected devices when you stop or restart the hotspot.
-Reconnect each device after the panel becomes green again.
-
-If the tray app says **Ready** but the panel is red, read the problem text in
-the panel. **Ready** covers the Windows services and the local panel. The panel
-also tests the hotspot and tunnel.
 
 #### Repair or update
 
