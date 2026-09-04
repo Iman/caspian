@@ -15,7 +15,7 @@
 #   /Library/Logs/Caspian                             0755 root, logs 0640
 #   /Library/LaunchDaemons/org.caspianbyoc.caspian.plist        root half
 #   /Library/LaunchDaemons/org.caspianbyoc.caspian-panel.plist  panel, as _caspian
-#   the _caspian role account (UID 450 to 499, no shell, hidden)
+#   the _caspian role account and group (no shell, hidden)
 #
 # It refuses anything that is not macOS, anything not run as root, and a
 # missing binary. It is idempotent: running it twice is an upgrade.
@@ -35,17 +35,37 @@ refuse() { printf 'caspian: %s\n' "$1" >&2; exit 1; }
 [ "$(id -u)" -eq 0 ] || refuse "run with sudo"
 [ -n "$BIN_SRC" ] && [ -f "$BIN_SRC" ] || refuse "set CASPIAN_LOCAL_BINARY to the caspian binary you built"
 
-# The role account. sysadminctl wants a name starting with an underscore and
-# a UID in 450 to 499; the first free one is taken.
+# The role account. Let sysadminctl assign its UID: current macOS releases can
+# ignore an explicit low UID for a role account. A matching group is still
+# required by the launchd job and by the privileged socket. Use a free system
+# GID and repair an account left by an interrupted older installer.
 if ! id "$ACCOUNT" >/dev/null 2>&1; then
-  uid=450
-  while id "$uid" >/dev/null 2>&1 && [ "$uid" -lt 500 ]; do uid=$((uid + 1)); done
-  [ "$uid" -lt 500 ] || refuse "no free role-account UID between 450 and 499"
-  sysadminctl -addUser "$ACCOUNT" -roleAccount -UID "$uid" -shell /usr/bin/false -home /var/empty >/dev/null 2>&1 ||
+  sysadminctl -addUser "$ACCOUNT" -roleAccount -shell /usr/bin/false -home /var/empty >/dev/null 2>&1 ||
     refuse "creating the $ACCOUNT role account failed"
 fi
+if ! dscl . -read "/Groups/$ACCOUNT" >/dev/null 2>&1; then
+  gid=450
+  while dscl . -search /Groups PrimaryGroupID "$gid" | awk 'NF { found=1 } END { exit !found }'; do
+    gid=$((gid + 1))
+  done
+  [ "$gid" -lt 500 ] || refuse "no free service-group GID between 450 and 499"
+  dseditgroup -o create -i "$gid" "$ACCOUNT" >/dev/null ||
+    refuse "creating the $ACCOUNT group failed"
+fi
+dseditgroup -o edit -a "$ACCOUNT" -t user "$ACCOUNT" >/dev/null ||
+  refuse "adding $ACCOUNT to its service group failed"
+group_id="$(dscl . -read "/Groups/$ACCOUNT" PrimaryGroupID | awk '{print $2}')"
+[ -n "$group_id" ] || refuse "reading the $ACCOUNT group ID failed"
+dscl . -create "/Users/$ACCOUNT" PrimaryGroupID "$group_id" ||
+  refuse "making $ACCOUNT the account's primary group failed"
 
 install -d -m 0755 -o root -g wheel "$LOGS"
+# launchd opens each StandardOutPath as the job's user. Pre-create the files so
+# the unprivileged panel does not need write permission on the log directory.
+touch "$LOGS/caspian.log" "$LOGS/caspian-panel.log"
+chown root:wheel "$LOGS/caspian.log"
+chown "$ACCOUNT:$ACCOUNT" "$LOGS/caspian-panel.log"
+chmod 0640 "$LOGS/caspian.log" "$LOGS/caspian-panel.log"
 install -d -m 0700 -o "$ACCOUNT" -g "$ACCOUNT" "$STATE"
 install -d -m 0750 -o root -g "$ACCOUNT" "$RUN"
 install -m 0755 -o root -g wheel "$BIN_SRC" "$BIN_DST"
@@ -53,7 +73,10 @@ install -m 0755 -o root -g wheel "$BIN_SRC" "$BIN_DST"
 fresh=0
 if [ ! -f "$STATE/state.json" ] && [ ! -f "$STATE/first-run-password" ]; then
   fresh=1
-  password="$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 20)"
+  # head deliberately closes the pipe after 20 bytes; ignore tr's SIGPIPE and
+  # validate the result before creating the one-time credential.
+  password="$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 20 || true)"
+  [ "${#password}" -eq 20 ] || refuse "generating the first-run password failed"
   umask 077
   printf '%s' "$password" >"$STATE/first-run-password"
   chown "$ACCOUNT:$ACCOUNT" "$STATE/first-run-password"
@@ -64,7 +87,15 @@ for label in org.caspianbyoc.caspian org.caspianbyoc.caspian-panel; do
   plist="/Library/LaunchDaemons/$label.plist"
   launchctl bootout "system/$label" >/dev/null 2>&1 || true
   install -m 0644 -o root -g wheel "$HERE/$label.plist" "$plist"
-  launchctl bootstrap system "$plist"
+  loaded=0
+  for attempt in 1 2 3 4 5; do
+    if launchctl bootstrap system "$plist"; then
+      loaded=1
+      break
+    fi
+    [ "$attempt" -eq 5 ] || sleep 1
+  done
+  [ "$loaded" -eq 1 ] || refuse "loading $label with launchd failed after 5 attempts"
   launchctl enable "system/$label"
 done
 
