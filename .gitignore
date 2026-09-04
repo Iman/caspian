@@ -17,6 +17,18 @@
 *.subscription
 configs-local/
 key.txt
+*.txt
+*.log
+.gocache
+out/
+/.cache/
+/wintun.dll
+/packaging/windows/installer/payload/
+**/bin/
+**/obj/
+!/packaging/windows/installer/INSTALL-NOTES.txt
+!/third_party/
+!/third_party/**/*.txt
 
 # Editor and OS noise.
 .idea/

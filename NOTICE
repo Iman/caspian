@@ -149,3 +149,28 @@ PROGRAMS THE APPLIANCE RUNS BUT DOES NOT LINK
     These are separate programs invoked at arm's length, not libraries linked
     into this work, so their licences do not affect the licensing of Caspian.
     They are named because the appliance does not function without them.
+
+WINDOWS DISTRIBUTION FILES
+--------------------------
+
+    wintun.dll                              Wintun Prebuilt Binaries License
+        Caspian distributes the official signed Wintun 0.14.1 DLL without
+        modification. The DLL is separate from caspian.exe and is loaded
+        through the published Wintun API. The complete license is kept at
+        third_party/wintun/PREBUILT-BINARIES-LICENSE.txt and is installed as
+        WINTUN-LICENSE.txt beside the DLL.
+
+    .NET runtime and Windows Forms          MIT
+        caspian-tethering.exe and CaspianControl.exe are self-contained .NET
+        applications. The runtime libraries form part of those single-file
+        executables. The .NET license and third-party notices are kept under
+        third_party/dotnet/.
+
+    System.ServiceProcess.ServiceController 9.0.0  MIT
+        This package lets CaspianControl.exe start and stop the two Windows
+        services. Its license is kept at
+        third_party/dotnet/System.ServiceProcess.ServiceController-LICENSE.txt.
+
+    Microsoft.Windows.SDK.NET.Ref           build input only
+        The Mobile Hotspot helper uses this reference package at build time.
+        Caspian does not distribute it as a separate DLL.

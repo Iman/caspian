@@ -73,6 +73,9 @@ func (w *windowsRunner) Run(_ context.Context, c Command) (Result, error) {
 
 // classify turns a Windows error into the wording the shared markers read.
 func classify(what string, err error) error {
+	if err == nil {
+		return nil
+	}
 	var e windows.Errno
 	if errors.As(err, &e) {
 		switch uint32(e) {
