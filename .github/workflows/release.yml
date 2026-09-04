@@ -57,17 +57,18 @@ jobs:
         run: |
           set -eu
           mkdir -p dist
+          ldflags="-s -w -X main.version=${GITHUB_REF_NAME} -X caspianbyoc.org/caspian/internal/panel.Version=${GITHUB_REF_NAME}"
           # -trimpath so the binary carries no build-machine paths, and
           # -buildvcs=false so it carries no commit metadata either. Neither is
           # cosmetic: this is censorship-circumvention software and a path or a
           # revision baked into a shipped binary is information about whoever
           # built it.
           GOOS=linux GOARCH=amd64 \
-            go build -trimpath -buildvcs=false -ldflags "-s -w" -o dist/caspian-linux-amd64 ./cmd/caspian
+            go build -trimpath -buildvcs=false -ldflags "$ldflags" -o dist/caspian-linux-amd64 ./cmd/caspian
           GOOS=linux GOARCH=arm64 \
-            go build -trimpath -buildvcs=false -ldflags "-s -w" -o dist/caspian-linux-arm64 ./cmd/caspian
+            go build -trimpath -buildvcs=false -ldflags "$ldflags" -o dist/caspian-linux-arm64 ./cmd/caspian
           GOOS=linux GOARCH=arm GOARM=6 \
-            go build -trimpath -buildvcs=false -ldflags "-s -w" -o dist/caspian-linux-arm ./cmd/caspian
+            go build -trimpath -buildvcs=false -ldflags "$ldflags" -o dist/caspian-linux-arm ./cmd/caspian
 
       - name: Prove the 32-bit build really is ARMv6
         run: |
@@ -81,21 +82,52 @@ jobs:
           # pass for any input. See the header of the script for the measurements.
           bash scripts/check-armv6.sh dist/caspian-linux-arm dist/caspian-linux-arm64
 
-      - name: Checksums
-        run: |
-          set -eu
-          cd dist
-          # Plain sha256sum format, one file, named SHA256SUMS, because that is
-          # what CASPIAN_CHECKSUMS_NAME defaults to in install.sh.
-          sha256sum caspian-linux-* > SHA256SUMS
-          cat SHA256SUMS
+      - name: Keep Linux release files
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-release
+          path: dist/caspian-linux-*
 
+  windows:
+    needs: gate
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          check-latest: true
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.x"
+      - name: Install the installer compiler
+        shell: powershell
+        run: choco install innosetup --no-progress -y
+      - name: Build the Windows installer
+        shell: powershell
+        run: .\packaging\windows\installer\build-installer.ps1 -Version "${{ github.ref_name }}"
+      - name: Keep the Windows release file
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-release
+          path: out/installer/CaspianSetup-*-windows-x64.exe
+
+  publish:
+    needs: [build, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: "*-release"
+          path: dist
+          merge-multiple: true
+      - name: Create checksums
+        run: |
+          cd dist
+          sha256sum caspian-linux-* CaspianSetup-*-windows-x64.exe > SHA256SUMS
+          cat SHA256SUMS
       - name: Publish the release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/caspian-linux-amd64
-            dist/caspian-linux-arm64
-            dist/caspian-linux-arm
-            dist/SHA256SUMS
+          files: dist/*
           generate_release_notes: true

@@ -53,7 +53,8 @@ var allowedAbsolute = map[string]bool{
 	// TestTheOutsideLinkIsANavigationLinkAndNeverAFetch asserts the narrower
 	// property that actually matters, and that test is the guard; this entry
 	// only stops the broad scanner reporting it twice.
-	"https://javidnetworkwatch.com/": true,
+	"https://javidnetworkwatch.com/":  true,
+	"https://github.com/Iman/caspian": true,
 }
 
 // findExternalReferences returns every external reference in text.
@@ -267,50 +268,51 @@ func TestScriptDisplaysNoTextOfItsOwn(t *testing.T) {
 //
 // So this checks the position rather than the presence.
 func TestTheOutsideLinkIsANavigationLinkAndNeverAFetch(t *testing.T) {
-	const outside = "javidnetworkwatch.com"
-
-	// Every way a browser is made to request something without being asked.
-	fetching := []*regexp.Regexp{
-		regexp.MustCompile(`(?i)src\s*=\s*["']?[^"'>]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)<link[^>]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)@import[^;]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)url\s*\([^)]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)fetch\s*\([^)]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)<form[^>]*action\s*=\s*["']?[^"'>]*` + regexp.QuoteMeta(outside)),
-		regexp.MustCompile(`(?i)<iframe[^>]*` + regexp.QuoteMeta(outside)),
-	}
+	outsideLinks := []string{"javidnetworkwatch.com", "github.com/Iman/caspian"}
 
 	check := func(where, body string) {
-		for _, re := range fetching {
-			if m := re.FindString(body); m != "" {
-				t.Errorf("%s loads %s on render: %q. The rail link is allowed because a "+
-					"person has to click it. Anything the page requests by itself breaks the "+
-					"promise that this panel works with no uplink and tells nobody it was opened.",
-					where, outside, m)
+		for _, outside := range outsideLinks {
+			// Every way a browser is made to request something without being asked.
+			fetching := []*regexp.Regexp{
+				regexp.MustCompile(`(?i)src\s*=\s*["']?[^"'>]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)<link[^>]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)@import[^;]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)url\s*\([^)]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)fetch\s*\([^)]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)<form[^>]*action\s*=\s*["']?[^"'>]*` + regexp.QuoteMeta(outside)),
+				regexp.MustCompile(`(?i)<iframe[^>]*` + regexp.QuoteMeta(outside)),
 			}
-		}
-		// And where it IS present, it carries noreferrer, or the site is told
-		// the panel's own address on the hotspot.
-		if strings.Contains(body, outside) {
-			// The window has to reach FORWARD far enough, because rel comes
-			// after href in the attribute order actually used. The first
-			// version looked 240 characters back and 40 forward, and failed on
-			// correct markup: "noreferrer" sits about 55 characters past the
-			// host. A guard that fails on the thing it is meant to permit
-			// teaches people to delete it.
-			i := strings.Index(body, outside)
-			start := i - 240
-			if start < 0 {
-				start = 0
+			for _, re := range fetching {
+				if m := re.FindString(body); m != "" {
+					t.Errorf("%s loads %s on render: %q. The rail link is allowed because a "+
+						"person has to click it. Anything the page requests by itself breaks the "+
+						"promise that this panel works with no uplink and tells nobody it was opened.",
+						where, outside, m)
+				}
 			}
-			end := i + 240
-			if end > len(body) {
-				end = len(body)
-			}
-			around := body[start:end]
-			if !strings.Contains(around, "noreferrer") {
-				t.Errorf("%s links to %s without rel=\"noreferrer\", so a click tells that "+
-					"site the address of this panel", where, outside)
+			// And where it IS present, it carries noreferrer, or the site is told
+			// the panel's own address on the hotspot.
+			if strings.Contains(body, outside) {
+				// The window has to reach FORWARD far enough, because rel comes
+				// after href in the attribute order actually used. The first
+				// version looked 240 characters back and 40 forward, and failed on
+				// correct markup: "noreferrer" sits about 55 characters past the
+				// host. A guard that fails on the thing it is meant to permit
+				// teaches people to delete it.
+				i := strings.Index(body, outside)
+				start := i - 240
+				if start < 0 {
+					start = 0
+				}
+				end := i + 240
+				if end > len(body) {
+					end = len(body)
+				}
+				around := body[start:end]
+				if !strings.Contains(around, "noreferrer") {
+					t.Errorf("%s links to %s without rel=\"noreferrer\", so a click tells that "+
+						"site the address of this panel", where, outside)
+				}
 			}
 		}
 	}

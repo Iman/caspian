@@ -5,7 +5,7 @@
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
-[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![platform Windows, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
 [![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
 
@@ -18,11 +18,13 @@
 >
 > **[این صفحه به انگلیسی](README.md)**
 
-Caspian-BYOC یک Raspberry Pi را به دروازه‌ای تبدیل می‌کند که کانفیگش را خودتان
-می‌آورید. لینک اشتراک‌گذاریِ پروکسی‌ای را که از پیش دارید در پنل وبِ روی دستگاه
-پیست می‌کنید و یک کلید را می‌زنید. دستگاه با همان لینک وصل می‌شود و آن اتصال را
-به شکل یک هات‌اسپات وای‌فای پخش می‌کند، پس هر دستگاهی که به آن وصل شود از تونل
-بیرون می‌رود، بدون اینکه لازم باشد روی آن چیزی نصب شود.
+Caspian-BYOC یک کامپیوتر Windows 11، یک Raspberry Pi یا یک دستگاه Linux را به
+دروازهٔ وای‌فای تبدیل می‌کند که کانفیگش را خودتان می‌آورید. یک کانفیگ سازگار با
+V2Ray یا Xray را در پنل وب پیست کنید و یک کلید را بزنید. Caspian لینک‌های VLESS،
+VMess، Shadowsocks، SOCKS، Trojan و Hysteria2 را می‌پذیرد. فایل‌های YAML مربوط
+به Clash و Clash.Meta، فایل JSON خامِ Xray، فهرست لینک‌ها و اشتراک base64 نیز
+پذیرفته می‌شوند. Caspian با Xray-core وصل می‌شود و تونل را به شکل هات‌اسپات
+وای‌فای پخش می‌کند، پس هر دستگاهی که وصل شود بدون نصب برنامه محافظت می‌شود.
 
 ![پنل کاسپین، متصل](docs/images/panel-fa.png)
 
@@ -80,7 +82,37 @@ Raspberry Pi 5 در تاریخ 2026-09-03 با تونلِ بالا و پیش ا�
 
 ---
 
-## نصب
+## نصب در Windows 11
+
+برای بیشتر کاربران، فایل `CaspianSetup-0.2.1-windows-x64.exe` را از صفحهٔ انتشارها
+دانلود و اجرا کنید. نصب‌کننده اجازهٔ مدیر سیستم را می‌خواهد. سپس می‌توانید میان‌بر
+دسکتاپ و اجرای خودکار `CaspianControl.exe` هنگام ورود به Windows را انتخاب کنید.
+پس از نصب، Caspian Control را باز کنید و Start all را بزنید. پنل در
+`http://127.0.0.1:8088/` باز می‌شود. نام و رمز هات‌اسپات را در پنل وارد کنید و
+سپس کانفیگ پروکسی خود را وصل کنید.
+
+Windows برای Mobile Hotspot از شبکهٔ `192.168.137.0/24` استفاده می‌کند. سرویس
+`caspian-panel` پنل وب را اجرا می‌کند. فایل `caspian.exe` تونل را می‌سازد و
+`caspian-tethering.exe` ترافیک هات‌اسپات را هدایت می‌کند. فایل `wintun.dll` نیز
+رابط شبکهٔ تونل را فراهم می‌کند.
+
+روش PowerShell فقط برای توسعه‌دهندگان است. ابتدا
+[Go](https://go.dev/dl/)، [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+و [Git for Windows](https://git-scm.com/download/win) را نصب کنید. سپس PowerShell
+را با دسترسی مدیر باز کنید و این فرمان را اجرا کنید:
+
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\YOUR-NAME\Documents\caspian\packaging\windows\install.ps1" -NoOpen
+
+گزینهٔ `-NoOpen` از باز شدن خودکار پنل جلوگیری می‌کند. برنامه‌های Windows از
+[.NET runtime and Windows Forms](https://github.com/dotnet/runtime) و
+`System.ServiceProcess.ServiceController` استفاده می‌کنند. مجوزها و اعلان‌های
+.NET در `third_party/dotnet/` قرار دارند. مجوز Wintun در
+`third_party/wintun/PREBUILT-BINARIES-LICENSE.txt` قرار دارد و نسخهٔ اصلی آن از
+[وب‌سایت Wintun](https://www.wintun.net/) دریافت می‌شود.
+
+---
+
+## نصب در Linux و Raspberry Pi
 
 دو راه. اولی برای کسی است که می‌خواهد آن را اجرا کند، دومی برای کسی که می‌خواهد
 اول وارسی‌اش کند.

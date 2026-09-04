@@ -218,7 +218,11 @@ any letters left behind.
   </main>
 
   <footer class="foot">
-    <span>{{.T "app.name"}}</span>
+    <div class="about-box">
+      <strong>{{.T "app.name"}} {{.Version}}</strong>
+      <span>{{.T "footer.developer"}}</span>
+      <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">{{.T "footer.github"}}</a>
+    </div>
     <span>{{.T "footer.note"}}</span>
   </footer>
 </div>

@@ -5,7 +5,7 @@
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
-[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![platform Windows, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
 [![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
 
@@ -17,10 +17,13 @@
 >
 > **[Read this in Persian](README.fa.md)**
 
-Caspian-BYOC turns a Raspberry Pi into a bring-your-own-config gateway. You
-paste a proxy share link you already hold into a web panel on the box and press
-one switch. The box connects with that link and shares the connection as a WiFi
-hotspot, so every device that joins is tunnelled without installing anything.
+Caspian-BYOC turns a Windows 11 PC, Raspberry Pi, or Linux computer into a
+bring-your-own-config WiFi gateway. Paste a V2Ray or Xray-compatible proxy
+configuration into the web panel and press one switch. Caspian accepts VLESS,
+VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 share links. It also accepts
+Clash and Clash.Meta YAML, raw Xray JSON, link lists, and base64 subscription
+data. Caspian connects through Xray-core and shares the tunnel as a WiFi
+hotspot, so every device that joins is protected without installing an app.
 
 ![The Caspian panel, connected](docs/images/panel-en.png)
 
@@ -83,6 +86,154 @@ claims and this project does not let them blur.
 
 Two routes. The first is for people who want to run it, the second is for people
 who want to check it first.
+
+### Windows 11
+
+For most users, download and run `CaspianSetup-0.2.1-windows-x64.exe` from the
+release page. No PowerShell command, Go installation, or .NET SDK is needed.
+The setup wizard asks for administrator access and then shows two optional
+choices:
+
+- **Create a desktop shortcut**
+- **Start Caspian Control when I sign in**
+
+Both choices are off by default. Setup always creates a **Caspian Control**
+shortcut in the Windows Start menu. When setup finishes, leave **Open Caspian
+Control** selected and click **Finish**.
+
+Windows can show an **Unknown publisher** warning until the installer has a
+code-signing certificate. Check that the file came from the official Caspian
+release page before you continue.
+
+The PowerShell method below is for developers. It builds Caspian from this
+repository, then installs two Windows services and the `CaspianControl.exe`
+tray app.
+
+![Caspian Control on Windows](docs/images/caspian-control-windows.png)
+
+#### Requirements
+
+The downloaded setup program needs a 64-bit Intel or AMD Windows 11 computer,
+an administrator account, an active internet connection, and a Wi-Fi adapter
+that supports Windows Mobile Hotspot.
+
+The developer method also needs these items:
+
+- An administrator account.
+- An active internet connection.
+- A Wi-Fi adapter that supports Windows Mobile Hotspot.
+- [Git for Windows](https://git-scm.com/download/win).
+- [Go 1.26 or later](https://go.dev/dl/).
+- [.NET 9 SDK](https://dotnet.microsoft.com/download/dotnet/9.0).
+
+The developer PowerShell method supports AMD64 and ARM64 Windows systems. The
+current setup program is for AMD64 Windows only.
+
+#### Developer install
+
+1. Open PowerShell.
+2. Clone this repository.
+3. Change to the repository directory.
+4. Run the Windows installer.
+
+```powershell
+git clone https://github.com/Iman/caspian.git
+Set-Location caspian
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\install.ps1
+```
+
+5. Click **Yes** when Windows requests administrator access.
+6. Wait for the build and service installation to finish.
+
+The installer does these tasks:
+
+- Builds `caspian.exe` for the current computer.
+- Builds the Windows Mobile Hotspot helper.
+- Builds the `CaspianControl.exe` tray app.
+- Downloads Wintun 0.14.1 when `wintun.dll` is absent.
+- Compares the Wintun archive with its fixed SHA-256 value.
+- Installs the programs in `C:\Program Files\Caspian`.
+- Creates the `caspian` and `caspian-panel` Windows services.
+- Sets both services to start automatically.
+- Creates a **Caspian Control** desktop shortcut.
+- Waits up to 45 seconds for the local panel.
+- Opens Caspian Control after the panel answers.
+
+Use `-NoOpen` to install without opening the tray app:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\install.ps1 -NoOpen
+```
+
+#### Start Caspian
+
+1. Open **Caspian Control** from the desktop.
+2. Click **Yes** when Windows requests administrator access.
+3. Wait until the large status card says **Ready**.
+4. Click **Open panel**.
+5. Sign in to the local panel.
+6. Paste one supported proxy link.
+7. Enter the Wi-Fi name and password.
+8. Keep 2.4 GHz for older devices.
+9. Select 5 GHz only when all client devices support it.
+10. Switch Caspian on.
+11. Wait until the panel status is green.
+12. Connect a phone or computer to the new Caspian Wi-Fi network.
+
+The panel shows each connected device. Windows gives these devices addresses
+from `192.168.137.0/24` and sends their traffic through the `xray0` tunnel.
+
+#### Caspian Control
+
+The tray app controls the two Windows services. It does not store the panel
+password or the proxy link.
+
+| Control | Result |
+|---|---|
+| **Start all** | Sets both services to automatic startup, then starts them |
+| **Stop all** | Stops both services and keeps them stopped until **Start all** |
+| **Restart all** | Restarts both services and waits for them to answer |
+| **Open panel** | Opens `http://127.0.0.1:8088/` in the default browser |
+
+The app stays in the Windows notification area when you minimize or close its
+window. Double-click its icon to open the window again. Right-click the icon to
+use all four controls or exit the app.
+
+The green **Ready** state means both services run and the local panel port
+answers. The red state names which service or port is off. A service operation
+has a 45-second limit, so the window stays responsive during a Windows delay.
+
+#### What to expect
+
+Windows requests administrator access because Caspian controls services,
+routes, the firewall, Mobile Hotspot, and the Wintun adapter. This request
+appears when you run the installer or open Caspian Control.
+
+The panel uses 2.4 GHz by default. This band supports more old devices. The
+advanced panel also offers 5 GHz.
+
+Windows disconnects connected devices when you stop or restart the hotspot.
+Reconnect each device after the panel becomes green again.
+
+If the tray app says **Ready** but the panel is red, read the problem text in
+the panel. **Ready** covers the Windows services and the local panel. The panel
+also tests the hotspot and tunnel.
+
+#### Repair or update
+
+Run the same installer again. The installer stops the services, replaces the
+programs, preserves the panel state, and starts the services again.
+
+#### Uninstall
+
+Open an administrator PowerShell in the repository. Then run:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\uninstall.ps1
+```
+
+The uninstaller removes the Windows services and installed programs. Read the
+script before use when you need to preserve local state.
 
 ### Automated: one line
 
@@ -1584,6 +1735,21 @@ one; they are credited because the work is theirs.
 | [miekg/dns](https://github.com/miekg/dns) | BSD-3-Clause | DNS message handling |
 | [gorilla/websocket](https://github.com/gorilla/websocket) | BSD-2-Clause | The WebSocket transport |
 | [CIRCL](https://github.com/cloudflare/circl) | BSD-3-Clause | Post-quantum key exchange |
+| [Wintun](https://www.wintun.net/) | Wintun Prebuilt Binaries License | The signed `wintun.dll` tunnel driver on Windows |
+| [.NET runtime and Windows Forms](https://github.com/dotnet/runtime) | MIT | The self-contained Windows helper and tray app runtime |
+| `System.ServiceProcess.ServiceController` | MIT | Windows service control from `CaspianControl.exe` |
+
+The Windows installation has one separate third-party DLL: `wintun.dll`.
+Caspian distributes the official signed Wintun 0.14.1 binary without changes.
+Its license is in
+`third_party/wintun/PREBUILT-BINARIES-LICENSE.txt` and is copied to
+`C:\Program Files\Caspian\WINTUN-LICENSE.txt` during installation.
+
+`caspian-tethering.exe` and `CaspianControl.exe` are self-contained .NET
+programs. Their .NET components are inside the executable files, not beside
+them as extra DLLs. The .NET license and notices are in `third_party/dotnet/`.
+The Windows SDK reference package is a build input and is not installed with
+Caspian.
 
 It also needs `hostapd`, `dnsmasq`, `nftables`, `iw` and `iproute2` on the
 machine. Those run as separate programs rather than being linked, so their

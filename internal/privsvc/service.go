@@ -270,10 +270,16 @@ func (s *Service) Status(ctx context.Context) (panel.SystemStatus, error) {
 		// function did not look at them. Reading them here adds no process and
 		// makes the answer at most DetectTTL stale, which is right for a
 		// health indicator when the start sequence holds the fresh check.
-		if onAir, known := s.hotspotOnTheAir(iface, hp.AP.SSID); known && !onAir {
-			hs.Running = false
-			st.Hotspot.Running = false
-			hs.Reason = "The hotspot software is running and the wireless adapter is not broadcasting this network."
+		// Windows Mobile Hotspot broadcasts through a separate Wi-Fi Direct
+		// virtual adapter. The planned interface is the physical radio, so its
+		// station state cannot be used as evidence that the hotspot is down.
+		// The Windows supervisor status above is the authoritative readback.
+		if s.cfg.Backend.Platform() != netcfg.PlatformWindows {
+			if onAir, known := s.hotspotOnTheAir(iface, hp.AP.SSID); known && !onAir {
+				hs.Running = false
+				st.Hotspot.Running = false
+				hs.Reason = "The hotspot software is running and the wireless adapter is not broadcasting this network."
+			}
 		}
 	}
 	// A fault ONLY when the box is meant to be on. A hotspot that is down

@@ -148,9 +148,19 @@ func (s *Service) hotspotPlanFor(p *netcfg.Plan, f netcfg.Facts, req panel.Start
 			errors.New("no country is set and the radio did not report one, so the hotspot cannot legally pick a channel"))
 	}
 
+	uplink := p.Uplink
+	if s.cfg.Backend.Platform() == netcfg.PlatformWindows {
+		// Mobile Hotspot's connection profile is its actual shared egress.
+		// Binding it to the physical uplink makes ICS bypass the host's default
+		// route and leaks client traffic outside xray0. The Windows start order
+		// creates and routes xray0 before the hotspot starts, so share that
+		// profile directly. The physical server route still keeps the tunnel's
+		// own connection off itself.
+		uplink = p.Tun
+	}
 	ap := hotspot.APConfig{
 		Interface:   p.Hotspot,
-		Uplink:      p.Uplink,
+		Uplink:      uplink,
 		SSID:        req.Hotspot.SSID,
 		Passphrase:  req.Hotspot.Passphrase,
 		CountryCode: country,
