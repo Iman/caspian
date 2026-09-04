@@ -89,8 +89,10 @@ who want to check it first.
 
 ### Windows 11
 
-For most users, download and run `CaspianSetup-0.2.1-windows-x64.exe` from the
-release page. No PowerShell command, Go installation, or .NET SDK is needed.
+For most Intel and AMD computers, download and run
+`CaspianSetup-0.2.1-windows-x64.exe` from the release page. On a Windows ARM
+computer, use `CaspianSetup-0.2.1-windows-arm64.exe`. No PowerShell command,
+Go installation, or .NET SDK is needed.
 The setup wizard asks for administrator access and then shows two optional
 choices:
 
