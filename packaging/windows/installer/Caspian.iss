@@ -2,6 +2,12 @@
 #ifndef AppVersion
 #define AppVersion "0.2.1"
 #endif
+#ifndef BuildArchitecture
+#define BuildArchitecture "x64"
+#endif
+#ifndef AllowedArchitecture
+#define AllowedArchitecture "x64os"
+#endif
 #define Publisher "Caspian project"
 
 [Setup]
@@ -11,11 +17,11 @@ AppVersion={#AppVersion}
 AppPublisher={#Publisher}
 DefaultDirName={autopf}\Caspian
 DefaultGroupName=Caspian
-ArchitecturesAllowed=x64compatible
-ArchitecturesInstallIn64BitMode=x64compatible
+ArchitecturesAllowed={#AllowedArchitecture}
+ArchitecturesInstallIn64BitMode={#AllowedArchitecture}
 PrivilegesRequired=admin
 OutputDir=..\..\..\out\installer
-OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-x64
+OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-{#BuildArchitecture}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -38,10 +44,10 @@ Name: "startupicon"; Description: "Start Caspian Control when I sign in"; GroupD
 Name: "{commonappdata}\Caspian"
 
 [Files]
-Source: "payload\caspian.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopCaspianProcesses
-Source: "payload\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "payload\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "payload\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\caspian.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopCaspianProcesses
+Source: "payload\{#BuildArchitecture}\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\..\NOTICE"; DestDir: "{app}"; DestName: "NOTICE.txt"; Flags: ignoreversion
 Source: "..\..\..\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
 Source: "..\..\..\third_party\wintun\PREBUILT-BINARIES-LICENSE.txt"; DestDir: "{app}"; DestName: "WINTUN-LICENSE.txt"; Flags: ignoreversion

@@ -91,6 +91,10 @@ jobs:
   windows:
     needs: gate
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        architecture: [x64, arm64]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
@@ -105,12 +109,12 @@ jobs:
         run: choco install innosetup --no-progress -y
       - name: Build the Windows installer
         shell: powershell
-        run: .\packaging\windows\installer\build-installer.ps1 -Version "${{ github.ref_name }}"
+        run: .\packaging\windows\installer\build-installer.ps1 -Version "${{ github.ref_name }}" -Architecture "${{ matrix.architecture }}"
       - name: Keep the Windows release file
         uses: actions/upload-artifact@v4
         with:
-          name: windows-release
-          path: out/installer/CaspianSetup-*-windows-x64.exe
+          name: windows-${{ matrix.architecture }}-release
+          path: out/installer/CaspianSetup-*-windows-${{ matrix.architecture }}.exe
 
   publish:
     needs: [build, windows]
@@ -124,7 +128,7 @@ jobs:
       - name: Create checksums
         run: |
           cd dist
-          sha256sum caspian-linux-* CaspianSetup-*-windows-x64.exe > SHA256SUMS
+          sha256sum caspian-linux-* CaspianSetup-*-windows-*.exe > SHA256SUMS
           cat SHA256SUMS
       - name: Publish the release
         uses: softprops/action-gh-release@v2
