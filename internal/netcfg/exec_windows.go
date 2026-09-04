@@ -144,6 +144,19 @@ func readInventory() (WindowsInventory, error) {
 	upByLUID := map[netLUID]bool{}
 	for i := range ifTable.rows() {
 		row := &ifTable.rows()[i]
+		// NDIS layers a filter driver's own pseudo-adapter beside the real one
+		// it is bound to (a WiFi radio carries four or five of these: the WFP
+		// native and 802.3 MAC-layer LWFs, the QoS packet scheduler, the
+		// Virtual and Native WiFi filter drivers). GetIfTable2Ex reports them
+		// as ordinary IEEE 802.11 or Ethernet rows with their own index and no
+		// address, so left unfiltered every one of them reads as another radio
+		// or another uplink candidate. MEASURED on this machine: every such
+		// row, and no real adapter, carries FilterInterface in this flag byte;
+		// GetAdaptersAddresses already excludes them from its own list, which
+		// is why they show no address either way.
+		if row.InterfaceAndOperStatusFlags&mibIfFilterInterface != 0 {
+			continue
+		}
 		a := WindowsAdapter{
 			Alias: row.aliasString(),
 			Index: int(row.InterfaceIndex),

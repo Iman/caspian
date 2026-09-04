@@ -275,6 +275,11 @@ const (
 	ifOperStatusUp    = 1
 )
 
+// mibIfFilterInterface is the FilterInterface bit of MIB_IF_ROW2's
+// InterfaceAndOperStatusFlags. MEASURED against a live table (see
+// readInventory).
+const mibIfFilterInterface = 0x02
+
 // Windows error codes the runner turns into the idempotence markers the
 // shared Applier already understands.
 const (
