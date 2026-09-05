@@ -341,6 +341,32 @@
 </div>
 </div>
 
+<section class="card" aria-labelledby="connections-heading">
+  <h2 id="connections-heading">Internet and hotspot connections</h2>
+  <p class="hint">Take internet from Ethernet or Wi-Fi and share it through built-in or USB Wi-Fi. Using one Wi-Fi adapter for both needs hardware and driver support. Start with automatic selection. 2.4 GHz suits older devices; 5 GHz needs adapter support.</p>
+  <form method="post" action="/advanced" class="stack">
+    <input type="hidden" name="csrf" value="<redacted:csrf-token>">
+    <input type="hidden" name="connections_only" value="1">
+    <label for="connection-internet">Which connection reaches the internet</label>
+    <select id="connection-internet" name="internet_interface" dir="ltr">
+      <option value="">Let Caspian decide (now: ⁦eth0⁩)</option>
+      <option dir="ltr" value="eth0" >eth0 - Ethernet</option><option dir="ltr" value="wlan0" >wlan0 - built-in WiFi</option>
+    </select>
+    <label for="connection-hotspot">Which adapter makes the hotspot</label>
+    <select id="connection-hotspot" name="hotspot_interface" dir="ltr">
+      <option value="">Let Caspian decide (now: ⁦wlan0⁩)</option>
+      <option dir="ltr" value="wlan0" >wlan0 - built-in WiFi</option>
+    </select>
+    <label for="connection-band">Band</label>
+    <select id="connection-band" name="band">
+      <option value="">Let Caspian decide (now: 2.4 GHz (reaches further, slower))</option>
+      <option value="2.4GHz" >2.4 GHz (reaches further, slower)</option><option value="5GHz" >5 GHz (faster, shorter range)</option>
+    </select>
+    <p class="hint">Connect the internet source first. Save, then turn the main switch off and on to apply changes. Connected devices lose their connection while it is off.</p>
+    <button type="submit" class="go">Save these settings</button>
+  </form>
+</section>
+
 <p class="advanced-toggle">
   <a href="/?advanced=1">Show advanced settings</a>
 </p>

@@ -2,6 +2,23 @@
 
 package hotspot
 
+// NewMobileHotspotPlan validates the shared AP settings without applying
+// hostapd/dnsmasq token and path rules to Windows adapter aliases. Windows
+// supplies DHCP/DNS through ICS; no Linux configuration files are rendered.
+func NewMobileHotspotPlan(ap APConfig, dns DNSConfig, radio RadioConstraint) (Plan, error) {
+	ap, generated, err := EnsurePassphrase(ap)
+	if err != nil {
+		return Plan{}, err
+	}
+	if err := ap.validate(true); err != nil {
+		return Plan{}, err
+	}
+	if err := radio.Check(ap); err != nil {
+		return Plan{}, err
+	}
+	return Plan{AP: ap, DNS: dns, Radio: radio, PassphraseGenerated: generated}, nil
+}
+
 // Plan is a fully validated, fully rendered hotspot, ready to start.
 //
 // Everything that can fail on the input side has already failed by the time a

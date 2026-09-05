@@ -701,6 +701,11 @@ func TestAdvancedModeRevealsAndNeverHides(t *testing.T) {
 
 	_, basic := h.get("/")
 	_, advanced := h.get("/?advanced=1")
+	for _, field := range []string{"connections_only", "internet_interface", "hotspot_interface", "band"} {
+		if !strings.Contains(basic, `name="`+field+`"`) {
+			t.Errorf("basic mode is missing connection control %s", field)
+		}
+	}
 
 	if !strings.Contains(advanced, h.msg(MsgAdvancedHeading)) {
 		t.Fatal("advanced mode did not reveal the advanced section")

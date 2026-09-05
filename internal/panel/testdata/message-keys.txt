@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 340 keys
+## fa: 343 keys
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -90,6 +90,9 @@
   config.placeholder
   config.replace
   config.submit
+  connections.apply
+  connections.heading
+  connections.hint
   cut.banner
   cut.button
   cut.caption
@@ -347,7 +350,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 340 keys
+## en: 343 keys
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -432,6 +435,9 @@
   config.placeholder
   config.replace
   config.submit
+  connections.apply
+  connections.heading
+  connections.hint
   cut.banner
   cut.button
   cut.caption

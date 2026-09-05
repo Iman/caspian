@@ -194,7 +194,11 @@ func (s *Service) hotspotPlanFor(p *netcfg.Plan, f netcfg.Facts, req panel.Start
 		CacheSize: dnsCacheSize,
 	}
 
-	plan, err := hotspot.NewPlan(ap, dns, rc)
+	newPlan := hotspot.NewPlan
+	if s.cfg.Backend.Platform() == netcfg.PlatformWindows {
+		newPlan = hotspot.NewMobileHotspotPlan
+	}
+	plan, err := newPlan(ap, dns, rc)
 	if err != nil {
 		return hotspot.Plan{}, fail("hotspot configuration", hotspotFault(unitAP, err.Error(), err), err)
 	}

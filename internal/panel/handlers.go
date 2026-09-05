@@ -96,15 +96,17 @@ func (p *Panel) handleIndex(w http.ResponseWriter, r *http.Request) {
 	data.fillNextStep(st.Hotspot.SSID != "", status.ClientTrafficCut,
 		status.Engine.Phase == engine.PhaseStarting, status.Hotspot.Devices)
 
+	var log EngineLog
 	if advanced {
 		ctx, cancel := p.privCtx(r)
-		log, err := p.priv.EngineLog(ctx)
+		var err error
+		log, err = p.priv.EngineLog(ctx)
 		cancel()
 		if err != nil {
 			p.log.Warn("engine log unavailable", "fault", string(FaultOf(err)))
 		}
-		data.fillAdvanced(st.Advanced, status.Detection, log)
 	}
+	data.fillAdvanced(st.Advanced, status.Detection, log)
 
 	p.render(w, http.StatusOK, "index", data)
 }
@@ -560,6 +562,7 @@ func (p *Panel) handleAdvanced(w http.ResponseWriter, r *http.Request) {
 	subnet := strings.TrimSpace(r.PostFormValue("subnet"))
 	logLevel := strings.TrimSpace(r.PostFormValue("engine_log_level"))
 	onLAN := r.PostFormValue("panel_on_lan") == "1"
+	connectionsOnly := r.PostFormValue("connections_only") == "1"
 
 	channel := 0
 	if v := strings.TrimSpace(r.PostFormValue("channel")); v != "" {
@@ -572,6 +575,10 @@ func (p *Panel) handleAdvanced(w http.ResponseWriter, r *http.Request) {
 		channel = n
 	}
 
+	if connectionsOnly {
+		adv := p.store.Snapshot().Advanced
+		channel, country, subnet, logLevel = adv.Channel, adv.Country, adv.Subnet, adv.EngineLogLevel
+	}
 	if prob := validateOverrides(det, internet, hotspotIf, channel, band, country, subnet, logLevel); !prob.Empty() {
 		sess.setFlash(prob, "")
 		p.home(w, r)
@@ -581,8 +588,11 @@ func (p *Panel) handleAdvanced(w http.ResponseWriter, r *http.Request) {
 	err = p.store.Update(func(st *state.State) error {
 		st.Advanced.InternetInterface = internet
 		st.Advanced.HotspotInterface = hotspotIf
-		st.Advanced.Channel = channel
 		st.Advanced.Band = band
+		if connectionsOnly {
+			return nil
+		}
+		st.Advanced.Channel = channel
 		st.Advanced.Country = country
 		st.Advanced.Subnet = subnet
 		st.Advanced.EngineLogLevel = logLevel

@@ -28,6 +28,7 @@ using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Windows.Devices.WiFi;
 using Windows.Networking.Connectivity;
 using Windows.Networking.NetworkOperators;
 
@@ -104,7 +105,7 @@ namespace Caspian.Tethering
             {
                 case "start": return await Start(req);
                 case "stop": return await Stop(req);
-                case "status": return Status(req);
+                case "status": return await Status(req);
                 default: return Fail("BadRequest", "unknown operation " + req.Op);
             }
         }
@@ -114,9 +115,8 @@ namespace Caspian.Tethering
         // named it becomes the private (access point) side, which is the
         // overload that lets a USB dongle host while the built-in radio or
         // Ethernet is the uplink.
-        private static NetworkOperatorTetheringManager? Manager(Request req, out Reply? failure)
+        private static async Task<(NetworkOperatorTetheringManager? Manager, Reply? Failure)> Manager(Request req)
         {
-            failure = null;
             var profile = ProfileForAlias(req.Uplink);
             // Windows can remove the adapter/profile association after
             // Mobile Hotspot starts, even though the shared connection and
@@ -124,47 +124,37 @@ namespace Caspian.Tethering
             // the current internet profile instead of reporting a false
             // failure. Start stays strict so a misspelled uplink is never
             // silently replaced with another connection.
-            if (profile is null && req.Op != "start")
+            if (profile is null && (string.IsNullOrEmpty(req.Uplink) || req.Op != "start"))
             {
                 profile = NetworkInformation.GetInternetConnectionProfile();
             }
             if (profile is null)
             {
-                failure = Fail("NoConnectionProfile",
+                return (null, Fail("NoConnectionProfile",
                     "no connection profile uses the interface " + (req.Uplink ?? "(none)") +
-                    "; Windows can only share a connection it has a profile for");
-                return null;
+                    "; connect this interface to the internet before starting Mobile Hotspot"));
             }
             var capability = NetworkOperatorTetheringManager.GetTetheringCapabilityFromConnectionProfile(profile);
             if (capability != TetheringCapability.Enabled)
             {
-                failure = Fail(capability.ToString(), "Mobile Hotspot is not available: " + capability);
-                return null;
+                return (null, Fail(capability.ToString(), "Mobile Hotspot is not available: " + capability));
             }
             if (!string.IsNullOrEmpty(req.Adapter))
             {
-                var adapter = AdapterForAlias(req.Adapter);
+                var adapter = await AdapterForAlias(req.Adapter);
                 if (adapter is null)
                 {
-                    // An idle Wi-Fi adapter has no connection profile, so
-                    // WinRT cannot give us its NetworkAdapter object. If the
-                    // OS still knows the alias, use the default overload and
-                    // let Windows select that available hotspot adapter.
-                    if (GuidForAlias(req.Adapter) is not null)
-                    {
-                        return NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile);
-                    }
-                    failure = Fail("NoAdapter", "no network adapter is called " + req.Adapter);
-                    return null;
+                    return (null, Fail("NoAdapter", "the selected Wi-Fi adapter is unavailable: " + req.Adapter +
+                        "; connect and enable it, or choose automatic selection"));
                 }
-                return NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile, adapter);
+                return (NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile, adapter), null);
             }
-            return NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile);
+            return (NetworkOperatorTetheringManager.CreateFromConnectionProfile(profile), null);
         }
 
         private static async Task<Reply> Start(Request req)
         {
-            var manager = Manager(req, out var failure);
+            var (manager, failure) = await Manager(req);
             if (manager is null) return failure!;
 
             var config = manager.GetCurrentAccessPointConfiguration();
@@ -203,11 +193,11 @@ namespace Caspian.Tethering
 
         private static async Task<Reply> Stop(Request req)
         {
-            var manager = Manager(req, out var failure);
+            var (manager, failure) = await Manager(req);
             if (manager is null)
             {
-                // With no shareable uplink there is nothing to stop; say off.
-                return new Reply { Ok = true, State = "off" };
+                // A missing uplink or radio does not prove the hotspot stopped.
+                return failure!;
             }
             if (manager.TetheringOperationalState == TetheringOperationalState.Off)
             {
@@ -221,9 +211,9 @@ namespace Caspian.Tethering
             return new Reply { Ok = true, State = "off" };
         }
 
-        private static Reply Status(Request req)
+        private static async Task<Reply> Status(Request req)
         {
-            var manager = Manager(req, out var failure);
+            var (manager, failure) = await Manager(req);
             if (manager is null) return failure!;
             return Describe(manager, true, null);
         }
@@ -296,12 +286,11 @@ namespace Caspian.Tethering
             return null;
         }
 
-        private static NetworkAdapter? AdapterForAlias(string alias)
+        private static async Task<NetworkAdapter?> AdapterForAlias(string alias)
         {
             var id = GuidForAlias(alias);
             if (id is null) return null;
-            // A Wi-Fi adapter that is not joined to anything has no connection
-            // profile, so it is looked for among the LAN identifiers as well.
+            // A joined radio can be resolved without enumerating Wi-Fi devices.
             foreach (var profile in NetworkInformation.GetConnectionProfiles())
             {
                 if (profile.NetworkAdapter is not null && profile.NetworkAdapter.NetworkAdapterId == id.Value)
@@ -309,14 +298,14 @@ namespace Caspian.Tethering
                     return profile.NetworkAdapter;
                 }
             }
-            foreach (var lan in NetworkInformation.GetLanIdentifiers())
+            // Idle radios have no connection profile. Enumerate actual radios,
+            // not LAN identifiers (which contain GUIDs but no adapter objects).
+            // Do not silently substitute another radio if access is denied.
+            foreach (var wifi in await WiFiAdapter.FindAllAdaptersAsync())
             {
-                if (lan.NetworkAdapterId == id.Value)
+                if (wifi.NetworkAdapter.NetworkAdapterId == id.Value)
                 {
-                    // LanIdentifier carries the id only; the adapter object
-                    // itself comes from a profile. Without one Windows picks
-                    // the adapter, which is the behaviour the panel explains.
-                    return null;
+                    return wifi.NetworkAdapter;
                 }
             }
             return null;
