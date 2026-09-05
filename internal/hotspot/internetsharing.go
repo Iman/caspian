@@ -6,6 +6,7 @@ package hotspot
 import (
 	"context"
 	"encoding/base64"
+	"encoding/binary"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -469,7 +470,7 @@ func (s *InternetSharing) bridgeUp(ctx context.Context, gw netip.Addr) (bool, ne
 	return false, first
 }
 
-var ifconfigFlags = regexp.MustCompile(`flags=\d+<([A-Z0-9_,]*)>`)
+var ifconfigFlags = regexp.MustCompile(`flags=[0-9a-fA-F]+<([A-Z0-9_,]*)>`)
 
 // ParseIfconfigBrief reads one interface's ifconfig block: whether UP is among
 // the flags, and its inet addresses.
@@ -513,28 +514,41 @@ func (s *InternetSharing) readPrefsXML(ctx context.Context) (string, error) {
 }
 
 // disableInNATPrefs sets the NAT dictionary's Enabled to 0 in XML text,
-// leaving everything else as the file has it. Enabled appears twice in the
-// file, once in AirPort and once in NAT; the NAT one is the switch and is the
-// one that is not inside the AirPort dictionary.
+// leaving nested AirPort and PrimaryInterface keys and whitespace unchanged.
 func disableInNATPrefs(xml string) string {
-	// The AirPort dict closes before the NAT-level Enabled key in the order
-	// this driver and the Sharing pane write; cut at the last </dict> that
-	// precedes the NAT Enabled key to stay out of AirPort.
-	i := strings.Index(xml, "<key>Enabled</key>")
-	if i < 0 {
+	// Match only the Enabled key directly inside NAT. PrimaryInterface and
+	// AirPort also have Enabled keys, and either can be ordered last.
+	start := strings.Index(xml, "<key>NAT</key>")
+	if start < 0 {
 		return xml
 	}
-	for {
-		j := strings.Index(xml[i+1:], "<key>Enabled</key>")
-		if j < 0 {
-			break
+	start += len("<key>NAT</key>")
+	depth := 0
+	for _, loc := range natDictTokens.FindAllStringIndex(xml[start:], -1) {
+		i, j := start+loc[0], start+loc[1]
+		switch xml[i:j] {
+		case "<dict>":
+			depth++
+		case "</dict>":
+			depth--
+			if depth == 0 {
+				return xml
+			}
+		default:
+			if depth == 1 {
+				value := natEnabledValue.FindStringIndex(xml[j:])
+				if value != nil {
+					return xml[:j] + strings.Replace(xml[j:j+value[1]], "<integer>1</integer>", "<integer>0</integer>", 1) + xml[j+value[1]:]
+				}
+				return xml
+			}
 		}
-		i += 1 + j
 	}
-	rest := xml[i:]
-	rest = strings.Replace(rest, "<integer>1</integer>", "<integer>0</integer>", 1)
-	return xml[:i] + rest
+	return xml
 }
+
+var natDictTokens = regexp.MustCompile(`</?dict>|<key>Enabled</key>`)
+var natEnabledValue = regexp.MustCompile(`^\s*<integer>[01]</integer>`)
 
 // renderNATPrefs writes the preferences file the Sharing pane would write for
 // this plan. Key names and types are the ones read in real dumps of the file
@@ -553,6 +567,7 @@ func renderNATPrefs(plan Plan, service string, enabled bool) string {
 		on = 1
 	}
 	net := plan.DNS.Subnet.Masked().Addr().String()
+	end := subnetEnd(plan.DNS.Subnet).String()
 	mask := prefixMask(plan.DNS.Subnet)
 	var b strings.Builder
 	b.WriteString(`<?xml version="1.0" encoding="UTF-8"?>` + "\n")
@@ -567,13 +582,39 @@ func renderNATPrefs(plan Plan, service string, enabled bool) string {
 	b.WriteString("\t\t</dict>\n")
 	fmt.Fprintf(&b, "\t\t<key>Enabled</key>\n\t\t<integer>%d</integer>\n", on)
 	b.WriteString("\t\t<key>NatPortMapDisabled</key>\n\t\t<false/>\n")
+	// NetworkSharing uses this source-interface dictionary together with the
+	// service UUID. Older macOS releases tolerated its absence, but current
+	// releases otherwise record "no external interface" and turn sharing off.
+	b.WriteString("\t\t<key>PrimaryInterface</key>\n\t\t<dict>\n")
+	fmt.Fprintf(&b, "\t\t\t<key>Device</key>\n\t\t\t<string>%s</string>\n", xmlEscape(plan.AP.Uplink))
+	b.WriteString("\t\t\t<key>Enabled</key>\n\t\t\t<integer>0</integer>\n")
+	b.WriteString("\t\t\t<key>HardwareKey</key>\n\t\t\t<string></string>\n")
+	fmt.Fprintf(&b, "\t\t\t<key>PrimaryUserReadable</key>\n\t\t\t<string>%s</string>\n", xmlEscape(plan.AP.Uplink))
+	b.WriteString("\t\t</dict>\n")
 	fmt.Fprintf(&b, "\t\t<key>PrimaryService</key>\n\t\t<string>%s</string>\n", xmlEscape(service))
 	fmt.Fprintf(&b, "\t\t<key>SharingDevices</key>\n\t\t<array>\n\t\t\t<string>%s</string>\n\t\t</array>\n", xmlEscape(plan.AP.Interface))
 	fmt.Fprintf(&b, "\t\t<key>SharingNetworkMask</key>\n\t\t<string>%s</string>\n", mask)
-	fmt.Fprintf(&b, "\t\t<key>SharingNetworkNumberEnd</key>\n\t\t<string>%s</string>\n", net)
+	fmt.Fprintf(&b, "\t\t<key>SharingNetworkNumberEnd</key>\n\t\t<string>%s</string>\n", end)
 	fmt.Fprintf(&b, "\t\t<key>SharingNetworkNumberStart</key>\n\t\t<string>%s</string>\n", net)
 	b.WriteString("\t</dict>\n</dict>\n</plist>\n")
 	return b.String()
+}
+
+// subnetEnd is the last address in the IPv4 subnet. Internet Sharing uses the
+// network address for its start marker and the subnet's end marker separately;
+// equal values are accepted by plist tooling but cause NetworkSharing to
+// reject the AP with "no external interface" on current macOS.
+func subnetEnd(p netip.Prefix) netip.Addr {
+	p = p.Masked()
+	a := p.Addr()
+	if !a.Is4() || p.Bits() < 0 || p.Bits() > 32 {
+		return a
+	}
+	a4 := a.As4()
+	n := binary.BigEndian.Uint32(a4[:]) | (^uint32(0) >> uint(p.Bits()))
+	return netip.AddrFrom4([4]byte{
+		byte(n >> 24), byte(n >> 16), byte(n >> 8), byte(n),
+	}).WithZone("")
 }
 
 func prefixMask(p netip.Prefix) string {

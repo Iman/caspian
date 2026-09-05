@@ -167,6 +167,10 @@
   
 
   <main id="main">
+    <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden
+       data-working="در حال انجام درخواست… صفحه همچنان قابل استفاده است. لطفاً دوباره دکمه را نزنید." data-stopping="در حال خاموش کردن هات‌اسپات و تونل… گوشی ارتباط با این صفحه را از دست می‌دهد. برای روشن کردن دوباره، پنل را روی خود دستگاه باز کنید."
+       data-failed="پاسخ درخواست دریافت نشد؛ ممکن است هنوز در حال انجام باشد. قبل از تلاش دوباره، وضعیت را بررسی کنید. روی مک پنل محلی را باز کنید: 127.0.0.1:8088" data-stopped-remote="پس از درخواست خاموش کردن، ارتباط با پنل قطع شد. این اتفاق هنگام خاموش شدن وای‌فای طبیعی است، اما نتیجه هنوز تأیید نشده. برای بررسی و روشن کردن دوباره، پنل را روی خود دستگاه باز کنید؛ روی مک: 127.0.0.1:8088"
+       data-stale="وضعیت زنده در دسترس نیست؛ اطلاعات نمایش‌داده‌شده ممکن است قدیمی باشد. ارتباط با دستگاه را بررسی کنید."></p>
   
 
 <section class="tiles" aria-labelledby="status-heading">
@@ -201,7 +205,7 @@
         <span id="power-label">روشن کن</span>
       </button>
     </form>
-    <p class="hero-caption">کل دستگاه را روشن و خاموش می‌کند. وقتی خاموش شود، وای‌فای هم می‌رود و دستگاه‌های شما قطع می‌شوند.</p>
+    <p class="hero-caption">هات‌اسپات و تونل را خاموش می‌کند، نه خود کامپیوتر را. گوشی دسترسی به این صفحه را از دست می‌دهد. برای روشن کردن دوباره روی مک از 127.0.0.1:8088 استفاده کنید. برای قطع موقت اینترنت، کنترل ترافیک را بزنید تا وای‌فای و پنل روشن بمانند.</p>
     </div>
 
     
@@ -352,6 +356,49 @@
 <p class="advanced-toggle">
   <a href="/?advanced=1">نمایش تنظیمات پیشرفته</a>
 </p>
+
+<section class="card" aria-labelledby="password-heading">
+  <h2 id="password-heading">تغییر رمز این صفحه</h2>
+  <p class="hint">برای تغییر رمز، رمز فعلی را وارد کنید. بعد از تغییر، همه نشست‌های قبلی خارج می‌شوند.</p>
+  <form method="post" action="/password" class="stack">
+    <input type="hidden" name="csrf" value="<redacted:csrf-token>">
+    <label for="current-password">رمز فعلی</label>
+    <input id="current-password" name="current" type="password" required autocomplete="current-password" dir="ltr">
+    <label for="new-password">رمز تازه</label>
+    <input id="new-password" name="password" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <label for="confirm-password">تکرار رمز تازه</label>
+    <input id="confirm-password" name="confirm" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <button type="submit" class="go">تغییر رمز</button>
+  </form>
+</section>
+
+<section class="card" aria-labelledby="identifiers-heading">
+  <h2 id="identifiers-heading">ساخت شناسه‌های آزمایشی</h2>
+  <p class="hint">بعضی ارائه‌دهندگان کانفیگ پیش از صدور کانفیگ یک شناسه می‌خواهند. کاسپین می‌تواند برای آن فرم یک UUID تصادفی نسخه ۴ و یک عدد ۱۵ رقمی با قالب IMEI بسازد.</p>
+  <form id="identifier-generator" method="get" action="/identifiers.json" class="identifier-list">
+    <div class="identifier-row">
+      <label for="generated-uuid">UUID تصادفی نسخه ۴</label>
+      <div class="identifier-output">
+        <input id="generated-uuid" type="text" readonly autocomplete="off" spellcheck="false" dir="ltr" placeholder="دکمه ساخت را بزنید">
+        <button type="button" class="secondary" data-copy-target="generated-uuid" disabled>کپی</button>
+      </div>
+    </div>
+    <div class="identifier-row">
+      <label for="generated-imei">عدد آزمایشی با قالب IMEI</label>
+      <div class="identifier-output">
+        <input id="generated-imei" type="text" readonly autocomplete="off" inputmode="numeric" spellcheck="false" dir="ltr" placeholder="دکمه ساخت را بزنید">
+        <button type="button" class="secondary" data-copy-target="generated-imei" disabled>کپی</button>
+      </div>
+    </div>
+    <button id="generate-identifiers" type="submit" class="go">ساخت مقدارهای تازه</button>
+  </form>
+  <p id="identifier-status" class="hint" role="status" aria-live="polite" hidden
+     data-working="در حال ساخت روی همین دستگاه…"
+     data-ready="مقدارهای تازه ساخته شد. کاسپین آن‌ها را ذخیره نمی‌کند."
+     data-failed="ساخت مقدارها ممکن نشد. دوباره امتحان کنید."
+     data-copied="کپی شد."></p>
+  <p class="identifier-warning">مقدار شبیه IMEI ساختگی است. از این کامپیوتر یا هیچ گوشی‌ای خوانده نشده، چیزی را در دستگاه تغییر نمی‌دهد و نباید به‌عنوان هویت واقعی شبکه موبایل استفاده شود. ممکن است ارائه‌دهنده مقدار آزمایشی را نپذیرد.</p>
+</section>
 
 
 

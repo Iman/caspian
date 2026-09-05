@@ -148,6 +148,12 @@ func TestVersionPrintsWhatThisBinaryIs(t *testing.T) {
 // It is the command somebody reaches for when the box is not working, so it has
 // to run on a machine where nothing is installed and still produce a report.
 func TestCheckChangesNothingAndSaysWhatItLookedAt(t *testing.T) {
+	previousDir := stateDir
+	stateDir = t.TempDir()
+	if err := os.Chmod(stateDir, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { stateDir = previousDir })
 	var stdout, stderr strings.Builder
 	if code := runCheck(nil, &stdout, &stderr); code != exitOK {
 		t.Fatalf("exit code %d: %s", code, stderr.String())

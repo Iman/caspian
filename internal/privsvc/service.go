@@ -274,7 +274,9 @@ func (s *Service) Status(ctx context.Context) (panel.SystemStatus, error) {
 		// virtual adapter. The planned interface is the physical radio, so its
 		// station state cannot be used as evidence that the hotspot is down.
 		// The Windows supervisor status above is the authoritative readback.
-		if s.cfg.Backend.Platform() != netcfg.PlatformWindows {
+		// macOS also broadcasts through a separate AP interface (ap1 on
+		// bridge100). Its en0 station state must not override the supervisor.
+		if s.cfg.Backend.Platform() == netcfg.PlatformLinux {
 			if onAir, known := s.hotspotOnTheAir(iface, hp.AP.SSID); known && !onAir {
 				hs.Running = false
 				st.Hotspot.Running = false

@@ -104,7 +104,10 @@ func darwinDetect(ctx context.Context, r Runner, knobs []string) (Facts, error) 
 			}
 		}
 		f.Wireless = append(f.Wireless, w)
-		f.Phys = append(f.Phys, darwinPhy(w.Phy))
+		// Internet Sharing can only put Apple's built-in radio into AP mode.
+		// USB Wi-Fi devices may still be detected and shown to the user, but
+		// must not become candidates handed to Apple.
+		f.Phys = append(f.Phys, darwinPhy(w.Phy, hp.IsBuiltInWiFi()))
 	}
 
 	if len(knobs) > 0 {
@@ -144,7 +147,7 @@ func darwinPhyName(device string) string { return "radio-" + device }
 // The channels are the ones Internet Sharing's channel menu offers on a
 // current Mac: the 2.4 GHz channels 1 to 11 and the non-DFS 5 GHz channels.
 // DFS channels are deliberately absent, as they are on Linux.
-func darwinPhy(name string) Phy {
+func darwinPhy(name string, apCapable bool) Phy {
 	var b24, b5 Band
 	b24.Number = 1
 	for ch := 1; ch <= 11; ch++ {
@@ -154,11 +157,11 @@ func darwinPhy(name string) Phy {
 	for _, ch := range []int{36, 40, 44, 48, 149, 153, 157, 161} {
 		b5.Frequencies = append(b5.Frequencies, Frequency{MHz: 5000 + 5*ch, Channel: ch})
 	}
-	return Phy{
-		Name:  name,
-		Modes: []string{"managed", "AP"},
-		Bands: []Band{b24, b5},
+	modes := []string{"managed"}
+	if apCapable {
+		modes = append(modes, "AP")
 	}
+	return Phy{Name: name, Modes: modes, Bands: []Band{b24, b5}}
 }
 
 // HardwarePort is one block of "networksetup -listallhardwareports".
@@ -170,7 +173,15 @@ type HardwarePort struct {
 // IsWiFi reports whether the port is a Wi-Fi radio. Apple has named it
 // "Wi-Fi" since 10.7 and "AirPort" before that.
 func (h HardwarePort) IsWiFi() bool {
-	return h.Port == "Wi-Fi" || h.Port == "AirPort" || strings.HasPrefix(h.Port, "Wi-Fi ")
+	return h.Port == "Wi-Fi" || h.Port == "AirPort" || strings.HasPrefix(h.Port, "Wi-Fi ") ||
+		strings.HasPrefix(h.Port, "USB Wi-Fi")
+}
+
+// IsBuiltInWiFi identifies the radio Apple Internet Sharing can host. A USB
+// Wi-Fi driver can appear in this listing as a wireless hardware port, but
+// macOS has no supported AP backend for those devices.
+func (h HardwarePort) IsBuiltInWiFi() bool {
+	return h.Port == "Wi-Fi" || h.Port == "AirPort"
 }
 
 // ParseHardwarePorts reads "networksetup -listallhardwareports". The Ethernet
@@ -267,7 +278,7 @@ func ParsePfStatus(out string) (enabled bool, ok bool) {
 	return false, false
 }
 
-var ifconfigHeader = regexp.MustCompile(`^([A-Za-z0-9._-]+): flags=\d+<([A-Z0-9_,]*)>`)
+var ifconfigHeader = regexp.MustCompile(`^([A-Za-z0-9._-]+): flags=[0-9a-fA-F]+<([A-Z0-9_,]*)>`)
 
 // ParseIfconfig reads "ifconfig -a" into Links.
 //

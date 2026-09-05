@@ -220,6 +220,51 @@ func (p *Panel) handleCut(w http.ResponseWriter, r *http.Request) {
 	p.home(w, r)
 }
 
+func (p *Panel) handlePassword(w http.ResponseWriter, r *http.Request) {
+	p.authMu.Lock()
+	defer p.authMu.Unlock()
+	if _, ok := p.currentSession(r); !ok {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
+	sess := sessionFrom(r)
+	current := r.PostFormValue("current")
+	next := r.PostFormValue("password")
+	confirm := r.PostFormValue("confirm")
+	fail := func(key Key) {
+		sess.setFlash(Problem{Headline: key}, "")
+		p.home(w, r)
+	}
+	key := clientKey(r)
+	if ok, retry := p.limiter.allow(key); !ok {
+		w.Header().Set("Retry-After", strconv.Itoa(int(retry.Seconds())+1))
+		p.renderProblem(w, r, http.StatusTooManyRequests, Problem{Headline: MsgLoginTooMany})
+		return
+	}
+	ok, err := p.store.VerifyPanelPassword(current)
+	if err != nil || !ok {
+		fail(MsgPasswordWrong)
+		return
+	}
+	p.limiter.succeed(key)
+	if len([]rune(next)) < minPanelPassword {
+		fail(MsgPasswordShort)
+		return
+	}
+	if subtle.ConstantTimeCompare([]byte(next), []byte(confirm)) != 1 {
+		fail(MsgPasswordMismatch)
+		return
+	}
+	if err := p.store.SetPanelPassword(next); err != nil {
+		p.log.Error("saving the panel password failed", "error", err.Error())
+		fail(MsgPasswordSaveFailed)
+		return
+	}
+	p.sessions.destroyAll()
+	http.SetCookie(w, clearSessionCookie(p.cookieName, p.secureCookies))
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+}
+
 func (p *Panel) handlePower(w http.ResponseWriter, r *http.Request) {
 	sess := sessionFrom(r)
 	on := r.PostFormValue("on") == "1"
@@ -708,6 +753,8 @@ func (p *Panel) handleSetupForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *Panel) handleSetup(w http.ResponseWriter, r *http.Request) {
+	p.authMu.Lock()
+	defer p.authMu.Unlock()
 	// The gate. Without it, anyone who can reach the panel could set the
 	// password on a box that already has one, which is not a setup screen; it
 	// is a takeover.
@@ -778,6 +825,8 @@ func (p *Panel) handleLoginForm(w http.ResponseWriter, r *http.Request) {
 }
 
 func (p *Panel) handleLogin(w http.ResponseWriter, r *http.Request) {
+	p.authMu.Lock()
+	defer p.authMu.Unlock()
 	if !p.store.Snapshot().Panel.IsSet() {
 		http.Redirect(w, r, "/setup", http.StatusSeeOther)
 		return

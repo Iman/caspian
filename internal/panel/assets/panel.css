@@ -802,6 +802,23 @@ button {
 .go:focus-visible,
 .danger:focus-visible { outline-color: var(--surface); }
 
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 46px;
+  padding-inline: var(--s4);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--r-ctl);
+  background: var(--surface);
+  color: var(--edge-strong);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary:hover { background: var(--ground); }
+.secondary:active { border-color: var(--ink); }
+
 /* The emergency control, beside the switch and deliberately smaller than it.
    Cutting traffic is not the same size of decision as switching the appliance
    off, and a second round button would read as one. */
@@ -1066,6 +1083,38 @@ textarea::placeholder {
   font-size: var(--fs-sm);
   color: var(--ink-quiet);
 }
+
+.identifier-list {
+  display: grid;
+  gap: var(--s4);
+}
+
+.identifier-row label {
+  display: block;
+  margin-block: 0 var(--s2);
+}
+
+.identifier-output {
+  display: flex;
+  gap: var(--s2);
+  align-items: stretch;
+}
+
+.identifier-output input {
+  min-inline-size: 0;
+  font-family: var(--mono);
+}
+
+.identifier-output .secondary { flex: none; }
+
+.identifier-warning {
+  padding-block-start: var(--s3);
+  border-block-start: 1px solid var(--edge);
+  font-size: var(--fs-sm);
+  color: var(--ink-quiet);
+}
+
+#identifier-status[hidden] { display: none; }
 
 /* ==========================================================================
    DISCLOSURE
@@ -1385,6 +1434,13 @@ textarea::placeholder {
    a consequence of something pressed up there, and it is centred and narrower
    than the page so it reads as a message rather than as another panel of the
    dashboard competing with the cards below it. */
+button:disabled, input[type="submit"]:disabled {
+  border-style: dashed;
+  cursor: progress;
+}
+
+#action-feedback[hidden] { display: none; }
+
 .notice {
   align-items: center;
   justify-content: center;

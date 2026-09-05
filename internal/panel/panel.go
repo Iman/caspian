@@ -10,6 +10,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"sync"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/state"
@@ -75,9 +76,11 @@ type Config struct {
 // state.Secret, link.Link, HotspotSpec and StartRequest all redact themselves
 // through String and GoString, so even a %v on a whole struct is safe.
 type Panel struct {
-	store *state.Store
-	priv  Privileged
-	log   *slog.Logger
+	// Serialize password verification/session creation with password replacement.
+	authMu sync.Mutex
+	store  *state.Store
+	priv   Privileged
+	log    *slog.Logger
 
 	mux      *http.ServeMux
 	sessions *sessionStore
@@ -136,7 +139,9 @@ var routes = []routeSpec{
 	{Method: "POST", Path: "/advanced"},
 	{Method: "POST", Path: "/recover"},
 	{Method: "POST", Path: "/logout"},
+	{Method: "POST", Path: "/password"},
 	{Method: "GET", Path: "/status.json", JSON: true},
+	{Method: "GET", Path: "/identifiers.json", JSON: true},
 
 	// The public routes.
 	{Method: "GET", Path: "/login", Public: true},
@@ -200,7 +205,9 @@ func New(cfg Config) (*Panel, error) {
 		"POST /hotspot":         p.handleHotspot,
 		"POST /advanced":        p.handleAdvanced,
 		"POST /logout":          p.handleLogout,
+		"POST /password":        p.handlePassword,
 		"GET /status.json":      p.handleStatusJSON,
+		"GET /identifiers.json": p.handleIdentifiersJSON,
 		"GET /login":            p.handleLoginForm,
 		"POST /login":           p.handleLogin,
 		"GET /setup":            p.handleSetupForm,

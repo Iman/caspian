@@ -35,12 +35,17 @@ refuse() { printf 'caspian: %s\n' "$1" >&2; exit 1; }
 [ "$(id -u)" -eq 0 ] || refuse "run with sudo"
 [ -n "$BIN_SRC" ] && [ -f "$BIN_SRC" ] || refuse "set CASPIAN_LOCAL_BINARY to the caspian binary you built"
 
-# The role account. Let sysadminctl assign its UID: current macOS releases can
-# ignore an explicit low UID for a role account. A matching group is still
-# required by the launchd job and by the privileged socket. Use a free system
-# GID and repair an account left by an interrupted older installer.
+# The role account. Current macOS releases require a role account UID in the
+# system range, so choose a free one explicitly. A matching group is still
+# required by the launchd job and by the privileged socket. Use free system UID
+# and GID values and repair an account left by an interrupted older installer.
 if ! id "$ACCOUNT" >/dev/null 2>&1; then
-  sysadminctl -addUser "$ACCOUNT" -roleAccount -shell /usr/bin/false -home /var/empty >/dev/null 2>&1 ||
+  uid=450
+  while dscl . -search /Users UniqueID "$uid" | awk 'NF { found=1 } END { exit !found }'; do
+    uid=$((uid + 1))
+  done
+  [ "$uid" -lt 500 ] || refuse "no free system UID between 450 and 499"
+  sysadminctl -addUser "$ACCOUNT" -UID "$uid" -roleAccount -shell /usr/bin/false -home /var/empty >/dev/null 2>&1 ||
     refuse "creating the $ACCOUNT role account failed"
 fi
 if ! dscl . -read "/Groups/$ACCOUNT" >/dev/null 2>&1; then
@@ -71,16 +76,21 @@ install -d -m 0750 -o root -g "$ACCOUNT" "$RUN"
 install -m 0755 -o root -g wheel "$BIN_SRC" "$BIN_DST"
 
 fresh=0
-if [ ! -f "$STATE/state.json" ] && [ ! -f "$STATE/first-run-password" ]; then
+if [ ! -f "$STATE/state.json" ]; then
   fresh=1
-  # head deliberately closes the pipe after 20 bytes; ignore tr's SIGPIPE and
-  # validate the result before creating the one-time credential.
-  password="$(LC_ALL=C tr -dc 'a-z0-9' </dev/urandom | head -c 20 || true)"
-  [ "${#password}" -eq 20 ] || refuse "generating the first-run password failed"
-  umask 077
-  printf '%s' "$password" >"$STATE/first-run-password"
-  chown "$ACCOUNT:$ACCOUNT" "$STATE/first-run-password"
-  chmod 0600 "$STATE/first-run-password"
+  if [ -f "$STATE/first-run-password" ]; then
+    # An interrupted install may have already generated the credential.
+    # Display that same credential instead of silently hiding it on retry.
+    password="$(<"$STATE/first-run-password")"
+    [ "${#password}" -ge 8 ] || refuse "invalid first-run password file; use Reset Password after installation"
+  else
+    password="$(/usr/bin/openssl rand -hex 12)"
+    [ "${#password}" -eq 24 ] || refuse "generating the first-run password failed"
+    umask 077
+    printf '%s' "$password" >"$STATE/first-run-password"
+    chown "$ACCOUNT:$ACCOUNT" "$STATE/first-run-password"
+    chmod 0600 "$STATE/first-run-password"
+  fi
 fi
 
 for label in org.caspianbyoc.caspian org.caspianbyoc.caspian-panel; do

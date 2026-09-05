@@ -167,6 +167,10 @@
   
 
   <main id="main">
+    <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden
+       data-working="Applying your request… You can still use the page. Please do not submit it again." data-stopping="Stopping the hotspot and tunnel… Your phone will lose this page. To switch on again, open the panel on the host device."
+       data-failed="No response received; the operation may still be running. Check the status before retrying. On a Mac, use the local panel: 127.0.0.1:8088" data-stopped-remote="The panel disconnected after the stop request. This is expected if Wi-Fi stopped, but the result is not yet confirmed. Check and restart from the host device; on a Mac: 127.0.0.1:8088"
+       data-stale="Live status is unavailable. Displayed information may be out of date. Check your connection to this device."></p>
   
 
 <section class="card" aria-labelledby="help-what">
@@ -315,7 +319,7 @@
     <dt>I am joined but there is no internet</dt><dd>When the tunnel drops, this is what you see, and it is deliberate: Caspian stops the traffic instead of letting it out another way. Look at the top of the page. If it says traffic is cut, somebody pressed the cut control, and the button next to it puts the traffic back.</dd>
     <dt>It is slow</dt><dd>All traffic goes through one connection and one server, so the speed depends on that server and how far you are from it. If you have more than one config, try another one. A config change takes a few seconds.</dd>
     <dt>I cannot reach this page</dt><dd>Open it from a device joined to the hotspot. While Caspian is on, this page is always reachable that way, even while traffic is cut. Reaching it from the network the box itself sits on is off by default and is turned on in advanced settings.</dd>
-    <dt>I have forgotten the password for this page</dt><dd>There is no way back from inside this page, and that is deliberate: any recovery path is also a way past the password. You need access to the box itself. Run the Caspian installer again there to set a new password.</dd>
+    <dt>I have forgotten the password for this page</dt><dd>Recovering a forgotten password requires access to the device itself. On a Mac, open the Caspian app and choose Reset Password. On other devices, use the installer&#39;s local password recovery tool. If you still know your password, sign in and change it in the panel&#39;s password section.</dd>
   </dl>
 </section>
 

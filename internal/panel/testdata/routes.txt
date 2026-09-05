@@ -20,7 +20,9 @@ POST   /hotspot             false    false    303         403
 POST   /advanced            false    false    303         403
 POST   /recover             false    false    303         403
 POST   /logout              false    false    303         403
+POST   /password            false    false    303         403
 GET    /status.json         false    true     401         n/a
+GET    /identifiers.json    false    true     401         n/a
 GET    /login               true     false    200         n/a
 POST   /login               true     false    403         403
 GET    /setup               true     false    303         n/a

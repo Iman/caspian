@@ -86,6 +86,27 @@ UNVERIFIED until run with root on a Mac, in this order (script:
 Exercising it on this Mac needs an Ethernet uplink (a cable in one of the USB
 Ethernet adapters), `sudo`, and `bash packaging/darwin/install-darwin.sh`.
 
+Release DMGs are built on macOS with the open-source Go application and the
+system `hdiutil` image tool. Users double-click the bundled installer app; it
+uses macOS's administrator-password dialog, displays the complete installer
+output including the first-run panel password, and opens the panel when
+finished:
+
+```
+bash packaging/darwin/build-dmg.sh v0.2.2 arm64
+```
+
+The image contains the native binary, both launchd plists, the installer app,
+a terminal fallback and its short setup guide. The release workflow publishes
+separate Intel and Apple Silicon images.
+
+For a lost password, open Caspian.app and choose Reset Password. The Mac asks
+for administrator authentication. Caspian stops the panel, replaces only its
+password, restarts it, and displays the new password with a Copy button.
+Install / Update preserves an existing password. Signed-in users can change
+their password on the dashboard by entering the current password and repeating
+the new one. A successful change signs out every existing browser session.
+
 ## Windows
 
 Decided with the owner on 2026-09-03: Mobile Hotspot is the access point

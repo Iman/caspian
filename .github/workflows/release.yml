@@ -120,8 +120,33 @@ jobs:
           name: windows-${{ matrix.architecture }}-release
           path: out/installer/CaspianSetup-*-windows-${{ matrix.architecture }}.exe
 
+  darwin:
+    needs: gate
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: macos-15-intel
+            architecture: amd64
+          - runner: macos-15
+            architecture: arm64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+          check-latest: true
+      - name: Build the macOS DMG
+        run: bash packaging/darwin/build-dmg.sh "${{ github.ref_name }}" "${{ matrix.architecture }}"
+      - name: Keep the macOS release file
+        uses: actions/upload-artifact@v4
+        with:
+          name: darwin-${{ matrix.architecture }}-release
+          path: dist/Caspian-*-macos-${{ matrix.architecture }}.dmg
+
   publish:
-    needs: [build, windows]
+    needs: [build, windows, darwin]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
@@ -132,7 +157,7 @@ jobs:
       - name: Create checksums
         run: |
           cd dist
-          sha256sum caspian-linux-* CaspianSetup-*-windows-*.exe > SHA256SUMS
+          sha256sum caspian-linux-* CaspianSetup-*-windows-*.exe Caspian-*-macos-*.dmg > SHA256SUMS
           cat SHA256SUMS
       - name: Publish the release
         uses: softprops/action-gh-release@v2

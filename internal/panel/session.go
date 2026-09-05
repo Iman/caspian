@@ -211,18 +211,12 @@ func (s *sessionStore) destroy(token string) {
 	delete(s.byID, sessionKey(token))
 }
 
-// There is deliberately no destroyAll here.
-//
-// An earlier draft had one, with a comment saying it was called when the panel
-// password changes. Nothing called it, and nothing could: this build has no
-// change-password flow, because the only place a password is set is first-run
-// setup, which by definition has no sessions to invalidate. A function nobody
-// calls, carrying a comment describing behaviour the program does not have, is
-// worse than its absence: the next reader concludes the invalidation is handled
-// and stops looking.
-//
-// When a change-password flow is added, it has to invalidate every session,
-// and that is the moment to write this.
+// destroyAll invalidates every browser session after a password change.
+func (s *sessionStore) destroyAll() {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.byID = make(map[string]*session)
+}
 
 func (s *sessionStore) pruneLocked() {
 	now := s.now()

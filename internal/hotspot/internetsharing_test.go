@@ -99,8 +99,10 @@ func TestInternetSharing_StartWritesThePreferencesAndReadsTheBridgeBack(t *testi
 	prefs := string(rec.Files[DefaultInternetSharingPaths().NATPrefs])
 	for _, want := range []string{
 		"<key>PrimaryService</key>\n\t\t<string>AAAA-1111</string>",
+		"<key>PrimaryInterface</key>\n\t\t<dict>\n\t\t\t<key>Device</key>\n\t\t\t<string>en7</string>",
 		"<string>en0</string>",
 		"<key>SharingNetworkNumberStart</key>\n\t\t<string>10.83.51.0</string>",
+		"<key>SharingNetworkNumberEnd</key>\n\t\t<string>10.83.51.255</string>",
 		"<key>SharingNetworkMask</key>\n\t\t<string>255.255.255.0</string>",
 		"<key>NetworkName</key>\n\t\t\t<string>Caspian-Wifi</string>",
 		"<key>Channel</key>\n\t\t\t<integer>6</integer>",
@@ -286,7 +288,7 @@ func TestParseDHCPDLeasesAndHelpers(t *testing.T) {
 	if xmlEscape(`a<b>&"c`) != "a&lt;b&gt;&amp;&quot;c" {
 		t.Fatal("xml escaping")
 	}
-	if got := disableInNATPrefs("<key>Enabled</key><integer>1</integer><key>Enabled</key><integer>1</integer>"); got != "<key>Enabled</key><integer>1</integer><key>Enabled</key><integer>0</integer>" {
+	if got := disableInNATPrefs("<key>Enabled</key><integer>1</integer><key>Enabled</key><integer>1</integer>"); got != "<key>Enabled</key><integer>1</integer><key>Enabled</key><integer>1</integer>" {
 		t.Fatalf("disable = %q", got)
 	}
 	if disableInNATPrefs("nothing") != "nothing" {
