@@ -323,6 +323,32 @@
 </div>
 </div>
 
+<section class="card" aria-labelledby="connections-heading">
+  <h2 id="connections-heading">اتصال اینترنت و هات‌اسپات</h2>
+  <p class="hint">اینترنت را از کابل شبکه یا وای‌فای بگیرید و با وای‌فای داخلی یا USB به اشتراک بگذارید. استفاده هم‌زمان از یک وای‌فای برای هر دو کار به پشتیبانی سخت‌افزار و درایور نیاز دارد. انتخاب خودکار برای شروع مناسب است. باند ۲٫۴ گیگاهرتز برای دستگاه‌های قدیمی مناسب‌تر است؛ باند ۵ به پشتیبانی آداپتور نیاز دارد.</p>
+  <form method="post" action="/advanced" class="stack">
+    <input type="hidden" name="csrf" value="<redacted:csrf-token>">
+    <input type="hidden" name="connections_only" value="1">
+    <label for="connection-internet">کدام اتصال به اینترنت می‌رسد</label>
+    <select id="connection-internet" name="internet_interface" dir="ltr">
+      <option value="">کاسپین تصمیم بگیرد (الان: ⁦eth0⁩)</option>
+      <option dir="ltr" value="eth0" >eth0 - کابل شبکه</option><option dir="ltr" value="wlan0" >wlan0 - وای‌فای داخلی</option>
+    </select>
+    <label for="connection-hotspot">کدام آداپتور هات‌اسپات را می‌سازد</label>
+    <select id="connection-hotspot" name="hotspot_interface" dir="ltr">
+      <option value="">کاسپین تصمیم بگیرد (الان: ⁦wlan0⁩)</option>
+      <option dir="ltr" value="wlan0" >wlan0 - وای‌فای داخلی</option>
+    </select>
+    <label for="connection-band">باند</label>
+    <select id="connection-band" name="band">
+      <option value="">کاسپین تصمیم بگیرد (الان: 2.4 گیگاهرتز (دورتر می‌رسد، کندتر است))</option>
+      <option value="2.4GHz" >2.4 گیگاهرتز (دورتر می‌رسد، کندتر است)</option><option value="5GHz" >5 گیگاهرتز (سریع‌تر، برد کمتر)</option>
+    </select>
+    <p class="hint">ابتدا اتصال اینترنت را برقرار کنید. برای اعمال تغییرات، ذخیره کنید و کلید اصلی را خاموش و دوباره روشن کنید. هنگام خاموش بودن، اتصال دستگاه‌های متصل قطع می‌شود.</p>
+    <button type="submit" class="go">ذخیره این تنظیمات</button>
+  </form>
+</section>
+
 <p class="advanced-toggle">
   <a href="/?advanced=1">نمایش تنظیمات پیشرفته</a>
 </p>

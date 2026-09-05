@@ -64,7 +64,7 @@ internal sealed class ControlWindow : Form
     internal ControlWindow()
     {
         Text = "Caspian Control";
-        ClientSize = new Size(620, 470);
+        ClientSize = new Size(620, 510);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
@@ -101,19 +101,28 @@ internal sealed class ControlWindow : Form
         };
         description.SetBounds(30, 270, 560, 86);
 
-        var about = new Panel { BackColor = Surface };
-        about.SetBounds(30, 370, 560, 65);
+        var about = new TableLayoutPanel {
+            BackColor = Surface, ColumnCount = 1, RowCount = 3,
+            Padding = new Padding(16, 10, 16, 10)
+        };
+        about.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        for (var row = 0; row < 3; row++)
+            about.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / 3));
+        about.SetBounds(30, 370, 560, 108);
         var aboutVersion = new Label {
             Text = $"Caspian v{DisplayVersion.TrimStart('v')}", ForeColor = Ink,
-            Font = new Font("Segoe UI Semibold", 10), AutoSize = true, Location = new Point(16, 10)
+            Font = new Font("Segoe UI Semibold", 10), Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.MiddleCenter, Margin = new Padding(0, 2, 0, 2)
         };
         var aboutDeveloper = new Label {
             Text = "توسعه‌دهنده: ایمان سمیع زاده", ForeColor = Ink,
-            AutoSize = true, Location = new Point(160, 11), RightToLeft = RightToLeft.Yes
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter,
+            Margin = new Padding(0, 2, 0, 2), RightToLeft = RightToLeft.Yes
         };
         var aboutGitHub = new LinkLabel {
             Text = "پروژه در GitHub", LinkColor = Teal, ActiveLinkColor = Ink,
-            AutoSize = true, Location = new Point(16, 37), RightToLeft = RightToLeft.Yes
+            Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter,
+            Margin = new Padding(0, 2, 0, 2), RightToLeft = RightToLeft.Yes
         };
         aboutGitHub.LinkClicked += (_, _) => Process.Start(new ProcessStartInfo("https://github.com/Iman/caspian") { UseShellExecute = true });
         about.Controls.AddRange([aboutVersion, aboutDeveloper, aboutGitHub]);

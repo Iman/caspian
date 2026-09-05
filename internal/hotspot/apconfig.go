@@ -109,8 +109,21 @@ type APConfig struct {
 // Every check here exists to turn a hostapd startup failure, which the user
 // sees as "the hotspot never appeared", into a sentence they can act on.
 func (c APConfig) Validate() error {
-	if err := validConfigToken("interface", c.Interface); err != nil {
-		return err
+	return c.validate(false)
+}
+
+func (c APConfig) validate(mobileHotspot bool) error {
+	if mobileHotspot {
+		if c.Interface == "" || len(c.Interface) > 255 || !utf8.ValidString(c.Interface) {
+			return errors.New("hotspot: invalid Windows adapter alias")
+		}
+		if err := noControlChars("interface", c.Interface); err != nil {
+			return err
+		}
+	} else {
+		if err := validConfigToken("interface", c.Interface); err != nil {
+			return err
+		}
 	}
 
 	if c.SSID == "" {
@@ -139,7 +152,7 @@ func (c APConfig) Validate() error {
 		return err
 	}
 
-	if c.ControlDir != "" {
+	if !mobileHotspot && c.ControlDir != "" {
 		if err := validAbsPath("hostapd control directory", c.ControlDir); err != nil {
 			return err
 		}

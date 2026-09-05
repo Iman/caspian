@@ -190,16 +190,22 @@ func readInventory() (WindowsInventory, error) {
 		}
 		upByLUID[row.InterfaceLUID] = a.Up
 		inv.Adapters = append(inv.Adapters, a)
-		byIndex[row.InterfaceIndex] = &inv.Adapters[len(inv.Adapters)-1]
+	}
+	// Build pointers only after append has finished: slice growth can otherwise
+	// leave them pointing at an old backing array and lose interface addresses.
+	for i := range inv.Adapters {
+		byIndex[uint32(inv.Adapters[i].Index)] = &inv.Adapters[i]
 	}
 
 	// Addresses, through GetAdaptersAddresses, matched to the table by index.
 	const flags = windows.GAA_FLAG_SKIP_ANYCAST | windows.GAA_FLAG_SKIP_MULTICAST | windows.GAA_FLAG_SKIP_DNS_SERVER
 	size := uint32(15 * 1024)
 	var buf []byte
+	var addressesErr error
 	for attempt := 0; attempt < 4; attempt++ {
 		buf = make([]byte, size)
 		err := windows.GetAdaptersAddresses(windows.AF_UNSPEC, flags, 0, (*windows.IpAdapterAddresses)(unsafe.Pointer(&buf[0])), &size)
+		addressesErr = err
 		if err == nil {
 			break
 		}
@@ -207,6 +213,10 @@ func readInventory() (WindowsInventory, error) {
 			return inv, classify("GetAdaptersAddresses", err)
 		}
 	}
+	if addressesErr != nil {
+		return inv, classify("GetAdaptersAddresses", addressesErr)
+	}
+	present := map[int]bool{}
 	for aa := (*windows.IpAdapterAddresses)(unsafe.Pointer(&buf[0])); aa != nil; aa = aa.Next {
 		target := byIndex[aa.IfIndex]
 		if target == nil && aa.Ipv6IfIndex != 0 {
@@ -215,6 +225,7 @@ func readInventory() (WindowsInventory, error) {
 		if target == nil {
 			continue
 		}
+		present[target.Index] = true
 		for ua := aa.FirstUnicastAddress; ua != nil; ua = ua.Next {
 			ip := ua.Address.IP()
 			if ip == nil {
@@ -227,6 +238,7 @@ func readInventory() (WindowsInventory, error) {
 			target.Prefixes = append(target.Prefixes, netip.PrefixFrom(addr.Unmap(), int(ua.OnLinkPrefixLength)).String())
 		}
 	}
+	inv.retainPresentAdapters(present)
 
 	// Default routes.
 	var fwd *mibIPforwardTable2
@@ -455,9 +467,12 @@ func (w *windowsRunner) wfp(args []string, stdin string) error {
 		if err != nil || !hot.Addr().Is4() {
 			return fmt.Errorf("wfp load: hotspot subnet %q is not an IPv4 network", fs.Hotspot)
 		}
-		tun, err := w.tunLUID(fs.Tun)
-		if err != nil {
-			return err
+		var tun netLUID
+		if fs.Forward != "cut" {
+			tun, err = w.tunLUID(fs.Tun)
+			if err != nil {
+				return err
+			}
 		}
 		return withEngine(func(engine uintptr) error {
 			return inTransaction(engine, func() error {

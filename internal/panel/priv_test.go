@@ -409,6 +409,19 @@ func TestAdvancedOverridesAreCheckedAgainstDetection(t *testing.T) {
 	if adv.DNSMode == "" || adv.OnTunnelDown == "" {
 		t.Errorf("saving the advanced form emptied a policy field: %+v", adv)
 	}
+	// The basic connection form changes only its three fields, preserving
+	// advanced settings that the user cannot see in that form.
+	connectionForm := url.Values{
+		"csrf": {h.tokenOn("/")}, "connections_only": {"1"},
+		"internet_interface": {"eth0"}, "hotspot_interface": {"wlan0"},
+		"band": {"2.4GHz"},
+	}
+	h.postForm("/advanced", connectionForm)
+	got := h.store.Advanced()
+	adv.Band = "2.4GHz"
+	if got != adv {
+		t.Errorf("connection form changed unrelated settings: got %+v, want %+v", got, adv)
+	}
 }
 
 // TestSettingTheHotspotIsValidated covers the other form that writes state.

@@ -176,6 +176,7 @@ func (m *MobileHotspot) Stop(ctx context.Context) error {
 	req := TetheringRequest{Op: "stop"}
 	if have {
 		req.Uplink = plan.AP.Uplink
+		req.Adapter = plan.AP.Interface
 	}
 	rep, err := m.call(ctx, req)
 	if err != nil {
@@ -195,6 +196,7 @@ func (m *MobileHotspot) Status(ctx context.Context, _ string) (Status, error) {
 	req := TetheringRequest{Op: "status"}
 	if have {
 		req.Uplink = plan.AP.Uplink
+		req.Adapter = plan.AP.Interface
 	}
 	rep, err := m.call(ctx, req)
 	if err != nil {

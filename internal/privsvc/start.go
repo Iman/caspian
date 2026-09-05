@@ -53,6 +53,7 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	}
 
 	if err := s.applyLocked(ctx, req, fp); err != nil {
+		s.recordFailure("startup failed", "", err)
 		// Everything that was applied is undone. A box left half configured is
 		// worse than one left alone: the user cannot see it, and the next
 		// start plans against a machine it no longer describes.
