@@ -100,6 +100,26 @@ func TestMobileHotspotPlan_WindowsAliasesDoNotUseLinuxConfigRules(t *testing.T) 
 	}
 }
 
+func TestMobileHotspotPlan_RefusesInvalidSettings(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		change func(*Plan)
+	}{
+		{"short passphrase", func(p *Plan) { p.AP.Passphrase = "short" }},
+		{"unsupported radio", func(p *Plan) { p.Radio.SupportsAP = false }},
+		{"invalid adapter encoding", func(p *Plan) { p.AP.Interface = string([]byte{0xff}) }},
+		{"empty adapter", func(p *Plan) { p.AP.Interface = "" }},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			p := macPlan(t)
+			tc.change(&p)
+			if _, err := NewMobileHotspotPlan(p.AP, p.DNS, p.Radio); err == nil {
+				t.Fatal("invalid Mobile Hotspot settings were accepted")
+			}
+		})
+	}
+}
+
 func TestMobileHotspot_StartAsksTheHelperAndWaitsForOn(t *testing.T) {
 	w := &winResponder{state: "off"}
 	m, rec := newWin(t, w)

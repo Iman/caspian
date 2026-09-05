@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"net/netip"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/engine"
@@ -53,7 +54,6 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	}
 
 	if err := s.applyLocked(ctx, req, fp); err != nil {
-		s.recordFailure("startup failed", "", err)
 		// Everything that was applied is undone. A box left half configured is
 		// worse than one left alone: the user cannot see it, and the next
 		// start plans against a machine it no longer describes.
@@ -75,7 +75,15 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	return s.probeServer(ctx)
 }
 
-func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp string) error {
+func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp string) (err error) {
+	var servers []netip.Addr
+	defer func() {
+		if err != nil {
+			// The plan is not installed yet when a pre-engine route fails.
+			// Keep its resolved addresses here so the summary is redacted too.
+			s.recordFailure("startup failed", redactedText(err.Error(), servers), nil)
+		}
+	}()
 	// -----------------------------------------------------------------------
 	// 1. The clock, before validation and before anything is attempted.
 	//
@@ -132,7 +140,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	//    before the tunnel exists. See the Resolver documentation for what
 	//    that discloses.
 	// -----------------------------------------------------------------------
-	servers, err := s.cfg.Resolver.Resolve(ctx, l.Address)
+	servers, err = s.cfg.Resolver.Resolve(ctx, l.Address)
 	if err != nil {
 		return fail("resolve", panel.FaultServerNoAnswer, err)
 	}
