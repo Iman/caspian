@@ -5,7 +5,7 @@
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
-[![platform Windows, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![platform Windows, macOS, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
 [![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
 
@@ -18,9 +18,10 @@
 >
 > **[این صفحه به انگلیسی](README.md)**
 
-Caspian-BYOC یک کامپیوتر Windows 11، یک Raspberry Pi یا یک دستگاه Linux را به
-دروازهٔ وای‌فای تبدیل می‌کند که کانفیگش را خودتان می‌آورید. یک کانفیگ سازگار با
-V2Ray یا Xray را در پنل وب پیست کنید و یک کلید را بزنید. Caspian لینک‌های VLESS،
+Caspian-BYOC یک کامپیوتر Windows 11، یک Mac با macOS، یک Raspberry Pi یا یک
+دستگاه Linux را به دروازهٔ وای‌فای تبدیل می‌کند که کانفیگش را خودتان می‌آورید.
+یک کانفیگ سازگار با V2Ray یا Xray را در پنل وب پیست کنید و یک کلید را بزنید.
+Caspian لینک‌های VLESS،
 VMess، Shadowsocks، SOCKS، Trojan و Hysteria2 را می‌پذیرد. فایل‌های YAML مربوط
 به Clash و Clash.Meta، فایل JSON خامِ Xray، فهرست لینک‌ها و اشتراک base64 نیز
 پذیرفته می‌شوند. Caspian با Xray-core وصل می‌شود و تونل را به شکل هات‌اسپات
