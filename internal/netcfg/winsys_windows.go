@@ -350,6 +350,7 @@ type fwpValue0 struct {
 const (
 	fwpEmpty      uint32 = 0
 	fwpUint8      uint32 = 1
+	fwpUint16     uint32 = 2
 	fwpUint64     uint32 = 4
 	fwpV4AddrMask uint32 = 0x100
 )
@@ -366,6 +367,7 @@ type fwpmFilterCondition0 struct {
 }
 
 const fwpMatchEqual uint32 = 0
+const fwpMatchNotEqual uint32 = 10
 
 type fwpmAction0 struct {
 	kind       uint32
@@ -416,6 +418,23 @@ var (
 	fwpmConditionIPForwardInterface = windows.GUID{Data1: 0x1076b8a5, Data2: 0x6323, Data3: 0x4c5e,
 		Data4: [8]byte{0x98, 0x10, 0xe8, 0xd3, 0xfc, 0x9e, 0x61, 0x36}}
 )
+
+// ALE condition identifiers from the Windows SDK / WireGuard firewall tables.
+var (
+	fwpmLayerALEConnectV4         = windows.GUID{Data1: 0xc38d57d1, Data2: 0x05a7, Data3: 0x4c33, Data4: [8]byte{0x90, 0x4f, 0x7f, 0xbc, 0xee, 0xe6, 0x0e, 0x82}}
+	fwpmLayerALEConnectV6         = windows.GUID{Data1: 0x4a72393b, Data2: 0x319f, Data3: 0x44bc, Data4: [8]byte{0x84, 0xc3, 0xba, 0x54, 0xdc, 0xb3, 0xb6, 0xb4}}
+	fwpmConditionIPRemotePort     = windows.GUID{Data1: 0xc35a604d, Data2: 0xd22b, Data3: 0x4e1a, Data4: [8]byte{0x91, 0xb4, 0x68, 0xf6, 0x74, 0xee, 0x67, 0x4b}}
+	fwpmConditionIPLocalInterface = windows.GUID{Data1: 0x4cd62a49, Data2: 0x59c3, Data3: 0x4969, Data4: [8]byte{0xb7, 0xf3, 0xbd, 0xa5, 0xd3, 0x28, 0x90, 0xa4}}
+)
+
+func dnsFilterKeys() []windows.GUID {
+	keys := make([]windows.GUID, 4)
+	for i := range keys {
+		keys[i] = caspianProviderKey
+		keys[i].Data4[7] = byte(0x21 + i)
+	}
+	return keys
+}
 
 // This appliance's own WFP objects. Fixed keys, so that a later process can
 // remove what an earlier one added by key, and so that "wfp load" twice is an

@@ -140,12 +140,20 @@ func TestWindowsPlan_TunnelsTheWholeHostFailClosed(t *testing.T) {
 		"iphlpapi addr add " + p.TunAddr.String() + "/30 dev xray0",
 		"iphlpapi iface set xray0 metric 0",
 		"iphlpapi route add 0.0.0.0/0 dev xray0 metric 0",
+		"iphlpapi dns set xray0",
+		"wfp dns-protect",
 	}
 	if len(post) != len(wantPost) {
 		t.Fatalf("post-engine steps = %v", post)
 	}
 	if !strings.Contains(post[0].Do.Stdin, `"forward":"normal"`) || post[0].Undo.Stdin != pre[0].Do.Stdin {
 		t.Fatal("post-engine permit must roll back to the initial block")
+	}
+	if post[len(post)-1].Do.Stdin != p.Tun || CommandLine(post[len(post)-1].Undo) != "wfp dns-clear" {
+		t.Fatal("DNS protection must name the tunnel and have a cleanup command")
+	}
+	if CommandLine(post[len(post)-2].Undo) != "iphlpapi dns clear "+p.Tun {
+		t.Fatal("only temporary tunnel DNS may be changed")
 	}
 	for i, s := range post {
 		if got := CommandLine(s.Do); got != wantPost[i] {
