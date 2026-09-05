@@ -317,11 +317,15 @@ macOS saves this app as an exception, so later openings work by double-clicking
 it normally. Apple documents the same process in
 [Open an app by overriding security settings](https://support.apple.com/guide/mac-help/apple-cant-check-app-for-malicious-software-mchleab3a043/26/mac/26).
 
-#### Install Caspian and save its password
+#### Let Caspian set itself up and save its password
 
-1. In **Caspian Control**, click **Install / Update**.
-2. Enter the administrator password in the macOS authorization dialog.
-3. Wait until the control window says **Action completed**.
+1. Launch **Caspian Control**. It compares the bundled background service with
+   the installed one before it checks the panel.
+2. On the first launch, or when the DMG contains an update, setup starts
+   automatically. Enter the administrator password in the macOS authorization
+   dialog. When the installed version already matches, no password is requested.
+3. Wait until the control window says **Caspian is ready**. If authorization is
+   cancelled, **Set up Caspian** or **Update Caspian** remains visible for retry.
 4. On a first installation, save the **first-run panel password** shown in the
    output. **Copy panel password** copies only that password.
 5. Click **Open panel** and sign in with the saved panel password.
@@ -636,7 +640,7 @@ sequenceDiagram
     PS->>NC: Apply PreEngineSteps. The firewall is first.
     PS->>NC: AssertHotspotInterfaceReleased
     PS->>EN: Engine.Start. The tunnel device appears here.
-    PS->>NC: Apply PostEngineSteps. Every command names the tunnel.
+    PS->>NC: Apply PostEngineSteps. Each needs the tunnel or engine listener.
     PS->>HS: Supervisor.Start: hostapd, then dnsmasq
     PS->>NC: AssertHotspotIsAccessPoint
     PS->>PS: probe the server
@@ -649,7 +653,8 @@ Three details in that sequence are load bearing.
 The engine document is composed twice for different reasons. `internal/link`
 produces the outbound and nothing else. `internal/xcfg` produces everything
 around it: the TUN inbound that client traffic arrives on, the loopback SOCKS
-inbound, the local DNS listener, the resolver policy, and the routing rules.
+inbound used by diagnostics and the interim macOS system proxy, the local DNS
+listener, the resolver policy, and the routing rules.
 None of that is taken from anything the caller sent.
 
 A start that fails part way through is undone completely. The journal already

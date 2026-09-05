@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"net/netip"
+	"path/filepath"
 	"strings"
 	"testing"
 )
@@ -64,6 +65,24 @@ VLAN Configurations
 ===================
 `
 
+const darwinNetworkServices = `An asterisk (*) denotes that a network service is disabled.
+USB 10/100/1000 LAN
+Wi-Fi
+*Thunderbolt Bridge
+`
+
+const darwinSOCKSEnabled = `Enabled: Yes
+Server: proxy.example.test
+Port: 9000
+Authenticated Proxy Enabled: 0
+`
+
+const darwinSOCKSDisabled = `Enabled: No
+Server:
+Port: 0
+Authenticated Proxy Enabled: 0
+`
+
 func darwinRunner(t *testing.T, associated bool) *RecordingRunner {
 	t.Helper()
 	air := "You are not associated with an AirPort network.\n"
@@ -75,6 +94,11 @@ func darwinRunner(t *testing.T, associated bool) *RecordingRunner {
 	r.Responses[RunnerKey(Command{Path: BinRoute, Args: []string{"-n", "get", "default"}})] = Result{Stdout: darwinRouteGet}
 	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-listallhardwareports"}})] = Result{Stdout: darwinHardwarePorts}
 	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-getairportnetwork", "en0"}})] = Result{Stdout: air}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-listallnetworkservices"}})] = Result{Stdout: darwinNetworkServices}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-getsocksfirewallproxy", "USB 10/100/1000 LAN"}})] = Result{Stdout: darwinSOCKSEnabled}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-getproxybypassdomains", "USB 10/100/1000 LAN"}})] = Result{Stdout: "intranet.example.test\nlocalhost\n"}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-getsocksfirewallproxy", "Wi-Fi"}})] = Result{Stdout: darwinSOCKSDisabled}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-getproxybypassdomains", "Wi-Fi"}})] = Result{Stdout: "There aren't any bypass domains set on Wi-Fi.\n"}
 	r.Responses[RunnerKey(Command{Path: BinSysctl, Args: []string{"-e", "--", "net.inet.ip.forwarding", "net.inet6.ip6.forwarding"}})] =
 		Result{Stdout: "net.inet.ip.forwarding=0\nnet.inet6.ip6.forwarding=0\n"}
 	r.Responses[RunnerKey(Command{Path: BinPfctl, Args: []string{"-s", "info"}})] = Result{Stdout: "Status: Disabled\n"}
@@ -109,6 +133,14 @@ func TestDarwinDetect_ReadsTheMacIntoTheSharedFacts(t *testing.T) {
 	if f.Sysctl["net.inet.ip.forwarding"] != "0" || f.Sysctl[darwinPfStatusKnob] != "0" {
 		t.Fatalf("knobs = %v", f.Sysctl)
 	}
+	if !f.SystemSOCKSKnown || len(f.SystemSOCKS) != 2 {
+		t.Fatalf("system SOCKS detection = known %t, states %+v", f.SystemSOCKSKnown, f.SystemSOCKS)
+	}
+	if got := f.SystemSOCKS[0]; got.Service != "USB 10/100/1000 LAN" || !got.Enabled ||
+		got.Server != "proxy.example.test" || got.Port != 9000 || got.Authenticated ||
+		strings.Join(got.BypassDomains, ",") != "intranet.example.test,localhost" {
+		t.Fatalf("first system SOCKS state = %+v", got)
+	}
 	for _, c := range r.Commands() {
 		if err := ValidateCommandOn(PlatformDarwin, c); err != nil {
 			t.Errorf("detection ran %s, which the macOS runner refuses: %v", c, err)
@@ -116,6 +148,128 @@ func TestDarwinDetect_ReadsTheMacIntoTheSharedFacts(t *testing.T) {
 		if c.Path == BinSysctl && c.Args[0] == "-w" {
 			t.Errorf("detection wrote a knob: %s", c)
 		}
+	}
+}
+
+func TestDarwinSystemSOCKSParsersRefusePartialState(t *testing.T) {
+	if got := ParseNetworkServices(darwinNetworkServices); strings.Join(got, "|") != "USB 10/100/1000 LAN|Wi-Fi" {
+		t.Fatalf("services = %q", got)
+	}
+	if _, ok := ParseSystemSOCKSState("Wi-Fi", "Enabled: No\nServer:\nPort: 0\n"); ok {
+		t.Fatal("partial proxy output was accepted as restorable state")
+	}
+	if domains, ok := ParseProxyBypassDomains("There aren't any bypass domains set on Wi-Fi.\n"); !ok || len(domains) != 0 {
+		t.Fatalf("empty bypass list = %q, %t", domains, ok)
+	}
+	if _, ok := ParseProxyBypassDomains(""); ok {
+		t.Fatal("empty command output was treated as a measured empty bypass list")
+	}
+}
+
+func TestDarwinPlan_SystemSOCKSStartsAfterEngineAndRestoresWhatItRead(t *testing.T) {
+	r := darwinRunner(t, false)
+	be := BackendFor(PlatformDarwin)
+	f, err := be.Detect(context.Background(), r, be.BaseSysctlKnobs())
+	if err != nil {
+		t.Fatal(err)
+	}
+	o := DefaultOptions()
+	o.Platform = PlatformDarwin
+	o.TunName = "utun100"
+	o.SystemSOCKS = SystemSOCKSOptions{Enabled: true, Listen: "127.0.0.1", Port: 10808}
+	p, err := PlanNetwork(f, []netip.Addr{netip.MustParseAddr("203.0.113.10")}, o)
+	if err != nil {
+		t.Fatalf("plan: %v", err)
+	}
+	post := p.PostEngineSteps(f.Sysctl)
+	if len(post) != 8 {
+		t.Fatalf("two services need four reversible proxy steps each, got %d: %v", len(post), post)
+	}
+	wantDo := []string{
+		"networksetup -setsocksfirewallproxystate USB 10/100/1000 LAN off",
+		"networksetup -setproxybypassdomains USB 10/100/1000 LAN intranet.example.test localhost 127.0.0.1 ::1 *.local 169.254/16",
+		"networksetup -setsocksfirewallproxy USB 10/100/1000 LAN 127.0.0.1 10808 off",
+		"networksetup -setsocksfirewallproxystate USB 10/100/1000 LAN on",
+	}
+	wantUndo := []string{
+		"networksetup -setsocksfirewallproxystate USB 10/100/1000 LAN on",
+		"networksetup -setproxybypassdomains USB 10/100/1000 LAN intranet.example.test localhost",
+		"networksetup -setsocksfirewallproxy USB 10/100/1000 LAN proxy.example.test 9000 off",
+		"networksetup -setsocksfirewallproxystate USB 10/100/1000 LAN off",
+	}
+	for i := range wantDo {
+		if got := CommandLine(post[i].Do); got != wantDo[i] {
+			t.Errorf("step %d do = %q, want %q", i, got, wantDo[i])
+		}
+		if got := CommandLine(post[i].Undo); got != wantUndo[i] {
+			t.Errorf("step %d undo = %q, want %q", i, got, wantUndo[i])
+		}
+		if err := ValidateCommandOn(PlatformDarwin, post[i].Do); err != nil {
+			t.Errorf("step %d do refused by runner: %v", i, err)
+		}
+		if err := ValidateCommandOn(PlatformDarwin, post[i].Undo); err != nil {
+			t.Errorf("step %d undo refused by runner: %v", i, err)
+		}
+	}
+	// Wi-Fi had no saved endpoint. Its endpoint inverse is deliberately a
+	// disable rather than an invented empty server command networksetup may
+	// reject; the final inverse still restores its originally-disabled state.
+	if got := CommandLine(post[6].Undo); got != "networksetup -setsocksfirewallproxystate Wi-Fi off" {
+		t.Fatalf("empty previous endpoint inverse = %q", got)
+	}
+}
+
+func TestDarwinPlan_SystemSOCKSRefusesAnUnrestorableProxy(t *testing.T) {
+	base := Facts{SystemSOCKSKnown: false}
+	o := DefaultOptions()
+	o.Platform = PlatformDarwin
+	o.SystemSOCKS = SystemSOCKSOptions{Enabled: true, Listen: "127.0.0.1", Port: 10808}
+	if _, err := systemSOCKSForPlan(base, o); !errors.Is(err, ErrSystemSOCKSStateUnknown) {
+		t.Fatalf("unknown settings returned %v", err)
+	}
+	base.SystemSOCKSKnown = true
+	base.SystemSOCKS = []SystemSOCKSState{{Service: "Wi-Fi", Authenticated: true}}
+	if _, err := systemSOCKSForPlan(base, o); !errors.Is(err, ErrAuthenticatedSystemSOCKS) {
+		t.Fatalf("authenticated settings returned %v", err)
+	}
+	base.SystemSOCKS = []SystemSOCKSState{{Service: "Wi-Fi", Enabled: true}}
+	if _, err := systemSOCKSForPlan(base, o); !errors.Is(err, ErrSystemSOCKSStateUnknown) {
+		t.Fatalf("enabled proxy with no endpoint returned %v", err)
+	}
+}
+
+func TestDarwinSystemSOCKSJournalRestoresInReverseOrder(t *testing.T) {
+	r := &RecordingRunner{Platform: PlatformDarwin, Responses: map[string]Result{}}
+	p := &Plan{
+		Platform: PlatformDarwin,
+		Opts: Options{SystemSOCKS: SystemSOCKSOptions{
+			Enabled: true, Listen: "127.0.0.1", Port: 10808,
+		}},
+		SystemSOCKS: []SystemSOCKSState{{
+			Service: "USB LAN", Enabled: true, Server: "proxy.example.test", Port: 9000,
+			BypassDomains: []string{"intranet.example.test"},
+		}},
+	}
+	steps := p.darwinSystemSOCKSSteps()
+	ap, err := NewApplier(r, filepath.Join(t.TempDir(), "netcfg.journal"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ap.Apply(context.Background(), steps); err != nil {
+		t.Fatalf("apply: %v", err)
+	}
+	r.Reset()
+	if rep, err := ap.Teardown(context.Background()); err != nil || rep.Failed != 0 {
+		t.Fatalf("teardown: failed=%d err=%v", rep.Failed, err)
+	}
+	want := []string{
+		"networksetup -setsocksfirewallproxystate USB LAN off",
+		"networksetup -setsocksfirewallproxy USB LAN proxy.example.test 9000 off",
+		"networksetup -setproxybypassdomains USB LAN intranet.example.test",
+		"networksetup -setsocksfirewallproxystate USB LAN on",
+	}
+	if got := r.Lines(); strings.Join(got, "\n") != strings.Join(want, "\n") {
+		t.Fatalf("teardown commands:\n%s\nwant:\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
 	}
 }
 

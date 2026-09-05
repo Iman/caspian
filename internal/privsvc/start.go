@@ -283,8 +283,9 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	}
 
 	// -----------------------------------------------------------------------
-	// 11. The steps that name the tunnel device. Every command in this list
-	//     names it, so every one of them fails if it is run before step 10.
+	// 11. Steps that depend on engine-owned resources: tunnel-device routes,
+	//     and on macOS the system proxy that points at the SOCKS listener. They
+	//     must not run before step 10 has created those resources.
 	// -----------------------------------------------------------------------
 	rep, err := s.currentApplier().Apply(ctx, plan.PostEngineSteps(facts.Sysctl))
 	if err != nil {

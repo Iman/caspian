@@ -59,22 +59,24 @@ func (p *Plan) darwinPreEngineSteps(current map[string]string) []Step {
 // created it. Under StrategyPolicy there is nothing to do: the pf rule that
 // steers client traffic into the utun was loaded with the firewall and pf
 // resolves the interface when the packet arrives. Under StrategySplitDefault
-// the two half-default routes are installed here.
+// the two half-default routes are installed here. A configured system SOCKS
+// proxy also belongs here: its listener is another engine-owned resource and
+// must exist before macOS applications are pointed at it.
 func (p *Plan) darwinPostEngineSteps(map[string]string) []Step {
-	if p.Opts.Strategy != StrategySplitDefault {
-		return nil
-	}
 	var steps []Step
-	for _, half := range []string{"0.0.0.0/1", "128.0.0.0/1"} {
-		why := "send the machine's own traffic through the tunnel as well as the clients'; " +
-			"two halves rather than a default so the uplink's default route stays for the pinned server route"
-		steps = append(steps, Step{
-			Op:   OpRoute,
-			Why:  why,
-			Do:   Command{Path: BinRoute, Args: []string{"-n", "add", "-net", half, "-interface", p.Tun}, Why: why},
-			Undo: Command{Path: BinRoute, Args: []string{"-n", "delete", "-net", half, "-interface", p.Tun}, Why: "remove the half-default route"},
-		})
+	if p.Opts.Strategy == StrategySplitDefault {
+		for _, half := range []string{"0.0.0.0/1", "128.0.0.0/1"} {
+			why := "send the machine's own traffic through the tunnel as well as the clients'; " +
+				"two halves rather than a default so the uplink's default route stays for the pinned server route"
+			steps = append(steps, Step{
+				Op:   OpRoute,
+				Why:  why,
+				Do:   Command{Path: BinRoute, Args: []string{"-n", "add", "-net", half, "-interface", p.Tun}, Why: why},
+				Undo: Command{Path: BinRoute, Args: []string{"-n", "delete", "-net", half, "-interface", p.Tun}, Why: "remove the half-default route"},
+			})
+		}
 	}
+	steps = append(steps, p.darwinSystemSOCKSSteps()...)
 	return steps
 }
 

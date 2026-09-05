@@ -196,7 +196,7 @@ hostapd که با root اجرا می‌شود تحویل می‌دهد. این �
 | 53 | رابط هات‌اسپات | dnsmasq، یعنی DHCP و DNS برای دستگاه‌های وصل‌شده | `internal/netcfg/plan.go`، `DNSPort` |
 | 5354 | 127.0.0.1 | شنوندهٔ محلی DNS موتور | `internal/xcfg`، `DefaultLocalDNSPort` |
 | 8088 | نشانی پنل | پنل وب | `internal/netcfg/plan.go`، `PanelPort` |
-| 10808 | 127.0.0.1 | SOCKS، برای عیب‌یابی و اثبات IP خروجی | `internal/xcfg`، `DefaultSocksPort` |
+| 10808 | 127.0.0.1 | SOCKS، برای عیب‌یابی، اثبات IP خروجی و پروکسی موقت سیستم در macOS | `internal/xcfg`، `DefaultSocksPort` |
 
 آنکه بی‌صدا خراب می‌شود 5354 است: dnsmasq فقط به آنجا فوروارد می‌کند و موتور
 آنجا گوش می‌دهد، و اگر این دو از هم دور شوند، DNS برای هر دستگاهِ وصل‌شده از کار
