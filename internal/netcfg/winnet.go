@@ -292,6 +292,15 @@ func (p *Plan) windowsPostEngineSteps(current map[string]string) []Step {
 		Do:   Command{Path: BinIPHelper, Args: []string{"route", "add", "0.0.0.0/0", "dev", p.Tun, "metric", "0"}, Why: why},
 		Undo: Command{Path: BinIPHelper, Args: []string{"route", "delete", "0.0.0.0/0", "dev", p.Tun, "metric", "0"}, Why: "remove the tunnel default route"},
 	})
+	steps = append(steps, Step{
+		Op: OpLink, Why: "Windows and Mobile Hotspot resolve DNS through the tunnel adapter",
+		Do:   Command{Path: BinIPHelper, Args: []string{"dns", "set", p.Tun}},
+		Undo: Command{Path: BinIPHelper, Args: []string{"dns", "clear", p.Tun}},
+	}, Step{
+		Op: OpWFP, Why: "prevent DNS fallback to physical interfaces while connected",
+		Do:   Command{Path: BinWFP, Args: []string{"dns-protect"}, Stdin: p.Tun},
+		Undo: Command{Path: BinWFP, Args: []string{"dns-clear"}},
+	})
 	return steps
 }
 

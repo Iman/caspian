@@ -266,6 +266,7 @@ func TestTheComposedDocumentCarriesTheTunInboundOnTheAppliance(t *testing.T) {
 		`"protocol": "tun"`,
 		`"name": "` + w.cfg.TunName + `"`,
 		`"tag": "` + xcfg.TagTUNIn + `"`,
+		`"ruleTag": "client-dns-intercept"`,
 	} {
 		if !strings.Contains(string(doc), want) {
 			t.Fatalf("the document has no %s, so client traffic has no way in:\n%s", want, doc)

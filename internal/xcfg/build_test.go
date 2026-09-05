@@ -424,8 +424,8 @@ func TestGoogleResolverIsRejectedAtTheSource(t *testing.T) {
 //
 // It checks three things together, because any one of them alone can be true
 // while the rule does nothing: the rule exists and names the direct outbound,
-// it carries every range PrivateRanges lists, and it is FIRST, since a rule
-// below the catch-all never fires.
+// it carries every range PrivateRanges lists, and precedes the catch-all.
+// DNS alone is intercepted even when its destination is private.
 func TestPrivateRangesRouteDirect(t *testing.T) {
 	l := mustParse(t, vlessRealityLink())
 	for _, c := range combinations() {
@@ -440,13 +440,8 @@ func TestPrivateRangesRouteDirect(t *testing.T) {
 		if len(p.Routing.Rules) == 0 {
 			t.Fatalf("%s: no routing rules at all", c.name)
 		}
-		// The private rule is no longer required to be rule zero: the two DNS
-		// rules sit above it deliberately (see Build). What IS required is
-		// that nothing above it can match ordinary client traffic, which is
-		// true exactly when every rule above it matches on inboundTag alone.
-		// A rule with an ip, port or network condition above the private rule
-		// could divert private-destined client traffic, so that is the
-		// property asserted rather than a fixed index.
+		// Internal DNS tags and the narrow TCP/UDP port 53 interception may
+		// precede local access. No broader client-traffic rule may do so.
 		idx := -1
 		for i, r := range p.Routing.Rules {
 			if r.RuleTag == ruleTagPrivate {
@@ -458,6 +453,12 @@ func TestPrivateRangesRouteDirect(t *testing.T) {
 			t.Fatalf("%s: no private-direct rule at all", c.name)
 		}
 		for i, above := range p.Routing.Rules[:idx] {
+			if above.RuleTag == ruleTagDNS {
+				if above.Port != "53" || above.Network != "tcp,udp" || above.OutboundTag != TagDNSOut || len(above.IP) != 0 || len(above.InboundTag) != 0 {
+					t.Fatal("DNS exception must match only TCP/UDP port 53 and use Xray DNS")
+				}
+				continue
+			}
 			if len(above.InboundTag) == 0 {
 				t.Errorf("%s: rule %d (%q) sits above the private rule but does not match on inboundTag, so it can divert client traffic",
 					c.name, i, above.RuleTag)
@@ -715,8 +716,11 @@ func TestResolverQueriesArePinnedToTheTunnel(t *testing.T) {
 				p.DNS.Tag, TagResolverIn)
 		}
 
-		resolverIdx, dnsIdx := -1, -1
+		resolverIdx, dnsIdx, privateIdx := -1, -1, -1
 		for i, r := range p.Routing.Rules {
+			if r.OutboundTag == TagDirect {
+				privateIdx = i
+			}
 			switch r.RuleTag {
 			case ruleTagResolvers:
 				resolverIdx = i
@@ -734,6 +738,9 @@ func TestResolverQueriesArePinnedToTheTunnel(t *testing.T) {
 			t.Fatal("no resolver-through-tunnel rule")
 		}
 		if intercept {
+			if privateIdx < 0 || dnsIdx >= privateIdx {
+				t.Fatal("DNS interception must precede the private-network bypass")
+			}
 			if dnsIdx < 0 {
 				t.Fatal("Intercept is set but there is no intercept rule")
 			}
