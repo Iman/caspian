@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-    [string]$Version = "0.2.1",
+    [Parameter(Mandatory = $true)][string]$Version,
     [ValidateSet("x64", "arm64")][string]$Architecture = "x64"
 )
 $ErrorActionPreference = "Stop"
@@ -25,8 +25,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "The Go build failed." }
     & dotnet.exe publish .\tools\caspian-tethering\caspian-tethering.csproj -c Release -r $runtime --self-contained true -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The hotspot helper build failed." }
-    & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$numericVersion -o $payload
+    & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$numericVersion -p:InformationalVersion=$releaseVersion -p:IncludeSourceRevisionInInformationalVersion=false -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The tray app build failed." }
+    $controlVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $payload "CaspianControl.exe")).ProductVersion
+    if ($controlVersion -ne $releaseVersion) { throw "The control window version '$controlVersion' does not match CI release '$releaseVersion'." }
 } finally {
     $env:GOOS = $previousGOOS
     $env:GOARCH = $previousGOARCH

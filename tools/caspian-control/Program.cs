@@ -31,7 +31,16 @@ internal static class Program
             window.SaveScreenshot(args[1]);
             return;
         }
-        Application.Run(new ControlWindow());
+        using var instance = new SingleInstance();
+        if (!instance.IsFirst)
+        {
+            instance.NotifyFirst();
+            return;
+        }
+        using var mainWindow = new ControlWindow();
+        var activation = instance.OnActivation(mainWindow, mainWindow.ShowAlreadyRunning);
+        try { Application.Run(mainWindow); }
+        finally { activation.Unregister(null); }
     }
 }
 
@@ -51,6 +60,7 @@ internal sealed class ControlWindow : Form
     private readonly System.Windows.Forms.Timer timer = new() { Interval = 3000 };
     private readonly SemaphoreSlim refreshLock = new(1, 1);
     private bool busy;
+    private bool showingAlreadyRunning;
     private int consecutiveFailures;
 
     private static readonly Color Ground = ColorTranslator.FromHtml("#E6F2F3");
@@ -64,78 +74,86 @@ internal sealed class ControlWindow : Form
     internal ControlWindow()
     {
         Text = "Caspian Control";
-        ClientSize = new Size(620, 510);
+        ClientSize = new Size(600, 390);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = false;
         StartPosition = FormStartPosition.CenterScreen;
-        Font = new Font("Tahoma", 10);
+        Font = new Font("Tahoma", 9);
         BackColor = Ground;
         Icon = brandIcon;
 
         var logo = new Logo { BackColor = Ground };
-        logo.SetBounds(30, 15, 44, 44);
+        logo.SetBounds(20, 14, 34, 34);
         var title = new Label {
             Text = "CASPIAN CONTROL", ForeColor = Teal,
             Font = new Font("Segoe UI Semibold", 11), TextAlign = ContentAlignment.MiddleLeft
         };
-        title.SetBounds(84, 20, 506, 26);
-        state.SetBounds(30, 62, 560, 70);
+        title.SetBounds(64, 10, 516, 44);
+        title.Text += "\r\nکنترل کاسپین";
+        state.SetBounds(20, 64, 560, 62);
         state.BackColor = Surface;
-        state.Font = new Font("Segoe UI Semibold", 24);
+        state.Font = new Font("Tahoma", 15, FontStyle.Bold);
         state.TextAlign = ContentAlignment.MiddleCenter;
-        details.SetBounds(30, 132, 560, 55);
+        details.SetBounds(20, 126, 560, 44);
         details.BackColor = Surface;
         details.ForeColor = Ink;
-        details.TextAlign = ContentAlignment.TopCenter;
+        details.TextAlign = ContentAlignment.MiddleCenter;
 
-        Configure(start, "Start all", 30, Teal, Color.White, async (_, _) => await RunAsync(StartAll));
-        Configure(stop, "Stop all", 175, Coral, Ink, async (_, _) => await RunAsync(StopAll));
-        Configure(restart, "Restart all", 320, Amber, Ink, async (_, _) => await RunAsync(RestartAll));
-        Configure(panel, "Open panel", 465, Teal, Color.White, (_, _) => OpenPanel());
+        Configure(panel, "Open panel\r\nباز کردن پنل", 20, Teal, Color.White, (_, _) => OpenPanel());
+        Configure(start, "Start all\r\nراه‌اندازی همه", 164, Surface, Ink, async (_, _) => await RunAsync(StartAll));
+        Configure(restart, "Restart all\r\nراه‌اندازی دوباره", 308, Surface, Ink, async (_, _) => await RunAsync(RestartAll));
+        Configure(stop, "Stop all\r\nتوقف همه", 452, Surface, Ink, async (_, _) => await RunAsync(StopAll));
 
         var description = new Label {
-            Text = "Start all starts the Caspian engine and web panel.\r\n" +
-                   "Restart all repairs stopped services. Open panel manages the hotspot, band, and tunnel.",
-            ForeColor = Ink, BackColor = Surface, Padding = new Padding(18),
-            TextAlign = ContentAlignment.MiddleLeft
+            Text = "Open the panel to connect your tunnel and manage the hotspot.\r\n" +
+                   "\u200fبرای اتصال تونل و مدیریت هات‌اسپات، پنل را باز کنید.",
+            ForeColor = Ink, BackColor = Ground,
+            TextAlign = ContentAlignment.MiddleCenter
         };
-        description.SetBounds(30, 270, 560, 86);
+        description.SetBounds(20, 244, 560, 44);
 
         var about = new TableLayoutPanel {
-            BackColor = Surface, ColumnCount = 1, RowCount = 3,
-            Padding = new Padding(16, 10, 16, 10)
+            BackColor = Ground, ColumnCount = 3, RowCount = 1, GrowStyle = TableLayoutPanelGrowStyle.FixedSize,
+            Padding = new Padding(0)
         };
-        about.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        for (var row = 0; row < 3; row++)
-            about.RowStyles.Add(new RowStyle(SizeType.Percent, 100f / 3));
-        about.SetBounds(30, 370, 560, 108);
+        about.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30));
+        about.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 43));
+        about.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 27));
+        about.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        about.SetBounds(16, 302, 568, 68);
         var aboutVersion = new Label {
-            Text = $"Caspian v{DisplayVersion.TrimStart('v')}", ForeColor = Ink,
-            Font = new Font("Segoe UI Semibold", 10), Dock = DockStyle.Fill,
-            TextAlign = ContentAlignment.MiddleCenter, Margin = new Padding(0, 2, 0, 2)
+            Text = $"Version {VersionLabel}\r\n\u200fنسخه: \u200e{VersionLabel}", ForeColor = Ink, BackColor = Surface,
+            Dock = DockStyle.Fill,
+            TextAlign = ContentAlignment.MiddleCenter, Margin = new Padding(4, 0, 4, 0)
         };
         var aboutDeveloper = new Label {
-            Text = "توسعه‌دهنده: ایمان سمیع زاده", ForeColor = Ink,
+            Text = "By Iman Samizadeh\r\nتوسعه‌دهنده: ایمان سمیع زاده", ForeColor = Ink, BackColor = Surface,
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter,
-            Margin = new Padding(0, 2, 0, 2), RightToLeft = RightToLeft.Yes
+            Margin = new Padding(4, 0, 4, 0)
         };
         var aboutGitHub = new LinkLabel {
-            Text = "پروژه در GitHub", LinkColor = Teal, ActiveLinkColor = Ink,
+            Text = "GitHub project\r\nپروژه در گیت‌هاب", LinkColor = Teal, ActiveLinkColor = Ink, BackColor = Surface,
             Dock = DockStyle.Fill, TextAlign = ContentAlignment.MiddleCenter,
-            Margin = new Padding(0, 2, 0, 2), RightToLeft = RightToLeft.Yes
+            Margin = new Padding(4, 0, 4, 0)
         };
         aboutGitHub.LinkClicked += (_, _) => Process.Start(new ProcessStartInfo("https://github.com/Iman/caspian") { UseShellExecute = true });
-        about.Controls.AddRange([aboutVersion, aboutDeveloper, aboutGitHub]);
+        about.Controls.Add(aboutVersion, 0, 0);
+        about.Controls.Add(aboutDeveloper, 1, 0);
+        about.Controls.Add(aboutGitHub, 2, 0);
 
-        Controls.AddRange([logo, title, state, details, start, stop, restart, panel, description, about]);
+        Controls.AddRange([logo, title, state, details, panel, start, restart, stop, description, about]);
+        panel.TabIndex = 0;
+        start.TabIndex = 1;
+        restart.TabIndex = 2;
+        stop.TabIndex = 3;
         var menu = new ContextMenuStrip();
-        menu.Items.Add("Open Caspian Control", null, (_, _) => ShowWindow());
-        menu.Items.Add("Start all", null, async (_, _) => await RunAsync(StartAll));
-        menu.Items.Add("Stop all", null, async (_, _) => await RunAsync(StopAll));
-        menu.Items.Add("Restart all", null, async (_, _) => await RunAsync(RestartAll));
-        menu.Items.Add("Open panel", null, (_, _) => OpenPanel());
+        menu.Items.Add("Open Caspian Control / باز کردن کنترل کاسپین", null, (_, _) => ShowWindow());
+        menu.Items.Add("Start all / راه‌اندازی همه", null, async (_, _) => await RunAsync(StartAll));
+        menu.Items.Add("Stop all / توقف همه", null, async (_, _) => await RunAsync(StopAll));
+        menu.Items.Add("Restart all / راه‌اندازی دوباره", null, async (_, _) => await RunAsync(RestartAll));
+        menu.Items.Add("Open panel / باز کردن پنل", null, (_, _) => OpenPanel());
         menu.Items.Add(new ToolStripSeparator());
-        menu.Items.Add("Exit", null, (_, _) => { tray.Visible = false; Application.Exit(); });
+        menu.Items.Add("Exit / خروج", null, (_, _) => { tray.Visible = false; Application.Exit(); });
         tray.Icon = brandIcon;
         tray.Text = "Caspian Control";
         tray.ContextMenuStrip = menu;
@@ -157,7 +175,7 @@ internal sealed class ControlWindow : Form
     private void Configure(Button button, string text, int left, Color background, Color foreground, EventHandler click)
     {
         button.Text = text;
-        button.SetBounds(left, 205, 125, 48);
+        button.SetBounds(left, 182, 128, 54);
         button.FlatStyle = FlatStyle.Flat;
         button.FlatAppearance.BorderSize = 0;
         button.BackColor = background;
@@ -223,7 +241,7 @@ internal sealed class ControlWindow : Form
         if (busy) return;
         busy = true;
         SetButtons(false);
-        state.Text = "Working…";
+        state.Text = "Working…\r\nدر حال انجام…";
         state.ForeColor = Color.DarkOrange;
         try
         {
@@ -232,9 +250,9 @@ internal sealed class ControlWindow : Form
         }
         catch (Exception ex)
         {
-            state.Text = "Action failed";
+            state.Text = "Action failed\r\nعملیات انجام نشد";
             state.ForeColor = Color.Firebrick;
-            details.Text = ex.Message;
+            details.Text = ex.Message + "\r\nعملیات انجام نشد. وضعیت سرویس‌ها را بررسی کنید و دوباره تلاش کنید.";
         }
         finally { busy = false; SetButtons(true); }
     }
@@ -257,21 +275,21 @@ internal sealed class ControlWindow : Form
                 consecutiveFailures++;
                 if (!immediateFailure && consecutiveFailures < 3) return;
             }
-            state.Text = ready ? "● Ready" : "● Not ready";
+            state.Text = ready ? "● Ready\r\nآماده" : "● Not ready\r\nآماده نیست";
             state.ForeColor = ready ? Teal : Color.Firebrick;
             state.BackColor = ready ? Sage : Coral;
             tray.Text = ready ? "Caspian: Ready" : "Caspian: Not ready";
-            details.Text = $"Engine: {Word(serviceState.Core)}    Panel service: {Word(serviceState.Web)}    Local panel: {Word(answering)}";
+            details.Text = StatusDetails(serviceState.Core, serviceState.Web, answering);
             panel.Enabled = ready;
         }
         catch
         {
             consecutiveFailures++;
             if (!immediateFailure && consecutiveFailures < 3) return;
-            state.Text = "● Status timed out";
+            state.Text = "Status timed out\r\nمهلت بررسی وضعیت تمام شد";
             state.ForeColor = Color.Firebrick;
             state.BackColor = Coral;
-            details.Text = "The status request stopped. The window remains responsive.";
+            details.Text = "The status request timed out. Please try again.\r\nمهلت بررسی وضعیت تمام شد. دوباره تلاش کنید.";
         }
         finally { refreshLock.Release(); }
     }
@@ -306,16 +324,21 @@ internal sealed class ControlWindow : Form
     }
 
     private static string Word(bool value) => value ? "OK" : "OFF";
+    private static string PersianWord(bool value) => value ? "فعال" : "غیرفعال";
+    private static string VersionLabel => DisplayVersion == "dev" ? "dev" : "v" + DisplayVersion.TrimStart('v');
+    private static string StatusDetails(bool core, bool web, bool answering) =>
+        $"Engine service: {Word(core)}    Panel service: {Word(web)}    Local panel: {Word(answering)}\r\n" +
+        $"\u200fسرویس موتور: {PersianWord(core)}    سرویس پنل: {PersianWord(web)}    پنل محلی: {PersianWord(answering)}";
     internal void SaveScreenshot(string path)
     {
         StartPosition = FormStartPosition.Manual;
         Location = new Point(-10000, -10000);
         Show();
         Application.DoEvents();
-        state.Text = "● Ready";
+        state.Text = "● Ready\r\nآماده";
         state.ForeColor = Teal;
         state.BackColor = Sage;
-        details.Text = "Engine: OK    Panel service: OK    Local panel: OK";
+        details.Text = StatusDetails(true, true, true);
         panel.Enabled = true;
         using var bitmap = new Bitmap(Width, Height);
         DrawToBitmap(bitmap, new Rectangle(Point.Empty, Size));
@@ -336,6 +359,20 @@ internal sealed class ControlWindow : Form
         return new Region(path);
     }
     private void ShowWindow() { Show(); WindowState = FormWindowState.Normal; Activate(); }
+    internal void ShowAlreadyRunning()
+    {
+        ShowWindow();
+        if (showingAlreadyRunning) return;
+        showingAlreadyRunning = true;
+        try
+        {
+            MessageBox.Show(this,
+                "Caspian is already running. Use this window to manage it.\r\n\r\n" +
+                "کاسپین از قبل در حال اجراست. برای مدیریت آن از همین پنجره استفاده کنید.",
+                "Caspian / کاسپین", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        finally { showingAlreadyRunning = false; }
+    }
     private void SetButtons(bool enabled) { start.Enabled = enabled; stop.Enabled = enabled; restart.Enabled = enabled; }
     private static void OpenPanel() => Process.Start(new ProcessStartInfo("http://127.0.0.1:8088/") { UseShellExecute = true });
 }
