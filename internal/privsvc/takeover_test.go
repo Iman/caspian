@@ -226,7 +226,12 @@ func TestAFailingStepReachesTheLogAndTheAdvancedView(t *testing.T) {
 // and docs/INSTALL.md makes the same point about the uninstaller's replay. A
 // diagnostic that prints the command in full has to take that one value out.
 func TestTheServerAddressNeverAppearsInADiagnosticLine(t *testing.T) {
-	w := newWorld(t)
+	w := newWorld(t, func(w *world) {
+		// This test models Linux commands even when run on Windows. No
+		// daemon starts: the fake runner fails the earlier server route.
+		w.cfg.HotspotPaths.LeaseFile = "/var/lib/caspian/dnsmasq.leases"
+		w.cfg.HotspotPaths.HostapdControlDir = "/run/hostapd"
+	})
 	w.runner.SetError(serverRouteCmd, errors.New("RTNETLINK answers: Network is unreachable"))
 
 	if err := w.svc.Start(context.Background(), startRequest(t)); err == nil {

@@ -80,6 +80,46 @@ func winPlan(t *testing.T) Plan {
 	return p
 }
 
+func TestMobileHotspotPlan_WindowsAliasesDoNotUseLinuxConfigRules(t *testing.T) {
+	p := macPlan(t)
+	p.AP.Interface, p.AP.Uplink = "Wi-Fi 3", "Ethernet 2"
+	p.DNS.Interface = p.AP.Interface
+	got, err := NewMobileHotspotPlan(p.AP, p.DNS, p.Radio)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got.AP.Interface != "Wi-Fi 3" || got.HostapdConf != "" || got.DnsmasqConf != "" {
+		t.Fatal("Windows plan altered the alias or rendered unused Linux configs")
+	}
+	if _, err := NewPlan(p.AP, p.DNS, p.Radio); err == nil {
+		t.Fatal("Linux config token validation must remain strict")
+	}
+	p.AP.Interface = "Wi-Fi\n3"
+	if _, err := NewMobileHotspotPlan(p.AP, p.DNS, p.Radio); err == nil {
+		t.Fatal("Windows aliases must reject control characters")
+	}
+}
+
+func TestMobileHotspotPlan_RefusesInvalidSettings(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		change func(*Plan)
+	}{
+		{"short passphrase", func(p *Plan) { p.AP.Passphrase = "short" }},
+		{"unsupported radio", func(p *Plan) { p.Radio.SupportsAP = false }},
+		{"invalid adapter encoding", func(p *Plan) { p.AP.Interface = string([]byte{0xff}) }},
+		{"empty adapter", func(p *Plan) { p.AP.Interface = "" }},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			p := macPlan(t)
+			tc.change(&p)
+			if _, err := NewMobileHotspotPlan(p.AP, p.DNS, p.Radio); err == nil {
+				t.Fatal("invalid Mobile Hotspot settings were accepted")
+			}
+		})
+	}
+}
+
 func TestMobileHotspot_StartAsksTheHelperAndWaitsForOn(t *testing.T) {
 	w := &winResponder{state: "off"}
 	m, rec := newWin(t, w)

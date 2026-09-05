@@ -18,6 +18,7 @@ import (
 
 	"golang.org/x/sys/windows"
 	"golang.zx2c4.com/wintun"
+	"golang.zx2c4.com/wireguard/windows/tunnel/winipcfg"
 )
 
 // windowsRunner carries out the Windows backend's pseudo-binaries in process.
@@ -110,6 +111,29 @@ func (w *windowsRunner) ipHelper(args []string) (string, error) {
 		return "", addrCommand(args[1:])
 	case "iface":
 		return "", ifaceCommand(args[1:])
+	case "dns":
+		if len(args) != 3 || (args[1] != "set" && args[1] != "clear") {
+			return "", errors.New("iphlpapi dns: expected set|clear <tunnel>")
+		}
+		luid, err := luidForAlias(args[2])
+		if err != nil {
+			return "", err
+		}
+		guid, err := winipcfg.LUID(luid).GUID()
+		if err != nil {
+			return "", err
+		}
+		server := ""
+		if args[1] == "set" {
+			server = "9.9.9.9"
+		}
+		ptr, err := windows.UTF16PtrFromString(server)
+		if err != nil {
+			return "", err
+		}
+		return "", winipcfg.SetInterfaceDnsSettings(*guid, &winipcfg.DnsInterfaceSettings{
+			Version: winipcfg.DnsInterfaceSettingsVersion1, Flags: winipcfg.DnsInterfaceSettingsFlagNameserver, NameServer: ptr,
+		})
 	}
 	return "", fmt.Errorf("iphlpapi: unknown operation %q", args[0])
 }
@@ -190,16 +214,22 @@ func readInventory() (WindowsInventory, error) {
 		}
 		upByLUID[row.InterfaceLUID] = a.Up
 		inv.Adapters = append(inv.Adapters, a)
-		byIndex[row.InterfaceIndex] = &inv.Adapters[len(inv.Adapters)-1]
+	}
+	// Build pointers only after append has finished: slice growth can otherwise
+	// leave them pointing at an old backing array and lose interface addresses.
+	for i := range inv.Adapters {
+		byIndex[uint32(inv.Adapters[i].Index)] = &inv.Adapters[i]
 	}
 
 	// Addresses, through GetAdaptersAddresses, matched to the table by index.
 	const flags = windows.GAA_FLAG_SKIP_ANYCAST | windows.GAA_FLAG_SKIP_MULTICAST | windows.GAA_FLAG_SKIP_DNS_SERVER
 	size := uint32(15 * 1024)
 	var buf []byte
+	var addressesErr error
 	for attempt := 0; attempt < 4; attempt++ {
 		buf = make([]byte, size)
 		err := windows.GetAdaptersAddresses(windows.AF_UNSPEC, flags, 0, (*windows.IpAdapterAddresses)(unsafe.Pointer(&buf[0])), &size)
+		addressesErr = err
 		if err == nil {
 			break
 		}
@@ -207,6 +237,10 @@ func readInventory() (WindowsInventory, error) {
 			return inv, classify("GetAdaptersAddresses", err)
 		}
 	}
+	if addressesErr != nil {
+		return inv, classify("GetAdaptersAddresses", addressesErr)
+	}
+	present := map[int]bool{}
 	for aa := (*windows.IpAdapterAddresses)(unsafe.Pointer(&buf[0])); aa != nil; aa = aa.Next {
 		target := byIndex[aa.IfIndex]
 		if target == nil && aa.Ipv6IfIndex != 0 {
@@ -215,6 +249,7 @@ func readInventory() (WindowsInventory, error) {
 		if target == nil {
 			continue
 		}
+		present[target.Index] = true
 		for ua := aa.FirstUnicastAddress; ua != nil; ua = ua.Next {
 			ip := ua.Address.IP()
 			if ip == nil {
@@ -227,6 +262,7 @@ func readInventory() (WindowsInventory, error) {
 			target.Prefixes = append(target.Prefixes, netip.PrefixFrom(addr.Unmap(), int(ua.OnLinkPrefixLength)).String())
 		}
 	}
+	inv.retainPresentAdapters(present)
 
 	// Default routes.
 	var fwd *mibIPforwardTable2
@@ -446,6 +482,43 @@ func (w *windowsRunner) wfp(args []string, stdin string) error {
 		return errors.New("wfp: expected load or flush")
 	}
 	switch args[0] {
+	case "dns-protect", "dns-clear":
+		var tun netLUID
+		if args[0] == "dns-protect" {
+			var err error
+			tun, err = w.tunLUID(strings.TrimSpace(stdin))
+			if err != nil {
+				return err
+			}
+		}
+		return withEngine(func(engine uintptr) error {
+			return inTransaction(engine, func() error {
+				if err := ensureProviderAndSublayer(engine); err != nil {
+					return err
+				}
+				for i, key := range dnsFilterKeys() {
+					if err := deleteFilter(engine, key); err != nil {
+						return err
+					}
+					if args[0] == "dns-clear" {
+						continue
+					}
+					spec := filterSpec{key: key, layer: fwpmLayerALEConnectV4, action: fwpActionBlock, weight: 15,
+						name: "Caspian: DNS must use the tunnel", remotePort: 53, exceptLocalInterface: uint64(tun)}
+					if i%2 == 1 {
+						spec.layer = fwpmLayerALEConnectV6
+						spec.exceptLocalInterface = 0
+					}
+					if i >= 2 {
+						spec.remotePort = 853
+					}
+					if err := addFilter(engine, spec); err != nil {
+						return err
+					}
+				}
+				return nil
+			})
+		})
 	case "load":
 		var fs WindowsFilterSet
 		if err := json.Unmarshal([]byte(strings.TrimSpace(stdin)), &fs); err != nil {
@@ -455,9 +528,12 @@ func (w *windowsRunner) wfp(args []string, stdin string) error {
 		if err != nil || !hot.Addr().Is4() {
 			return fmt.Errorf("wfp load: hotspot subnet %q is not an IPv4 network", fs.Hotspot)
 		}
-		tun, err := w.tunLUID(fs.Tun)
-		if err != nil {
-			return err
+		var tun netLUID
+		if fs.Forward != "cut" {
+			tun, err = w.tunLUID(fs.Tun)
+			if err != nil {
+				return err
+			}
 		}
 		return withEngine(func(engine uintptr) error {
 			return inTransaction(engine, func() error {
@@ -494,6 +570,11 @@ func (w *windowsRunner) wfp(args []string, stdin string) error {
 	case "flush":
 		return withEngine(func(engine uintptr) error {
 			return inTransaction(engine, func() error {
+				for _, key := range dnsFilterKeys() {
+					if err := deleteFilter(engine, key); err != nil {
+						return err
+					}
+				}
 				for _, key := range []windows.GUID{caspianFilterPermitTunV4, caspianFilterBlockV4, caspianFilterBlockV6} {
 					if err := deleteFilter(engine, key); err != nil {
 						return err
@@ -579,19 +660,30 @@ func deleteFilter(engine uintptr, key windows.GUID) error {
 }
 
 type filterSpec struct {
-	key              windows.GUID
-	layer            windows.GUID
-	action           uint32
-	weight           uint8
-	name             string
-	source           *netip.Prefix
-	forwardInterface uint64
+	remotePort           uint16
+	exceptLocalInterface uint64
+	key                  windows.GUID
+	layer                windows.GUID
+	action               uint32
+	weight               uint8
+	name                 string
+	source               *netip.Prefix
+	forwardInterface     uint64
 }
 
 func addFilter(engine uintptr, spec filterSpec) error {
 	name, _ := windows.UTF16PtrFromString(spec.name)
 	var conds []fwpmFilterCondition0
 	var mask fwpV4AddrAndMask
+	if spec.remotePort != 0 {
+		conds = append(conds, fwpmFilterCondition0{fieldKey: fwpmConditionIPRemotePort, matchType: fwpMatchEqual,
+			conditionValue: fwpValue0{kind: fwpUint16, value: uintptr(spec.remotePort)}})
+	}
+	exceptIface := spec.exceptLocalInterface
+	if exceptIface != 0 {
+		conds = append(conds, fwpmFilterCondition0{fieldKey: fwpmConditionIPLocalInterface, matchType: fwpMatchNotEqual,
+			conditionValue: fwpValue0{kind: fwpUint64, value: uintptr(unsafe.Pointer(&exceptIface))}})
+	}
 	if spec.source != nil {
 		bits := spec.source.Bits()
 		mask = fwpV4AddrAndMask{addr: hostOrder(spec.source.Masked().Addr()), mask: ^uint32(0) << (32 - bits)}

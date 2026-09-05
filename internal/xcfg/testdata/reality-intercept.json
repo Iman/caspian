@@ -119,6 +119,12 @@
         "outboundTag": "proxy"
       },
       {
+        "ruleTag": "client-dns-intercept",
+        "port": "53",
+        "network": "tcp,udp",
+        "outboundTag": "dns-out"
+      },
+      {
         "ruleTag": "private-direct",
         "ip": [
           "0.0.0.0/8",
@@ -139,12 +145,6 @@
           "ff00::/8"
         ],
         "outboundTag": "direct"
-      },
-      {
-        "ruleTag": "client-dns-intercept",
-        "port": "53",
-        "network": "tcp,udp",
-        "outboundTag": "dns-out"
       },
       {
         "ruleTag": "everything-else",

@@ -235,6 +235,32 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
 </div>
 </div>
 
+<section class="card" aria-labelledby="connections-heading">
+  <h2 id="connections-heading">{{.T "connections.heading"}}</h2>
+  <p class="hint">{{.T "connections.hint"}}</p>
+  <form method="post" action="/advanced" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <input type="hidden" name="connections_only" value="1">
+    <label for="connection-internet">{{.T "advanced.internet"}}</label>
+    <select id="connection-internet" name="internet_interface" dir="ltr">
+      <option value="">{{.AutoInternet}}</option>
+      {{range .Interfaces}}<option dir="ltr" value="{{.Name}}" {{if eq $.CurrentInternet .Name}}selected{{end}}>{{.Name}} - {{.Kind}}</option>{{end}}
+    </select>
+    <label for="connection-hotspot">{{.T "advanced.hotspotiface"}}</label>
+    <select id="connection-hotspot" name="hotspot_interface" dir="ltr">
+      <option value="">{{.AutoHotspot}}</option>
+      {{range .Interfaces}}{{if .CanHost}}<option dir="ltr" value="{{.Name}}" {{if eq $.CurrentHotspot .Name}}selected{{end}}>{{.Name}} - {{.Kind}}</option>{{end}}{{end}}
+    </select>
+    <label for="connection-band">{{.T "advanced.band"}}</label>
+    <select id="connection-band" name="band">
+      <option value="">{{.AutoBand}}</option>
+      {{range .Bands}}<option value="{{.Value}}" {{if .Selected}}selected{{end}}>{{.Words}}</option>{{end}}
+    </select>
+    <p class="hint">{{.T "connections.apply"}}</p>
+    <button type="submit" class="go">{{.T "advanced.save"}}</button>
+  </form>
+</section>
+
 <p class="advanced-toggle">
   <a href="{{.AdvancedHref}}">{{if .Advanced}}{{.T "advanced.hide"}}{{else}}{{.T "advanced.show"}}{{end}}</a>
 </p>

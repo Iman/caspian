@@ -261,6 +261,9 @@ const (
 	MsgKindWiFi        Key = "kind.wifi"
 
 	// Advanced mode.
+	MsgConnectionsHeading Key = "connections.heading"
+	MsgConnectionsHint    Key = "connections.hint"
+	MsgConnectionsApply   Key = "connections.apply"
 	MsgAdvancedShow       Key = "advanced.show"
 	MsgAdvancedHide       Key = "advanced.hide"
 	MsgAdvancedHeading    Key = "advanced.heading"
