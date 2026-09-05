@@ -85,8 +85,9 @@ claims and this project does not let them blur.
 
 ## Installing
 
-Two routes. The first is for people who want to run it, the second is for people
-who want to check it first.
+Choose the operating system first. Windows and macOS have graphical installers;
+Linux and Raspberry Pi can be installed automatically, checked first, or built
+from source.
 
 ### Windows 11
 
@@ -278,7 +279,64 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\packaging\windows\unin
 The uninstaller removes the Windows services and installed programs. Read the
 script before use when you need to preserve local state.
 
-### Automated: one line
+### macOS 13 or later
+
+The macOS disk image contains the native **Caspian Control** app and the
+Caspian engine. You do not need Terminal, Go, Homebrew, or another runtime.
+You need an administrator account and, when the built-in Wi-Fi is the hotspot,
+a wired Ethernet internet connection.
+
+#### Choose the correct download
+
+- Intel Macs use `Caspian-v0.2.4-macos-amd64.dmg`.
+- Apple Silicon Macs (M1 or later) use `Caspian-v0.2.4-macos-arm64.dmg`.
+
+Open **Apple menu → About This Mac** if you do not know whether the Mac has an
+Intel processor or Apple silicon.
+
+#### Install and approve the first opening
+
+The v0.2.4 app is ad-hoc signed but is not yet signed with an Apple Developer
+ID or notarized by Apple. Gatekeeper therefore shows **“Caspian” Not Opened**
+and says that Apple could not verify that it is free of malware. This is not an
+application crash. Override the warning only for a file downloaded from the
+official Caspian release page.
+
+1. Open the [latest Caspian release](https://github.com/Iman/caspian/releases/latest)
+   and expand **Assets**.
+2. Download the DMG for the Mac's processor and open it.
+3. Drag `Caspian.app` into the **Applications** folder.
+4. Open the copy in **Applications** once.
+5. When Gatekeeper blocks it, click **Done**.
+6. Open **Apple menu → System Settings → Privacy & Security**.
+7. Scroll to **Security** and click **Open Anyway** beside Caspian. The button
+   remains available for about one hour after the blocked opening attempt.
+8. Enter the Mac login password, click **OK**, then confirm **Open**.
+
+macOS saves this app as an exception, so later openings work by double-clicking
+it normally. Apple documents the same process in
+[Open an app by overriding security settings](https://support.apple.com/guide/mac-help/apple-cant-check-app-for-malicious-software-mchleab3a043/26/mac/26).
+
+#### Install Caspian and save its password
+
+1. In **Caspian Control**, click **Install / Update**.
+2. Enter the administrator password in the macOS authorization dialog.
+3. Wait until the control window says **Action completed**.
+4. On a first installation, save the **first-run panel password** shown in the
+   output. **Copy panel password** copies only that password.
+5. Click **Open panel** and sign in with the saved panel password.
+6. Enter the Wi-Fi name and password, paste the proxy configuration, then use
+   the panel switch to start Caspian.
+
+The Mac login password, Caspian panel password, and Wi-Fi password are three
+different passwords. If the panel password is lost, use **Reset password** in
+Caspian Control; administrator authorization is required, but the saved proxy
+and hotspot settings remain. Closing the control window leaves its menu-bar
+item running; choose **Open Caspian Control** there to reopen it.
+
+### Linux and Raspberry Pi
+
+#### Automated: one line
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
@@ -309,7 +367,7 @@ To pin a version rather than take the latest:
 
     CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
-### Verifying a download yourself
+#### Verifying a download yourself
 
 Every release carries a `SHA256SUMS` file. The installer checks it for you, and
 you can check it independently:
@@ -324,7 +382,7 @@ are built by GitHub Actions from a tagged commit, and the workflow that builds
 them is in this repository at `.github/workflows/release.yml`, so the build is
 readable even though it is not independently reproducible.
 
-### Manual: build it yourself
+#### Manual: build it yourself
 
 Nothing about the automated route is required. Building from source needs Go
 1.26 or later and gives a binary identical in function.
@@ -966,9 +1024,9 @@ involved.
 
 ## What it needs
 
-The only target for v1 is a Raspberry Pi. See `docs/2026-08-29-design.md`,
-section 2. macOS and Windows are named as later phases and are not built.
-Android and iOS are named as never.
+Current releases include Windows 11 on x64 and ARM64, macOS 13 or later on Intel
+and Apple Silicon, and Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
+are not gateway hosts; phones and tablets join the Caspian Wi-Fi as clients.
 
 `internal/netcfg/testdata/PROVENANCE.md` records the machine this has been
 developed and measured against: a Raspberry Pi 5 Model B Rev 1.0, Debian 13
@@ -979,8 +1037,11 @@ iproute2 6.15.0, brcmfmac on phy0, NetworkManager rendered by netplan.
 on x86_64, aarch64, armv7l or armv6l, with systemd 240 or newer, run as root.
 Each refusal names what it found.
 
-You need two network interfaces in one of two arrangements. See
-`docs/2026-08-29-design.md`, section 4.7.
+The Linux and Raspberry Pi backend needs two network interfaces in one of the
+arrangements below. See `docs/2026-08-29-design.md`, section 4.7. The current
+macOS backend uses wired Ethernet for the internet connection and built-in
+Wi-Fi for the hotspot. Windows uses a Wi-Fi adapter that supports Mobile
+Hotspot.
 
 ```mermaid
 flowchart LR

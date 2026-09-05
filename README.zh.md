@@ -74,9 +74,61 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
 ## 安装
 
-两条路。第一条给想直接用起来的人，第二条给想先检查一遍的人。
+请先选择您的操作系统。macOS 使用图形化 DMG；Linux 和 Raspberry Pi 可以自动安装，
+也可以先检查或自己构建。
 
-### 自动：一行命令
+### macOS 13 或更高版本
+
+macOS 磁盘映像包含原生的 **Caspian Control** 应用和 Caspian 引擎。无需 Terminal、
+Go、Homebrew 或其他运行时。您需要管理员账户；当内置 Wi-Fi 用作热点时，Mac 还需要
+通过有线 Ethernet 接入互联网。
+
+#### 选择正确的下载文件
+
+- Intel Mac 使用 `Caspian-v0.2.4-macos-amd64.dmg`。
+- Apple Silicon Mac（M1 或更新型号）使用
+  `Caspian-v0.2.4-macos-arm64.dmg`。
+
+如果不确定处理器类型，请打开 **Apple 菜单 → 关于本机**。
+
+#### 安装并批准首次打开
+
+v0.2.4 应用带有 ad-hoc 签名，但尚未使用 Apple Developer ID 签名，也未经过 Apple
+公证。因此 Gatekeeper 会显示 **“Caspian” Not Opened**，并提示 Apple 无法验证它是否
+不含恶意软件。这不是应用崩溃。只有当文件来自 Caspian 官方发布页时才应绕过此警告。
+
+1. 打开 [Caspian 最新发布](https://github.com/Iman/caspian/releases/latest)，展开
+   **Assets**。
+2. 下载适合 Mac 处理器的 DMG，并将它打开。
+3. 将 `Caspian.app` 拖入 **Applications（应用程序）**文件夹。
+4. 尝试打开 **Applications** 中的副本一次。
+5. Gatekeeper 阻止它时，点击 **Done**。
+6. 打开 **Apple 菜单 → System Settings → Privacy & Security**。
+7. 向下滚动到 **Security**，在 Caspian 旁点击 **Open Anyway**。首次打开被阻止后，
+   这个按钮大约只显示一小时。
+8. 输入 Mac 登录密码，点击 **OK**，然后确认 **Open**。
+
+macOS 会把这个应用保存为例外，以后可以正常双击打开。Apple 的官方说明见
+[通过覆盖安全设置打开应用](https://support.apple.com/guide/mac-help/apple-cant-check-app-for-malicious-software-mchleab3a043/26/mac/26)。
+
+#### 安装 Caspian 并保存密码
+
+1. 在 **Caspian Control** 中点击 **Install / Update**。
+2. 在 macOS 授权窗口中输入管理员密码。
+3. 等待控制窗口显示 **Action completed**。
+4. 首次安装时，保存输出中显示的 **first-run panel password**。
+   **Copy panel password** 只会复制这个密码。
+5. 点击 **Open panel**，使用保存的面板密码登录。
+6. 输入 Wi-Fi 名称和密码，粘贴代理配置，然后使用面板开关启动 Caspian。
+
+Mac 登录密码、Caspian 面板密码和 Wi-Fi 密码是三个不同的密码。如果面板密码丢失，
+请在 Caspian Control 中使用 **Reset password**；这需要管理员授权，但会保留代理配置
+和热点设置。关闭控制窗口后，应用仍留在 macOS 顶部菜单栏；从那里选择
+**Open Caspian Control** 即可重新打开窗口。
+
+### Linux 和 Raspberry Pi
+
+#### 自动：一行命令
 
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
@@ -104,7 +156,7 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
     CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
-### 自己验证下载的文件
+#### 自己验证下载的文件
 
 每次发布都带一个 `SHA256SUMS` 文件。安装脚本会替您核对，您也可以自己独立核对：
 
@@ -117,7 +169,7 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 工作流就在本仓库的 `.github/workflows/release.yml` 里，所以构建过程是可读的，尽管它
 并不是可独立复现的。
 
-### 手动：自己构建
+#### 手动：自己构建
 
 自动那条路一点也不是必须的。从源码构建需要 Go 1.26 或更高版本，得到的二进制在功能上
 完全一样。
@@ -681,8 +733,9 @@ VLESS 本身不携带加密。它是一个无状态协议，指望下面那一�
 
 ## 它需要什么
 
-v1 唯一的目标平台是 Raspberry Pi。见 `docs/2026-08-29-design.md` 第 2 节。macOS 和
-Windows 被列为以后的阶段，没有构建。Android 和 iOS 被列为永不。
+当前发布支持 x64 和 ARM64 上的 Windows 11、Intel 和 Apple Silicon 上的 macOS 13
+或更高版本，以及 x86_64、ARM64、ARMv7 和 ARMv6 上的 Linux。Android 和 iOS 不作为
+网关主机；手机和平板作为客户端加入 Caspian Wi-Fi。
 
 `internal/netcfg/testdata/PROVENANCE.md` 记录了本项目开发和实测所针对的那台机器：一台
 Raspberry Pi 5 Model B Rev 1.0，Debian 13（trixie），内核 6.18.34+rpt-rpi-2712
@@ -693,7 +746,9 @@ NetworkManager。
 armv6l 上的 Linux，systemd 版本低于 240，或者不是以 root 运行。每一次拒绝都说清它发现了
 什么。
 
-您需要两个网络接口，摆法有两种。见 `docs/2026-08-29-design.md` 第 4.7 节。
+Linux 和 Raspberry Pi 后端需要两个网络接口，摆法如下。见
+`docs/2026-08-29-design.md` 第 4.7 节。当前 macOS 后端通过有线 Ethernet 接入互联网，
+并使用内置 Wi-Fi 建立热点。Windows 使用支持 Mobile Hotspot 的 Wi-Fi 适配器。
 
 ```mermaid
 flowchart LR
