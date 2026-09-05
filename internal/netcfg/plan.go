@@ -1079,7 +1079,7 @@ func (p *Plan) acceptHotspot(f Facts, c apCandidate, o Options) error {
 
 	case c.iface.Name != "":
 		// The radio has an interface and nothing is using it.
-		if !ValidInterfaceName(c.iface.Name) {
+		if !ValidInterfaceNameOn(o.Platform, c.iface.Name) {
 			return fmt.Errorf("netcfg: hotspot interface name %q is not usable", c.iface.Name)
 		}
 		p.Hotspot = c.iface.Name

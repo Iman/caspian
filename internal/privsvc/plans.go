@@ -104,6 +104,10 @@ func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts n
 	// port from the same field.
 	o.LocalDNS.Enabled = true
 	o.LocalDNS.Port = s.cfg.LocalDNSPort
+	// Apply the same interception policy on every implemented platform. This
+	// covers DNS entering Xray, including clients using a hardcoded resolver;
+	// OS-level DNS that never enters the tunnel needs backend enforcement too.
+	o.DNS.Intercept = true
 
 	if req.EngineLogLevel != "" {
 		o.LogLevel = xcfg.LogLevel(req.EngineLogLevel)
@@ -194,7 +198,11 @@ func (s *Service) hotspotPlanFor(p *netcfg.Plan, f netcfg.Facts, req panel.Start
 		CacheSize: dnsCacheSize,
 	}
 
-	plan, err := hotspot.NewPlan(ap, dns, rc)
+	newPlan := hotspot.NewPlan
+	if s.cfg.Backend.Platform() == netcfg.PlatformWindows {
+		newPlan = hotspot.NewMobileHotspotPlan
+	}
+	plan, err := newPlan(ap, dns, rc)
 	if err != nil {
 		return hotspot.Plan{}, fail("hotspot configuration", hotspotFault(unitAP, err.Error(), err), err)
 	}

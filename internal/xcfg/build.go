@@ -232,7 +232,6 @@ func Build(o Options) ([]byte, error) {
 		// queries would match it and be handed straight back to the DNS app
 		// that made them.
 		rule{RuleTag: ruleTagResolvers, InboundTag: []string{TagResolverIn}, OutboundTag: TagProxy},
-		privateRule(TagDirect),
 	)
 	if o.DNS.Intercept {
 		rules = append(rules, rule{
@@ -246,6 +245,9 @@ func Build(o Options) ([]byte, error) {
 			OutboundTag: TagDNSOut,
 		})
 	}
+	// A private DNS destination is still DNS, not an exemption from tunnel
+	// policy. Intercept it before allowing ordinary local-network access.
+	rules = append(rules, privateRule(TagDirect))
 	// The catch-all is explicit rather than left to the default handler.
 	// Both mechanisms point at the proxy; stating it in the rules means a
 	// later edit that reorders the outbounds cannot quietly change where

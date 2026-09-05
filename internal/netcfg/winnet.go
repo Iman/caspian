@@ -24,8 +24,8 @@ import (
 // commands name three PSEUDO-BINARIES that the Windows runner implements in
 // process: "iphlpapi" (the IP Helper API: adapters, addresses, routes,
 // per-interface forwarding and metric), "wfp" (the Windows Filtering Platform:
-// the fail-closed filters) and "wintun" (the tunnel adapter, created before
-// the engine so that the filters can name it). They are Commands all the same,
+// the fail-closed filters) and "wintun" (legacy adapter recovery; the engine
+// now owns adapter creation). They are Commands all the same,
 // so the journal of inverses, the idempotence rules, the Applier's two-pass
 // replay and RecordingRunner all work on them unchanged. That is the point of
 // keeping Command as the unit rather than adding a second kind of step.
@@ -99,6 +99,19 @@ func (windowsBackend) RegulatoryDomain(context.Context, Runner) (string, bool) {
 type WindowsInventory struct {
 	Adapters []WindowsAdapter      `json:"adapters"`
 	Defaults []WindowsDefaultRoute `json:"defaults"`
+}
+
+// GetIfTable2Ex includes remembered interfaces for removed hardware. Only
+// adapters also exposed by GetAdaptersAddresses are usable candidates. Keep
+// disconnected radios: a radio does not need an address to host Mobile Hotspot.
+func (inv *WindowsInventory) retainPresentAdapters(present map[int]bool) {
+	kept := inv.Adapters[:0]
+	for _, adapter := range inv.Adapters {
+		if present[adapter.Index] {
+			kept = append(kept, adapter)
+		}
+	}
+	inv.Adapters = kept
 }
 
 // WindowsAdapter is one adapter as the IP Helper API describes it.
@@ -240,29 +253,23 @@ const (
 	OpWintun = "wintun"
 )
 
-// windowsPreEngineSteps: the tunnel adapter first, because the filters name
-// it; the filters next, so there is never a moment when forwarding is on and
-// the block is not; forwarding on the tunnel adapter; the pinned host route
-// last and still before the engine.
+// Block forwarding before the engine creates its adapter. Xray owns the
+// Wintun handle; precreating the same GUID makes its CreateAdapter call fail.
 func (p *Plan) windowsPreEngineSteps(current map[string]string) []Step {
-	var steps []Step
-	why := "create the tunnel adapter before the engine, so the fail-closed filters can name it and the engine reuses it"
-	steps = append(steps, Step{
-		Op:   OpWintun,
-		Why:  why,
-		Do:   Command{Path: BinWintun, Args: []string{"create", p.Tun}, Why: why},
-		Undo: Command{Path: BinWintun, Args: []string{"delete", p.Tun}, Why: "remove the tunnel adapter"},
-	})
-	steps = append(steps, p.windowsFirewallStep())
-	steps = append(steps, p.windowsForwardingStep(p.Tun, current))
+	steps := []Step{p.windowsCutStep()}
 	steps = append(steps, p.windowsServerRouteSteps()...)
 	return steps
 }
 
 // windowsPostEngineSteps: address, metric and the default route on the tunnel
 // adapter, once the engine has opened it.
-func (p *Plan) windowsPostEngineSteps(map[string]string) []Step {
+func (p *Plan) windowsPostEngineSteps(current map[string]string) []Step {
 	var steps []Step
+	permit := p.windowsFirewallStep()
+	// Rollback reinstates the block. Only the original pre-engine step
+	// removes it, after all later network changes have been undone.
+	permit.Undo = p.windowsCutStep().Do
+	steps = append(steps, permit, p.windowsForwardingStep(p.Tun, current))
 	addr := netip.PrefixFrom(p.TunAddr, p.TunSubnet.Bits()).String()
 	why := "the tunnel adapter needs an address to be routable; the engine on Windows assigns none"
 	steps = append(steps, Step{
@@ -284,6 +291,15 @@ func (p *Plan) windowsPostEngineSteps(map[string]string) []Step {
 		Why:  why,
 		Do:   Command{Path: BinIPHelper, Args: []string{"route", "add", "0.0.0.0/0", "dev", p.Tun, "metric", "0"}, Why: why},
 		Undo: Command{Path: BinIPHelper, Args: []string{"route", "delete", "0.0.0.0/0", "dev", p.Tun, "metric", "0"}, Why: "remove the tunnel default route"},
+	})
+	steps = append(steps, Step{
+		Op: OpLink, Why: "Windows and Mobile Hotspot resolve DNS through the tunnel adapter",
+		Do:   Command{Path: BinIPHelper, Args: []string{"dns", "set", p.Tun}},
+		Undo: Command{Path: BinIPHelper, Args: []string{"dns", "clear", p.Tun}},
+	}, Step{
+		Op: OpWFP, Why: "prevent DNS fallback to physical interfaces while connected",
+		Do:   Command{Path: BinWFP, Args: []string{"dns-protect"}, Stdin: p.Tun},
+		Undo: Command{Path: BinWFP, Args: []string{"dns-clear"}},
 	})
 	return steps
 }
