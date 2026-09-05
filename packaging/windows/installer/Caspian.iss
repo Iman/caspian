@@ -1,6 +1,6 @@
 #define AppName "Caspian-BYOC"
 #ifndef AppVersion
-#define AppVersion "0.2.1"
+#error "AppVersion must be supplied by the release build"
 #endif
 #ifndef BuildArchitecture
 #define BuildArchitecture "x64"
