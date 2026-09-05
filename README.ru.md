@@ -5,7 +5,7 @@
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
-[![platform Raspberry Pi and Linux](https://img.shields.io/badge/platform-Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
+[![platform Windows, macOS, Raspberry Pi and Linux](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Raspberry%20Pi%20%7C%20Linux-blue)](https://github.com/Iman/caspian/releases/latest)
 [![container](https://img.shields.io/badge/ghcr.io-caspian-blue)](https://github.com/Iman/caspian/pkgs/container/caspian)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Iman/caspian)
 
@@ -18,11 +18,14 @@
 >
 > **[Read this in English](README.md)**
 
-Caspian-BYOC превращает Raspberry Pi в шлюз, который работает на вашем
-собственном конфиге. Вы вставляете уже имеющуюся у вас ссылку на прокси в
-веб-панель на коробке и нажимаете один переключатель. Коробка подключается по
-этой ссылке и раздаёт соединение как точку доступа Wi-Fi, так что любое
-подключившееся устройство идёт через туннель и ставить на него ничего не нужно.
+Caspian-BYOC превращает компьютер с Windows 11 или macOS, Raspberry Pi или
+компьютер с Linux в Wi-Fi-шлюз, работающий с вашей собственной конфигурацией.
+Вставьте совместимую с V2Ray или Xray конфигурацию прокси в веб-панель и нажмите
+один переключатель. Caspian принимает ссылки VLESS, VMess, Shadowsocks, SOCKS,
+Trojan и Hysteria2, а также YAML Clash и Clash.Meta, необработанный JSON Xray,
+списки ссылок и данные подписки в base64. Caspian подключается через Xray-core и
+раздаёт туннель как точку доступа Wi-Fi, поэтому все подключённые устройства
+защищены без установки приложений.
 
 ![Панель Caspian в подключённом состоянии. Показана английская версия панели, русского снимка нет.](docs/images/panel-en.png)
 
