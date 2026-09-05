@@ -251,6 +251,11 @@ func (c Config) netOptions() netcfg.Options {
 		o.TunName = c.TunName
 	}
 	o.DNSPort = c.DNSPort
+	if o.Platform == netcfg.PlatformDarwin {
+		// Internet Sharing has no dnsmasq forwarding stage. Its PF redirect
+		// must land directly on the engine, not the hotspot's public port 53.
+		o.DNSPort = int(c.LocalDNSPort)
+	}
 	o.PanelPort = c.PanelPort
 	return o
 }

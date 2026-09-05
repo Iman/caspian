@@ -1,0 +1,77 @@
+# macOS development smoke test — 2026-09-05
+
+Test machine: Intel Mac, macOS 26.6.2; USB Ethernet uplink `en6`, built-in
+Wi-Fi `en0`, Internet Sharing AP `ap1` on `bridge100`.
+
+## Verified
+
+- Chrome DevTools MCP opened the installed panel, signed in and started Caspian.
+- With the user's real configuration, `/status.json` reported `running: true`
+  and `connected: true`, with no problem.
+- HTTPS through the loopback SOCKS inbound succeeded with remote DNS resolution.
+  The observed proxy exit address is recorded only in the local test output,
+  not in this public repository.
+- The panel listened on loopback and `10.83.51.1:8088`. A request bound to
+  loopback against the latter address returned the expected login redirect.
+  This is NOT a substitute for reachability from a Wi-Fi client.
+- Live browser password change revoked the session (status endpoint returned
+  401), the replaced password was rejected, and the current password logged in.
+  The pre-test password was restored. Tunnel and hotspot configuration remained.
+- `go test ./...` passed, including shared panel, networking, privileged-service,
+  BDD, smoke, and golden checks.
+- Cross-builds passed for Windows amd64, Linux arm64, Linux armv7, and macOS arm64.
+  These are build checks, not physical Windows/Pi hardware tests.
+- Intel DMG creation and integrity verification passed. Its binary ran, its
+  Info.plist validated, and its AppleScript launcher compiled. The packaged icon
+  was visually inspected against the panel's shield-and-signal artwork.
+- The physical iPhone joined the built-in Wi-Fi AP and the user confirmed that
+  browsing worked after the permanent macOS DNS-port correction.
+
+## Fixes covered by regression tests
+
+- Hexadecimal ifconfig flags containing letters no longer hide bridge/AP links.
+- macOS portal detection uses the measured bridge address, not the station IP.
+- macOS status no longer applies Linux's station-interface AP readback.
+- Stopping from saved preferences targets NAT's own Enabled key rather than
+  nested AirPort/PrimaryInterface keys.
+- Password changes preserve settings, revoke sessions and reject bad inputs.
+- Local password reset validates confirmation and input bounds and refuses a
+  live panel or an uninitialized installation.
+
+## Still required before release
+
+- Phone with cellular disabled: verify the proxy exit address and captive-portal
+  discovery rather than only direct browsing to a chosen site.
+- Phone fail-closed checks: traffic cut, proxy outage and stop/start recovery.
+- Fresh-Mac install and forgotten-password recovery via the packaged app.
+  Existing-user browser password change is tested; fresh installation is not.
+- Signing/notarization and Gatekeeper testing. This DMG is a development build.
+- Physical Apple Silicon/Windows/Pi regression runs and any supported USB Wi-Fi
+  configuration; this Mac has no USB Wi-Fi adapter attached.
+
+## Follow-up: asynchronous controls and menu-bar app
+
+- The updated panel passed a real Chrome Off → On cycle on loopback. Progress
+  and disabled-submit state were visible; the same document remained alive.
+- JavaScript tests exercise duplicate-submit prevention, bounded request waits,
+  unknown outcomes on timeout, and disconnect recovery messaging.
+- The native macOS control window replaces the dialog-only launcher. It provides
+  service actions, password recovery, local panel tests, descriptions and a menu
+  bar item. Network checks are asynchronous and subprocess I/O runs off the UI
+  thread. Closing the window now hides it without releasing it; an automated
+  close/reopen check kept the same process alive and restored the window.
+
+## Follow-up: permanent macOS DNS correction
+
+- The live PF anchor redirected client DNS to loopback port 53 even though
+  Xray listened on port 5354. macOS lacks Linux's intermediate dnsmasq stage.
+- Redirecting to the actual engine port restored browsing, confirmed by the
+  iPhone user. This does not yet prove its exit IP or fail-closed behavior.
+- `Config.netOptions` now selects `LocalDNSPort` for macOS alone. Regression
+  tests check startup, traffic-cut and restore rules at both the default and
+  a non-default engine port; Linux and Windows retain their existing ports.
+- The corrected service binary and the installed control app's bundled binary
+  are both updated, so a control-app reinstall does not restore the old code.
+- After restarting both services and switching on through Chrome, the service
+  regenerated TCP and UDP DNS redirects to port 5354 without the temporary
+  override. The engine DNS listener resolved a test name successfully.

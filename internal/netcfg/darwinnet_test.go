@@ -184,6 +184,51 @@ func TestDarwinPlan_EthernetUplinkHostsOnTheBuiltInRadio(t *testing.T) {
 	}
 }
 
+func TestDarwinPlan_RejectsUSBWiFiAsTheHotspot(t *testing.T) {
+	r := darwinRunner(t, false)
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-listallhardwareports"}})] = Result{Stdout: darwinHardwarePorts + `
+Hardware Port: USB Wi-Fi
+Device: en2
+`}
+	be := BackendFor(PlatformDarwin)
+	f, err := be.Detect(context.Background(), r, be.BaseSysctlKnobs())
+	if err != nil {
+		t.Fatal(err)
+	}
+	phy, ok := f.PhyByName("radio-en2")
+	if !ok || phy.SupportsAP() {
+		t.Fatalf("USB Wi-Fi must be visible but not AP-capable: %+v, %v", phy, ok)
+	}
+	o := DefaultOptions()
+	o.Platform = PlatformDarwin
+	o.TunName = "utun100"
+	o.HotspotOverride = "en2"
+	if _, err := PlanNetwork(f, []netip.Addr{netip.MustParseAddr("203.0.113.10")}, o); err == nil {
+		t.Fatal("Ethernet to USB Wi-Fi must be refused on macOS")
+	}
+}
+
+func TestDarwinPlan_WiFiUplinkCannotFallBackToUSBWiFi(t *testing.T) {
+	r := darwinRunner(t, true)
+	r.Responses[RunnerKey(Command{Path: BinRoute, Args: []string{"-n", "get", "default"}})] =
+		Result{Stdout: strings.Replace(darwinRouteGet, "interface: en7", "interface: en0", 1)}
+	r.Responses[RunnerKey(Command{Path: BinNetworksetup, Args: []string{"-listallhardwareports"}})] = Result{Stdout: darwinHardwarePorts + `
+Hardware Port: USB Wi-Fi
+Device: en2
+`}
+	be := BackendFor(PlatformDarwin)
+	f, err := be.Detect(context.Background(), r, be.BaseSysctlKnobs())
+	if err != nil {
+		t.Fatal(err)
+	}
+	o := DefaultOptions()
+	o.Platform = PlatformDarwin
+	o.TunName = "utun100"
+	if _, err := PlanNetwork(f, []netip.Addr{netip.MustParseAddr("203.0.113.10")}, o); err == nil {
+		t.Fatal("Wi-Fi to USB Wi-Fi must be refused when USB Wi-Fi cannot host AP")
+	}
+}
+
 func TestDarwinPlan_SplitDefaultInstallsTheTwoHalves(t *testing.T) {
 	r := darwinRunner(t, false)
 	be := BackendFor(PlatformDarwin)

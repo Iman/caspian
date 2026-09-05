@@ -91,6 +91,11 @@ func detectionFrom(f netcfg.Facts, plan *netcfg.Plan, country string, fault pane
 	// back from the interface is what makes that true by measurement rather
 	// than by this package remembering to blank it.
 	d.HotspotAddress = firstIPv4(f, plan.Hotspot)
+	if plan.Platform == netcfg.PlatformDarwin {
+		// Internet Sharing puts the gateway on its bridge, never on en0.
+		// en0 can retain an upstream DHCP address even while sharing.
+		d.HotspotAddress = firstIPv4(f, "bridge100")
+	}
 	return d
 }
 

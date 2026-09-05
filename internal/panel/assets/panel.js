@@ -12,12 +12,179 @@
 // state, and the fewer things that have to succeed before the switch is usable,
 // the better.
 //
-// It makes exactly one request, to /status.json on this same origin. The
+// Requests remain on this origin: status polling and the same form actions
+// used by the no-JavaScript fallback. Form submissions never block the UI.
 // Content-Security-Policy served with every page allows connections to 'self'
 // and nowhere else, so this file cannot grow an outbound request by accident.
 
 (function () {
   "use strict";
+
+  var generation = 0;
+  function initialize() {
+  var currentGeneration = ++generation;
+  var busy = false;
+  var feedback = document.getElementById("action-feedback");
+
+  function message(key) {
+    if (feedback) {
+      feedback.hidden = false;
+      feedback.textContent = feedback.dataset[key];
+    }
+  }
+
+  var identifierForm = document.getElementById("identifier-generator");
+  var identifierButton = document.getElementById("generate-identifiers");
+  var identifierStatus = document.getElementById("identifier-status");
+  var uuidOutput = document.getElementById("generated-uuid");
+  var imeiOutput = document.getElementById("generated-imei");
+  var copyButtons = document.querySelectorAll("[data-copy-target]");
+  var generatingIdentifiers = false;
+
+  function identifierMessage(key) {
+    if (identifierStatus) {
+      identifierStatus.hidden = false;
+      identifierStatus.textContent = identifierStatus.dataset[key];
+    }
+  }
+
+  function selectAndCopy(field) {
+    field.focus();
+    field.select();
+    field.setSelectionRange(0, field.value.length);
+    var copied = false;
+    try {
+      copied = document.execCommand && document.execCommand("copy");
+    } catch (_) {
+      copied = false;
+    }
+    identifierMessage(copied ? "copied" : "failed");
+  }
+
+  function copyIdentifier(field) {
+    if (!field || !field.value) return;
+    var clipboard = window.navigator && window.navigator.clipboard;
+    if (window.isSecureContext && clipboard && clipboard.writeText) {
+      clipboard.writeText(field.value)
+        .then(function () { identifierMessage("copied"); })
+        .catch(function () { selectAndCopy(field); });
+      return;
+    }
+    // Clipboard access is commonly unavailable at a hotspot's plain-HTTP IP.
+    // The selection API plus execCommand is the local fallback there, and the
+    // selected text remains visible for manual copying if the browser refuses.
+    selectAndCopy(field);
+  }
+
+  copyButtons.forEach(function (button) {
+    button.onclick = function () {
+      copyIdentifier(document.getElementById(button.dataset.copyTarget));
+    };
+  });
+
+  if (identifierForm && identifierButton && uuidOutput && imeiOutput &&
+      window.fetch && window.AbortController) {
+    identifierForm.onsubmit = function (event) {
+      event.preventDefault();
+      if (generatingIdentifiers) return;
+
+      var endpoint = new URL(identifierForm.action, window.location.href);
+      if (endpoint.origin !== window.location.origin) return;
+      generatingIdentifiers = true;
+      identifierButton.disabled = true;
+      copyButtons.forEach(function (button) { button.disabled = true; });
+      identifierForm.setAttribute("aria-busy", "true");
+      identifierMessage("working");
+
+      var controller = new AbortController();
+      var timeout = window.setTimeout(function () { controller.abort(); }, 8000);
+      fetch(endpoint.href, {
+        signal: controller.signal,
+        credentials: "same-origin",
+        headers: { Accept: "application/json" },
+        cache: "no-store"
+      }).then(function (response) {
+        if (currentGeneration !== generation) return null;
+        if (response.status === 401) {
+          window.location.reload();
+          return null;
+        }
+        if (!response.ok || new URL(response.url).origin !== window.location.origin ||
+            !(response.headers.get("Content-Type") || "").includes("application/json")) {
+          throw new Error("unexpected identifier response");
+        }
+        return response.json();
+      }).then(function (identifiers) {
+        if (!identifiers || currentGeneration !== generation) return;
+        if (typeof identifiers.uuid !== "string" ||
+            !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(identifiers.uuid) ||
+            typeof identifiers.imei !== "string" || !/^[0-9]{15}$/.test(identifiers.imei)) {
+          throw new Error("invalid identifier response");
+        }
+        uuidOutput.value = identifiers.uuid;
+        imeiOutput.value = identifiers.imei;
+        copyButtons.forEach(function (button) { button.disabled = false; });
+        identifierMessage("ready");
+      }).catch(function () {
+        if (currentGeneration === generation) identifierMessage("failed");
+      }).finally(function () {
+        window.clearTimeout(timeout);
+        if (currentGeneration === generation) {
+          identifierButton.disabled = false;
+          identifierForm.removeAttribute("aria-busy");
+          generatingIdentifiers = false;
+        }
+      });
+    };
+  }
+
+  document.onsubmit = function (event) {
+    var form = event.target;
+    if (!form || form.method.toLowerCase() !== "post" || !window.fetch || !window.AbortController) return;
+    var target = new URL(form.action, window.location.href);
+    if (target.origin !== window.location.origin) return;
+    event.preventDefault();
+    if (busy) return;
+    busy = true;
+    // Capture the intended action before a status poll can update its hidden
+    // input. Disable submissions, not text selection, scrolling or navigation.
+    var data = new URLSearchParams(new FormData(form));
+    if (event.submitter && event.submitter.name) data.append(event.submitter.name, event.submitter.value);
+    var buttons = document.querySelectorAll('button[type="submit"], input[type="submit"]');
+    var previouslyDisabled = Array.from(buttons, function (button) { return button.disabled; });
+    buttons.forEach(function (button) { button.disabled = true; });
+    form.setAttribute("aria-busy", "true");
+    var stopping = target.pathname === "/power" && data.get("on") === "0";
+    message(stopping ? "stopping" : "working");
+    var controller = new AbortController();
+    var timeout = window.setTimeout(function () { controller.abort(); }, 60000);
+    fetch(target.href, {
+      method: "POST", body: data, credentials: "same-origin",
+      cache: "no-store", signal: controller.signal
+    }).then(function (response) {
+      if (new URL(response.url).origin !== window.location.origin ||
+          !(response.headers.get("Content-Type") || "").includes("text/html")) throw new Error("unexpected response");
+      return response.text().then(function (html) { return {html: html, url: response.url}; });
+    }).then(function (result) {
+      var page = new DOMParser().parseFromString(result.html, "text/html");
+      if (!page.getElementById("main")) throw new Error("incomplete response");
+      // Server-rendered validation errors and notices stay intact. No scripts
+      // from the response are evaluated, and no credentials enter history.
+      window.clearTimeout(timer);
+      document.body.replaceWith(document.importNode(page.body, true));
+      document.title = page.title;
+      document.documentElement.lang = page.documentElement.lang;
+      document.documentElement.dir = page.documentElement.dir;
+      window.history.replaceState(null, "", result.url);
+      initialize();
+    }).catch(function () {
+      // A timeout is an unknown result, not permission to replay a mutation.
+      message(stopping ? "stoppedRemote" : "failed");
+      form.removeAttribute("aria-busy");
+      buttons.forEach(function (button, index) { button.disabled = previouslyDisabled[index]; });
+      busy = false;
+    }).finally(function () { window.clearTimeout(timeout); });
+  };
 
   var POLL_MS = 5000;
   var BACKOFF_MAX_MS = 60000;
@@ -49,6 +216,7 @@
   // waking the tab cannot leave two timers running and double the request rate
   // for the rest of the session.
   function schedule(ms) {
+    if (currentGeneration !== generation) return;
     if (timer !== null) {
       window.clearTimeout(timer);
     }
@@ -93,7 +261,7 @@
       setText(deviceCount, String(status.devices));
     }
 
-    if (powerButton && powerValue) {
+    if (powerButton && powerValue && !busy) {
       // running, not connected: the cut makes connected false while the box
       // is still on, and a switch keyed on connected offers to start a box
       // that never stopped.
@@ -138,16 +306,21 @@
   }
 
   function poll() {
+    if (currentGeneration !== generation) return;
+    var controller = new AbortController();
+    var timeout = window.setTimeout(function () { controller.abort(); }, 8000);
     fetch("/status.json", {
+      signal: controller.signal,
       credentials: "same-origin",
       headers: { Accept: "application/json" },
       cache: "no-store"
     })
       .then(function (res) {
+        if (currentGeneration !== generation) return null;
         if (res.status === 401) {
           // The session ended. A full load takes the browser to the sign-in
           // page, which is the server's decision to make, not this file's.
-          window.location.reload();
+          if (!busy) window.location.reload();
           return null;
         }
         if (!res.ok) {
@@ -156,26 +329,25 @@
         return res.json();
       })
       .then(function (status) {
-        if (status) {
+        if (status && currentGeneration === generation && !busy) {
           apply(status);
           delay = POLL_MS;
+          if (feedback) feedback.hidden = true;
         }
       })
       .catch(function () {
-        // A failed poll is not worth telling the user about: the page they are
-        // looking at was rendered by the server and is still true enough. Back
-        // off so that a box whose panel process is struggling is not asked
-        // every five seconds by every open tab.
+        if (!busy && currentGeneration === generation) message("stale");
         delay = Math.min(delay * 2, BACKOFF_MAX_MS);
       })
       .then(function () {
+        window.clearTimeout(timeout);
         schedule(delay);
       });
   }
 
   // Stop polling while the tab is hidden. A phone left on this page in a
   // pocket should not keep a Raspberry Pi busy.
-  document.addEventListener("visibilitychange", function () {
+  document.onvisibilitychange = function () {
     if (document.visibilityState === "visible") {
       delay = POLL_MS;
       schedule(0);
@@ -183,7 +355,9 @@
       window.clearTimeout(timer);
       timer = null;
     }
-  });
+  };
 
   schedule(delay);
+  }
+  initialize();
 })();

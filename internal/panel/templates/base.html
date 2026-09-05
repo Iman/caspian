@@ -214,6 +214,10 @@ any letters left behind.
   {{end}}
 
   <main id="main">
+    <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden
+       data-working="{{.T "action.working"}}" data-stopping="{{.T "action.stopping"}}"
+       data-failed="{{.T "action.failed"}}" data-stopped-remote="{{.T "action.stoppedremote"}}"
+       data-stale="{{.T "action.stale"}}"></p>
   {{template "main" .}}
   </main>
 

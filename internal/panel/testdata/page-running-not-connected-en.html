@@ -167,6 +167,10 @@
   
 
   <main id="main">
+    <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden
+       data-working="Applying your request… You can still use the page. Please do not submit it again." data-stopping="Stopping the hotspot and tunnel… Your phone will lose this page. To switch on again, open the panel on the host device."
+       data-failed="No response received; the operation may still be running. Check the status before retrying. On a Mac, use the local panel: 127.0.0.1:8088" data-stopped-remote="The panel disconnected after the stop request. This is expected if Wi-Fi stopped, but the result is not yet confirmed. Check and restart from the host device; on a Mac: 127.0.0.1:8088"
+       data-stale="Live status is unavailable. Displayed information may be out of date. Check your connection to this device."></p>
   
 
 <section class="tiles" aria-labelledby="status-heading">
@@ -201,7 +205,7 @@
         <span id="power-label">Switch on</span>
       </button>
     </form>
-    <p class="hero-caption">This switches the whole box on and off. When it is off, the WiFi also stops, and your devices disconnect.</p>
+    <p class="hero-caption">Stops the hotspot and tunnel, not your computer. Your phone loses this page. To switch on again on a Mac, use 127.0.0.1:8088. To pause only internet access, use the traffic control and keep Wi-Fi and the panel available.</p>
     </div>
 
     
@@ -352,6 +356,49 @@
 <p class="advanced-toggle">
   <a href="/?advanced=1">Show advanced settings</a>
 </p>
+
+<section class="card" aria-labelledby="password-heading">
+  <h2 id="password-heading">Change this panel&#39;s password</h2>
+  <p class="hint">Enter the current password, then choose a new one. All existing sessions will be signed out.</p>
+  <form method="post" action="/password" class="stack">
+    <input type="hidden" name="csrf" value="<redacted:csrf-token>">
+    <label for="current-password">Current password</label>
+    <input id="current-password" name="current" type="password" required autocomplete="current-password" dir="ltr">
+    <label for="new-password">New password</label>
+    <input id="new-password" name="password" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <label for="confirm-password">Repeat new password</label>
+    <input id="confirm-password" name="confirm" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <button type="submit" class="go">Change password</button>
+  </form>
+</section>
+
+<section class="card" aria-labelledby="identifiers-heading">
+  <h2 id="identifiers-heading">Generate test identifiers</h2>
+  <p class="hint">Some config providers ask for an identifier before issuing a config. Caspian can make a random UUID v4 and a 15-digit IMEI-shaped number for that form.</p>
+  <form id="identifier-generator" method="get" action="/identifiers.json" class="identifier-list">
+    <div class="identifier-row">
+      <label for="generated-uuid">Random UUID v4</label>
+      <div class="identifier-output">
+        <input id="generated-uuid" type="text" readonly autocomplete="off" spellcheck="false" dir="ltr" placeholder="Press Generate">
+        <button type="button" class="secondary" data-copy-target="generated-uuid" disabled>Copy</button>
+      </div>
+    </div>
+    <div class="identifier-row">
+      <label for="generated-imei">Mock IMEI-shaped number</label>
+      <div class="identifier-output">
+        <input id="generated-imei" type="text" readonly autocomplete="off" inputmode="numeric" spellcheck="false" dir="ltr" placeholder="Press Generate">
+        <button type="button" class="secondary" data-copy-target="generated-imei" disabled>Copy</button>
+      </div>
+    </div>
+    <button id="generate-identifiers" type="submit" class="go">Generate new values</button>
+  </form>
+  <p id="identifier-status" class="hint" role="status" aria-live="polite" hidden
+     data-working="Generating on this device…"
+     data-ready="New values generated. Caspian does not save them."
+     data-failed="Caspian could not generate values. Try again."
+     data-copied="Copied."></p>
+  <p class="identifier-warning">The IMEI-shaped value is synthetic. It was not read from this computer or a phone, changes nothing on any device, and must not be used as a real cellular identity. A provider may reject mock values.</p>
+</section>
 
 
 

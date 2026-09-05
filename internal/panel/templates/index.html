@@ -265,6 +265,49 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
   <a href="{{.AdvancedHref}}">{{if .Advanced}}{{.T "advanced.hide"}}{{else}}{{.T "advanced.show"}}{{end}}</a>
 </p>
 
+<section class="card" aria-labelledby="password-heading">
+  <h2 id="password-heading">{{.T "password.heading"}}</h2>
+  <p class="hint">{{.T "password.hint"}}</p>
+  <form method="post" action="/password" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <label for="current-password">{{.T "password.current"}}</label>
+    <input id="current-password" name="current" type="password" required autocomplete="current-password" dir="ltr">
+    <label for="new-password">{{.T "password.new"}}</label>
+    <input id="new-password" name="password" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <label for="confirm-password">{{.T "password.confirm"}}</label>
+    <input id="confirm-password" name="confirm" type="password" required minlength="8" autocomplete="new-password" dir="ltr">
+    <button type="submit" class="go">{{.T "password.save"}}</button>
+  </form>
+</section>
+
+<section class="card" aria-labelledby="identifiers-heading">
+  <h2 id="identifiers-heading">{{.T "identifiers.heading"}}</h2>
+  <p class="hint">{{.T "identifiers.hint"}}</p>
+  <form id="identifier-generator" method="get" action="/identifiers.json" class="identifier-list">
+    <div class="identifier-row">
+      <label for="generated-uuid">{{.T "identifiers.uuid"}}</label>
+      <div class="identifier-output">
+        <input id="generated-uuid" type="text" readonly autocomplete="off" spellcheck="false" dir="ltr" placeholder="{{.T "identifiers.empty"}}">
+        <button type="button" class="secondary" data-copy-target="generated-uuid" disabled>{{.T "identifiers.copy"}}</button>
+      </div>
+    </div>
+    <div class="identifier-row">
+      <label for="generated-imei">{{.T "identifiers.imei"}}</label>
+      <div class="identifier-output">
+        <input id="generated-imei" type="text" readonly autocomplete="off" inputmode="numeric" spellcheck="false" dir="ltr" placeholder="{{.T "identifiers.empty"}}">
+        <button type="button" class="secondary" data-copy-target="generated-imei" disabled>{{.T "identifiers.copy"}}</button>
+      </div>
+    </div>
+    <button id="generate-identifiers" type="submit" class="go">{{.T "identifiers.generate"}}</button>
+  </form>
+  <p id="identifier-status" class="hint" role="status" aria-live="polite" hidden
+     data-working="{{.T "identifiers.working"}}"
+     data-ready="{{.T "identifiers.ready"}}"
+     data-failed="{{.T "identifiers.failed"}}"
+     data-copied="{{.T "identifiers.copied"}}"></p>
+  <p class="identifier-warning">{{.T "identifiers.warning"}}</p>
+</section>
+
 {{if .Advanced}}
 <section class="card advanced" aria-labelledby="advanced-heading">
   <h2 id="advanced-heading"><svg aria-hidden="true" focusable="false"><use href="#i-sliders"/></svg>{{.T "advanced.heading"}}</h2>

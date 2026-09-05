@@ -5,7 +5,12 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 343 keys
+## fa: 370 keys
+  action.failed
+  action.stale
+  action.stoppedremote
+  action.stopping
+  action.working
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -226,6 +231,18 @@
   hotspot.spaces.headline
   hotspot.toolong.advice
   hotspot.toolong.headline
+  identifiers.copied
+  identifiers.copy
+  identifiers.empty
+  identifiers.failed
+  identifiers.generate
+  identifiers.heading
+  identifiers.hint
+  identifiers.imei
+  identifiers.ready
+  identifiers.uuid
+  identifiers.warning
+  identifiers.working
   kind.builtinwifi
   kind.ethernet
   kind.usbwifi
@@ -265,6 +282,16 @@
   notice.on
   notice.recovered
   notice.restored
+  password.confirm
+  password.current
+  password.heading
+  password.hint
+  password.mismatch
+  password.new
+  password.save
+  password.savefailed
+  password.short
+  password.wrong
   phase.failed
   phase.running
   phase.starting
@@ -350,7 +377,12 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 343 keys
+## en: 370 keys
+  action.failed
+  action.stale
+  action.stoppedremote
+  action.stopping
+  action.working
   adv.badband.advice
   adv.badband.headline
   adv.badchannel.advice
@@ -571,6 +603,18 @@
   hotspot.spaces.headline
   hotspot.toolong.advice
   hotspot.toolong.headline
+  identifiers.copied
+  identifiers.copy
+  identifiers.empty
+  identifiers.failed
+  identifiers.generate
+  identifiers.heading
+  identifiers.hint
+  identifiers.imei
+  identifiers.ready
+  identifiers.uuid
+  identifiers.warning
+  identifiers.working
   kind.builtinwifi
   kind.ethernet
   kind.usbwifi
@@ -610,6 +654,16 @@
   notice.on
   notice.recovered
   notice.restored
+  password.confirm
+  password.current
+  password.heading
+  password.hint
+  password.mismatch
+  password.new
+  password.save
+  password.savefailed
+  password.short
+  password.wrong
   phase.failed
   phase.running
   phase.starting

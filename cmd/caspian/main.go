@@ -50,6 +50,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return runServe(args[1:], stdout, stderr)
 	case "check":
 		return runCheck(args[1:], stdout, stderr)
+	case "reset-panel-password":
+		return resetPanelPassword(args[1:], os.Stdin, stdout, stderr)
 	case "version", "--version", "-version":
 		writeVersion(stdout)
 		return exitOK
@@ -70,6 +72,7 @@ Usage:
   caspian serve --privileged     run the root service: routes, firewall, access point, engine
   caspian serve --panel          run the web panel as the caspian user
   caspian check                  report what this box looks like; changes nothing
+  caspian reset-panel-password   replace the panel password; reads two lines from stdin
   caspian version                print the version of this binary
 
 Options for "serve --panel":
