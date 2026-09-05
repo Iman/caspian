@@ -5,7 +5,9 @@ package privsvc
 
 import (
 	"context"
+	"errors"
 	"net/netip"
+	"time"
 
 	"caspianbyoc.org/caspian/internal/netcfg"
 )
@@ -104,7 +106,20 @@ func (s *Service) assertHotspotInterfaceReleased(ctx context.Context, plan *netc
 // is the right side to be wrong on, and it is written down here so the next
 // person recognises it in one reading instead of rediscovering the question.
 func (s *Service) assertHotspotIsAccessPoint(ctx context.Context, plan *netcfg.Plan, ssid string) error {
-	if err := netcfg.AssertHotspotIsAccessPoint(ctx, s.cfg.Runner, plan, ssid); err != nil {
+	err := netcfg.AssertHotspotIsAccessPoint(ctx, s.cfg.Runner, plan, ssid)
+	// Mobile Hotspot can report On before its virtual adapter is up and ICS
+	// has assigned the gateway. Keep requiring both, but allow Windows time
+	// to finish instead of rolling back a hotspot that is still starting.
+	if plan != nil && plan.Platform == netcfg.PlatformWindows {
+		for attempt := 0; attempt < 40 && errors.Is(err, netcfg.ErrNotAccessPoint); attempt++ {
+			if waitErr := s.cfg.System.Sleep(ctx, 500*time.Millisecond); waitErr != nil {
+				err = waitErr
+				break
+			}
+			err = netcfg.AssertHotspotIsAccessPoint(ctx, s.cfg.Runner, plan, ssid)
+		}
+	}
+	if err != nil {
 		s.reportReadback("the access point could not be read back from the kernel", plan, err)
 		return fail("hotspot readback", faultOf(err), err)
 	}
