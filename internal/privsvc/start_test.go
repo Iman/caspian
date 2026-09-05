@@ -61,9 +61,8 @@ func TestStartAppliesThingsInTheRequiredOrder(t *testing.T) {
 	mustBefore(t, w.tl, serverRouteCmd, "engine: started",
 		"the engine's first connection to the server must already be outside the tunnel")
 
-	// Every post-engine step after the engine. netcfg/route.go,
-	// PostEngineSteps: "Every command here names that device, so every one of
-	// them fails if it is run too early."
+	// Every Linux post-engine step after the engine. These commands name the
+	// tunnel device, which does not exist before the engine starts.
 	for _, step := range []string{
 		tunnelAddrCmd,
 		"ip route add default dev xray0",

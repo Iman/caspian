@@ -13,6 +13,14 @@ ARCH="${2:-$(uname -m)}"
 if [ "$ARCH" = x86_64 ]; then ARCH=amd64; fi
 OUT="${3:-dist/Caspian-${VERSION}-macos-${ARCH}.dmg}"
 
+# A release job must never publish an app whose visible version differs from
+# the tag GitHub Actions is releasing. Local preview builds may keep a suffix
+# (for example v0.2.4-ux.1) without impersonating that published artefact.
+if [ "${GITHUB_REF_TYPE:-}" = tag ] && [ -n "${GITHUB_REF_NAME:-}" ] && [ "$VERSION" != "$GITHUB_REF_NAME" ]; then
+	printf 'caspian: build version %s does not match CI release tag %s\n' "$VERSION" "$GITHUB_REF_NAME" >&2
+	exit 2
+fi
+
 case "$ARCH" in
 	arm64|amd64) ;;
 	*) printf 'caspian: unsupported macOS architecture %s\n' "$ARCH" >&2; exit 2 ;;
@@ -29,6 +37,7 @@ case "$VERSION" in
 esac
 BUNDLE_VERSION=0.0.0
 NUMERIC_VERSION="${VERSION#v}"
+NUMERIC_VERSION="${NUMERIC_VERSION%%-*}"
 if [[ "$NUMERIC_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then BUNDLE_VERSION="$NUMERIC_VERSION"; fi
 WORK="$(mktemp -d "${TMPDIR:-/tmp}/caspian-dmg.XXXXXX")"
 STAGE="$WORK/Caspian"
@@ -37,6 +46,11 @@ CONTENTS="$APP/Contents"
 trap 'rm -rf "$WORK"' EXIT
 
 mkdir -p "$CONTENTS/MacOS" "$CONTENTS/Resources" "$(dirname -- "$OUT")"
+# The familiar Applications alias gives somebody who has never installed a
+# DMG an obvious permanent home for the control app. Running it directly from
+# the image still works and offers setup, but password recovery must remain
+# available after the image is ejected.
+ln -s /Applications "$STAGE/Applications"
 CLANG_MODULE_CACHE_PATH="$WORK/clang-cache" swift "$ROOT/packaging/darwin/make-icon.swift" "$CONTENTS/Resources/Caspian.icns"
 CGO_ENABLED=0 GOOS=darwin GOARCH="$ARCH" \
 	go build -trimpath -buildvcs=false \
@@ -79,9 +93,12 @@ codesign --verify --deep --strict "$APP"
 cat > "$STAGE/README.txt" <<EOF
 Caspian $VERSION for macOS ($ARCH)
 
-Double-click “Caspian.app”. macOS will ask for your administrator
-password when you choose “Install / Update”. Save the panel password shown
-after installation, then choose “Open Panel”. These are different passwords.
+Drag “Caspian.app” onto “Applications”, then open the copy in Applications.
+Caspian checks its bundled background service against the installed one. On a
+first run or after an update, it starts setup automatically and macOS asks for
+your administrator password. When the installed version already matches, it
+does not ask again. Save the panel password shown after first setup, then choose
+“Open panel”. These are different passwords.
 Use the panel's password section to change it, or “Reset Password” in this app
 if you have forgotten it. Keep a copy of Caspian.app outside the disk image.
 

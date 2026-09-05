@@ -131,6 +131,7 @@ func darwinDetect(ctx context.Context, r Runner, knobs []string) (Facts, error) 
 			}
 		}
 	}
+	darwinDetectSystemSOCKS(ctx, r, &f)
 	return f, nil
 }
 

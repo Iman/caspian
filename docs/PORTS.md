@@ -52,7 +52,8 @@ Built and unit-tested (with recorders, no root):
 
 - `darwinnet_detect.go`: `ifconfig -a`, `route -n get default`,
   `networksetup -listallhardwareports` and `-getairportnetwork`,
-  `sysctl -e`, `pfctl -s info`, into the shared `Facts`.
+  `networksetup` reads of each enabled service's SOCKS endpoint, state and
+  bypass domains, `sysctl -e`, `pfctl -s info`, into the shared `Facts`.
 - `darwinnet_steps.go`: one pf anchor `com.apple/250.CaspianBYOC` (evaluated
   by `/etc/pf.conf`'s `anchor "com.apple/*"` without editing the main
   ruleset), loaded as one transaction. It redirects client DNS to the engine,
@@ -61,6 +62,14 @@ Built and unit-tested (with recorders, no root):
   route with `route -n add -host`. `net.inet.ip.forwarding` on. No tunnel
   address step: xray-core's darwin TUN assigns 169.254.10.2/30 itself and
   insists the device is `utunN`, so the device is `utun100`.
+- Interim host-app proxy: after the engine has opened `127.0.0.1:10808`, four
+  journalled `networksetup` steps per enabled service disable the prior proxy,
+  merge local bypass domains, install Caspian's unauthenticated SOCKS endpoint,
+  and enable it. Reverse-order teardown restores a previously configured
+  endpoint, the measured bypass domains, and enabled state. A service that had
+  no endpoint remains disabled; `networksetup` has no endpoint-clear verb. An
+  existing authenticated proxy is refused because its hidden password cannot
+  be restored.
 - `internetsharing.go`: writes the preferences file with the keys real dumps
   and the plugin's strings show (NetworkName, NetworkPassword as UTF-16LE
   data, Channel, PrimaryService as the uplink's service UUID, SharingDevices,
@@ -82,6 +91,15 @@ UNVERIFIED until run with root on a Mac, in this order (script:
    it does; nobody has published a run), and that an `rdr` in a `com.apple/*`
    child is honoured for `bridge100` traffic.
 4. That Internet Sharing does not tear itself down when it sees the utun.
+5. That an ordinary proxy-aware macOS application (with no per-app proxy)
+   reports the tunnel exit IP while Caspian is running, and that normal stop,
+   failed start, and forced-process recovery restore every service's previous
+   proxy state.
+
+The system SOCKS setting is deliberately described as interim. It does not
+cover applications that ignore macOS proxy settings, UDP in general, or all
+system DNS. Full host tunnelling, including DNS with no physical-uplink
+fallback, is Option 1 in `backlog.md` and is not claimed by this port.
 
 Exercising it on this Mac needs an Ethernet uplink (a cable in one of the USB
 Ethernet adapters), `sudo`, and `bash packaging/darwin/install-darwin.sh`.
@@ -93,17 +111,38 @@ output including the first-run panel password, and opens the panel when
 finished:
 
 ```
-bash packaging/darwin/build-dmg.sh v0.2.2 arm64
+bash packaging/darwin/build-dmg.sh v0.2.4 arm64
 ```
 
-The image contains the native binary, both launchd plists, the installer app,
-a terminal fallback and its short setup guide. The release workflow publishes
-separate Intel and Apple Silicon images.
+The image contains the native binary, both launchd plists, the control app, an
+Applications shortcut, a terminal fallback and its short setup guide. On
+launch, the control app compares the bundled service binary byte-for-byte with
+`/usr/local/bin/caspian`. A missing or different binary starts the administrator
+setup flow once automatically; an identical binary goes directly to the ready
+state without prompting. An old but reachable panel therefore cannot conceal a
+needed update. The release workflow publishes separate Intel and Apple Silicon
+images.
+
+The control window presents English first and Persian directly beneath it,
+aligned to the same left edge while retaining left-to-right English and
+right-to-left Persian reading order. Status text is
+22 pt, body text is 16–17 pt, and every action has a large bilingual target.
+The layout follows an 8-point grid: 32 pt window margins, 24 pt section gaps,
+16 pt row gutters, 20 pt card padding, a fixed 248 pt action column and 72 pt
+action height. Variable output and Advanced options scroll inside one stable
+window instead of resizing it.
+The recovery disclosure glyph is replaced by an explicit **Advanced options /
+گزینه‌های پیشرفته** button. The footer uses three equal columns: static build
+metadata, a bilingual GitHub link whose hit target is limited to its visible
+text, and the bilingual `Iman Samizadeh / ایمان سمیع زاده` credit. A tagged
+GitHub Actions build refuses to package if its visible version differs from the
+release tag, while a local preview is labelled as a preview based on that
+release rather than impersonating it.
 
 For a lost password, open Caspian.app and choose Reset Password. The Mac asks
 for administrator authentication. Caspian stops the panel, replaces only its
 password, restarts it, and displays the new password with a Copy button.
-Install / Update preserves an existing password. Signed-in users can change
+Set up Caspian / Update Caspian preserves an existing password. Signed-in users can change
 their password on the dashboard by entering the current password and repeating
 the new one. A successful change signs out every existing browser session.
 

@@ -36,6 +36,7 @@ const (
 	OpRoute  = "route"
 	OpRule   = "rule"
 	OpNft    = "nft"
+	OpProxy  = "proxy"
 	// OpCreateIface is the creation of the access point's own interface. It
 	// has an op of its own because its failure is the one this package has a
 	// planned answer for: the radio's combination table can advertise a
@@ -622,11 +623,13 @@ func (p *Plan) linuxPreEngineSteps(current map[string]string) []Step {
 	return steps
 }
 
-// PostEngineSteps are applied once the engine has created the tunnel device.
-// Every command here names that device, so every one of them fails if it is
-// run too early. The firewall is deliberately not in this list: it never names
-// the device in a way that requires it to exist, which is the property the
-// whole fail-closed design rests on.
+// PostEngineSteps are applied once the engine has created its network
+// resources. Linux and route-based desktop steps name the tunnel device; the
+// interim macOS system-proxy steps name the engine's SOCKS listener. Running
+// either kind early fails or points applications at a listener that does not
+// exist. The firewall is deliberately not in this list: it never needs an
+// engine-owned resource to exist, which is the property the whole fail-closed
+// design rests on.
 func (p *Plan) PostEngineSteps(current map[string]string) []Step {
 	return p.backend().PostEngineSteps(p, current)
 }

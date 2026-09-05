@@ -67,7 +67,7 @@ does not own.
 | 53 | hotspot interface | dnsmasq, DHCP and DNS for joined devices |
 | 5354 | 127.0.0.1 | The engine's local DNS listener. dnsmasq's only permitted upstream |
 | 8088 | panel address | The web panel |
-| 10808 | 127.0.0.1 | SOCKS, for diagnostics and the exit-IP proof |
+| 10808 | 127.0.0.1 | SOCKS, for diagnostics, the exit-IP proof, and the interim macOS system proxy |
 
 The 5354 pairing is the one that breaks quietly. dnsmasq refuses any upstream
 that is not a loopback address, and the engine's listener is what answers there.

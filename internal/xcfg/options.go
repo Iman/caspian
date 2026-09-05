@@ -36,8 +36,8 @@ const (
 	// TagTUNIn is the TUN inbound: client traffic.
 	TagTUNIn = "tun-in"
 
-	// TagSOCKSIn is the loopback SOCKS inbound: diagnostics and the exit-IP
-	// proof.
+	// TagSOCKSIn is the loopback SOCKS inbound: diagnostics, the exit-IP proof,
+	// and the interim macOS system proxy.
 	TagSOCKSIn = "socks-in"
 
 	// TagResolverIn is the tag the built-in DNS app stamps on its OWN upstream
@@ -160,13 +160,14 @@ type TUN struct {
 	UserLevel uint32
 }
 
-// SOCKS configures the loopback diagnostics inbound.
+// SOCKS configures the loopback proxy and diagnostics inbound.
 //
 // It exists for two jobs named in the design: the exit-IP proof that every
 // result in this project depends on (section 6, "Nothing is called working
 // without an exit IP captured from real traffic"), and advanced-mode
-// diagnostics. It is not a service for clients on the hotspot; those arrive on
-// the tunnel.
+// diagnostics. On macOS it is also the endpoint exposed through the interim
+// system SOCKS setting for proxy-aware host applications. It is not a service
+// for clients on the hotspot; those arrive on the tunnel.
 type SOCKS struct {
 	// Listen is the address to bind. Empty means "127.0.0.1".
 	//
@@ -266,7 +267,7 @@ type Options struct {
 	LocalDNS LocalDNS
 }
 
-// DefaultSocksPort is the loopback diagnostics port.
+// DefaultSocksPort is the loopback proxy and diagnostics port.
 //
 // 10808 is the conventional SOCKS port for this engine family and is outside
 // the range Linux hands out as an ephemeral port (net.ipv4.ip_local_port_range
@@ -323,7 +324,7 @@ func Defaults() Options {
 	}
 }
 
-// DefaultSocksListen is the loopback address the diagnostics inbound binds.
+// DefaultSocksListen is the loopback address the SOCKS inbound binds.
 const DefaultSocksListen = "127.0.0.1"
 
 // normalise fills in every empty field with its default and leaves everything

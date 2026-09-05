@@ -13,6 +13,7 @@ import (
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/hotspot"
 	"caspianbyoc.org/caspian/internal/netcfg"
+	"caspianbyoc.org/caspian/internal/xcfg"
 )
 
 // Engine is the part of internal/engine this package uses.
@@ -100,7 +101,7 @@ type Config struct {
 	// Empty means netcfg.DefaultOptions().TunName.
 	TunName string
 
-	// SocksPort is the loopback diagnostics inbound, LAYOUT.md 10808.
+	// SocksPort is the loopback proxy and diagnostics inbound, LAYOUT.md 10808.
 	SocksPort uint16
 
 	// LocalDNSPort is the engine's local DNS listener, LAYOUT.md 5354. It is
@@ -255,6 +256,14 @@ func (c Config) netOptions() netcfg.Options {
 		// Internet Sharing has no dnsmasq forwarding stage. Its PF redirect
 		// must land directly on the engine, not the hotspot's public port 53.
 		o.DNSPort = int(c.LocalDNSPort)
+		// macOS applications that honour the system SOCKS setting can use the
+		// same loopback inbound diagnostics use. The netcfg journal restores
+		// every network service's measured previous setting on teardown.
+		o.SystemSOCKS = netcfg.SystemSOCKSOptions{
+			Enabled: true,
+			Listen:  xcfg.DefaultSocksListen,
+			Port:    c.SocksPort,
+		}
 	}
 	o.PanelPort = c.PanelPort
 	return o

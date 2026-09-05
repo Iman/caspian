@@ -193,7 +193,7 @@ it from the table in `docs/LAYOUT.md`, "Ports", rather than from memory:
 | 53 | hotspot interface | dnsmasq, DHCP and DNS for joined devices | `internal/netcfg/plan.go`, `DNSPort` |
 | 5354 | 127.0.0.1 | The engine's local DNS listener | `internal/xcfg`, `DefaultLocalDNSPort` |
 | 8088 | panel address | The web panel | `internal/netcfg/plan.go`, `PanelPort` |
-| 10808 | 127.0.0.1 | SOCKS, for diagnostics and the exit-IP proof | `internal/xcfg`, `DefaultSocksPort` |
+| 10808 | 127.0.0.1 | SOCKS, for diagnostics, the exit-IP proof, and the interim macOS system proxy | `internal/xcfg`, `DefaultSocksPort` |
 
 The one that breaks quietly is 5354: dnsmasq forwards only there and the engine
 listens there, and if the two drift, DNS stops resolving for every joined device
@@ -519,4 +519,3 @@ settled in the release workflow; the fourth was settled in the code.
 What is still true: no release has been cut yet. Until a version tag is pushed,
 `releases/latest` resolves to nothing and the one-line install has nothing to
 fetch.
-

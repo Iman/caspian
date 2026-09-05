@@ -18,6 +18,14 @@ type Facts struct {
 	Wireless []WirelessIface
 	Phys     []Phy
 
+	// SystemSOCKS is the SOCKS proxy state read from each enabled macOS
+	// network service. SystemSOCKSKnown is separate from the slice because an
+	// empty, successfully-read service list is different from a failed read.
+	// A plan that intends to change these settings refuses unless the previous
+	// values are known: teardown cannot restore a value detection only guessed.
+	SystemSOCKS      []SystemSOCKSState
+	SystemSOCKSKnown bool
+
 	// NetworkManagerPresent records that the nmcli device listing ANSWERED
 	// and named at least one device.
 	//

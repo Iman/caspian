@@ -56,6 +56,9 @@ const (
 	// as well as its clients. The pinned host route to the server is not
 	// optional under this strategy: without it the engine's own connection
 	// matches 0.0.0.0/1 and loops through the tunnel it is trying to build.
+	// TODO(backlog.md "Option 1"): graduate this into the supported macOS
+	// full-system mode only after host DNS, UDP, IPv6 and fail-closed behaviour
+	// have live-machine coverage.
 	StrategySplitDefault
 )
 
@@ -175,6 +178,12 @@ type Options struct {
 	// PanelPort is the panel's listener, reachable from the hotspot only.
 	PanelPort int
 
+	// SystemSOCKS asks the macOS backend to point the system SOCKS proxy at
+	// Caspian's loopback inbound after the engine has started. It is an
+	// interim host-app path, not a packet tunnel: software that ignores the
+	// macOS proxy settings, UDP, and OS DNS are outside its guarantee.
+	SystemSOCKS SystemSOCKSOptions
+
 	Strategy RouteStrategy
 	IPv6     IPv6Policy
 
@@ -257,6 +266,15 @@ var (
 	// network needs a default route, and without one the box would report
 	// "connected" and carry nothing.
 	ErrServerFamilyUnreachable = errors.New("netcfg: every server address is in a family with no default route on this machine")
+
+	// ErrSystemSOCKSStateUnknown prevents a macOS proxy change whose prior
+	// state cannot be journalled and restored.
+	ErrSystemSOCKSStateUnknown = errors.New("netcfg: the previous macOS SOCKS proxy settings could not be read")
+
+	// ErrAuthenticatedSystemSOCKS prevents overwriting credentials that
+	// networksetup deliberately does not reveal and Caspian therefore cannot
+	// restore.
+	ErrAuthenticatedSystemSOCKS = errors.New("netcfg: an authenticated macOS SOCKS proxy cannot be preserved")
 )
 
 // Plan is the decision. It holds no behaviour that touches the machine: it is
@@ -376,6 +394,11 @@ type Plan struct {
 	// to ask rather than parse English.
 	UnpinnableServers []netip.Addr
 
+	// SystemSOCKS is the measured state that the post-engine proxy steps must
+	// restore. It is copied into the plan so command generation never reaches
+	// back into a newer detection and pairs a change with the wrong inverse.
+	SystemSOCKS []SystemSOCKSState
+
 	Opts Options
 
 	// Notes carries anything an operator should know that did not stop the
@@ -404,6 +427,13 @@ func PlanNetwork(f Facts, servers []netip.Addr, o Options) (*Plan, error) {
 	}
 
 	p := &Plan{Platform: o.Platform, Tun: o.TunName, Opts: o, NetworkManagerPresent: f.NetworkManagerPresent}
+	if o.SystemSOCKS.Enabled {
+		states, err := systemSOCKSForPlan(f, o)
+		if err != nil {
+			return nil, err
+		}
+		p.SystemSOCKS = states
+	}
 
 	// 1. The uplink is whichever interface carries the default route. The
 	//    name is never assumed: a Pi presents its wired port as eth0, end0 or

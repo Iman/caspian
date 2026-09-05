@@ -75,3 +75,30 @@ Wi-Fi `en0`, Internet Sharing AP `ap1` on `bridge100`.
 - After restarting both services and switching on through Chrome, the service
   regenerated TCP and UDP DNS redirects to port 5354 without the temporary
   override. The engine DNS listener resolved a test name successfully.
+
+## Follow-up: automatic setup and update UX
+
+- The control app now compares its bundled service binary with the installed
+  `/usr/local/bin/caspian` before trusting panel reachability. Missing and
+  different binaries start the administrator setup flow once per app launch;
+  matching binaries do not prompt.
+- Setup/update and Open panel are the only primary actions. Password reset and
+  service controls are grouped under a clearly labelled bilingual Advanced
+  options button, and a cancelled setup leaves its explanation and retry action
+  visible. English appears above Persian from the same left edge while each
+  language keeps its correct paragraph direction;
+  large type and 72 point action targets are used throughout. The window stays
+  at a stable size while variable content scrolls; random background clicks do
+  not resize, magnify or reflow it.
+- The footer has three equal columns. Build/release metadata is static, the two
+  visible GitHub text links are the only clickable footer targets, and
+  `Iman Samizadeh / ایمان سمیع زاده` appears in both languages. The columns do
+  not overlap or compress.
+  Tagged CI packaging rejects a version that differs from its GitHub tag;
+  preview builds retain an explicit suffix and link to their base release.
+- The Intel test DMG passed integrity, plist and deep ad-hoc signature checks.
+  Its Applications shortcut resolves correctly, and its bundled version and
+  SHA-256 differ from the older installed test binary, exercising the update
+  detection condition without changing the live installation.
+- The actual automatic authorization prompt still needs a user-observed run of
+  this DMG, followed by a second launch confirming that no prompt is repeated.
