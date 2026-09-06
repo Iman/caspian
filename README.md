@@ -317,6 +317,39 @@ macOS saves this app as an exception, so later openings work by double-clicking
 it normally. Apple documents the same process in
 [Open an app by overriding security settings](https://support.apple.com/guide/mac-help/apple-cant-check-app-for-malicious-software-mchleab3a043/26/mac/26).
 
+#### If macOS still blocks the background service
+
+The installed background executable, `/usr/local/bin/caspian`, can retain a
+quarantine flag after you approve `Caspian.app`. The warning names lowercase
+`caspian`, and the control window can report **Caspian needs attention**.
+
+**If the alert names a Trojan or reports malware, do not use the command below.**
+Stop setup and report the exact alert, detection name, release version, and
+download URL in a [GitHub issue](https://github.com/Iman/caspian/issues).
+A malware detection needs investigation; an unsigned release alone does not
+establish that the detection is false. See
+[Apple's explanation of macOS security alerts](https://support.apple.com/en-ie/102445).
+
+Use this fallback only for an unverified-developer or unnotarized-app warning,
+after you trust the file and its source. Download the release from the official
+Caspian release page and compare the DMG checksum with its published
+`SHA256SUMS`. A matching checksum confirms the release file, not its safety.
+
+1. Open **Terminal**.
+2. Remove the quarantine flag from the installed background executable:
+
+   ```bash
+   sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
+   ```
+
+3. Enter your Mac login password. Terminal does not display the password as you type.
+4. In Caspian, choose **Advanced options → Restart services**.
+
+This command removes only the named file's quarantine attribute. It does not
+scan, sign, or notarize the executable. If Terminal reports `No such xattr`, the
+attribute is already absent. If the service still fails, report the error
+instead of removing other security controls.
+
 #### Let Caspian set itself up and save its password
 
 1. Launch **Caspian Control**. It compares the bundled background service with
