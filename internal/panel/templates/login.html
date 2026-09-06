@@ -5,10 +5,8 @@ Copyright (C) 2026 Iman Samizadeh
 The sign-in screen. Design section 5.6: a password is required in every case, on
 the first screen.
 
-There is no "forgot password" link, and that is not an omission. Nothing here can
-verify who is asking, so a reset link would be a way past the password rather
-than a way through it. The recovery path needs a terminal on the box, and the
-page says so plainly rather than leaving the user to guess.
+Password recovery requires administrator access to the host. The public page
+explains that route without exposing a remote password-reset endpoint.
 */ -}}
 {{define "main"}}
 <section class="card narrow">
@@ -37,5 +35,14 @@ page says so plainly rather than leaving the user to guess.
   </form>
 
   <p class="hint">{{.T "login.hint"}}</p>
+  <details class="password-recovery">
+    <summary>{{.T "login.recovery"}}</summary>
+    <p>{{.T "login.recovery.help"}}</p>
+    <p>{{.T "login.recovery.unix"}}</p>
+    <pre dir="ltr"><code>{{.RecoveryUnixCommand}}</code></pre>
+    <p>{{.T "login.recovery.windows"}}</p>
+    <pre dir="ltr"><code>{{.RecoveryWindowsCommand}}</code></pre>
+    <p>{{.T "login.recovery.result"}}</p>
+  </details>
 </section>
 {{end}}

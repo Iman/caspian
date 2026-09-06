@@ -308,12 +308,12 @@ check_contains "refuses systemd older than 240" "$out" "Found: systemd 239."
 if [ "$status" -ne 0 ]; then pass "old systemd exits non-zero"; else fail "old systemd exits non-zero"; fi
 drop_fake_machine
 
-# 5e. No download location configured, and no local file.
+# 5e. The default installation selects GitHub's latest release.
 make_fake_machine aarch64
 out="$(run_installer)"
 status=$?
-check_contains "refuses with no download location" "$out" "no download location"
-if [ "$status" -ne 0 ]; then pass "no download location exits non-zero"; else fail "no download location exits non-zero"; fi
+check_contains "default download selects latest" "$out" "releases/latest/download/caspian-linux-arm64"
+check_eq "default download dry run succeeds" "0" "$status"
 drop_fake_machine
 
 # 5f. A plaintext base URL.
@@ -594,6 +594,33 @@ check_contains "no journal is not an error" "$out" "No journal"
 drop_fake_machine
 
 # ---------------------------------------------------------------------------
+
+section "latest release selection"
+out="$(CASPIAN_SOURCE_ONLY=1 bash -c '
+  source "$1"
+  WORK_DIR=$(mktemp -d)
+  trap "rm -rf \"$WORK_DIR\"" EXIT
+  fetch_to() { printf "{\"tag_name\":\"v9.8.7\"}\n" >"$2"; }
+  resolve_release
+  resolve_base_url
+' _ "$INSTALL_SH")"
+check_contains "latest resolves to one immutable tag" "$out" "/releases/download/v9.8.7"
+out="$(CASPIAN_SOURCE_ONLY=1 CASPIAN_VERSION=v1.2.3 bash -c '
+  source "$1"
+  fetch_to() { exit 99; }
+  resolve_release
+  resolve_base_url
+' _ "$INSTALL_SH")"
+check_contains "explicit version does not query latest" "$out" "/releases/download/v1.2.3"
+
+out="$(CASPIAN_SOURCE_ONLY=1 bash -c '
+  source "$1"
+  CASPIAN_ORG=""
+  resolve_base_url
+' _ "$INSTALL_SH" 2>&1)"
+status=$?
+check_contains "an explicitly missing location is refused" "$out" "no download location"
+if [ "$status" -ne 0 ]; then pass "missing location exits non-zero"; else fail "missing location exits non-zero"; fi
 
 printf '\n%s passed, %s failed\n' "$PASSED" "$FAILED"
 if [ "$FAILED" -ne 0 ]; then

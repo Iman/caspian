@@ -8,6 +8,8 @@ import (
 	"fmt"
 	"io"
 	"net"
+	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -54,8 +56,17 @@ func resetPanelPassword(args []string, in io.Reader, out, errOut io.Writer) int 
 		fmt.Fprintln(errOut, "caspian: no existing installation; use first-run setup")
 		return exitError
 	}
+	fi, err := os.Stat(filepath.Join(stateDir, state.FileName))
+	if err != nil {
+		fmt.Fprintln(errOut, "caspian: cannot read state ownership:", err)
+		return exitError
+	}
 	if err := store.SetPanelPassword(first); err != nil {
 		fmt.Fprintf(errOut, "caspian: cannot save panel password: %v\n", err)
+		return exitError
+	}
+	if err := restoreStateOwner(filepath.Join(stateDir, state.FileName), fi); err != nil {
+		fmt.Fprintln(errOut, "caspian: cannot restore state ownership:", err)
 		return exitError
 	}
 	fmt.Fprintln(out, "panel password updated")

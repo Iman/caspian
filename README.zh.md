@@ -130,7 +130,7 @@ Mac 登录密码、Caspian 面板密码和 Wi-Fi 密码是三个不同的密码�
 
 #### 自动：一行命令
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 安装脚本会判断自己在什么机器上，从最新的发布里下载对应的二进制文件，如果下载的内容
 和已公布的校验和不符就拒绝继续。
@@ -154,7 +154,7 @@ Mac 登录密码、Caspian 面板密码和 Wi-Fi 密码是三个不同的密码�
 
 如果想固定某个版本而不是取最新版：
 
-    CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 #### 自己验证下载的文件
 

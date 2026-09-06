@@ -445,6 +445,23 @@ ensure_dependencies() {
 
 # --- fetching and verifying the binary -------------------------------------
 
+resolve_release() {
+  # Resolve once so the binary and checksum cannot come from different
+  # releases if GitHub's latest pointer changes during this installation.
+  [ "$CASPIAN_VERSION" = latest ] || return 0
+  [ -z "$CASPIAN_BASE_URL" ] || return 0
+  [ "$DRY_RUN" = 0 ] || return 0
+  local metadata tag
+  metadata="${WORK_DIR}/release.json"
+  fetch_to "https://api.github.com/repos/${CASPIAN_ORG}/${CASPIAN_REPO}/releases/latest" "$metadata"
+  tag="$(sed -n 's/.*"tag_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p' "$metadata")"
+  case "$tag" in
+    ''|*[!a-zA-Z0-9._-]*) die "GitHub did not return a valid latest release tag. Nothing has been changed." ;;
+  esac
+  CASPIAN_VERSION="$tag"
+  step "Latest release: ${CASPIAN_VERSION}"
+}
+
 resolve_base_url() {
   if [ -n "$CASPIAN_BASE_URL" ]; then
     printf '%s' "${CASPIAN_BASE_URL%/}"
@@ -561,6 +578,7 @@ acquire_binary() {
     return 0
   fi
 
+  resolve_release
   base="$(resolve_base_url)"
   artefact_url="${base}/${ARTEFACT}"
   checksums_url="${base}/${CASPIAN_CHECKSUMS_NAME}"
@@ -1307,6 +1325,7 @@ final_message() {
     say "Password: ${GENERATED_PASSWORD}"
   else
     say "Password: unchanged from the previous install"
+    say "Forgot it? Run: sudo /usr/local/bin/caspian reset-password"
   fi
   say ""
   say "The panel also answers on the hotspot network once you switch it on."

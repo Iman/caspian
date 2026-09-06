@@ -164,6 +164,23 @@ func (s *InternetSharing) Start(ctx context.Context, plan Plan) (Status, error) 
 	//    Sharing pane leaves it: the passphrase in it is the one the pane
 	//    itself stores there, in the same form.
 	rendered := renderNATPrefs(plan, service, true)
+	// A live bridge can belong to the previous SSID/password. Commit an off
+	// transition and observe it before applying changed credentials; otherwise
+	// awaitBridge can succeed immediately while clients still see the old AP.
+	current, readErr := s.sys.ReadFile(s.paths.NATPrefs)
+	if readErr == nil && string(current) != rendered {
+		if up, _ := s.bridgeUp(ctx, netip.Addr{}); up {
+			if _, err := s.writeIfChanged(s.paths.NATPrefs, renderNATPrefs(plan, service, false)); err != nil {
+				return Status{}, err
+			}
+			if err := s.nudge(ctx); err != nil {
+				return Status{}, err
+			}
+			if err := s.awaitBridge(ctx, netip.Addr{}, false); err != nil {
+				return Status{Reason: "The previous Wi-Fi network did not stop. The new Wi-Fi password has not been applied."}, err
+			}
+		}
+	}
 	s.mu.Lock()
 	s.plan, s.have = plan, true
 	s.mu.Unlock()

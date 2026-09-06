@@ -7,7 +7,7 @@
 
 One command, and then the panel.
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 The owner is `Iman`, in `docs/LAYOUT.md` and in `install.sh`, where
 `CASPIAN_ORG` defaults to it. The artefacts and the `SHA256SUMS` file are built
@@ -519,3 +519,21 @@ settled in the release workflow; the fourth was settled in the code.
 What is still true: no release has been cut yet. Until a version tag is pushed,
 `releases/latest` resolves to nothing and the one-line install has nothing to
 fetch.
+
+## Recover the panel password
+
+On the installed Caspian computer, run:
+
+```bash
+sudo /usr/local/bin/caspian reset-password
+```
+
+The command prints a new password and restarts the panel. The proxy and hotspot
+settings stay saved. The command needs administrator access to the computer.
+The login page also shows these instructions. Reinstalling does not reset the
+password.
+
+The installer resolves the latest published release once. It downloads the
+binary and checksums from that same release. `CASPIAN_VERSION` still permits
+an explicit version. Downloading the installer script with `curl ... | less`
+only displays the script; it does not update the installed portal.

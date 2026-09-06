@@ -705,3 +705,9 @@ func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, h
 	}
 	return out
 }
+
+// Recovery commands are executable text, identical in both languages.
+func (pageData) RecoveryUnixCommand() string { return "sudo /usr/local/bin/caspian reset-password" }
+func (pageData) RecoveryWindowsCommand() string {
+	return `& "$env:ProgramFiles\Caspian\caspian.exe" reset-password`
+}
