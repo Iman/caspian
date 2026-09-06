@@ -1,6 +1,10 @@
 # 安装
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -174,4 +178,8 @@ Mac 登录密码、Caspian 面板密码和 Wi-Fi 密码是三个不同的密码�
 一次隐私扫描，以及一部分冒烟测试。失败时它以非零状态退出。不要把它接到管道里：shell
 管道报告的是最后一条命令的状态，所以把它接给 `tail` 会把您要问的答案扔掉。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

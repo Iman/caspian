@@ -2,7 +2,11 @@
 
 # الگوی صفحه
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+
+</div>
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
@@ -24,6 +28,10 @@ TODO: مراحل شماره‌دار، فرمان‌های دقیق و روش ب
 
 TODO: خطاها، روش بازیابی، نتایج آزمون، تاریخ‌ها و محدودیت‌ها را ثبت کنید.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

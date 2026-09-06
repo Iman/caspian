@@ -1,6 +1,10 @@
 # Caspian vikisi
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr)
+
+</div>
 
 Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur. Mimari, protokoller, güvenlik ve geliştirme ayrıntıları aşağıdaki İngilizce bağlantılardadır. Bu sayfalar tüm teknik ayrıntıların tam çevirisi değildir. Henüz bağımsız bir Türkçe dil incelemesinden geçmemiştir.
 
@@ -23,4 +27,8 @@ Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur.
 - [Lisans ve kaynaklar](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
 - [Belge haritası](https://github.com/Iman/caspian/wiki/Documentation-Map)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

@@ -1,6 +1,10 @@
 # Çeviriler
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
+
+</div>
 
 Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur. Mimari, protokoller, güvenlik ve geliştirme ayrıntıları aşağıdaki İngilizce bağlantılardadır. Bu sayfalar tüm teknik ayrıntıların tam çevirisi değildir. Henüz bağımsız bir Türkçe dil incelemesinden geçmemiştir.
 
@@ -22,4 +26,8 @@ Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur.
 - [Lisans ve kaynaklar](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
 - [Belge haritası](https://github.com/Iman/caspian/wiki/Documentation-Map)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

@@ -1,6 +1,10 @@
 # Панель и настройки
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -138,4 +142,8 @@ systemd-юнитов, поэтому процесс панели и любая �
 устройство, подключённое к хотспоту, покидает сеть и присоединяется снова, когда
 хотспот возвращается.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

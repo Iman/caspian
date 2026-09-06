@@ -1,6 +1,10 @@
 # Licence and credits
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+</div>
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -72,4 +76,8 @@ licences do not affect this one, but the appliance is nothing without them.
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) carries the full record: every module in the binary, the licence read
 from its own licence file, and the compatibility reasoning.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

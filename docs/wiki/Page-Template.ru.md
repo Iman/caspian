@@ -1,6 +1,10 @@
 # Шаблон страницы
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -22,4 +26,8 @@ TODO: Добавьте нумерованные шаги, точные кома�
 
 TODO: Запишите ошибки, способы восстановления, результаты тестов, даты и ограничения.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

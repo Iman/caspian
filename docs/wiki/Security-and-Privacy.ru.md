@@ -1,6 +1,10 @@
 # Безопасность и конфиденциальность
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -351,6 +355,10 @@ link-local адрес, что `ip -6 route show default` пуст и на тел
 продукт советует людям купить адаптер, доказана против байтов, которые никто не
 измерял.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)

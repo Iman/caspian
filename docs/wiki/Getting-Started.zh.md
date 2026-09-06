@@ -1,6 +1,10 @@
 # 开始使用
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -66,4 +70,8 @@ flowchart LR
 创建第二个接口仍然是首选，因为它成功时对用户没有任何代价。只有在首选方案被尝试并遭到
 拒绝之后才会走到那条退路，而且在应用第二套方案之前，第一套方案会被完整拆掉。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

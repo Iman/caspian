@@ -1,6 +1,10 @@
 # 页面模板
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -22,4 +26,8 @@ TODO: 添加编号步骤、准确命令和检查方法。
 
 TODO: 记录错误、恢复步骤、测试结果、日期和已知限制。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

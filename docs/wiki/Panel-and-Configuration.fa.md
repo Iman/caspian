@@ -2,7 +2,11 @@
 
 # پنل و تنظیمات
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh)
+
+</div>
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
@@ -139,6 +143,10 @@ stateDiagram-v2
 نقطهٔ دسترسی را متوقف و دوباره شروع می‌کند، پس دستگاهی که به هات‌اسپات وصل است از
 شبکه بیرون می‌رود و وقتی هات‌اسپات برگشت دوباره وصل می‌شود.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

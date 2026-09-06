@@ -2,7 +2,11 @@
 
 # ويكي Caspian
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
+
+</div>
 
 تتوفر بالعربية أدلة موجزة لبدء الاستخدام والتثبيت واستكشاف الأخطاء. صفحات البنية الداخلية والبروتوكولات والأمان والتطوير متاحة بالإنجليزية عبر الروابط أدناه. هذه الصفحات ليست ترجمة كاملة لكل التفاصيل التقنية، ولم تخضع بعد لمراجعة مستقلة من متحدث بالعربية.
 
@@ -25,6 +29,10 @@
 - [الترخيص والمصادر](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
 - [خريطة المستندات](https://github.com/Iman/caspian/wiki/Documentation-Map)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

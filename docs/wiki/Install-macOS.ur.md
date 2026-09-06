@@ -2,7 +2,11 @@
 
 # macOS پر تنصیب
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+
+</div>
 
 macOS 13 یا جدید اور منتظم اکاؤنٹ درکار ہیں۔ اندرونی Wi-Fi کو ہاٹ اسپاٹ بنانے کے لیے Ethernet سے انٹرنیٹ فراہم کریں۔
 
@@ -32,6 +36,10 @@ Mac، پینل اور Wi-Fi کے پاس ورڈ الگ ہیں۔ پینل کا پ�
 
 [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

@@ -1,6 +1,10 @@
 # 面板与配置
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -109,4 +113,8 @@ input 链没有被动过。所以盒子照样在 67 端口应答 DHCP、在客�
 都保持在线。它确实会停掉接入点再重新启动它，所以一台连在热点上的设备会离开该网络，等热点
 回来时再重新加入。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

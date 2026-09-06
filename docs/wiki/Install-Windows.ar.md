@@ -2,7 +2,11 @@
 
 # التثبيت على Windows
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+
+</div>
 
 تحتاج إلى Windows 11 أو Windows 10 إصدار 2004 أو أحدث على x64، وحساب مسؤول ومحول Wi-Fi يدعم Mobile Hotspot. دعم Windows 10 تجريبي ولم يُختبر بعد؛ توافق Windows 10 ARM64 غير مؤكد.
 
@@ -19,6 +23,10 @@
 
 [ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

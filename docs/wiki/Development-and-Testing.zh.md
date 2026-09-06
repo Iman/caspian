@@ -1,6 +1,10 @@
 # 开发与测试
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -75,6 +79,10 @@ installer has run, everything a person does happens in the panel.」
 **盒子不向互联网要任何东西。** 没有遥测，不回传，不上传崩溃报告，没有网络字体，没有地理
 数据文件，任何默认配置里也没有 Google 的解析器。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)

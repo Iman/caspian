@@ -1,6 +1,10 @@
 # Лицензия и используемые проекты
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -58,7 +62,11 @@ xray-core, а парсер share-ссылок принадлежит XTLS. Ни 
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) несёт полную запись: каждый модуль в бинарнике, лицензию, прочитанную
 из его собственного файла лицензии, и рассуждение о совместимости.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 ## Компоненты Windows
 

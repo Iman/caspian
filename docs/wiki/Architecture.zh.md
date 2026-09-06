@@ -1,6 +1,10 @@
 # 架构与数据流
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -301,4 +305,8 @@ flowchart LR
     DOH["DNS over HTTPS<br/>端口 443"] --> CAR["像任何 HTTPS 一样经隧道承载。<br/>不是泄漏。这里的任何东西都看不见它。"]
 ```
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

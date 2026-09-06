@@ -2,7 +2,11 @@
 
 # امنیت و حریم خصوصی
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh)
+
+</div>
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
@@ -338,7 +342,11 @@ ICMP echo می‌رسد و به هیچ چیزِ دیگری روی دستگاه �
 دارد و هیچ آداپتور USB ای ندارد، پس چیدمانی که این محصول به مردم می‌گوید برایش
 آداپتور بخرند، در برابرِ بایت‌هایی اثبات شده که هیچ‌کس اندازه‌شان نگرفته.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
 

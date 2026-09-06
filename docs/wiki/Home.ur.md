@@ -2,7 +2,11 @@
 
 # Caspian ویکی
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
+
+</div>
 
 اردو میں آغاز، تنصیب اور مسائل کے حل کی مختصر رہنمائی دستیاب ہے۔ ساخت، پروٹوکول، سکیورٹی اور ترقی کی تفصیلی دستاویزات کے انگریزی روابط نیچے ہیں۔ یہ تمام تکنیکی تفصیلات کا مکمل ترجمہ نہیں ہے۔ کسی دوسرے اردو بولنے والے نے ابھی اس کا جائزہ نہیں لیا۔
 
@@ -25,6 +29,10 @@
 - [لائسنس اور ماخذ](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
 - [دستاویزات کا نقشہ](https://github.com/Iman/caspian/wiki/Documentation-Map)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

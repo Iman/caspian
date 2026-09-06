@@ -2,7 +2,11 @@
 
 # نقشهٔ مستندات
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh)
+
+</div>
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
@@ -21,6 +25,10 @@ README معرفی، تصاویر و آزمایش‌های ثبت‌شده را �
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | بستر آزمون سخت‌افزار و محدودیت‌های آن |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | آزمون‌های مرورگر و API |
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

@@ -1,6 +1,10 @@
 # Разработка и тестирование
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -93,6 +97,10 @@ does happens in the panel."
 отправки отчётов о падениях, ни веб-шрифтов, ни файлов гео-данных, ни резолвера
 Google ни в одной настройке по умолчанию.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)

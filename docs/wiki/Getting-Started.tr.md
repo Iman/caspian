@@ -1,6 +1,10 @@
 # Başlangıç
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
+
+</div>
 
 Caspian, sizin sağladığınız proxy yapılandırmasıyla bilgisayarı bir Wi-Fi erişim noktasına dönüştürür. Çalışan bir internet bağlantısı ve erişilebilir bir proxy sunucusu gerekir. Proxy, ağın tamamen kesildiği durumda interneti geri getiremez.
 
@@ -23,4 +27,8 @@ Viki çevirisi, uygulama arayüzünün bu dili desteklediğini veya Caspian'ın 
 
 [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

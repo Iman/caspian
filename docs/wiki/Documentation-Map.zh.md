@@ -1,6 +1,10 @@
 # 文档索引
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -19,4 +23,8 @@ README 保留概述、截图和已记录的实验。详细指南位于 Wiki。�
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | 硬件测试工具与限制 |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | 浏览器与 API 测试 |
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

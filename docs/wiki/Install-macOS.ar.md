@@ -2,7 +2,11 @@
 
 # التثبيت على macOS
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+
+</div>
 
 تحتاج إلى macOS 13 أو أحدث وحساب مسؤول. عند استخدام Wi-Fi المدمج كنقطة اتصال، وفّر اتصال إنترنت عبر Ethernet.
 
@@ -32,6 +36,10 @@ sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
 
 [ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

@@ -2,7 +2,11 @@
 
 # ویکی کاسپین
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
+
+</div>
 
 موضوع و زبان را انتخاب کنید. راهنماهای نصب، تنظیمات، معماری و امنیت اکنون اینجا هستند. آزمایش‌های ثبت‌شده و تصاویر در README باقی مانده‌اند.
 
@@ -27,8 +31,16 @@
 
 عربی، اردو و ترکی راهنماهای کوتاه شروع کار، نصب و عیب‌یابی دارند. صفحهٔ اصلی هر زبان به راهنماهای فنی مفصل انگلیسی پیوند می‌دهد. این ترجمه‌های تازه هنوز بازبینی مستقل گویشور بومی ندارند. هنگام تغییر متن مبدأ، ترجمه‌های موجود را به‌روز کنید و بخش‌های ترجمه‌نشده را مشخص کنید.
 
+<div dir="ltr" align="left">
+
 [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
+</div>
+
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

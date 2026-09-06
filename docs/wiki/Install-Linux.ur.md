@@ -2,7 +2,11 @@
 
 # Linux اور Raspberry Pi پر تنصیب
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+
+</div>
 
 Linux، systemd 240 یا جدید، اور root اختیارات درکار ہیں۔ قبول شدہ ساختیں <span dir="ltr">`x86_64`</span>، <span dir="ltr">`aarch64`</span>، <span dir="ltr">`armv7l`</span> اور <span dir="ltr">`armv6l`</span> ہیں۔ دو نیٹ ورک انٹرفیس کی ترتیب انگریزی آغاز کی رہنمائی میں پڑھیں۔
 
@@ -34,6 +38,10 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/m
 
 [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

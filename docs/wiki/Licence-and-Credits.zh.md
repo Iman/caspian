@@ -1,6 +1,10 @@
 # 许可证与致谢
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+</div>
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
@@ -48,7 +52,11 @@ Caspian 是围绕别人的工作写的一小段代码。引擎是 xray-core，�
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) 里有完整的记录：二进制里的每一个模块、从它自己的许可证文件里读到的许可证，以及兼容性
 方面的推理。
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 ## Windows 组件
 

@@ -1,6 +1,10 @@
 # Архитектура и потоки данных
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh)
+
+</div>
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
@@ -337,4 +341,8 @@ flowchart LR
     DOH["DNS over HTTPS<br/>порт 443"] --> CAR["несётся через туннель, как любой HTTPS.<br/>Не утечка. И ничему здесь не видно."]
 ```
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

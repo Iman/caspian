@@ -1,6 +1,10 @@
 # Panel and configuration
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh)
+
+</div>
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -129,4 +133,8 @@ unit, so the panel process and any SSH session stay up throughout. It does stop
 the access point and start it again, so a device joined to the hotspot leaves
 the network and rejoins it when the hotspot returns.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

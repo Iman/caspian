@@ -1,6 +1,10 @@
 # Linux ve Raspberry Pi kurulumu
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+
+</div>
 
 Linux, systemd 240 veya sonrası ve root yetkisi gerekir. Kabul edilen mimariler `x86_64`, `aarch64`, `armv7l` ve `armv6l` biçimindedir. İki ağ arayüzünün düzenini İngilizce başlangıç kılavuzundan okuyun.
 
@@ -24,4 +28,8 @@ Kurulum programı uygun dosyayı seçer ve yayımlanan sağlama toplamını dene
 
 [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

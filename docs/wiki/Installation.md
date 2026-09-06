@@ -1,6 +1,10 @@
 # Installation
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr)
+
+</div>
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -406,4 +410,8 @@ subset. It exits non-zero on failure. Do not pipe it anywhere: a shell pipeline
 reports the status of its last command, so piping it into `tail` throws away
 the answer you asked for.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

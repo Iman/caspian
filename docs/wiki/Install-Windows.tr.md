@@ -1,6 +1,10 @@
 # Windows kurulumu
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+
+</div>
 
 Windows 11 veya x64 üzerinde Windows 10 sürüm 2004 ve sonrası, yönetici hesabı ve Mobile Hotspot destekleyen Wi-Fi adaptörü gerekir. Windows 10 desteği deneyseldir ve henüz test edilmemiştir. Windows 10 ARM64 uyumluluğu doğrulanmamıştır.
 
@@ -17,4 +21,8 @@ Ready, iki arka plan hizmetinin yanıt verdiğini belirtir; tünelin bağlı old
 
 [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

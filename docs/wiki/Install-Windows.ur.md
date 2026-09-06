@@ -2,7 +2,11 @@
 
 # Windows پر تنصیب
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+
+</div>
 
 Windows 11 یا x64 پر Windows 10 ورژن 2004 یا جدید، منتظم اکاؤنٹ اور Mobile Hotspot والا Wi-Fi اڈاپٹر درکار ہیں۔ Windows 10 کی معاونت تجرباتی ہے اور ابھی آزمائی نہیں گئی۔ Windows 10 ARM64 کی مطابقت کی تصدیق نہیں ہوئی۔
 
@@ -19,6 +23,10 @@ Ready کا مطلب ہے کہ پس منظر کی دونوں سروسز جواب 
 
 [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>

@@ -1,6 +1,10 @@
 # macOS kurulumu
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+
+</div>
 
 macOS 13 veya sonrası ve yönetici hesabı gerekir. Yerleşik Wi-Fi erişim noktası olduğunda interneti Ethernet üzerinden sağlayın.
 
@@ -26,4 +30,8 @@ Mac, panel ve Wi-Fi parolaları farklıdır. Panel parolasını unutursanız Cas
 
 [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

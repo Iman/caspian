@@ -2,7 +2,11 @@
 
 # عیب‌یابی و نقص‌های شناخته‌شده
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
+</div>
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
@@ -45,6 +49,10 @@
 [<span dir="ltr">`docs/DEFECTS.md`</span>](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md) همچنین فهرست می‌کند چه چیزی بسته شد و فقط ثبت نشد، تا فهرستِ
 بازها با کلِ تصویر اشتباه گرفته نشود.
 
+<div dir="ltr" align="left">
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
 
 </div>
