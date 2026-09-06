@@ -1,26 +1,11 @@
 # Translations
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh)
 
-> Outline. Use the linked guides for current instructions. The checkboxes mark sections still to write.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Track wiki translations and keep technical instructions consistent.
+Wiki pages are available in English, Persian, Russian, and Simplified Chinese. The guides reuse the existing README translations. This move does not establish that every translation is complete.
 
-## Existing guides
+For an update, change the corresponding pages in all four languages. Keep commands, paths, test names, measurements, and warnings consistent. Record unresolved translation differences instead of hiding them.
 
-- [English README](https://github.com/Iman/caspian/blob/main/README.md)
-- [Persian README](https://github.com/Iman/caspian/blob/main/README.fa.md)
-- [Russian README](https://github.com/Iman/caspian/blob/main/README.ru.md)
-- [Chinese README](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-## Language coverage
-
-- [ ] Create a page-by-page tracker for English, Persian, Russian, and Simplified Chinese.
-
-## Translation review
-
-- [ ] Record the source revision and review date. Keep commands, paths, and quoted errors exact.
-
-## Navigation
-
-- [ ] Add language links as translated wiki pages become available.
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)

@@ -1,29 +1,13 @@
 # Install on macOS
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh)
 
-> Outline. Use the linked guides for current instructions. The checkboxes mark sections still to write.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Install Caspian and manage its background services on macOS.
+[Read the installation steps](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later).
 
-## Existing guides
+The installation guide contains the prerequisites, download choices, and available recovery steps for this platform.
 
-- [macOS installation and security alerts](https://github.com/Iman/caspian/blob/main/README.md#macos-13-or-later)
-- [Port status](https://github.com/Iman/caspian/blob/main/docs/PORTS.md#macos)
-- [macOS smoke test](https://github.com/Iman/caspian/blob/main/packaging/darwin/SMOKE-TEST.md)
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-## Requirements and downloads
-
-- [ ] Describe Apple Silicon and Intel downloads, macOS requirements, and network prerequisites.
-
-## Installation and approval
-
-- [ ] Add the installation steps and distinguish app approval from background executable approval.
-
-## Security alerts
-
-- [ ] Document verification warnings separately from malware detections. Preserve the existing limits on quarantine removal.
-
-## Updates and removal
-
-- [ ] Add steps for updates, service recovery, and removal, with expected results.
+[English](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-macos-13-یا-جدیدتر) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-или-новее) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#macos-13-或更高版本)

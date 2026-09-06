@@ -1,24 +1,13 @@
 # Install on Windows
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh)
 
-> Outline. Use the linked guides for current instructions. The checkboxes mark sections still to write.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Install Caspian and understand Windows compatibility limits.
+[Read the installation steps](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11).
 
-## Existing guides
+The installation guide contains the prerequisites, download choices, and available recovery steps for this platform.
 
-- [Windows installation](https://github.com/Iman/caspian/blob/main/README.md#windows-10-and-11)
-- [Port status](https://github.com/Iman/caspian/blob/main/docs/PORTS.md#windows)
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-## Compatibility
-
-- [ ] Document Windows versions and architectures. Separate experimental support from measured results.
-
-## Installation
-
-- [ ] Add installer steps, administrator prompts, and the first panel login.
-
-## Updates and removal
-
-- [ ] Add service recovery, update, and removal procedures.
+[English](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-windows-10-و-11) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#windows-10-и-11) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#windows-10-和-11)

@@ -1,30 +1,14 @@
 # Releases and maintenance
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh)
 
-> Outline. Use the linked guides for current instructions. The checkboxes mark sections still to write.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Document packaging, release checks, and maintenance procedures.
+Use the installation guide for download verification, updates, and available removal procedures. Packaging and release automation remain in the repository.
 
-## Existing guides
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh)
 
-- [Download verification](https://github.com/Iman/caspian/blob/main/README.md#verifying-a-download-yourself)
-- [Release workflow](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml)
-- [Package workflow](https://github.com/Iman/caspian/blob/main/.github/workflows/package.yml)
-- [Known defects](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md)
+- [release.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml)
+- [package.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/package.yml)
 
-## Release preparation
-
-- [ ] Add the version, release gate, packaging, and artifact checklist.
-
-## Platform packages
-
-- [ ] Document installer formats, architecture naming, signatures, and checksums.
-
-## Upgrade and recovery
-
-- [ ] Describe configuration retention, recovery from failed updates, and rollback limits.
-
-## Release evidence
-
-- [ ] Record the tested version, operating system, hardware, and remaining gaps.
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)

@@ -1,31 +1,25 @@
-# Topic title
+# Page template
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
 
-> Outline. Replace the TODOs with instructions and evidence before marking this page complete.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
+
+Status: outline. Replace each placeholder before publishing a complete guide.
+
+## Purpose
 
 TODO: State the task and intended reader.
 
-## Existing guides
-
-TODO: Link to the relevant repository documents.
-
 ## Requirements
 
-TODO: List the platform, release, permissions, and required tools.
+TODO: Name the release, platform, permissions, and tools.
 
-## Procedure
+## Steps and expected results
 
-TODO: Add numbered steps with exact commands and expected results.
+TODO: Add numbered steps, exact commands, and checks.
 
-## Verification
+## Recovery and evidence
 
-TODO: Explain how the reader can check the result.
+TODO: Record errors, recovery steps, test results, dates, and known limits.
 
-## Recovery and known limits
-
-TODO: Describe likely errors, recovery steps, and unverified behavior.
-
-## Evidence
-
-TODO: Record the tested release, platform, date, and supporting test or report.
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
