@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # ترجمه‌ها
 
 [English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh)
@@ -9,3 +11,5 @@
 برای به‌روزرسانی، صفحه‌های متناظر را در هر چهار زبان تغییر دهید. فرمان‌ها، مسیرها، نام آزمون‌ها، اندازه‌گیری‌ها و هشدارها را هماهنگ نگه دارید. اختلاف‌های ترجمه را ثبت کنید و پنهان نکنید.
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

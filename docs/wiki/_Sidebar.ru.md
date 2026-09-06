@@ -3,6 +3,8 @@
 <details open>
 <summary>English</summary>
 
+<div dir="ltr" align="left">
+
 - [Getting started](https://github.com/Iman/caspian/wiki/Getting-Started)
 - [Installation](https://github.com/Iman/caspian/wiki/Installation)
 - [Protocols and transports](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
@@ -17,10 +19,14 @@
 - [Translations](https://github.com/Iman/caspian/wiki/Translations)
 - [Page template](https://github.com/Iman/caspian/wiki/Page-Template)
 
+</div>
+
 </details>
 
 <details>
 <summary>فارسی</summary>
+
+<div dir="rtl" align="right">
 
 - [شروع کار](https://github.com/Iman/caspian/wiki/Getting-Started.fa)
 - [نصب](https://github.com/Iman/caspian/wiki/Installation.fa)
@@ -36,10 +42,14 @@
 - [ترجمه‌ها](https://github.com/Iman/caspian/wiki/Translations.fa)
 - [الگوی صفحه](https://github.com/Iman/caspian/wiki/Page-Template.fa)
 
+</div>
+
 </details>
 
 <details>
 <summary>Русский</summary>
+
+<div dir="ltr" align="left">
 
 - [Начало работы](https://github.com/Iman/caspian/wiki/Getting-Started.ru)
 - [Установка](https://github.com/Iman/caspian/wiki/Installation.ru)
@@ -55,10 +65,14 @@
 - [Переводы](https://github.com/Iman/caspian/wiki/Translations.ru)
 - [Шаблон страницы](https://github.com/Iman/caspian/wiki/Page-Template.ru)
 
+</div>
+
 </details>
 
 <details>
 <summary>中文</summary>
+
+<div dir="ltr" align="left">
 
 - [开始使用](https://github.com/Iman/caspian/wiki/Getting-Started.zh)
 - [安装](https://github.com/Iman/caspian/wiki/Installation.zh)
@@ -73,6 +87,8 @@
 - [文档索引](https://github.com/Iman/caspian/wiki/Documentation-Map.zh)
 - [翻译](https://github.com/Iman/caspian/wiki/Translations.zh)
 - [页面模板](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+
+</div>
 
 </details>
 

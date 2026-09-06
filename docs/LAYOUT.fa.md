@@ -1,8 +1,10 @@
+<div dir="rtl" align="right">
+
 # چیدمان و قراردادها
 
 🇮🇷 **فارسی** | [🇬🇧 English](LAYOUT.md) | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
 
-> نسخهٔ انگلیسی: [`docs/LAYOUT.md`](LAYOUT.md). آزمون‌ها نسخهٔ انگلیسی را
+> نسخهٔ انگلیسی: [<span dir="ltr">`docs/LAYOUT.md`</span>](LAYOUT.md). آزمون‌ها نسخهٔ انگلیسی را
 > می‌خوانند و مرجع همان است. اگر این دو با هم اختلاف داشتند، انگلیسی درست است.
 
 در 2026-08-30 تثبیت شد. هر چیزی در این پروژه با این فایل هم‌خوان است. تغییر را
@@ -13,46 +15,46 @@
 | چیز | مقدار |
 |---|---|
 | محصول | Caspian-BYOC |
-| باینری | `caspian` |
-| ماژول Go | `caspianbyoc.org/caspian` |
-| کاربر و گروه سرویس | `caspian`، یک حساب سیستمی بدون پوستهٔ ورود |
-| یونیت ممتاز | `caspian.service` |
-| یونیت پنل | `caspian-panel.service` |
+| باینری | <span dir="ltr">`caspian`</span> |
+| ماژول Go | <span dir="ltr">`caspianbyoc.org/caspian`</span> |
+| کاربر و گروه سرویس | <span dir="ltr">`caspian`</span>، یک حساب سیستمی بدون پوستهٔ ورود |
+| یونیت ممتاز | <span dir="ltr">`caspian.service`</span> |
+| یونیت پنل | <span dir="ltr">`caspian-panel.service`</span> |
 
 ## مسیرها
 
 | مسیر | مجوز | مالک | چیست |
 |---|---|---|---|
-| `/usr/local/bin/caspian` | 0755 | root | تنها باینری. زیرفرمان‌ها نقش را انتخاب می‌کنند |
-| `/var/lib/caspian` | 0700 | caspian | وضعیت ماندگار. یک اعتبارنامه را نگه می‌دارد |
-| `/var/lib/caspian/state.json` | 0600 | caspian | بستهٔ state آن را اتمی می‌نویسد |
-| `/run/caspian` | 0750 | root:caspian | سوکت‌های زمان اجرا |
-| `/run/caspian/priv.sock` | 0660 | root:caspian | از پنل به سرویس ممتاز |
-| `/run/caspian/hostapd.conf` | 0600 | root | تولیدشده، در هر بار شروع دوباره نوشته می‌شود |
-| `/run/caspian/dnsmasq.conf` | 0600 | root | تولیدشده، در هر بار شروع دوباره نوشته می‌شود |
-| `/run/caspian/dnsmasq/` | 0700 | caspian | پس از آنکه dnsmasq امتیازش را رها می‌کند، مالکش اوست |
-| `/run/caspian/dnsmasq/dnsmasq.pid` | 0644 | caspian | خودِ dnsmasq آن را می‌نویسد |
-| `/var/lib/caspian/netcfg.journal` | 0600 | root | معکوسِ هر تغییر شبکه‌ای که اعمال شده است |
+| <span dir="ltr">`/usr/local/bin/caspian`</span> | 0755 | root | تنها باینری. زیرفرمان‌ها نقش را انتخاب می‌کنند |
+| <span dir="ltr">`/var/lib/caspian`</span> | 0700 | caspian | وضعیت ماندگار. یک اعتبارنامه را نگه می‌دارد |
+| <span dir="ltr">`/var/lib/caspian/state.json`</span> | 0600 | caspian | بستهٔ state آن را اتمی می‌نویسد |
+| <span dir="ltr">`/run/caspian`</span> | 0750 | root:caspian | سوکت‌های زمان اجرا |
+| <span dir="ltr">`/run/caspian/priv.sock`</span> | 0660 | root:caspian | از پنل به سرویس ممتاز |
+| <span dir="ltr">`/run/caspian/hostapd.conf`</span> | 0600 | root | تولیدشده، در هر بار شروع دوباره نوشته می‌شود |
+| <span dir="ltr">`/run/caspian/dnsmasq.conf`</span> | 0600 | root | تولیدشده، در هر بار شروع دوباره نوشته می‌شود |
+| <span dir="ltr">`/run/caspian/dnsmasq/`</span> | 0700 | caspian | پس از آنکه dnsmasq امتیازش را رها می‌کند، مالکش اوست |
+| <span dir="ltr">`/run/caspian/dnsmasq/dnsmasq.pid`</span> | 0644 | caspian | خودِ dnsmasq آن را می‌نویسد |
+| <span dir="ltr">`/var/lib/caspian/netcfg.journal`</span> | 0600 | root | معکوسِ هر تغییر شبکه‌ای که اعمال شده است |
 
 در 2026-08-30 دو اصلاح انجام شد. در هر دو مورد کد درست بود و این فایل غلط. اول
-اینکه فایل‌های تولیدشدهٔ hostapd و dnsmasq زیر `/run` هستند، نه زیر `/etc`. این
+اینکه فایل‌های تولیدشدهٔ hostapd و dnsmasq زیر <span dir="ltr">`/run`</span> هستند، نه زیر <span dir="ltr">`/etc`</span>. این
 فایل‌ها در هر بار شروع دوباره نوشته می‌شوند، عبارت عبور WPA2 را در خود دارند، و
-`/run` یک tmpfs است. پس یک اعتبارنامه در فایلی که کسی از وجودش خبر ندارد باقی
-نمی‌ماند. دوم اینکه نام ژورنال شبکه `netcfg.journal` است، یعنی همان نامی که کد
+<span dir="ltr">`/run`</span> یک tmpfs است. پس یک اعتبارنامه در فایلی که کسی از وجودش خبر ندارد باقی
+نمی‌ماند. دوم اینکه نام ژورنال شبکه <span dir="ltr">`netcfg.journal`</span> است، یعنی همان نامی که کد
 می‌نویسد و آزمون می‌کند.
 
 ### چرا dnsmasq دایرکتوری خودش را دارد
 
-`/run/caspian` با مجوز 0750 و مالکیت root:caspian است. پس گروه می‌تواند فهرست
-آن را ببیند و نمی‌تواند در آن بنویسد. dnsmasq به حساب `caspian` تنزل می‌کند، و
+<span dir="ltr">`/run/caspian`</span> با مجوز 0750 و مالکیت root:caspian است. پس گروه می‌تواند فهرست
+آن را ببیند و نمی‌تواند در آن بنویسد. dnsmasq به حساب <span dir="ltr">`caspian`</span> تنزل می‌کند، و
 اینکه فایل pid خود را پیش از این تنزل می‌نویسد یا پس از آن، خاصیتی از dnsmasq
 است که ما آن را اندازه نگرفته‌ایم. به‌جای اینکه آن را اندازه بگیریم و به پاسخش
 وابسته شویم، به dnsmasq دایرکتوری‌ای می‌دهیم که مالکش خودش است. آنگاه این پرسش
 دیگر اهمیتی ندارد.
 
-این را با نوشتنی‌کردنِ `/run/caspian` برای گروه «درست نکنید». اجازهٔ ساخت و حذف
-در یک دایرکتوری از خودِ دایرکتوری می‌آید، نه از فایل. پس اگر `/run/caspian` برای
-گروه نوشتنی باشد، حسابِ بدون‌امتیازِ پنل می‌تواند `hostapd.conf` را حذف کند و
+این را با نوشتنی‌کردنِ <span dir="ltr">`/run/caspian`</span> برای گروه «درست نکنید». اجازهٔ ساخت و حذف
+در یک دایرکتوری از خودِ دایرکتوری می‌آید، نه از فایل. پس اگر <span dir="ltr">`/run/caspian`</span> برای
+گروه نوشتنی باشد، حسابِ بدون‌امتیازِ پنل می‌تواند <span dir="ltr">`hostapd.conf`</span> را حذف کند و
 فایل خودش را بنویسد، و سپس سمت ممتاز همان فایل را به hostapd که با root اجرا
 می‌شود تحویل می‌دهد. این کار یک دردسر کوچکِ فایل pid را به ارتقای امتیاز محلی
 تبدیل می‌کند.
@@ -60,7 +62,7 @@
 ## پورت‌ها
 
 اینجا تثبیت شده‌اند تا هیچ بسته‌ای مجبور نباشد آنها را از دادهٔ آزمونِ بستهٔ
-دیگری یاد بگیرد. `cmd/caspian` اینها را می‌خواند و به بقیه می‌دهد. هیچ بسته‌ای
+دیگری یاد بگیرد. <span dir="ltr">`cmd/caspian`</span> اینها را می‌خواند و به بقیه می‌دهد. هیچ بسته‌ای
 مقداری را که مالکش نیست در کد خود ثابت نمی‌کند.
 
 | پورت | اتصال به | چیست |
@@ -74,36 +76,36 @@
 نشانی loopback نباشد رد می‌کند، و آنچه روی آن نشانی پاسخ می‌دهد شنوندهٔ موتور
 است. اگر این دو از هم دور شوند، DNS برای هر دستگاهِ وصل‌شده از کار می‌افتد در
 حالی که هات‌اسپات و تونل هر دو سالم به نظر می‌رسند. یک آزمون مقابله‌ای در
-`internal/xcfg` هست. مقدارهای بالا دلیل این هستند که آن آزمون اصلاً چیزی برای
+<span dir="ltr">`internal/xcfg`</span> هست. مقدارهای بالا دلیل این هستند که آن آزمون اصلاً چیزی برای
 مقابله‌کردن دارد.
 
 ## پلتفرم‌های دیگر
 
 جدول‌های بالا مالِ دستگاه لینوکسی‌اند و همان‌هایی‌اند که آزمون‌ها می‌خوانند.
-پورت‌های macOS و Windows (شاخهٔ `port/platforms`، ببینید `docs/PORTS.md`) همان
+پورت‌های macOS و Windows (شاخهٔ <span dir="ltr">`port/platforms`</span>، ببینید <span dir="ltr">`docs/PORTS.md`</span>) همان
 نام‌ها و پورت‌ها را نگه می‌دارند و تنها آنچه را تغییر می‌دهند که سیستم‌عامل ناچار
-می‌کند؛ هر مقدارِ زیر در `cmd/caspian/paths_darwin.go` و
-`cmd/caspian/paths_windows.go` تثبیت شده است.
+می‌کند؛ هر مقدارِ زیر در <span dir="ltr">`cmd/caspian/paths_darwin.go`</span> و
+<span dir="ltr">`cmd/caspian/paths_windows.go`</span> تثبیت شده است.
 
 | چیز | macOS | Windows |
 |---|---|---|
-| باینری | `/usr/local/bin/caspian` | `%ProgramFiles%\Caspian\caspian.exe`، با `caspian-tethering.exe` و `wintun.dll` کنارش |
-| وضعیت ماندگار | `/Library/Application Support/Caspian` با 0700 برای `_caspian` | `%ProgramData%\Caspian`، ACL: SYSTEM، Administrators، حساب پنل |
-| دایرکتوری زمان اجرا | `/var/run/caspian` با 0750 و root:`_caspian` | ندارد |
-| پنل به سرویس ممتاز | `/var/run/caspian/priv.sock` با 0660 | named pipe در `\\.\pipe\caspian-priv`، توصیف‌گری که SYSTEM، Administrators و حساب پنل را می‌پذیرد |
-| حساب سرویس | `_caspian`، یک role account (UID از 450 تا 499، بدون شل) | `NT SERVICE\caspian-panel`، یک حساب سرویس مجازی |
-| مدیر سرویس | launchd: `org.caspianbyoc.caspian`، `org.caspianbyoc.caspian-panel` | Service Control Manager: `caspian`، `caspian-panel` |
-| دستگاه تونل | `utun100` (TUN داروینِ xray-core بر `utunN` اصرار دارد) | `xray0`، یک آداپتور Wintun |
+| باینری | <span dir="ltr">`/usr/local/bin/caspian`</span> | <span dir="ltr">`%ProgramFiles%\Caspian\caspian.exe`</span>، با <span dir="ltr">`caspian-tethering.exe`</span> و <span dir="ltr">`wintun.dll`</span> کنارش |
+| وضعیت ماندگار | <span dir="ltr">`/Library/Application Support/Caspian`</span> با 0700 برای <span dir="ltr">`_caspian`</span> | <span dir="ltr">`%ProgramData%\Caspian`</span>، ACL: SYSTEM، Administrators، حساب پنل |
+| دایرکتوری زمان اجرا | <span dir="ltr">`/var/run/caspian`</span> با 0750 و root:<span dir="ltr">`_caspian`</span> | ندارد |
+| پنل به سرویس ممتاز | <span dir="ltr">`/var/run/caspian/priv.sock`</span> با 0660 | named pipe در <span dir="ltr">`\\.\pipe\caspian-priv`</span>، توصیف‌گری که SYSTEM، Administrators و حساب پنل را می‌پذیرد |
+| حساب سرویس | <span dir="ltr">`_caspian`</span>، یک role account (UID از 450 تا 499، بدون شل) | <span dir="ltr">`NT SERVICE\caspian-panel`</span>، یک حساب سرویس مجازی |
+| مدیر سرویس | launchd: <span dir="ltr">`org.caspianbyoc.caspian`</span>، <span dir="ltr">`org.caspianbyoc.caspian-panel`</span> | Service Control Manager: <span dir="ltr">`caspian`</span>، <span dir="ltr">`caspian-panel`</span> |
+| دستگاه تونل | <span dir="ltr">`utun100`</span> (TUN داروینِ xray-core بر <span dir="ltr">`utunN`</span> اصرار دارد) | <span dir="ltr">`xray0`</span>، یک آداپتور Wintun |
 | نقطهٔ دسترسی | Internet Sharing اپل روی رادیوی داخلی | Mobile Hotspot، از راه کمک‌برنامهٔ tethering |
 | زیرشبکهٔ کلاینت | برنامه‌ریز انتخاب می‌کند و به Internet Sharing می‌دهد | 192.168.137.0/24، تثبیت‌شده توسط Internet Connection Sharing |
 
 ## دو فرایند، یک باینری
 
-`caspian serve --privileged` با root اجرا می‌شود. مسیرها، فایروال، اکسس‌پوینت و
+<span dir="ltr">`caspian serve --privileged`</span> با root اجرا می‌شود. مسیرها، فایروال، اکسس‌پوینت و
 موتور در اختیار اوست. روی سوکت فقط فهرست کوتاهی از کنش‌های نام‌دار را می‌پذیرد،
 و هرگز فرمانی را که از ورودی کاربر ساخته شده باشد نمی‌پذیرد.
 
-`caspian serve --panel` با کاربر `caspian` اجرا می‌شود. رابط وب در اختیار اوست و
+<span dir="ltr">`caspian serve --panel`</span> با کاربر <span dir="ltr">`caspian`</span> اجرا می‌شود. رابط وب در اختیار اوست و
 هیچ چیز ممتازی در اختیار او نیست. از راه سوکت به آن یکی می‌رسد.
 
 این جدایی برای آن است که یک نقص در بخشی که ورودی کاربر را تجزیه می‌کند و HTTP
@@ -114,11 +116,11 @@
 در 2026-08-30 تصمیم گرفته شد. این تصمیم، تصمیم پیشین را وارونه می‌کند که پیش از
 وجود رابط ممتازِ پنل گرفته شده بود.
 
-فرایند پنل مالک `state.json` است. این فرایند با حساب `caspian` اجرا می‌شود که
+فرایند پنل مالک <span dir="ltr">`state.json`</span> است. این فرایند با حساب <span dir="ltr">`caspian`</span> اجرا می‌شود که
 مالک آن فایل و دایرکتوری آن است، و تنها چیزی است که یک آدم با آن سر و کار دارد.
 پس مالک طبیعی چیزی است که آن آدم پیکربندی می‌کند.
 
-فرایند ممتاز مالک `netcfg.journal` است. این فرایند با root اجرا می‌شود، آن فایل
+فرایند ممتاز مالک <span dir="ltr">`netcfg.journal`</span> است. این فرایند با root اجرا می‌شود، آن فایل
 مالکیت root دارد، و ژورنال تغییراتی را ثبت می‌کند که فقط root می‌تواند آنها را
 انجام دهد یا برگرداند.
 
@@ -134,9 +136,13 @@
 
 یک فرمان، به سبک نصب‌کننده‌های مدیر بسته:
 
+<div dir="ltr" align="left">
+
 ```
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 ```
+
+</div>
 
 این اسکریپت تنها چیزی است که کاربر در ترمینال اجرا می‌کند. پس از پایان آن، هر
 کار دیگری در پنل انجام می‌شود.
@@ -147,8 +153,8 @@
   پیامی که آنچه را یافته است نام ببرد. armv6 از همین سطر جا افتاده بود، در حالی
   که نصب‌کننده آن را می‌پذیرفت و جدول پایین هم آن را فهرست کرده بود. همین جا
   افتادن بود که در پروژه‌ای پیشین مدل‌های قدیمی‌تر Pi را خراب کرد.
-- توزیع را تشخیص دهد و فقط آنچه را که نیست نصب کند: `hostapd`، `dnsmasq`،
-  `nftables`، `iw`، `iproute2`.
+- توزیع را تشخیص دهد و فقط آنچه را که نیست نصب کند: <span dir="ltr">`hostapd`</span>، <span dir="ltr">`dnsmasq`</span>،
+  <span dir="ltr">`nftables`</span>، <span dir="ltr">`iw`</span>، <span dir="ltr">`iproute2`</span>.
 - آرتیفکت انتشار را برای معماری تشخیص‌داده‌شده دانلود کند و SHA-256 آن را با یک
   فایل چک‌سام منتشرشده بسنجد. در صورت ناهم‌خوانی رد کند. هرگز یک باینری
   راستی‌آزمایی‌نشده را نصب نکند.
@@ -163,7 +169,9 @@
 ## نام‌گذاری معماری
 
 آرتیفکت‌های انتشار از قرارداد Go پیروی می‌کنند، نه از قرارداد کرنل:
-`caspian-linux-amd64`، `caspian-linux-arm64`، `caspian-linux-arm`. نصب‌کننده
-خروجی `uname -m` را روی همین‌ها نگاشت می‌کند: `x86_64` به amd64، `aarch64` به
-arm64، و `armv7l` و `armv6l` به arm. پروژه‌ای پیشین در همین کارگاه armv6 را روی
+<span dir="ltr">`caspian-linux-amd64`</span>، <span dir="ltr">`caspian-linux-arm64`</span>، <span dir="ltr">`caspian-linux-arm`</span>. نصب‌کننده
+خروجی <span dir="ltr">`uname -m`</span> را روی همین‌ها نگاشت می‌کند: <span dir="ltr">`x86_64`</span> به amd64، <span dir="ltr">`aarch64`</span> به
+arm64، و <span dir="ltr">`armv7l`</span> و <span dir="ltr">`armv6l`</span> به arm. پروژه‌ای پیشین در همین کارگاه armv6 را روی
 آرتیفکت armv7 نگاشت کرد و مدل‌های قدیمی‌تر Pi را خراب کرد. این را تکرار نکنید.
+
+</div>

@@ -1,8 +1,10 @@
+<div dir="rtl" align="right">
+
 # آزمون سخت‌افزاری: اثبات دستگاه با یک گوشی واقعی
 
 🇮🇷 **فارسی** | [🇬🇧 English](HARDWARE-TEST.md) | [🇷🇺 Русский](../README.ru.md) | [🇨🇳 中文](../README.zh.md)
 
-> نسخهٔ انگلیسی: [`docs/HARDWARE-TEST.md`](HARDWARE-TEST.md). آزمون‌ها نسخهٔ
+> نسخهٔ انگلیسی: [<span dir="ltr">`docs/HARDWARE-TEST.md`</span>](HARDWARE-TEST.md). آزمون‌ها نسخهٔ
 > انگلیسی را می‌خوانند و مرجع همان است. اگر این دو با هم اختلاف داشتند، انگلیسی
 > درست است.
 >
@@ -14,7 +16,7 @@
 علامت خورده در حین نوشتن همین سند روی سخت‌افزارِ متصل اجرا شده است. هر چیزی که با
 UNVERIFIED علامت خورده اجرا نشده است، و می‌گوید چه چیزی آن را حل‌وفصل می‌کند.
 
-بستر آزمون `test/hardware/caspian-hw` است. این فایل می‌گوید چگونه از آن استفاده
+بستر آزمون <span dir="ltr">`test/hardware/caspian-hw`</span> است. این فایل می‌گوید چگونه از آن استفاده
 کنید و چگونه گفته‌هایش را بخوانید.
 
 ## استاندارد
@@ -27,7 +29,7 @@ UNVERIFIED علامت خورده اجرا نشده است، و می‌گوید �
 اگر تونل، اپلیکیشن یا گوشی در حین یک ضبط وضعیتشان تغییر کرد، آن خوانش VOID است و
 باید دوباره گرفته شود. نه نشت است و نه قبولی.
 
-`docs/2026-08-29-design.md` بخش 6 آن را در یک سطر می‌گوید: هیچ چیز تا وقتی IP
+<span dir="ltr">`docs/2026-08-29-design.md`</span> بخش 6 آن را در یک سطر می‌گوید: هیچ چیز تا وقتی IP
 خروجی از ترافیک واقعی گرفته نشده باشد «کارکن» خوانده نمی‌شود.
 
 ## چه چیزی را وصل کنید
@@ -35,15 +37,17 @@ UNVERIFIED علامت خورده اجرا نشده است، و می‌گوید �
 | چیز | چگونه | چرا باید همین‌طور باشد |
 |---|---|---|
 | گوشی | با کابل USB به ماشینی که بستر آزمون را اجرا می‌کند | گام fail-closed شبکهٔ گوشی را از آن می‌گیرد. adb روی همان شبکه با آن می‌میرد و اجرا به‌صورت خرابیِ دستگاه خوانده می‌شود |
-| وای‌فای گوشی | یک بار و **با دست** به هات‌اسپات Pi پیوسته باشد | MEASURED: این گوشی راه پیوستن اسکریپت‌پذیر ندارد. `cmd wifi` گزینه‌های `set-wifi-enabled`، `list-networks`، `forget-network` و `add-suggestion` را دارد و `connect-network` را ندارد؛ `svc wifi` فقط enable و disable دارد |
-| Pi | از راه ssh در دسترس، با کلید، و sudo بدون رمز | هم بررسی DNS و هم بررسی فایروال آنجا اجرا می‌شوند. `ssh $PI_SSH 'sudo -n tcpdump --version'` باید کار کند |
+| وای‌فای گوشی | یک بار و **با دست** به هات‌اسپات Pi پیوسته باشد | MEASURED: این گوشی راه پیوستن اسکریپت‌پذیر ندارد. <span dir="ltr">`cmd wifi`</span> گزینه‌های <span dir="ltr">`set-wifi-enabled`</span>، <span dir="ltr">`list-networks`</span>، <span dir="ltr">`forget-network`</span> و <span dir="ltr">`add-suggestion`</span> را دارد و <span dir="ltr">`connect-network`</span> را ندارد؛ <span dir="ltr">`svc wifi`</span> فقط enable و disable دارد |
+| Pi | از راه ssh در دسترس، با کلید، و sudo بدون رمز | هم بررسی DNS و هم بررسی فایروال آنجا اجرا می‌شوند. <span dir="ltr">`ssh $PI_SSH 'sudo -n tcpdump --version'`</span> باید کار کند |
 | اشکال‌زدایی USB | روشن، و میزبان مجاز شمرده شده باشد | هر چیزی اینجا adb است |
 
-## اول چه چیزی را در `/local/` بگذارید
+## اول چه چیزی را در <span dir="ltr">`/local/`</span> بگذارید
 
-`/local/` در gitignore است (`.gitignore:25`، قاعدهٔ `/local/`). هیچ چیزی که بستر
-آزمون می‌خواند یا می‌نویسد نمی‌تواند به یک کامیت برسد، و `hw_new_run_dir` این را
-با `git check-ignore` اثبات می‌کند و به آن اعتماد نمی‌کند.
+<span dir="ltr">`/local/`</span> در gitignore است (<span dir="ltr">`.gitignore:25`</span>، قاعدهٔ <span dir="ltr">`/local/`</span>). هیچ چیزی که بستر
+آزمون می‌خواند یا می‌نویسد نمی‌تواند به یک کامیت برسد، و <span dir="ltr">`hw_new_run_dir`</span> این را
+با <span dir="ltr">`git check-ignore`</span> اثبات می‌کند و به آن اعتماد نمی‌کند.
+
+<div dir="ltr" align="left">
 
 ```
 local/configs/<label>.conf    یک لینک اشتراک، یک فایل، یک سطر
@@ -51,13 +55,15 @@ local/boxes.tsv               <label> TAB <addr>[,<addr>...]
 local/box.env                 از test/hardware/box.env.example کپی و پر کنید
 ```
 
-برچسب همان نام فایل بدون `.conf` است، و تنها نامی است که به یک لاگ، یک خلاصه یا
+</div>
+
+برچسب همان نام فایل بدون <span dir="ltr">`.conf`</span> است، و تنها نامی است که به یک لاگ، یک خلاصه یا
 یک نام دایرکتوری می‌رسد. ساده نگهش دارید: بستر آزمون برچسبی را که چیزی بیرون از
-`A-Za-z0-9._-` داشته باشد رد می‌کند، و برچسبی را هم که چیزی به شکل یک نشانی IPv4
+<span dir="ltr">`A-Za-z0-9._-`</span> داشته باشد رد می‌کند، و برچسبی را هم که چیزی به شکل یک نشانی IPv4
 داشته باشد رد می‌کند، چون برچسب‌ها داخل مسیرها نوشته می‌شوند و نشانی‌ها نباید
 بشوند.
 
-`boxes.tsv` اختیاری است و داشتنش می‌ارزد. مرجعِ **نام** سرور است، و تنها راه بیان
+<span dir="ltr">`boxes.tsv`</span> اختیاری است و داشتنش می‌ارزد. مرجعِ **نام** سرور است، و تنها راه بیان
 سروری است که نشانی **خروج** آن با نشانی داخل لینکش فرق دارد، که برای یک سرور
 چندخانه یا یک ورودی CDN عادی است. بدون یک سطر برای آن، تونلی که کار می‌کند و
 خروجش با ورودی‌اش فرق دارد FAIL نمره می‌گیرد. بستر آزمون میزبانِ تجزیه‌شده را با
@@ -67,25 +73,31 @@ local/box.env                 از test/hardware/box.env.example کپی و پر 
 ## کدام کانفیگ‌ها در دامنه‌اند
 
 موتور xray-core است، پس دامنه همان چیزی است که تجزیه‌کنندهٔ vendor‌شده از پسش
-برمی‌آید. بستر آزمون دقیقاً `supportedSchemes` در `internal/link/link.go` را
-آینه می‌کند، و `caspian-hw selftest` همان منبع Go را دوباره می‌خواند و اگر دو
+برمی‌آید. بستر آزمون دقیقاً <span dir="ltr">`supportedSchemes`</span> در <span dir="ltr">`internal/link/link.go`</span> را
+آینه می‌کند، و <span dir="ltr">`caspian-hw selftest`</span> همان منبع Go را دوباره می‌خواند و اگر دو
 فهرست از هم دور شده باشند شکست می‌خورد.
 
-**در دامنه:** `vless` (شامل Reality)، `vmess`، `trojan`، `ss`، `socks`،
-`hysteria2`، `hy2`.
+**در دامنه:** <span dir="ltr">`vless`</span> (شامل Reality)، <span dir="ltr">`vmess`</span>، <span dir="ltr">`trojan`</span>، <span dir="ltr">`ss`</span>، <span dir="ltr">`socks`</span>،
+<span dir="ltr">`hysteria2`</span>، <span dir="ltr">`hy2`</span>.
 
-**بیرون از دامنه، با نام رد می‌شوند:** `tuic`، `ssr`، `wireguard`، `anytls` و هر
-چیز دیگری. `docs/2026-08-29-design.md` بخش 4.4 ثبت می‌کند که تجزیه‌کنندهٔ
+**بیرون از دامنه، با نام رد می‌شوند:** <span dir="ltr">`tuic`</span>، <span dir="ltr">`ssr`</span>، <span dir="ltr">`wireguard`</span>، <span dir="ltr">`anytls`</span> و هر
+چیز دیگری. <span dir="ltr">`docs/2026-08-29-design.md`</span> بخش 4.4 ثبت می‌کند که تجزیه‌کنندهٔ
 vendor‌شده آنها را پوشش نمی‌دهد. بستر آزمون می‌گوید کدام طرح را رد کرد و لینک را
 نقل نمی‌کند.
 
 پیش از شروع نشست بررسی کنید:
 
+<div dir="ltr" align="left">
+
 ```
 test/hardware/caspian-hw configs
 ```
 
+</div>
+
 ## ترتیب اجرای کارها
+
+<div dir="ltr" align="left">
 
 ```
 test/hardware/caspian-hw selftest        # آفلاین. خودِ بستر آزمون را اثبات می‌کند
@@ -98,14 +110,20 @@ test/hardware/caspian-hw fail-closed --wifi-only <second>
 test/hardware/caspian-hw leakscan        # اثبات کنید هیچ چیز خصوصی به خروجی نرسیده است
 ```
 
+</div>
+
 یا همه را یک‌جا، که همان گام‌ها را به همان ترتیب اجرا می‌کند و یک بار برای پیوستن
 به هات‌اسپات مکث می‌کند:
+
+<div dir="ltr" align="left">
 
 ```
 test/hardware/caspian-hw --wifi-only all <first> <second>
 ```
 
-`baseline` یک دایرکتوری اجرا باز می‌کند و `local/hardware-runs/current` را به آن
+</div>
+
+<span dir="ltr">`baseline`</span> یک دایرکتوری اجرا باز می‌کند و <span dir="ltr">`local/hardware-runs/current`</span> را به آن
 اشاره می‌دهد. هر فرمان بعدی داخل همان اجرا می‌نشیند و در برابر همان خط مبنا نمره
 می‌گیرد. **اجرایی که خط مبنا ندارد اصلاً اجرا نیست**، و فرمان‌های بعدی بدون آن
 شروع نمی‌شوند.
@@ -129,6 +147,8 @@ test/hardware/caspian-hw --wifi-only all <first> <second>
 
 ## یک قبولی چه شکلی است
 
+<div dir="ltr" align="left">
+
 ```
 RESULT PASS for 'reality-de'.
   real traffic reached the internet through the tunnel and came back naming the box.
@@ -136,15 +156,19 @@ RESULT PASS for 'reality-de'.
   two independent sources agreed (Chrome over HTTPS, and nc over HTTP).
 ```
 
+</div>
+
 سرور با نام می‌آید، نه با نشانی. یک IP خروجیِ منطبق **همان** نشانی سرورِ کانفیگ
 است، پس چاپ‌کردنش نشانی یک سرور را داخل لاگ می‌گذاشت. وقتی IP خروجی با هیچ چیزِ
 پیکربندی‌شده‌ای مطابقت نکند، کامل چاپ می‌شود، چون آن وقت یک اندازه‌گیری است و نه
 رازِ یک کانفیگ.
 
-`RESULT SINGLE-SOURCE` قبولی نیست و با 1 خارج می‌شود. منبع دوم وجود دارد تا یک
+<span dir="ltr">`RESULT SINGLE-SOURCE`</span> قبولی نیست و با 1 خارج می‌شود. منبع دوم وجود دارد تا یک
 صفحهٔ نهان‌شده یا کهنه را بگیرد. بدون آن، آن بررسی انجام نشده است.
 
 ## یک نشت چه شکلی است
+
+<div dir="ltr" align="left">
 
 ```
 ############################################################
@@ -152,7 +176,11 @@ RESULT LEAK. The engine was stopped and traffic still left the box.
 ############################################################
 ```
 
-یا، از سوی `prove`:
+</div>
+
+یا، از سوی <span dir="ltr">`prove`</span>:
+
+<div dir="ltr" align="left">
 
 ```
 RESULT LEAK for 'reality-de'. This outranks every other result in this run.
@@ -160,18 +188,24 @@ RESULT LEAK for 'reality-de'. This outranks every other result in this run.
   tunnel at all.
 ```
 
-بایستید. هیچ چیز دیگری در آن اجرا اهمیت ندارد. `docs/2026-08-29-design.md` بخش
+</div>
+
+بایستید. هیچ چیز دیگری در آن اجرا اهمیت ندارد. <span dir="ltr">`docs/2026-08-29-design.md`</span> بخش
 7 می‌گوید چرا این حالت شکستِ پیش‌فرض است و نه یک حالت نادر: وقتی دستگاه TUN
 ناپدید می‌شود کرنل هر مسیری را که از آن می‌گذرد پس می‌گیرد و ترافیک به جدول اصلی
 و از آپ‌لینک بیرون برمی‌گردد. پس «موتور متوقف شد» یک نشت تولید می‌کند، مگر آنکه
 قاعده‌ای در فایروال که به وجود رابط وابسته نیست جلویش را بگیرد.
 
 قاعده‌ای که باید جلویش را بگیرد اولین قاعده در زنجیرهٔ forward است، نقل‌شده از
-`internal/netcfg/testdata/golden-ruleset-captured.nft`:
+<span dir="ltr">`internal/netcfg/testdata/golden-ruleset-captured.nft`</span>:
+
+<div dir="ltr" align="left">
 
 ```
 iifname "ap0" oifname "eth0" drop comment "fail-closed: client traffic never leaves by the uplink"
 ```
+
+</div>
 
 گام fail-closed پیش از نمره‌دادن به هر چیزی، از راه ssh بررسی می‌کند که جدول
 بارگذاری شده باشد و این قاعده در آن باشد. اگر Pi در دسترس نباشد، با همین واژه‌ها
@@ -180,7 +214,7 @@ iifname "ap0" oifname "eth0" drop comment "fail-closed: client traffic never lea
 
 ## وقتی یک نتیجه VOID است چه کنید
 
-VOID یعنی مقدار `ssid`، `airplane` یا `defaultnet` گوشی میان نمونهٔ پیش از ضبط و
+VOID یعنی مقدار <span dir="ltr">`ssid`</span>، <span dir="ltr">`airplane`</span> یا <span dir="ltr">`defaultnet`</span> گوشی میان نمونهٔ پیش از ضبط و
 نمونهٔ پس از ضبط فرق داشته است. آن خوانش دربارهٔ دستگاه هیچ چیزی نمی‌گوید.
 
 1. ثبتش نکنید. نه به‌عنوان نشت گزارشش کنید و نه به‌عنوان قبولی.
@@ -189,7 +223,7 @@ VOID یعنی مقدار `ssid`، `airplane` یا `defaultnet` گوشی میان
    - گوشی تصمیم گرفته است که هات‌اسپات اینترنت ندارد و مسیر پیش‌فرض را به دادهٔ
      همراه برده است.
    - صفحه قفل شده و وای‌فای به خواب رفته است.
-3. علت را رفع کنید، بعد همان گام را دوباره بگیرید. `caspian-hw prove <label>` را
+3. علت را رفع کنید، بعد همان گام را دوباره بگیرید. <span dir="ltr">`caspian-hw prove <label>`</span> را
    می‌شود هر تعداد بار داخل یک اجرا دوباره اجرا کرد.
 
 گام fail-closed جایی است که این مسئله بیشترین گزش را دارد، و نگهبان خودش را
@@ -197,17 +231,19 @@ VOID یعنی مقدار `ssid`، `airplane` یا `defaultnet` گوشی میان
 
 ## تلهٔ شبکهٔ همراه، که اگر نادیده گرفته شود یک نشتِ کاذب تولید می‌کند
 
-MEASURED روی گوشی متصل: این گوشی سیم‌کارت دارد (`getprop gsm.sim.state` مقدار
-`LOADED,ABSENT` را برگرداند، پس شکاف 1 پر است) و دادهٔ همراه روشن بود
-(`settings get global mobile_data` مقدار `1` را برگرداند).
+MEASURED روی گوشی متصل: این گوشی سیم‌کارت دارد (<span dir="ltr">`getprop gsm.sim.state`</span> مقدار
+<span dir="ltr">`LOADED,ABSENT`</span> را برگرداند، پس شکاف 1 پر است) و دادهٔ همراه روشن بود
+(<span dir="ltr">`settings get global mobile_data`</span> مقدار <span dir="ltr">`1`</span> را برگرداند).
 
 وقتی هات‌اسپات از رسیدن به اینترنت باز می‌ماند، که دقیقاً همان چیزی است که گام
 fail-closed ترتیبش را می‌دهد، اندروید آن شبکه را اعتبارسنجی‌نشده علامت می‌زند و
 مسیر پیش‌فرض را به دادهٔ همراه می‌برد. آنگاه گوشی از راه LTE به همه چیز می‌رسد، و
 یک بسترِ بی‌دقت آن را نشت می‌خواند در حالی که بسته‌ها اصلاً نزدیک Pi نشده‌اند.
 
-`--wifi-only` به‌جای امیدواربودن، این امکان را حذف می‌کند. MEASURED، از uid شل و
+<span dir="ltr">`--wifi-only`</span> به‌جای امیدواربودن، این امکان را حذف می‌کند. MEASURED، از uid شل و
 بدون root، و پس از آن بازگردانده شد:
+
+<div dir="ltr" align="left">
 
 ```
 adb shell cmd connectivity airplane-mode enable    # airplane روشن، وای‌فای پایین می‌آید
@@ -215,7 +251,9 @@ adb shell cmd wifi set-wifi-enabled enabled        # وای‌فای دوبار�
 adb shell cmd connectivity airplane-mode disable   # بازگردانده شد
 ```
 
-بدون `--wifi-only` این گام از نمره‌دادن سر باز می‌زند، مگر آنکه حالت پرواز از
+</div>
+
+بدون <span dir="ltr">`--wifi-only`</span> این گام از نمره‌دادن سر باز می‌زند، مگر آنکه حالت پرواز از
 پیش روشن باشد. آن سر باز زدن عمدی است: یک نتیجهٔ fail-closed که کنار یک مسیر
 همراهِ زنده گرفته شده باشد از یک نشتِ کاذب قابل تشخیص نیست.
 
@@ -223,13 +261,13 @@ adb shell cmd connectivity airplane-mode disable   # بازگردانده شد
 
 ### هر دو نقطهٔ پایانی به نشانی IP سنجاق شده‌اند. آنها را به نام برنگردانید
 
-پیش‌نویس اول از `icanhazip.com` و `ifconfig.me` استفاده می‌کرد. MEASURED در
+پیش‌نویس اول از <span dir="ltr">`icanhazip.com`</span> و <span dir="ltr">`ifconfig.me`</span> استفاده می‌کرد. MEASURED در
 2026-08-30، از روی Pi و سپس تأییدشده از روی گوشی: ریزالوری که این شبکهٔ محلی به
 دستگاه‌ها می‌دهد **سرویس‌های بازتاب IP را به چاهک (sinkhole) می‌فرستد**. از روی
-گوشی، `ping` برای `icanhazip.com`، `ifconfig.me`، `api.ipify.org` و
-`checkip.amazonaws.com` همگی `127.0.0.1` را پاسخ دادند؛ همان نام‌ها از روی Pi
-مقدار `::` را پاسخ دادند. فقط `ipinfo.io` جان سالم به در برد، روی
-`34.117.59.81`، از هر دو جایگاه.
+گوشی، <span dir="ltr">`ping`</span> برای <span dir="ltr">`icanhazip.com`</span>، <span dir="ltr">`ifconfig.me`</span>، <span dir="ltr">`api.ipify.org`</span> و
+<span dir="ltr">`checkip.amazonaws.com`</span> همگی <span dir="ltr">`127.0.0.1`</span> را پاسخ دادند؛ همان نام‌ها از روی Pi
+مقدار `::` را پاسخ دادند. فقط <span dir="ltr">`ipinfo.io`</span> جان سالم به در برد، روی
+<span dir="ltr">`34.117.59.81`</span>، از هر دو جایگاه.
 
 دو نقطهٔ پایانیِ مرده صرفاً آزاردهنده بودند. این یک **عامل مخدوش‌کننده است که یک
 قبولیِ کاذب تولید می‌کرد**:
@@ -253,8 +291,8 @@ adb shell cmd connectivity airplane-mode disable   # بازگردانده شد
 
 | | نشانی | چرا |
 |---|---|---|
-| منبع A | `https://1.1.1.1/cdn-cgi/trace` | TLS به یک IP برهنه؛ گواهی نشانی را در یک SAN حمل می‌کند. MEASURED از راه Chrome روی همین گوشی: `ip=`، `loc=GB`، `warp=off`، `tls=TLSv1.3`، روی http/2. رشتهٔ پرسمانِ خنثی‌کنندهٔ حافظهٔ نهان پذیرفته می‌شود |
-| منبع B | `http://34.117.59.81/ip`، با `Host: ipinfo.io` | پورت 80 ساده، که تنها کاری است که `nc` گوشی می‌تواند بکند. پورت 80 روی `1.1.1.1` مقدار 301 را پاسخ می‌دهد و اینجا بی‌فایده است |
+| منبع A | <span dir="ltr">`https://1.1.1.1/cdn-cgi/trace`</span> | TLS به یک IP برهنه؛ گواهی نشانی را در یک SAN حمل می‌کند. MEASURED از راه Chrome روی همین گوشی: <span dir="ltr">`ip=`</span>، <span dir="ltr">`loc=GB`</span>، <span dir="ltr">`warp=off`</span>، <span dir="ltr">`tls=TLSv1.3`</span>، روی http/2. رشتهٔ پرسمانِ خنثی‌کنندهٔ حافظهٔ نهان پذیرفته می‌شود |
+| منبع B | <span dir="ltr">`http://34.117.59.81/ip`</span>، با <span dir="ltr">`Host: ipinfo.io`</span> | پورت 80 ساده، که تنها کاری است که <span dir="ltr">`nc`</span> گوشی می‌تواند بکند. پورت 80 روی <span dir="ltr">`1.1.1.1`</span> مقدار 301 را پاسخ می‌دهد و اینجا بی‌فایده است |
 
 هر سه خوانشِ همان نشانی در 2026-08-30 هم‌نظر بودند: منبع A از راه Chrome، منبع B
 از راه nc، و یک کاوشِ مستقل از روی Pi.
@@ -266,38 +304,44 @@ TLS، HTTP، و نظرهای خودِ Chrome دربارهٔ هر سه.
 
 Chrome با intent رانده می‌شود، MEASURED و کارکن:
 
+<div dir="ltr" align="left">
+
 ```
 adb shell am start -a android.intent.action.VIEW -d '<url>' -p com.android.chrome
 ```
 
+</div>
+
 بیرون‌کشیدن متن از آن، بخش دشوار ماجراست، و بستر آزمون سه راه دارد که به همین
 ترتیب امتحان می‌شوند.
 
-**1. DevTools، `Runtime.evaluate` روی `document.body.innerText`.** MEASURED.
-سوکت انتزاعیِ `@chrome_devtools_remote` پیش از اجرای Chrome غایب و پس از آن حاضر
-است؛ سپس `adb forward tcp:19222 localabstract:chrome_devtools_remote` و
-`/json/version` مقدار `Chrome/148.0.7778.178` را پاسخ می‌دهد، و evaluate متن صفحه
-را برگرداند. به `python3` با یکی از دو بستهٔ `websockets` یا `websocket-client`
+**1. DevTools، <span dir="ltr">`Runtime.evaluate`</span> روی <span dir="ltr">`document.body.innerText`</span>.** MEASURED.
+سوکت انتزاعیِ <span dir="ltr">`@chrome_devtools_remote`</span> پیش از اجرای Chrome غایب و پس از آن حاضر
+است؛ سپس <span dir="ltr">`adb forward tcp:19222 localabstract:chrome_devtools_remote`</span> و
+<span dir="ltr">`/json/version`</span> مقدار <span dir="ltr">`Chrome/148.0.7778.178`</span> را پاسخ می‌دهد، و evaluate متن صفحه
+را برگرداند. به <span dir="ltr">`python3`</span> با یکی از دو بستهٔ <span dir="ltr">`websockets`</span> یا <span dir="ltr">`websocket-client`</span>
 نیاز دارد. این ترافیک روی کابل USB سوار می‌شود، پس نتیجهٔ یک واکشی را که روی
 وای‌فای رفته است می‌خواند و هرگز خودش آن واکشی نمی‌شود.
 
-**2. `uiautomator dump`.** MEASURED، و همان اندازه‌گیری دلیل وجود روش 1 است.
+**2. <span dir="ltr">`uiautomator dump`</span>.** MEASURED، و همان اندازه‌گیری دلیل وجود روش 1 است.
 **اولین** dump پس از راه‌اندازی Chrome فقط یک پنجرهٔ مودالِ تبلیغاتی داشت
-(`com.android.chrome:id/modal_dialog_view`، با متن
+(<span dir="ltr">`com.android.chrome:id/modal_dialog_view`</span>، با متن
 "Chrome notifications make things easier") و **نه** بدنهٔ صفحه را داشت و **نه**
-عنوان صفحه را. پس از زدن `negative_button` آن، dump بعدی متن بدنه، عنوان و متن
+عنوان صفحه را. پس از زدن <span dir="ltr">`negative_button`</span> آن، dump بعدی متن بدنه، عنوان و متن
 نوار نشانی را داشت. بستری که یک بار dump می‌گرفت و هیچ IP نمی‌یافت، دربارهٔ
 صفحه‌ای که مشکلی نداشت UNPROVEN می‌گفت. بستر آزمون آن مودال را تشخیص می‌دهد و
 می‌بنددش، و اگر مودالی بیابد که دکمه‌ای که می‌شناسد نداشته باشد، به‌جای خواندن آن
 دیالوگ می‌ایستد.
 
 **3. یک عکس صفحه.** با ماشین خوانده نمی‌شود، و نگه داشته می‌شود تا یک آدم بتواند
-سر یک بحث را ببندد. MEASURED: `adb exec-out screencap -p` روی این گوشی مقدار
+سر یک بحث را ببندد. MEASURED: <span dir="ltr">`adb exec-out screencap -p`</span> روی این گوشی مقدار
 1,549,897 بایت برگرداند، پس تلهٔ «screencap صفر بایت برمی‌گرداند» که جای دیگری
 روی شبیه‌سازها دیده شده اینجا مصداق ندارد.
 
 **بدنهٔ منبع A چگونه تجزیه می‌شود، و تلهٔ داخلش.** پاسخ سطرهای کلید-مقدار است، و
 بدنهٔ اندازه‌گرفته‌شده چنین آغاز می‌شود:
+
+<div dir="ltr" align="left">
 
 ```
 fl=985f9
@@ -305,11 +349,13 @@ h=1.1.1.1
 ip=<baseline>
 ```
 
-مقدار `h` نشانی خودِ نقطهٔ پایانی است و **اول** می‌آید. پس خواندنِ «اولین
-literal IP در بدنه» مقدار `1.1.1.1` را برمی‌گرداند، که یک **ثابت** است: هر کاری
+</div>
+
+مقدار <span dir="ltr">`h`</span> نشانی خودِ نقطهٔ پایانی است و **اول** می‌آید. پس خواندنِ «اولین
+literal IP در بدنه» مقدار <span dir="ltr">`1.1.1.1`</span> را برمی‌گرداند، که یک **ثابت** است: هر کاری
 تونل بکند همان می‌ماند. آنگاه هر کانفیگی همان نشانی خروجی را گزارش می‌کرد و آزمون
 switch دربارهٔ دستگاهی که درست جابه‌جا شده بود اعلام می‌کرد «IP خروجی تغییر نکرد».
-بستر آزمون فیلد `ip=` را با نامش می‌خواند، و `selftest/run.sh` هم خوانشِ درست و
+بستر آزمون فیلد <span dir="ltr">`ip=`</span> را با نامش می‌خواند، و <span dir="ltr">`selftest/run.sh`</span> هم خوانشِ درست و
 هم خوانشِ غلط را سنجاق می‌کند تا آن تله نتواند برگردد.
 
 **منبع A چه چیزی را نمی‌بیند.** اینکه آیا Chrome چیزی را از راه DNS-over-HTTPS
@@ -317,32 +363,36 @@ switch دربارهٔ دستگاهی که درست جابه‌جا شده بود
 حل‌کردن نمی‌ماند، پس این دیگر اصلاً بر خوانشِ IP خروجی اثر ندارد. برای بررسی DNS
 پایین هنوز اهمیت دارد.
 
-به Chrome نمی‌شود از راه دور یک تب تمیز داد. MEASURED: `PUT /json/new` پاسخ داد
-`Could not create new page`. پس خنثی‌کردن حافظهٔ نهان با یک پارامتر پرسمانِ یکتا
+به Chrome نمی‌شود از راه دور یک تب تمیز داد. MEASURED: <span dir="ltr">`PUT /json/new`</span> پاسخ داد
+<span dir="ltr">`Could not create new page`</span>. پس خنثی‌کردن حافظهٔ نهان با یک پارامتر پرسمانِ یکتا
 در هر درخواست انجام می‌شود، که به همکاری هیچ‌کس نیاز ندارد.
 
-### منبع B: `toybox nc`، روی HTTP ساده. Chrome نیست
+### منبع B: <span dir="ltr">`toybox nc`</span>، روی HTTP ساده. Chrome نیست
 
 کارش تنگ است: همان پاسخ را دوباره بگیرد، روی همان وای‌فای، با برنامه‌ای دیگر، تا
 یک صفحهٔ نهان‌شده یا کهنه در Chrome نتواند توافقی کاذب تولید کند.
 
-MEASURED: این گوشی نه `curl` دارد و نه `wget`. فرمان `which curl wget` هیچ‌کدام
-را نیافت و toybox 0.8.6-android هیچ‌کدام را فهرست نمی‌کند. `nc` یک ترجیح نیست،
+MEASURED: این گوشی نه <span dir="ltr">`curl`</span> دارد و نه <span dir="ltr">`wget`</span>. فرمان <span dir="ltr">`which curl wget`</span> هیچ‌کدام
+را نیافت و toybox 0.8.6-android هیچ‌کدام را فهرست نمی‌کند. <span dir="ltr">`nc`</span> یک ترجیح نیست،
 تمام چیزی است که در دسترس است. این شکل کار می‌کند:
+
+<div dir="ltr" align="left">
 
 ```
 adb shell '(printf "GET /ip HTTP/1.0\r\nHost: ipinfo.io\r\n\r\n"; sleep 5) | toybox nc -w 8 34.117.59.81 80'
 ```
 
-و مقدار `<baseline>` را برگرداند. دو چیز دربارهٔ آن باربر است.
+</div>
 
-شکل بدیهی، یعنی یک لولهٔ ساده بدون `sleep`، **هیچ چیز** برنگرداند و باز هم با 0
+و مقدار <span dir="ltr">`<baseline>`</span> را برگرداند. دو چیز دربارهٔ آن باربر است.
+
+شکل بدیهی، یعنی یک لولهٔ ساده بدون <span dir="ltr">`sleep`</span>، **هیچ چیز** برنگرداند و باز هم با 0
 خارج شد، چون nc روی ورودی استاندارد به EOF می‌رسد و پیش از رسیدن پاسخ می‌رود.
-سوییچ `-q` هم آن را درست نکرد. آن sleep همان تفاوتِ اندازه‌گرفته‌شده میان یک پاسخ
+سوییچ <span dir="ltr">`-q`</span> هم آن را درست نکرد. آن sleep همان تفاوتِ اندازه‌گرفته‌شده میان یک پاسخ
 و یک رشتهٔ خالیِ بی‌صداست.
 
-**سرآیند `Host` الزامی است.** MEASURED: همان درخواست بدون آن، پاسخ
-`HTTP/1.0 404 Not Found` با بدنهٔ `fault filter abort` می‌دهد. ipinfo یک میزبان
+**سرآیند <span dir="ltr">`Host`</span> الزامی است.** MEASURED: همان درخواست بدون آن، پاسخ
+<span dir="ltr">`HTTP/1.0 404 Not Found`</span> با بدنهٔ <span dir="ltr">`fault filter abort`</span> می‌دهد. ipinfo یک میزبان
 مجازیِ نام‌محور است، پس سنجاق‌کردن نشانی فقط نیمی از رسیدن به آن است.
 
 **منبع B چه چیزی را نمی‌بیند.** TLS را. toybox nc فقط TCP حرف می‌زند، پس منبع B
@@ -351,7 +401,7 @@ adb shell '(printf "GET /ip HTTP/1.0\r\nHost: ipinfo.io\r\n\r\n"; sleep 5) | toy
 
 ### منبع C: کاوش SOCKS خودِ Pi، وقتی Pi در دسترس باشد
 
-جدول پورت‌های `docs/LAYOUT.md` پورت 10808 را روی 127.0.0.1 می‌گذارد و با همین
+جدول پورت‌های <span dir="ltr">`docs/LAYOUT.md`</span> پورت 10808 را روی 127.0.0.1 می‌گذارد و با همین
 واژه‌ها می‌گوید برای چیست: "SOCKS, for diagnostics and the exit-IP proof". بستر
 آزمون از آن به‌عنوان خوانش سومِ مستقل از گوشی استفاده می‌کند.
 
@@ -371,8 +421,8 @@ adb shell '(printf "GET /ip HTTP/1.0\r\nHost: ipinfo.io\r\n\r\n"; sleep 5) | toy
 masquerade می‌شود و دقیقاً شبیه پرسش خودِ دستگاه به نظر می‌رسد.
 
 پس گوشی نامی را حل می‌کند که هرگز وجود نداشته است: یک برچسب تصادفی برای هر اجرا
-زیر `.invalid`، که RFC 2606 آن را رزرو کرده است. دو بار حل می‌شود، یک بار از راه
-Chrome و یک بار از راه `ping`، چون `ping` از ریزالور سیستم‌عامل استفاده می‌کند و
+زیر <span dir="ltr">`.invalid`</span>، که RFC 2606 آن را رزرو کرده است. دو بار حل می‌شود، یک بار از راه
+Chrome و یک بار از راه <span dir="ltr">`ping`</span>، چون <span dir="ltr">`ping`</span> از ریزالور سیستم‌عامل استفاده می‌کند و
 Secure DNS در Chrome نمی‌تواند منحرفش کند. سپس:
 
 - **آن برچسب به‌صورت متن ساده روی آپ‌لینک ظاهر شود** -> یک پرسش کلاینت فرار کرده
@@ -387,7 +437,7 @@ Secure DNS در Chrome نمی‌تواند منحرفش کند. سپس:
 مجموعه‌قواعدِ تولیدشده همین را با واژه‌های خودش بالای 853 قاعده‌اش می‌گوید. همچنین
 دیده نمی‌شود: هر رابطی جز آپ‌لینک، و هر چیزی بیرون از پنجرهٔ ضبط.
 
-**هیچ ضبط بسته‌ای از Pi بیرون نمی‌رود.** خروجی tcpdump روی خودِ دستگاه با `awk`
+**هیچ ضبط بسته‌ای از Pi بیرون نمی‌رود.** خروجی tcpdump روی خودِ دستگاه با <span dir="ltr">`awk`</span>
 مصرف می‌شود و دو عدد صحیح برمی‌گردد. یک ضبط روی آن آپ‌لینک، ضبطِ وب‌گردی خودِ
 نگه‌دارنده است، و هیچ نسخه‌ای از این بستر آزمون ارزش نگه‌داشتن یکی از آنها را
 ندارد.
@@ -397,14 +447,14 @@ Secure DNS در Chrome نمی‌تواند منحرفش کند. سپس:
 هیچ چیزی که بستر آزمون می‌نویسد یک کانفیگ، یک نشانی سرور، یک شناسهٔ کاربر یا یک
 کلید را حمل نمی‌کند. سه مکانیزم، نه یکی:
 
-1. **ثبت.** هر لینک اشتراک در `local/configs/`، بخش userinfo آن، میزبانش،
-   مقدارهای پرسمانش و هر نشانی در `boxes.tsv` پیش از اجرای هر گامی به‌عنوان
+1. **ثبت.** هر لینک اشتراک در <span dir="ltr">`local/configs/`</span>، بخش userinfo آن، میزبانش،
+   مقدارهای پرسمانش و هر نشانی در <span dir="ltr">`boxes.tsv`</span> پیش از اجرای هر گامی به‌عنوان
    قواعد پاک‌سازی ثبت می‌شوند، برای **هر** کانفیگ و نه فقط آنکه زیر آزمون است.
-2. **جایگزینی.** هر آرتیفکت از فیلتری نوشته می‌شود که آنها را با `<box:label>`،
-   `<credential:label>` و مانند اینها جایگزین می‌کند، و بستر آزمون فایل را پس از
+2. **جایگزینی.** هر آرتیفکت از فیلتری نوشته می‌شود که آنها را با <span dir="ltr">`<box:label>`</span>،
+   <span dir="ltr">`<credential:label>`</span> و مانند اینها جایگزین می‌کند، و بستر آزمون فایل را پس از
    آن دوباره می‌خواند. اگر رازی جان سالم به در برده باشد، فایل را حذف می‌کند و
    اجرا را متوقف می‌کند.
-3. **جاروب.** `caspian-hw leakscan` هر فایل و هر مسیر زیر یک اجرا را دوباره
+3. **جاروب.** <span dir="ltr">`caspian-hw leakscan`</span> هر فایل و هر مسیر زیر یک اجرا را دوباره
    می‌خواند و هر چیزی را که از راهی بیرون رفته که فیلتر را دور زده گزارش می‌کند.
 
 جدول پاک‌سازی و نشانی‌های خام و ضبط‌شدهٔ خروجی، در یک دایرکتوری موقتِ 0700 زندگی
@@ -414,63 +464,67 @@ Secure DNS در Chrome نمی‌تواند منحرفش کند. سپس:
 
 این سند قبلاً آن نشانی را در دو جا چاپ می‌کرد، که همان افشایی است که بند پایین
 علیهش استدلال می‌کند، انجام‌شده به دست همان سندی که استدلالش می‌کند. هر دو اکنون
-`<baseline>` هستند، همان جانگهدارنده‌ای که بستر آزمون از پیش در هر آرتیفکتی که
+<span dir="ltr">`<baseline>`</span> هستند، همان جانگهدارنده‌ای که بستر آزمون از پیش در هر آرتیفکتی که
 می‌نویسد جایگزین می‌کند. در 2026-08-31 حذف شد. در تاریخچهٔ git می‌ماند، پس این
 کار جلوی رسیدنش به checkoutهای تازه را می‌گیرد و نه انتشارش را پس. آن مقدار،
 اتصال مسکونی نگه‌دارنده است: نه یک کلید است و نه یک سرور، و خانهٔ یک آدم را
 شناسایی می‌کند، که گونهٔ دیگری از آسیب است و نه گونهٔ کوچک‌تری.
 
-تنها فایلی که خام نوشته می‌شود `baseline.ip` است، یعنی نشانی بدون تونلِ خودِ
+تنها فایلی که خام نوشته می‌شود <span dir="ltr">`baseline.ip`</span> است، یعنی نشانی بدون تونلِ خودِ
 گوشی. باید خام باشد، چون هر حکم بعدی مقایسه‌ای در برابر آن است. کانفیگ، نشانی
-سرور، شناسهٔ کاربر یا کلید نیست، و داخل درخت gitignore‌شدهٔ `/local/` زندگی
-می‌کند. از همان لحظه که گرفته می‌شود، در هر آرتیفکت دیگری به‌صورت `<baseline>`
+سرور، شناسهٔ کاربر یا کلید نیست، و داخل درخت gitignore‌شدهٔ <span dir="ltr">`/local/`</span> زندگی
+می‌کند. از همان لحظه که گرفته می‌شود، در هر آرتیفکت دیگری به‌صورت <span dir="ltr">`<baseline>`</span>
 ظاهر می‌شود.
 
 ## راندن دستگاه
 
-بستر آزمون هیچ خط فرمان `caspian`‌ای برای اعمال یک کانفیگ یا شروع و توقف تونل
+بستر آزمون هیچ خط فرمان <span dir="ltr">`caspian`</span>‌ای برای اعمال یک کانفیگ یا شروع و توقف تونل
 ندارد، چون چنین خط فرمانی وجود ندارد.
 
 این دو بار در 2026-08-30 بررسی شد و در فاصلهٔ آن دو تغییر کرد، پس خوانش دوم است
-که به حساب می‌آید. اوایل آن نشست `cmd/caspian/` خالی بود. بعدتر در همان نشست
-عاملی دیگر آن را پر کرده بود، و متن usage در `cmd/caspian/main.go` اکنون دقیقاً
-چهار چیز عرضه می‌کند: `serve --privileged`، `serve --panel`، `check` (فقط
-خواندنی) و `version`. و با این جمله تمام می‌شود:
+که به حساب می‌آید. اوایل آن نشست <span dir="ltr">`cmd/caspian/`</span> خالی بود. بعدتر در همان نشست
+عاملی دیگر آن را پر کرده بود، و متن usage در <span dir="ltr">`cmd/caspian/main.go`</span> اکنون دقیقاً
+چهار چیز عرضه می‌کند: <span dir="ltr">`serve --privileged`</span>، <span dir="ltr">`serve --panel`</span>، <span dir="ltr">`check`</span> (فقط
+خواندنی) و <span dir="ltr">`version`</span>. و با این جمله تمام می‌شود:
 "After the installer has run, everything a person does happens in the panel."
 
 پس هنوز هیچ زیرفرمانی نیست که یک کانفیگ را اعمال کند یا کلید را براند، و خودِ
 CLI با واژه‌های خودش می‌گوید که قرار هم نیست باشد. درزِ پایین با تصمیم محصول
-می‌خواند و دور زدن یک شکاف نیست. `cmd/caspian` زیر ویرایش فعال است، پس به‌جای
-اعتماد به این بند، `caspian help` را دوباره اجرا کنید.
+می‌خواند و دور زدن یک شکاف نیست. <span dir="ltr">`cmd/caspian`</span> زیر ویرایش فعال است، پس به‌جای
+اعتماد به این بند، <span dir="ltr">`caspian help`</span> را دوباره اجرا کنید.
 
-سمت ممتاز یک واژگان بستهٔ کنش در `internal/panel/priv.go` دارد: detect، status،
+سمت ممتاز یک واژگان بستهٔ کنش در <span dir="ltr">`internal/panel/priv.go`</span> دارد: detect، status،
 start، stop و engine-log. آن یک interface در Go روی یک سوکت یونیکس است که این
 نشست قالب روی سیمش را نخواند، و سطح خودِ پنل فرم‌های HTML با دروازهٔ نشست و توکن
 جداگانه برای هر فرم است.
 
 پس کنترل یک درز با دو حالت است:
 
-- **`manual`، که پیش‌فرض است.** بستر آزمون دقیقاً چاپ می‌کند که در پنل چه باید
+- **<span dir="ltr">`manual`</span>، که پیش‌فرض است.** بستر آزمون دقیقاً چاپ می‌کند که در پنل چه باید
   کرد و منتظر می‌ماند. این امروز کار می‌کند.
-- **`hook`.** مقدار `CASPIAN_HW_CONTROL=hook` را تنظیم کنید و
-  `local/control.local.sh` را بنویسید که چهار تابع را تعریف کند:
-  `ctl_hook_apply <label>`، `ctl_hook_start`، `ctl_hook_stop` و
-  `ctl_hook_status`. آن را وقتی بنویسید که خط فرمان وجود داشته باشد. همین است
-  که `--unattended` را ممکن می‌کند.
+- **<span dir="ltr">`hook`</span>.** مقدار <span dir="ltr">`CASPIAN_HW_CONTROL=hook`</span> را تنظیم کنید و
+  <span dir="ltr">`local/control.local.sh`</span> را بنویسید که چهار تابع را تعریف کند:
+  <span dir="ltr">`ctl_hook_apply <label>`</span>، <span dir="ltr">`ctl_hook_start`</span>، <span dir="ltr">`ctl_hook_stop`</span> و
+  <span dir="ltr">`ctl_hook_status`</span>. آن را وقتی بنویسید که خط فرمان وجود داشته باشد. همین است
+  که <span dir="ltr">`--unattended`</span> را ممکن می‌کند.
 
-استفاده از `--unattended` همراه با `manual` به‌جای آنکه بی‌صدا رد شود، رد
+استفاده از <span dir="ltr">`--unattended`</span> همراه با <span dir="ltr">`manual`</span> به‌جای آنکه بی‌صدا رد شود، رد
 می‌شود.
 
 ## خواندن یک اجرای ناقص
 
-هر گام هنگام شروع یک سطر در `steps.tsv` می‌نویسد و هنگام پایان آن را دوباره
-می‌نویسد. اجرایی که در میانه کشته شود آخرین سطرش را با علامت `RUNNING` جا
+هر گام هنگام شروع یک سطر در <span dir="ltr">`steps.tsv`</span> می‌نویسد و هنگام پایان آن را دوباره
+می‌نویسد. اجرایی که در میانه کشته شود آخرین سطرش را با علامت <span dir="ltr">`RUNNING`</span> جا
 می‌گذارد، و خلاصه می‌گوید:
+
+<div dir="ltr" align="left">
 
 ```
 steps: 3 of 6 finished, 1 still marked RUNNING
 RESULT PARTIAL. This run did not complete. Do not read it as a clean result.
 ```
+
+</div>
 
 یک لاگ کوتاه که بی‌صدا تمام شود همان حالت شکستی است که این کار برای جلوگیری از
 آن وجود دارد.
@@ -482,19 +536,21 @@ RESULT PARTIAL. This run did not complete. Do not read it as a clean result.
 
 | چه چیزی | فرمان | چرا مهم است |
 |---|---|---|
-| اینکه هر دو نقطهٔ پایانیِ بازتاب هنوز پاسخ می‌دهند | `adb shell '(printf "GET /ip HTTP/1.0\r\nHost: ipinfo.io\r\n\r\n"; sleep 5) \| toybox nc -w 8 34.117.59.81 80'` و باز کردن `https://1.1.1.1/cdn-cgi/trace` در Chrome | MEASURED و کارکن از روی گوشی در 2026-08-30. هر دو نشانی anycast هستند و ممکن است جابه‌جا شوند. یک نشانیِ جابه‌جاشده به‌صورت شکستِ شکل و UNPROVEN بروز می‌کند و نه به‌صورت پاسخ غلط، اما باز هم نشست را هدر می‌دهد |
-| اینکه چاهک هنوز سر جایش هست یا نه | `adb shell ping -c1 icanhazip.com` | اگر یک نشانی واقعی پاسخ دهد، ریزالور شبکهٔ محلی عوض شده است. نقطه‌های پایانیِ سنجاق‌شده در هر دو حال کار می‌کنند؛ این فقط به شما می‌گوید که آن عامل مخدوش‌کننده که سنجاق‌کردن را ناگزیر کرد هنوز هست یا نه |
-| اینکه Pi می‌تواند ضبط کند | `ssh $PI_SSH 'sudo -n tcpdump --version'` | بررسی DNS تنها گامی است که روی Pi به sudo نیاز دارد |
-| نام آپ‌لینک | `ssh $PI_SSH 'ip route show default'` | ضبط به یک رابط محدود می‌شود |
-| نشانی هات‌اسپات | `ssh $PI_SSH 'ip -br addr show ap0'` | مقدار `HOTSPOT_ADDR` شاهد مثبتِ گام fail-closed است |
-| اینکه پنل روی 8088 از راه هات‌اسپات پاسخ می‌دهد | گوشی را وصل کنید و `http://<HOTSPOT_ADDR>:8088/login` را باز کنید | اگر پاسخ ندهد، گام fail-closed به دلیلی که فایروال نیست VOID گزارش می‌دهد |
-| تنظیم Secure DNS در Chrome | روی گوشی، `chrome://settings/security` | اگر روشن باشد، بازوی Chrome در بررسی DNS هرگز به ریزالور Pi نمی‌رسد. بازوی `ping` هنوز می‌رسد |
-| مودالی که Chrome در آن روز نشان می‌دهد | `caspian-hw preflight` را اجرا کنید، بعد به گوشی نگاه کنید | MEASURED یک بار، در 2026-08-30، به‌صورت تبلیغ اعلان‌ها. یک ارتقای Chrome می‌تواند resource-id را عوض کند. بستر آزمون در برابر مودالِ ناشناخته به‌جای خواندنش با صدای بلند می‌ایستد |
+| اینکه هر دو نقطهٔ پایانیِ بازتاب هنوز پاسخ می‌دهند | <span dir="ltr">`adb shell '(printf "GET /ip HTTP/1.0\r\nHost: ipinfo.io\r\n\r\n"; sleep 5) \| toybox nc -w 8 34.117.59.81 80'`</span> و باز کردن <span dir="ltr">`https://1.1.1.1/cdn-cgi/trace`</span> در Chrome | MEASURED و کارکن از روی گوشی در 2026-08-30. هر دو نشانی anycast هستند و ممکن است جابه‌جا شوند. یک نشانیِ جابه‌جاشده به‌صورت شکستِ شکل و UNPROVEN بروز می‌کند و نه به‌صورت پاسخ غلط، اما باز هم نشست را هدر می‌دهد |
+| اینکه چاهک هنوز سر جایش هست یا نه | <span dir="ltr">`adb shell ping -c1 icanhazip.com`</span> | اگر یک نشانی واقعی پاسخ دهد، ریزالور شبکهٔ محلی عوض شده است. نقطه‌های پایانیِ سنجاق‌شده در هر دو حال کار می‌کنند؛ این فقط به شما می‌گوید که آن عامل مخدوش‌کننده که سنجاق‌کردن را ناگزیر کرد هنوز هست یا نه |
+| اینکه Pi می‌تواند ضبط کند | <span dir="ltr">`ssh $PI_SSH 'sudo -n tcpdump --version'`</span> | بررسی DNS تنها گامی است که روی Pi به sudo نیاز دارد |
+| نام آپ‌لینک | <span dir="ltr">`ssh $PI_SSH 'ip route show default'`</span> | ضبط به یک رابط محدود می‌شود |
+| نشانی هات‌اسپات | <span dir="ltr">`ssh $PI_SSH 'ip -br addr show ap0'`</span> | مقدار <span dir="ltr">`HOTSPOT_ADDR`</span> شاهد مثبتِ گام fail-closed است |
+| اینکه پنل روی 8088 از راه هات‌اسپات پاسخ می‌دهد | گوشی را وصل کنید و <span dir="ltr">`http://<HOTSPOT_ADDR>:8088/login`</span> را باز کنید | اگر پاسخ ندهد، گام fail-closed به دلیلی که فایروال نیست VOID گزارش می‌دهد |
+| تنظیم Secure DNS در Chrome | روی گوشی، <span dir="ltr">`chrome://settings/security`</span> | اگر روشن باشد، بازوی Chrome در بررسی DNS هرگز به ریزالور Pi نمی‌رسد. بازوی <span dir="ltr">`ping`</span> هنوز می‌رسد |
+| مودالی که Chrome در آن روز نشان می‌دهد | <span dir="ltr">`caspian-hw preflight`</span> را اجرا کنید، بعد به گوشی نگاه کنید | MEASURED یک بار، در 2026-08-30، به‌صورت تبلیغ اعلان‌ها. یک ارتقای Chrome می‌تواند resource-id را عوض کند. بستر آزمون در برابر مودالِ ناشناخته به‌جای خواندنش با صدای بلند می‌ایستد |
 | اینکه گوشی در تمام یک ضبط روی هات‌اسپات می‌ماند | بستر آزمون بررسی‌اش می‌کند، اما اجرای اول را خودتان تماشا کنید | یک رومینگ در میانهٔ ضبط VOID است، و دانستن اینکه چند وقت یک بار رخ می‌دهد طول پنجره‌ها را عوض می‌کند |
 
 ## یک نکته دربارهٔ این ماشین
 
-`cat` روی مک توسعه یک نام مستعار شل برای `highlight -O ansi --force` است، پس
+<span dir="ltr">`cat`</span> روی مک توسعه یک نام مستعار شل برای <span dir="ltr">`highlight -O ansi --force`</span> است، پس
 خواندن هر یک از این فایل‌ها روی یک prompt تعاملی کدهای ANSI را تزریق می‌کند. این
 روی بستر آزمون اثر ندارد: نام‌های مستعار در شل‌های غیرتعاملی بسط داده نمی‌شوند.
-اگر چیزی را با دست تجزیه می‌کنید از `sed -n '1,200p' <file>` استفاده کنید.
+اگر چیزی را با دست تجزیه می‌کنید از <span dir="ltr">`sed -n '1,200p' <file>`</span> استفاده کنید.
+
+</div>

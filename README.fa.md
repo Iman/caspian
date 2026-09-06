@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # Caspian-BYOC
 
 [English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [中文](README.zh.md)
@@ -62,11 +64,11 @@ Raspberry Pi 5 در تاریخ 2026-09-03 با تونلِ بالا و پیش ا�
 
 ### چه چیزی از دلِ یک سرورِ واقعی بایت حمل کرده است
 
-`test/tunnel` این را اضافه کرد. هر اسکیمی که تجزیه‌کننده می‌پذیرد، سرتاسر در
+<span dir="ltr">`test/tunnel`</span> این را اضافه کرد. هر اسکیمی که تجزیه‌کننده می‌پذیرد، سرتاسر در
 برابر یک نمونهٔ واقعیِ xray-core رانده می‌شود که از وابستگیِ خودِ همین ماژول
-ساخته شده و با همان بارگذارنده‌ای بار می‌شود که `internal/engine` استفاده
-می‌کند. سمتِ کلاینت همان مسیرِ محصول است، بدون تغییر: `link.Parse`، بعد
-`xcfg.Build`، بعد `engine.Engine.Start`. هیچ کانفیگی دستی نوشته نمی‌شود.
+ساخته شده و با همان بارگذارنده‌ای بار می‌شود که <span dir="ltr">`internal/engine`</span> استفاده
+می‌کند. سمتِ کلاینت همان مسیرِ محصول است، بدون تغییر: <span dir="ltr">`link.Parse`</span>، بعد
+<span dir="ltr">`xcfg.Build`</span>، بعد <span dir="ltr">`engine.Engine.Start`</span>. هیچ کانفیگی دستی نوشته نمی‌شود.
 
 | پروتکل | ترابری | امنیت | یک درخواست HTTP را حمل می‌کند |
 |---|---|---|---|
@@ -75,16 +77,16 @@ Raspberry Pi 5 در تاریخ 2026-09-03 با تونلِ بالا و پیش ا�
 | Shadowsocks، aes-256-gcm | tcp (raw) | none | بله |
 | SOCKS | tcp (raw) | none | بله |
 | Trojan | tcp (raw) | TLS، سنجاق‌شده با digest | بله |
-| Hysteria2، و نام مستعارِ `hy2` | QUIC | TLS، سنجاق‌شده با digest | بله |
+| Hysteria2، و نام مستعارِ <span dir="ltr">`hy2`</span> | QUIC | TLS، سنجاق‌شده با digest | بله |
 
 چهار کنترل جلوی قبول شدنِ درخواستی را که از تونل رد نشده می‌گیرند، و هر چهار تا
 اجرا می‌شوند نه اینکه در متن ادعا شوند. به کلاینت هرگز گفته نمی‌شود مبدأ کجاست؛
-به او یک نامِ `.invalid` و پورتِ یک طعمه داده می‌شود. آن نام قابل ترجمه نیست، و
+به او یک نامِ <span dir="ltr">`.invalid`</span> و پورتِ یک طعمه داده می‌شود. آن نام قابل ترجمه نیست، و
 اگر resolver ای روی دستگاه با این حال جوابش را بدهد، مجموعهٔ آزمون بلند
 می‌گویدش. مبدأ بررسی می‌کند درخواست به کجا خطاب شده بود، نه فقط اینکه رسیده است.
 طعمه ضربه‌های خودش را می‌شمارد، و یک درخواستِ تونل‌شده نباید حتی یکی به آن اضافه
-کند. `TestEveryCarriageProofCanFail` و
-`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` همان‌هایی هستند که این
+کند. <span dir="ltr">`TestEveryCarriageProofCanFail`</span> و
+<span dir="ltr">`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel`</span> همان‌هایی هستند که این
 کنترل‌ها را از قصد به شاهد تبدیل می‌کنند.
 
 هر سطر را تنگ بخوانید. هر سطر جز Hysteria2 روی TCP خام اجرا می‌شود. هیچ سطری
@@ -93,8 +95,8 @@ Shadowsocks فقط aes-256-gcm است، چون رمزهای 2022 مسیرِ کد
 یک درخواست TCP حمل می‌کند و UDP associate خاموش است. همه چیز روی loopback است،
 پس هیچ آدرسِ خروجی‌ای گرفته نمی‌شود و نمی‌تواند گرفته شود.
 
-`TestEveryProtocolTheParserAcceptsIsDrivenEndToEnd` فهرستِ اسکیم‌های
-پذیرفته‌شده را از کدِ `internal/link` می‌خواند، پس اسکیمِ هشتم بدون یک سطر در
+<span dir="ltr">`TestEveryProtocolTheParserAcceptsIsDrivenEndToEnd`</span> فهرستِ اسکیم‌های
+پذیرفته‌شده را از کدِ <span dir="ltr">`internal/link`</span> می‌خواند، پس اسکیمِ هشتم بدون یک سطر در
 اینجا اضافه نمی‌شود.
 
 
@@ -133,47 +135,57 @@ golden سنجاق شده است**، پس تغییر در نحوهٔ ساخته �
 
 ### مجموعهٔ آزمونِ Go، همین مخزن، اندازه‌گیری‌شده در 2026-08-31
 
-روی کامیتِ `5b0a8a7` با درختِ کاریِ تمیز، روی go1.27.0 darwin/arm64:
+روی کامیتِ <span dir="ltr">`5b0a8a7`</span> با درختِ کاریِ تمیز، روی go1.27.0 darwin/arm64:
+
+<div dir="ltr" align="left">
 
     go build ./...                 exit 0
     go test -count=1 -v ./...      exit 0
 
+
+</div>
+
 آن اجرا 1577 آزمون شاملِ زیرآزمون‌ها را اجرا کرد: 1572 قبول، 5 رد شده (skip)، 0
-مردود. پانزده بسته `ok` گزارش دادند. دو بسته هیچ فایلِ آزمونی ندارند:
-`bdd/harness` و `local/devpanel`. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
-نمی‌کنند: چرخهٔ عمرِ دستگاهِ TUN، که فقط لینوکسی است و به root و `/dev/net/tun`
+مردود. پانزده بسته <span dir="ltr">`ok`</span> گزارش دادند. دو بسته هیچ فایلِ آزمونی ندارند:
+<span dir="ltr">`bdd/harness`</span> و <span dir="ltr">`local/devpanel`</span>. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
+نمی‌کنند: چرخهٔ عمرِ دستگاهِ TUN، که فقط لینوکسی است و به root و <span dir="ltr">`/dev/net/tun`</span>
 نیاز دارد؛ سه بررسیِ پیکربندیِ dnsmasq که به نصب بودنِ dnsmasq نیاز دارند؛ و یک
 تخلیهٔ PNG از QR که باید خودتان روشنش کنید.
 
-اجرای ثبت‌شدهٔ قبلی، روی کامیتِ `dd15ad6` در 2026-08-30، تعداد 1323 آزمون شاملِ
-زیرآزمون‌ها را اجرا کرد: 1319 قبول، 4 رد شده، 0 مردود، در دوازده بسته که `ok`
+اجرای ثبت‌شدهٔ قبلی، روی کامیتِ <span dir="ltr">`dd15ad6`</span> در 2026-08-30، تعداد 1323 آزمون شاملِ
+زیرآزمون‌ها را اجرا کرد: 1319 قبول، 4 رد شده، 0 مردود، در دوازده بسته که <span dir="ltr">`ok`</span>
 گزارش دادند.
 
-**`-count=1` اختیاری نیست.** حافظهٔ نهانِ نتیجه را از کار می‌اندازد. بدون آن،
+**<span dir="ltr">`-count=1`</span> اختیاری نیست.** حافظهٔ نهانِ نتیجه را از کار می‌اندازد. بدون آن،
 اجرای دوم خط‌های PASS اجرای اول را چاپ می‌کند و با کد 0 بیرون می‌آید، در حالی که
 هیچ چیز اجرا نکرده است.
 
-دروازهٔ کامل [`scripts/gate.sh`](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) است: gofmt، `go vet`، کلِ مجموعهٔ آزمون همراه با
+دروازهٔ کامل [<span dir="ltr">`scripts/gate.sh`</span>](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) است: gofmt، <span dir="ltr">`go vet`</span>، کلِ مجموعهٔ آزمون همراه با
 race detector، و کفِ پوشش برای هر بسته. پیش از آنکه آن را به لوله‌ای بدهید
 سرآیندش را بخوانید. یک لولهٔ shell وضعیتِ آخرین فرمانش را برمی‌گرداند، و همین تله
 پیش‌تر در این پروژه یک سبزِ دروغین ساخته است.
 
-[`packaging/test-install.sh`](https://github.com/Iman/caspian/blob/main/packaging/test-install.sh) آن دو اسکریپتِ shell را روی هر دستگاهی که bash دارد
+[<span dir="ltr">`packaging/test-install.sh`</span>](https://github.com/Iman/caspian/blob/main/packaging/test-install.sh) آن دو اسکریپتِ shell را روی هر دستگاهی که bash دارد
 پوشش می‌دهد، از جمله دستگاهی که نصب روی آن ممکن نیست.
 
 ### مجموعهٔ آزمونِ رفتار
 
-[`docs/BEHAVIOUR.md`](https://github.com/Iman/caspian/blob/main/docs/BEHAVIOUR.md) تعداد 24 سناریو را فهرست می‌کند. اجرای 2026-08-31 هر 24 تا را
-اجرا کرد، و `TestEveryScenarioCanFail` تعداد 24 نقصِ تزریق‌شدهٔ متناظر را اجرا
+[<span dir="ltr">`docs/BEHAVIOUR.md`</span>](https://github.com/Iman/caspian/blob/main/docs/BEHAVIOUR.md) تعداد 24 سناریو را فهرست می‌کند. اجرای 2026-08-31 هر 24 تا را
+اجرا کرد، و <span dir="ltr">`TestEveryScenarioCanFail`</span> تعداد 24 نقصِ تزریق‌شدهٔ متناظر را اجرا
 کرد، پس هر سناریو دیده شده که برای همان چیزِ مشخصی که ادعای تشخیصش را دارد قرمز
-شود. `TestBehaviourDocumentListsEveryScenario` اگر سند و مجموعهٔ آزمون از هم
+شود. <span dir="ltr">`TestBehaviourDocumentListsEveryScenario`</span> اگر سند و مجموعهٔ آزمون از هم
 فاصله بگیرند، در هر دو جهت، شکست می‌خورد. برای اجرای یکی:
+
+<div dir="ltr" align="left">
 
     go test ./test/bdd/ -run 'TestBehaviour/the_firewall'
 
+
+</div>
+
 ### مجموعهٔ آزمونِ حمل
 
-`test/tunnel` هر کدام از هفت اسکیمی را که تجزیه‌کننده می‌پذیرد از دلِ یک سرورِ
+<span dir="ltr">`test/tunnel`</span> هر کدام از هفت اسکیمی را که تجزیه‌کننده می‌پذیرد از دلِ یک سرورِ
 واقعیِ xray-core روی loopback می‌راند. هر کدام باید یک درخواستِ HTTP را به مبدأیی
 برساند که فقط سمتِ دورِ تونل به آن دسترسی دارد. برای اینکه هر سطر چه چیزی را
 پوشش می‌دهد و چه چیزی را نه، بخشِ «چه چیزی از دلِ یک سرورِ واقعی بایت حمل کرده
@@ -183,14 +195,14 @@ race detector، و کفِ پوشش برای هر بسته. پیش از آنکه 
 
 ### روی سخت‌افزارِ هدف
 
-[`internal/netcfg/testdata/PROVENANCE.md`](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) همان ثبت است، و دربارهٔ تفاوتِ آنچه
+[<span dir="ltr">`internal/netcfg/testdata/PROVENANCE.md`</span>](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) همان ثبت است، و دربارهٔ تفاوتِ آنچه
 گرفته شده و آنچه نوشته شده دقیق است. نامِ فایل‌ها کلاس را حمل می‌کنند:
-`capture-pi5-` خروجیِ بایتیِ یک فرمانِ واقعی روی Pi است، `scenario-` دستگاهی است
-که هیچ‌کس اندازه‌اش نگرفته، و `golden-` خروجیِ خودِ این پروژه است.
+<span dir="ltr">`capture-pi5-`</span> خروجیِ بایتیِ یک فرمانِ واقعی روی Pi است، <span dir="ltr">`scenario-`</span> دستگاهی است
+که هیچ‌کس اندازه‌اش نگرفته، و <span dir="ltr">`golden-`</span> خروجیِ خودِ این پروژه است.
 
 آنچه روی Pi اندازه‌گیری و همان‌جا ثبت شد: هر پنج مجموعه‌قواعدِ تولیدشدهٔ متمایز
-که `nft -c -f` آن‌ها را تجزیه کرد، با sha256 هر فایل که روی خودِ Pi خوانده شد و
-نه روی دستگاهِ توسعه‌دهنده، و `nft list ruleset` که پیش و پس از آن خالی بود.
+که <span dir="ltr">`nft -c -f`</span> آن‌ها را تجزیه کرد، با sha256 هر فایل که روی خودِ Pi خوانده شد و
+نه روی دستگاهِ توسعه‌دهنده، و <span dir="ltr">`nft list ruleset`</span> که پیش و پس از آن خالی بود.
 توالیِ آزاد کردنِ رابط و وارونه‌هایش. درایوری که از ساختنِ رابطِ AP دوم سر باز
 می‌زند در حالی که تغییرِ نوعِ رابطِ موجود را می‌پذیرد. تحریک‌های کلیدِ قطع همراه
 با کنترل‌های منفی‌شان. و قفل‌شدنی که سیاستِ input باعثش شد و همان سیاست را
@@ -204,20 +216,20 @@ race detector، و کفِ پوشش برای هر بسته. پیش از آنکه 
 
 ### سرتاسر، با یک گوشیِ واقعی
 
-بستر [`test/hardware/caspian-hw`](https://github.com/Iman/caspian/blob/main/test/hardware/caspian-hw) است و دستورکارش [`docs/HARDWARE-TEST.md`](https://github.com/Iman/caspian/blob/main/docs/HARDWARE-TEST.md).
+بستر [<span dir="ltr">`test/hardware/caspian-hw`</span>](https://github.com/Iman/caspian/blob/main/test/hardware/caspian-hw) است و دستورکارش [<span dir="ltr">`docs/HARDWARE-TEST.md`</span>](https://github.com/Iman/caspian/blob/main/docs/HARDWARE-TEST.md).
 استانداردش استانداردِ خودِ این پروژه است. یک اتصال نتیجه نیست، و یک ترابری فقط
 وقتی اثبات شده که ترافیکِ واقعی از آن عبور کرده و آدرسِ خروجی گرفته و با سروری که
 کانفیگ نام می‌برد تطبیق داده شده باشد. آدرسِ خروجی‌ای که با مبنای بدونِ تونل یکی
 باشد یک نشت است و از هر چیزِ دیگری در آن اجرا بالاتر می‌ایستد. گوشی‌ای که وسطِ
 ضبط وضعیتِ شبکه‌اش را عوض کند، خواندن را VOID می‌کند، نه قبول و نه نشت.
 
-یک اجرای ثبت‌شده در 2026-08-30، با نامِ `run-20260830T144015Z`، روی IPv4 این نمره
+یک اجرای ثبت‌شده در 2026-08-30، با نامِ <span dir="ltr">`run-20260830T144015Z`</span>، روی IPv4 این نمره
 را داد:
 
-- دو کانفیگ اثبات شدند، هر کدام با `verdict PASS` و `sources agree` و یک آدرسِ
+- دو کانفیگ اثبات شدند، هر کدام با <span dir="ltr">`verdict PASS`</span> و <span dir="ltr">`sources agree`</span> و یک آدرسِ
   خروجی از هر دو منبعِ مستقل، تطبیق‌داده‌شده با دستگاهی که کانفیگ نامش را می‌برد.
 - اثرِ انگشتِ خروجی وقتی کانفیگ عوض شد تغییر کرد.
-- بررسیِ DNS در یک پنجرهٔ 30 ثانیه‌ای، یک برچسبِ `.invalid` تصادفیِ مخصوصِ همان
+- بررسیِ DNS در یک پنجرهٔ 30 ثانیه‌ای، یک برچسبِ <span dir="ltr">`.invalid`</span> تصادفیِ مخصوصِ همان
   اجرا را صفر بار به‌صورتِ آشکار روی رابطِ اینترنت پیدا کرد. چهار بستهٔ DNS آشکار
   در همان پنجره از آن رابط عبور کردند، و آن‌ها مالِ خودِ دستگاه‌اند، که طراحی
   بیرونِ تضمین می‌گذاردشان. دقیقاً به همین دلیل است که این بررسی دنبالِ برچسبی
@@ -231,12 +243,12 @@ race detector، و کفِ پوشش برای هر بسته. پیش از آنکه 
   دوباره گرفته شدند.
 
 دو نکته دربارهٔ آن ثبت. در تلاشِ سوم روی آخرین گام به قبولی رسید، و آن دو خواندنِ
-VOID در دفتر هستند و پاک نشده‌اند. و فراورده‌های آن اجرا زیرِ `local/` زندگی
+VOID در دفتر هستند و پاک نشده‌اند. و فراورده‌های آن اجرا زیرِ <span dir="ltr">`local/`</span> زندگی
 می‌کنند که در gitignore است، پس **در این مخزن نیستند**. اگر این را کلون کنید،
 نمی‌توانید آن اجرا را وارسی کنید. فقط می‌توانید خودتان بستر را دوباره اجرا کنید.
 
 دو منبع به کار می‌رود چون یکی می‌تواند از حافظهٔ نهان یا کهنه باشد، و هر دو به
-آدرس‌های IP سنجاق شده‌اند نه به نام‌ها. [`docs/HARDWARE-TEST.md`](https://github.com/Iman/caspian/blob/main/docs/HARDWARE-TEST.md) دلیلش را در
+آدرس‌های IP سنجاق شده‌اند نه به نام‌ها. [<span dir="ltr">`docs/HARDWARE-TEST.md`</span>](https://github.com/Iman/caspian/blob/main/docs/HARDWARE-TEST.md) دلیلش را در
 پاراگرافی توضیح می‌دهد که خودش آن را مهم‌ترین پاراگرافِ آن فایل می‌نامد. resolver
 آن شبکهٔ محلی سرویس‌های اعلامِ IP را به چاهک می‌فرستد. پس دستگاهی که هیچ چیز جز
 سرورِ DNS را عوض نکرده باشد و اصلاً هیچ ترافیکی را تونل نکرده باشد، دقیقاً همان
@@ -252,6 +264,8 @@ VOID در دفتر هستند و پاک نشده‌اند. و فراورده‌�
 
 <details>
 <summary>نمودارهای معماری و شبکه</summary>
+
+<div dir="ltr" align="left">
 
 ```mermaid
 flowchart LR
@@ -285,6 +299,10 @@ flowchart LR
     SVC --> ENG2
 ```
 
+</div>
+
+<div dir="ltr" align="left">
+
 ```mermaid
 flowchart TB
     LINK["internal/link<br/>لینک اشتراک‌گذاری می‌آید، یک outbound بیرون می‌رود.<br/>در هیچ فیلد صادرشده‌ای کلیدی حمل نمی‌کند"]
@@ -307,6 +325,10 @@ flowchart TB
     XCFG --> ENGINE
 ```
 
+</div>
+
+<div dir="ltr" align="left">
+
 ```mermaid
 flowchart TB
     subgraph panelowns["فقط caspian serve --panel می‌نویسد"]
@@ -325,6 +347,10 @@ flowchart TB
         RING["حلقهٔ گزارشِ نرم‌افزار اتصال"]
     end
 ```
+
+</div>
+
+<div dir="ltr" align="left">
 
 ```mermaid
 sequenceDiagram
@@ -360,6 +386,10 @@ sequenceDiagram
     PS-->>PA: nil، یا یک panel.Fault
 ```
 
+</div>
+
+<div dir="ltr" align="left">
+
 ```mermaid
 flowchart TB
     DEV["دستگاهِ وصل‌شده<br/>آدرس از dnsmasq"] --> IF["رابط هات‌اسپات"]
@@ -377,6 +407,10 @@ flowchart TB
     UP --> SRV["سرور شما"]
 ```
 
+</div>
+
+<div dir="ltr" align="left">
+
 ```mermaid
 flowchart TB
     GONE["تونل دیگر ترافیک حمل نمی‌کند"] --> Q{"آیا دستگاهِ تونل هنوز وجود دارد؟"}
@@ -388,6 +422,10 @@ flowchart TB
     LB --> SAFE["هیچ ترافیکی از دستگاه‌ها بیرون نمی‌رود"]
     NOWHERE --> SAFE
 ```
+
+</div>
+
+<div dir="ltr" align="left">
 
 ```mermaid
 flowchart TB
@@ -402,12 +440,20 @@ flowchart TB
     OB --> EXIT["زنجیرهٔ resolver، از سر دیگرِ تونل"]
 ```
 
+</div>
+
+<div dir="ltr" align="left">
+
 ```mermaid
 flowchart LR
     DOT["DNS روی TLS<br/>tcp 853"] --> REJ["رد با tcp reset،<br/>تا دستگاه به پورت 53 عقب بنشیند"]
     DOQ["DNS روی QUIC<br/>udp 853"] --> DRP["drop"]
     DOH["DNS روی HTTPS<br/>پورت 443"] --> CAR["مثل هر HTTPS دیگری از تونل حمل می‌شود.<br/>نشت نیست. برای هیچ چیزِ اینجا دیدنی نیست."]
 ```
+
+</div>
+
+<div dir="ltr" align="left">
 
 ```mermaid
 flowchart LR
@@ -418,6 +464,10 @@ flowchart LR
         B1["وای‌فای داخلی<br/>اینترنت را می‌آورد"] --- B2["آداپتور USB که پشتیبانی از AP را گزارش می‌کند<br/>هات‌اسپات می‌شود"]
     end
 ```
+
+</div>
+
+<div dir="ltr" align="left">
 
 ```mermaid
 stateDiagram-v2
@@ -441,8 +491,12 @@ stateDiagram-v2
     end note
 ```
 
+</div>
+
 </details>
 
 ## پروانه
 
 AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+</div>

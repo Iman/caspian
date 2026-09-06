@@ -1,7 +1,11 @@
+<div dir="rtl" align="right">
+
 [English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh)
 
 <details open>
 <summary>English</summary>
+
+<div dir="ltr" align="left">
 
 - [Getting started](https://github.com/Iman/caspian/wiki/Getting-Started)
 - [Installation](https://github.com/Iman/caspian/wiki/Installation)
@@ -17,10 +21,14 @@
 - [Translations](https://github.com/Iman/caspian/wiki/Translations)
 - [Page template](https://github.com/Iman/caspian/wiki/Page-Template)
 
+</div>
+
 </details>
 
 <details>
 <summary>فارسی</summary>
+
+<div dir="rtl" align="right">
 
 - [شروع کار](https://github.com/Iman/caspian/wiki/Getting-Started.fa)
 - [نصب](https://github.com/Iman/caspian/wiki/Installation.fa)
@@ -36,10 +44,14 @@
 - [ترجمه‌ها](https://github.com/Iman/caspian/wiki/Translations.fa)
 - [الگوی صفحه](https://github.com/Iman/caspian/wiki/Page-Template.fa)
 
+</div>
+
 </details>
 
 <details>
 <summary>Русский</summary>
+
+<div dir="ltr" align="left">
 
 - [Начало работы](https://github.com/Iman/caspian/wiki/Getting-Started.ru)
 - [Установка](https://github.com/Iman/caspian/wiki/Installation.ru)
@@ -55,10 +67,14 @@
 - [Переводы](https://github.com/Iman/caspian/wiki/Translations.ru)
 - [Шаблон страницы](https://github.com/Iman/caspian/wiki/Page-Template.ru)
 
+</div>
+
 </details>
 
 <details>
 <summary>中文</summary>
+
+<div dir="ltr" align="left">
 
 - [开始使用](https://github.com/Iman/caspian/wiki/Getting-Started.zh)
 - [安装](https://github.com/Iman/caspian/wiki/Installation.zh)
@@ -74,6 +90,10 @@
 - [翻译](https://github.com/Iman/caspian/wiki/Translations.zh)
 - [页面模板](https://github.com/Iman/caspian/wiki/Page-Template.zh)
 
+</div>
+
 </details>
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
