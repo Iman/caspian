@@ -1,43 +1,26 @@
 # Caspian wiki
 
-Choose a topic to find the existing Caspian guides and the sections planned for this wiki.
-The topic pages are outlines. Their checkboxes track documentation still to write.
+[English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh)
 
-## Install and use Caspian
+Choose a topic and language. The installation, configuration, architecture, and security guides now live here. Recorded experiments and screenshots remain on the README.
 
-- [Getting started](https://github.com/Iman/caspian/wiki/Getting-Started)
-- [Install on Linux and Raspberry Pi](https://github.com/Iman/caspian/wiki/Install-Linux)
-- [Install on macOS](https://github.com/Iman/caspian/wiki/Install-macOS)
-- [Install on Windows](https://github.com/Iman/caspian/wiki/Install-Windows)
-- [Panel and configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration)
+| Topic | English | فارسی | Русский | 中文 |
+|---|---|---|---|---|
+| Getting started | [English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) |
+| Installation | [English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) |
+| Install on Linux and Raspberry Pi | [English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) |
+| Install on macOS | [English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) |
+| Install on Windows | [English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) |
+| Protocols and transports | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) |
+| Architecture and data flow | [English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) |
+| Panel and configuration | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) |
+| Security and privacy | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) |
+| Development and testing | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) |
+| Troubleshooting and known defects | [English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) |
+| Releases and maintenance | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh) |
+| Licence and credits | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) |
+| Documentation map | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) |
+| Translations | [English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) |
+| Page template | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) |
 
-## Solve problems and understand the system
-
-- [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-- [Security and privacy](https://github.com/Iman/caspian/wiki/Security-and-Privacy)
-- [Architecture](https://github.com/Iman/caspian/wiki/Architecture)
-
-## Develop and maintain Caspian
-
-- [Development and testing](https://github.com/Iman/caspian/wiki/Development-and-Testing)
-- [Releases and maintenance](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance)
-- [Translations](https://github.com/Iman/caspian/wiki/Translations)
-
-## Languages
-
-The initial wiki outlines are in English. Translated wiki pages are pending.
-Existing README guides are available in [English](https://github.com/Iman/caspian/blob/main/README.md), [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md),
-[Русский](https://github.com/Iman/caspian/blob/main/README.ru.md), and [中文](https://github.com/Iman/caspian/blob/main/README.zh.md).
-
-## Expand the wiki
-
-1. Choose a topic page and complete one outlined section.
-2. Use the [page template](https://github.com/Iman/caspian/wiki/Page-Template) for a new topic.
-3. Link to existing instructions or update their source before you copy them.
-4. Separate verified behavior, known limits, and planned features.
-5. Record the release and platform for tested procedures.
-6. Remove completed checkboxes and update the page status after review.
-7. Add new pages to this index and check their links.
-
-The wiki lives at [github.com/Iman/caspian/wiki](https://github.com/Iman/caspian/wiki).
-The main repository keeps a copy of these pages in `docs/wiki/`. Updates require a separate commit to the wiki repository.
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)

@@ -1,24 +1,13 @@
 # Install on Linux and Raspberry Pi
 
-[Wiki home](https://github.com/Iman/caspian/wiki/Home)
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh)
 
-> Outline. Use the linked guides for current instructions. The checkboxes mark sections still to write.
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Install, update, and remove Caspian on Linux.
+[Read the installation steps](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi).
 
-## Existing guides
+The installation guide contains the prerequisites, download choices, and available recovery steps for this platform.
 
-- [Linux installation](https://github.com/Iman/caspian/blob/main/README.md#linux-and-raspberry-pi)
-- [Installer reference](https://github.com/Iman/caspian/blob/main/docs/INSTALL.md)
+[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-## Requirements
-
-- [ ] Add the supported systems, CPU architectures, and Wi-Fi requirements with evidence.
-
-## Installation and updates
-
-- [ ] Add the release installation procedure and expected output.
-
-## Removal and recovery
-
-- [ ] Explain which files remain and how to recover interrupted network changes.
+[English](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#linux-和-raspberry-pi)
