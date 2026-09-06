@@ -122,6 +122,19 @@ make_fake_machine() {
   printf '%s\n' '#!/bin/sh' 'exit ${CASPIAN_FAKE_GETENT_STATUS:-2}' >"${FAKE_ROOT}/bin/getent"
 
   chmod 0755 "${FAKE_ROOT}"/bin/*
+
+  # PATH prepending cannot hide real tools on Linux runners. Keep dependency
+  # discovery fixed to this fixture, even when the host already has them.
+  cat >"${FAKE_ROOT}/bash-env" <<'BASH'
+command() {
+  if [ "${1:-}" = "-v" ]; then
+    case "${2:-}" in
+      hostapd|dnsmasq|nft|iw) return 1 ;;
+    esac
+  fi
+  builtin command "$@"
+}
+BASH
 }
 
 drop_fake_machine() {
@@ -138,6 +151,7 @@ drop_fake_machine() {
 # that was working correctly.
 run_installer() {
   env PATH="${FAKE_ROOT}/bin:${PATH}" \
+    BASH_ENV="${FAKE_ROOT}/bash-env" \
     CASPIAN_SYSROOT="${FAKE_ROOT}/sysroot" \
     "$@" \
     bash "$INSTALL_SH" --dry-run --yes 2>&1
