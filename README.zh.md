@@ -111,6 +111,36 @@ v0.2.4 应用带有 ad-hoc 签名，但尚未使用 Apple Developer ID 签名，
 macOS 会把这个应用保存为例外，以后可以正常双击打开。Apple 的官方说明见
 [通过覆盖安全设置打开应用](https://support.apple.com/guide/mac-help/apple-cant-check-app-for-malicious-software-mchleab3a043/26/mac/26)。
 
+#### 如果 macOS 仍然阻止后台服务
+
+即使你已批准 `Caspian.app`，已安装的后台服务可执行文件
+`/usr/local/bin/caspian` 仍可能保留隔离属性。此时警告中的名称是小写的
+`caspian`，控制窗口可能显示 **Caspian needs attention**。
+
+**如果警告提到木马或报告检测到恶意软件，请勿执行下面的命令。**
+停止安装，并在 [GitHub 问题报告](https://github.com/Iman/caspian/issues)中提供
+完整警告文本、检测到的威胁名称、发布版本和下载地址。
+恶意软件检测结果需要调查；仅凭发布文件缺少签名，不能认定检测结果是误报。
+请参阅 [Apple 对 macOS 安全警告的说明](https://support.apple.com/en-ie/102445)。
+
+此备用方法仅适用于无法验证开发者或应用未经公证的警告，且你必须信任文件及其来源。
+从 Caspian 官方发布页下载发布文件，并将 DMG 的校验和与该版本公布的
+`SHA256SUMS` 进行比较。校验和一致只能确认文件与发布文件相同，不能证明文件安全。
+
+1. 打开 **Terminal（终端）**。
+2. 移除已安装的后台服务可执行文件的隔离属性：
+
+   ```bash
+   sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
+   ```
+
+3. 输入 Mac 登录密码。Terminal 不会显示你输入的密码。
+4. 在 Caspian 中选择 **Advanced options → Restart services**。
+
+此命令仅移除指定文件的隔离属性，不会扫描、签名或公证该可执行文件。
+如果 Terminal 显示 `No such xattr`，说明该属性已不存在。
+如果服务仍无法启动，请报告错误，不要关闭其他安全防护措施。
+
 #### 安装 Caspian 并保存密码
 
 1. 在 **Caspian Control** 中点击 **Install / Update**。
