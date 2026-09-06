@@ -92,4 +92,58 @@
 
 </details>
 
+<details>
+<summary>العربية</summary>
+
+<div dir="rtl" align="right">
+
+- [ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
+- [بدء الاستخدام](https://github.com/Iman/caspian/wiki/Getting-Started.ar)
+- [التثبيت](https://github.com/Iman/caspian/wiki/Installation.ar)
+- [التثبيت على Linux وRaspberry Pi](https://github.com/Iman/caspian/wiki/Install-Linux.ar)
+- [التثبيت على macOS](https://github.com/Iman/caspian/wiki/Install-macOS.ar)
+- [التثبيت على Windows](https://github.com/Iman/caspian/wiki/Install-Windows.ar)
+- [استكشاف الأخطاء](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+- [الترجمات](https://github.com/Iman/caspian/wiki/Translations.ar)
+
+</div>
+
+</details>
+
+<details>
+<summary>اردو</summary>
+
+<div dir="rtl" align="right">
+
+- [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
+- [شروع کریں](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
+- [تنصیب](https://github.com/Iman/caspian/wiki/Installation.ur)
+- [Linux اور Raspberry Pi پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
+- [macOS پر تنصیب](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
+- [Windows پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
+- [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+- [تراجم](https://github.com/Iman/caspian/wiki/Translations.ur)
+
+</div>
+
+</details>
+
+<details>
+<summary>Türkçe</summary>
+
+<div dir="ltr" align="left">
+
+- [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
+- [Başlangıç](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
+- [Kurulum](https://github.com/Iman/caspian/wiki/Installation.tr)
+- [Linux ve Raspberry Pi kurulumu](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+- [macOS kurulumu](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+- [Windows kurulumu](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+- [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+- [Çeviriler](https://github.com/Iman/caspian/wiki/Translations.tr)
+
+</div>
+
+</details>
+
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)

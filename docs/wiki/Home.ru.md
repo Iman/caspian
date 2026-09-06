@@ -1,6 +1,6 @@
 # Вики Caspian
 
-[English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh)
+[English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
 Выберите тему и язык. Здесь находятся руководства по установке, настройке, архитектуре и безопасности. Записанные эксперименты и снимки экрана остаются в README.
 
@@ -22,5 +22,9 @@
 | Карта документации | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) |
 | Переводы | [English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) |
 | Шаблон страницы | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) |
+
+На арабском, урду и турецком доступны краткие руководства по началу работы, установке и устранению неполадок. Их главные страницы ссылаются на подробные технические руководства на английском. Независимой проверки носителями языка пока не было. При изменении исходного текста обновляйте доступные переводы и отмечайте непереведённые разделы.
+
+[العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)

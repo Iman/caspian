@@ -1,6 +1,6 @@
 # Вики Caspian
 
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh)
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr)
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 

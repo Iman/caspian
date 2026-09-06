@@ -143,12 +143,10 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 // README.ru.fa.md, which is nonsense and would have to be silenced by deleting
 // the guard.
 //
-// Persian is the only language held to FULL parity with English. Russian and
-// Chinese are a README only. That asymmetry is deliberate: the Persian edition
-// was reviewed by somebody who reads Persian, and an unreviewed translation of
-// a security document does not become trustworthy by being long. Two honest
-// pages beat twelve that nobody can check.
-var translationSuffixes = []string{".fa.md", ".ru.md", ".zh.md"}
+// Persian is held to identifier and URL parity with English. Other translations
+// have different coverage, recorded in docs/wiki/Translations.md. The suffix
+// identifies a translation; it does not establish completeness or review.
+var translationSuffixes = []string{".fa.md", ".ru.md", ".zh.md", ".ar.md", ".ur.md", ".tr.md"}
 
 func isTranslationEdition(path string) bool {
 	for _, suffix := range translationSuffixes {
