@@ -342,7 +342,7 @@ item running; choose **Open Caspian Control** there to reopen it.
 
 #### Automated: one line
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 The installer works out what machine it is on, downloads the matching binary
 from the latest release, and refuses if the download does not match the
@@ -367,11 +367,34 @@ for software of this kind, and the script is written to be read.
 
     curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh | less
 
-To pin a version rather than take the latest:
+The command above displays the script; it does not install or update Caspian.
+Run the installation command again to upgrade. The installer selects the latest
+published release and keeps your saved settings. The portal is included in the
+binary. Changes on `main` appear after a release includes them.
 
-    CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+To install a specific release, replace the example tag below:
 
-#### Verifying a download yourself
+    sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+
+#On macOS, closing the control window keeps Caspian in the menu bar. Choosing
+**Quit Caspian and stop services** stops the hotspot and background services.
+If macOS authorization is cancelled or stopping fails, the app stays open.
+On the next launch, Caspian starts stopped services once, with administrator authorization.
+
+### Forgotten panel password
+
+On the Caspian computer, run this command in a terminal or SSH session:
+
+```bash
+sudo /usr/local/bin/caspian reset-password
+```
+
+The command prints a new panel password and restarts the panel. Your proxy and
+Wi-Fi settings stay saved. Use the new password on the login page. On Windows,
+run `& "$env:ProgramFiles\Caspian\caspian.exe" reset-password` in an administrator
+PowerShell window. Reinstalling Caspian does not reset your password.
+
+### Verifying a download yourself
 
 Every release carries a `SHA256SUMS` file. The installer checks it for you, and
 you can check it independently:

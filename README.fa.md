@@ -291,7 +291,7 @@ macOS این برنامه را به‌عنوان یک استثنا نگه می�
 
 ### خودکار: یک خط
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 نصب‌کننده تشخیص می‌دهد روی چه دستگاهی است، فایل اجراییِ متناظر را از آخرین
 انتشار می‌گیرد، و اگر آنچه دانلود شد با چک‌سامِ منتشرشده نخواند، کار را رد
@@ -318,7 +318,7 @@ ARMv7 را روی دستگاه‌های ARMv6 فرستاد و آن‌ها در �
 
 برای سنجاق کردن یک نسخهٔ مشخص به‌جای گرفتن آخرین نسخه:
 
-    CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 ### وارسی کردن دانلود، خودتان
 

@@ -7,7 +7,7 @@
 
 یک فرمان، و بعد پنل.
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 مالک مخزن `Iman` است، هم در `docs/LAYOUT.md` و هم در `install.sh` که مقدار
 پیش‌فرض `CASPIAN_ORG` همان است. آرتیفکت‌ها و فایل `SHA256SUMS` را

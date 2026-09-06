@@ -293,6 +293,12 @@ else
     problem "smoke subset"
 fi
 
+# --- installer and desktop lifecycle ----------------------------------------
+
+step "installer and macOS service lifecycle"
+if bash "$root/packaging/test-install.sh"; then :; else problem "installer tests"; fi
+if bash "$root/packaging/darwin/test-service-action.sh"; then :; else problem "macOS service lifecycle"; fi
+
 # --- verdict ----------------------------------------------------------------
 
 printf '\n'

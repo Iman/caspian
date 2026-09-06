@@ -155,7 +155,16 @@
     <button type="submit" class="go">ورود</button>
   </form>
 
-  <p class="hint">این همان رمزی است که هنگام نصب کاسپین چاپ شد، یا رمزی که در همین صفحه انتخاب کردید. اگر گمش کرده‌اید، در مک برنامه Caspian را باز کنید و Reset Password را بزنید؛ در دستگاه‌های دیگر از ابزار بازیابی رمز نصب‌کننده روی خود دستگاه استفاده کنید.</p>
+  <p class="hint">رمز پنل را که هنگام نصب چاپ شد یا در راه‌اندازی انتخاب کردید وارد کنید.</p>
+  <details class="password-recovery">
+    <summary>رمزتان را فراموش کرده‌اید؟</summary>
+    <p>روی دستگاه کاسپین ترمینال باز کنید یا با SSH به آن وصل شوید. در ویندوز PowerShell را با دسترسی مدیر باز کنید. این دستور را اجرا کنید:</p>
+    <p>لینوکس / مک</p>
+    <pre dir="ltr"><code>sudo /usr/local/bin/caspian reset-password</code></pre>
+    <p>ویندوز (PowerShell)</p>
+    <pre dir="ltr"><code>&amp; &#34;$env:ProgramFiles\Caspian\caspian.exe&#34; reset-password</code></pre>
+    <p>این دستور رمز تازهٔ پنل را چاپ و پنل را دوباره اجرا می‌کند. تنظیمات وای‌فای و پراکسی حفظ می‌شوند. با رمز تازه وارد شوید.</p>
+  </details>
 </section>
 
   </main>

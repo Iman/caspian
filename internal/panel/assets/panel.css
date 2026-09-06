@@ -1656,3 +1656,11 @@ button:disabled, input[type="submit"]:disabled {
   .hero-cut,
   .cut-banner { background: var(--accent-warn); }
 }
+
+/* Keep recovery commands on one copyable line without widening phone screens. */
+.password-recovery summary { cursor: pointer; }
+.password-recovery pre {
+  max-inline-size: 100%;
+  overflow-x: auto;
+  white-space: pre;
+}

@@ -151,7 +151,7 @@ macOS сохранит приложение как исключение, и в �
 
 #### Автоматически: одна строка
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 Установщик определяет, на какой машине он находится, скачивает подходящий
 бинарник из последнего релиза и отказывается работать, если загруженное не
@@ -178,7 +178,7 @@ macOS сохранит приложение как исключение, и в �
 
 Чтобы закрепить версию, а не брать последнюю:
 
-    CASPIAN_VERSION=v1.0.0 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+    sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
 #### Как проверить загрузку самостоятельно
 

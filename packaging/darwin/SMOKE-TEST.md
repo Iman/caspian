@@ -102,3 +102,32 @@ Wi-Fi `en0`, Internet Sharing AP `ap1` on `bridge100`.
   detection condition without changing the live installation.
 - The actual automatic authorization prompt still needs a user-observed run of
   this DMG, followed by a second launch confirming that no prompt is repeated.
+
+## Recovery and service lifecycle
+
+Automated checks cover the following changes:
+
+- `caspian reset-password` generates a new panel password and preserves the
+  proxy and hotspot settings. Restarting the panel clears existing sessions.
+- The login page explains recovery in Persian and English.
+- Service restart waits for the previous process to exit. A failed stop blocks
+  restart. A temporary launchd bootstrap failure is retried.
+- Changed hotspot credentials require an observed stop before the new network
+  starts. An existing bridge alone cannot confirm the new credentials.
+
+Run `bash packaging/darwin/test-service-action.sh` for the service command tests.
+The repository build gate also runs these tests.
+
+These checks still need an interactive Mac and iPhone:
+
+1. Join the hotspot from the iPhone with the password shown in the panel.
+2. Change the hotspot password. Forget the old network on the iPhone, then join
+   with the new password. Make sure that the old password fails.
+3. Choose **Quit Caspian and stop services**. Approve the macOS authorization
+   prompt. Make sure that the app, services, and hotspot stop.
+4. Open Caspian again. Make sure that it starts stopped services once. A manual
+   **Stop services** action must stay stopped during later status checks.
+5. Cancel authorization during Quit. Make sure that the app stays available.
+
+The hotspot tests do not prove WPA authentication on hardware. The existing
+question about macOS preferences versus Keychain storage remains open.

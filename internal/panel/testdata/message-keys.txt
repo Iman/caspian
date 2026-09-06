@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 370 keys
+## fa: 375 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -253,6 +253,11 @@
   login.heading
   login.hint
   login.password
+  login.recovery
+  login.recovery.help
+  login.recovery.result
+  login.recovery.unix
+  login.recovery.windows
   login.submit
   login.title
   login.toomany.advice
@@ -377,7 +382,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 370 keys
+## en: 375 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -625,6 +630,11 @@
   login.heading
   login.hint
   login.password
+  login.recovery
+  login.recovery.help
+  login.recovery.result
+  login.recovery.unix
+  login.recovery.windows
   login.submit
   login.title
   login.toomany.advice

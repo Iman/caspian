@@ -105,6 +105,7 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var recoveryToggleRow: NSStackView!
     private var busy = false
     private var checking = false
+    private var quitting = false
     private var installationState = InstallationState.checking
     private var automaticSetupAttempted = false
     private var timer: Timer?
@@ -613,7 +614,7 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
             if tag > 1 { serviceMenuItems.append(item) } else { panelMenuItems.append(item) }
         }
         menu.addItem(.separator())
-        let quit = NSMenuItem(title: "Quit Control; services stay on / خروج؛ سرویس‌ها روشن می‌مانند", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
+        let quit = NSMenuItem(title: "Quit Caspian and stop services / خروج و توقف سرویس‌ها", action: #selector(NSApplication.terminate(_:)), keyEquivalent: "q")
         quit.target = NSApp; menu.addItem(quit)
         statusItem.menu = menu
     }
@@ -788,11 +789,11 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
             recoveryToggleRow.isHidden = false
             serviceMenuItems.forEach { $0.isEnabled = true }
             panelMenuItems.forEach { $0.isEnabled = true }
-            checkPanel()
+            checkPanel(offerAutomaticStart: offerAutomaticSetup)
         }
     }
 
-    private func checkPanel() {
+    private func checkPanel(offerAutomaticStart: Bool = false) {
         var request = URLRequest(url: panelURL, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
         request.httpMethod = "HEAD"
         URLSession.shared.dataTask(with: request) { [weak self] _, response, error in
@@ -802,6 +803,13 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
                 guard !self.busy else { return }
                 let code = (response as? HTTPURLResponse)?.statusCode ?? 0
                 let ready = error == nil && (200..<400).contains(code)
+                // Reopening after Quit restores the services once. Periodic
+                // checks must not undo a deliberate Stop services action.
+                if !ready && offerAutomaticStart && !self.automaticSetupAttempted && !self.screenshotMode {
+                    self.automaticSetupAttempted = true
+                    self.perform(4)
+                    return
+                }
                 self.openPanelButton.isEnabled = ready
                 self.panelMenuItems.first(where: { $0.tag == 0 })?.isEnabled = ready
                 self.setState(
@@ -827,6 +835,20 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
                 }
             }
         }.resume()
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if CommandLine.arguments.contains("--screenshot") { return .terminateNow }
+        if busy { showWindow(); return .terminateCancel }
+        let installed = FileManager.default.fileExists(atPath:
+            "/Library/LaunchDaemons/org.caspianbyoc.caspian.plist")
+            || FileManager.default.fileExists(atPath:
+                "/Library/LaunchDaemons/org.caspianbyoc.caspian-panel.plist")
+        if !installed { return .terminateNow }
+        quitting = true
+        showWindow()
+        perform(5)
+        return .terminateLater
     }
 
     private func perform(_ action: Int) {
@@ -895,6 +917,12 @@ final class Control: NSObject, NSApplicationDelegate, NSWindowDelegate {
                 self.progress.isHidden = true
                 self.buttons.forEach { $0.isEnabled = true }
                 self.serviceMenuItems.forEach { $0.isEnabled = true }
+                if self.quitting {
+                    self.quitting = false
+                    if success { self.timer?.invalidate() }
+                    NSApp.reply(toApplicationShouldTerminate: success)
+                    if success { return }
+                }
                 self.output.string = result
                 self.outputScroll.isHidden = success
                 self.setState(

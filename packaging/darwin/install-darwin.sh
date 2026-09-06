@@ -73,6 +73,9 @@ chown "$ACCOUNT:$ACCOUNT" "$LOGS/caspian-panel.log"
 chmod 0640 "$LOGS/caspian.log" "$LOGS/caspian-panel.log"
 install -d -m 0700 -o "$ACCOUNT" -g "$ACCOUNT" "$STATE"
 install -d -m 0750 -o root -g "$ACCOUNT" "$RUN"
+source "$HERE/service-action.sh"
+stop_job org.caspianbyoc.caspian-panel
+stop_job org.caspianbyoc.caspian
 install -m 0755 -o root -g wheel "$BIN_SRC" "$BIN_DST"
 
 fresh=0
@@ -95,18 +98,9 @@ fi
 
 for label in org.caspianbyoc.caspian org.caspianbyoc.caspian-panel; do
   plist="/Library/LaunchDaemons/$label.plist"
-  launchctl bootout "system/$label" >/dev/null 2>&1 || true
   install -m 0644 -o root -g wheel "$HERE/$label.plist" "$plist"
-  loaded=0
-  for attempt in 1 2 3 4 5; do
-    if launchctl bootstrap system "$plist"; then
-      loaded=1
-      break
-    fi
-    [ "$attempt" -eq 5 ] || sleep 1
-  done
-  [ "$loaded" -eq 1 ] || refuse "loading $label with launchd failed after 5 attempts"
-  launchctl enable "system/$label"
+  start_job "$label" "$plist" || refuse "loading $label with launchd failed"
+
 done
 
 printf 'installed. Panel: http://127.0.0.1:8088 (the hotspot address once it is up)\n'
