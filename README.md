@@ -17,7 +17,7 @@
 >
 > **[Read this in Persian](README.fa.md)**
 
-Caspian-BYOC turns a Windows 11 PC, Mac running macOS, Raspberry Pi, or Linux
+Caspian-BYOC turns a Windows PC, Mac running macOS, Raspberry Pi, or Linux
 computer into a bring-your-own-config WiFi gateway. Paste a V2Ray or
 Xray-compatible proxy configuration into the web panel and press one switch.
 Caspian accepts VLESS,
@@ -89,14 +89,18 @@ Choose the operating system first. Windows and macOS have graphical installers;
 Linux and Raspberry Pi can be installed automatically, checked first, or built
 from source.
 
-### Windows 11
+### Windows 10 and 11
+
+Windows 10 support is experimental and not yet tested. On x64, the current code
+requires version 2004 (build 19041) or later. Windows 10 ARM64 compatibility
+is not yet verified.
 
 The setup program installs everything that Caspian needs. You do not need
 PowerShell, Go, or the .NET SDK.
 
 #### What you need
 
-- A Windows 11 computer.
+- A Windows 11 computer, or Windows 10 version 2004 or later on x64 (experimental).
 - An administrator account on that computer.
 - A Wi-Fi adapter that supports Windows Mobile Hotspot.
 - An internet connection.
@@ -1088,6 +1092,9 @@ involved.
 Current releases include Windows 11 on x64 and ARM64, macOS 13 or later on Intel
 and Apple Silicon, and Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
 are not gateway hosts; phones and tablets join the Caspian Wi-Fi as clients.
+
+Windows 10 version 2004 (build 19041) or later on x64 is an experimental target
+for the Windows release. It still needs installation and hotspot testing.
 
 `internal/netcfg/testdata/PROVENANCE.md` records the machine this has been
 developed and measured against: a Raspberry Pi 5 Model B Rev 1.0, Debian 13

@@ -18,7 +18,7 @@
 >
 > **[Read this in English](README.md)**
 
-Caspian-BYOC 把运行 Windows 11 或 macOS 的电脑、Raspberry Pi 或 Linux 电脑变成一个
+Caspian-BYOC 把运行 Windows 或 macOS 的电脑、Raspberry Pi 或 Linux 电脑变成一个
 「自带配置」的 WiFi 网关。把 V2Ray 或 Xray 兼容的代理配置粘贴到网页面板，然后按一下
 开关。Caspian 支持 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 分享链接，
 也支持 Clash 和 Clash.Meta YAML、原始 Xray JSON、链接列表以及 base64 订阅数据。
@@ -76,6 +76,16 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
 请先选择您的操作系统。macOS 使用图形化 DMG；Linux 和 Raspberry Pi 可以自动安装，
 也可以先检查或自己构建。
+
+### Windows 10 和 11
+
+Windows 10 支持仍处于实验阶段，尚未测试。当前代码在 x64 上要求 Windows 10
+版本 2004（内部版本 19041）或更高版本。Windows 10 ARM64 的兼容性尚未验证。
+
+您需要 Windows 11 电脑，或运行 Windows 10 版本 2004 或更高版本的 x64 电脑
+（实验性支持）、管理员账户、支持 Windows Mobile Hotspot 的 Wi-Fi 适配器和互联网连接。
+安装程序包含所需组件，无需安装 Go 或 .NET SDK。
+详细步骤请参阅[英文 Windows 安装说明](README.md#windows-10-and-11)。
 
 ### macOS 13 或更高版本
 
@@ -762,6 +772,9 @@ VLESS 本身不携带加密。它是一个无状态协议，指望下面那一�
 ---
 
 ## 它需要什么
+
+Windows 发布版以 x64 上的 Windows 10 版本 2004（内部版本 19041）或更高版本
+作为实验性兼容目标。安装和热点功能仍需测试。
 
 当前发布支持 x64 和 ARM64 上的 Windows 11、Intel 和 Apple Silicon 上的 macOS 13
 或更高版本，以及 x86_64、ARM64、ARMv7 和 ARMv6 上的 Linux。Android 和 iOS 不作为
