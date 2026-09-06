@@ -2,6 +2,8 @@
 
 [🇮🇷 فارسی](README.fa.md) | [🇬🇧 English](README.md) | 🇷🇺 **Русский** | [🇨🇳 中文](README.zh.md)
 
+[Вики проекта: тематические руководства и план документации (на английском)](https://github.com/Iman/caspian/wiki)
+
 [![ci](https://github.com/Iman/caspian/actions/workflows/ci.yml/badge.svg)](https://github.com/Iman/caspian/actions/workflows/ci.yml)
 [![release](https://img.shields.io/github/v/release/Iman/caspian?label=release)](https://github.com/Iman/caspian/releases/latest)
 [![licence AGPL-3.0-or-later](https://img.shields.io/badge/licence-AGPL--3.0--or--later-blue)](LICENSE)
