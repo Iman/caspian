@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # ویکی کاسپین
 
 [English](https://github.com/Iman/caspian/wiki/Home) | [فارسی](https://github.com/Iman/caspian/wiki/Home.fa) | [Русский](https://github.com/Iman/caspian/wiki/Home.ru) | [中文](https://github.com/Iman/caspian/wiki/Home.zh)
@@ -24,3 +26,5 @@
 | الگوی صفحه | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) |
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

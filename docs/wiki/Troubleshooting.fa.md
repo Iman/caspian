@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # عیب‌یابی و نقص‌های شناخته‌شده
 
 [English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
@@ -9,7 +11,7 @@
 
 ## نقص‌های باز
 
-[`docs/DEFECTS.md`](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md) فهرستِ چیزهایی است که شناخته‌شده و مستند و اصلاح‌نشده‌اند،
+[<span dir="ltr">`docs/DEFECTS.md`</span>](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md) فهرستِ چیزهایی است که شناخته‌شده و مستند و اصلاح‌نشده‌اند،
 همراه با آنچه اندازه‌گیری شد، آنچه هزینه می‌برد، و آنچه هر کدام را می‌بندد.
 هیچ‌کدام نشتِ ترافیکِ دستگاه‌ها نیست. خلاصه‌شده، تا این فایل بهانه‌ای برای نخواندنِ
 آن یکی نشود:
@@ -28,19 +30,21 @@
 - **D3. رابطِ هات‌اسپاتی که این بسته ساخته باشد از NetworkManager آزاد نمی‌شود.**
   باز، با تصمیم. مسیرهایی که رابطِ موجود را تصاحب می‌کنند آزادش می‌کنند. مسیرهایی
   که یکی می‌سازند این کار را نمی‌کنند، چون تشخیص پیش از وجود داشتنِ آن رابط اجرا
-  شده بود. `TestACreatedHotspotInterfaceHasNoMeasuredManagerAndIsNotReleased`
+  شده بود. <span dir="ltr">`TestACreatedHotspotInterfaceHasNoMeasuredManagerAndIsNotReleased`</span>
   این شکاف را سنجاق می‌کند تا یک تصمیم بماند و به یک اتفاق تبدیل نشود.
 - **D4. توقف وقتی هیچ چیز را برنگردانده هم موفقیت گزارش می‌کند.** باز، فقط در
   گزارش. برچیدنی که در آن هر وارونه‌ای شکست خورده باشد باز هم هیچ خطایی
   برنمی‌گرداند، پس پنل می‌تواند بگوید دستگاه به حالتی که پیدا شده بود برگشت، در
   حالی که هنوز کاملاً پیکربندی‌شده است. دستگاه در آن حالت fail-closed می‌ماند،
   چون وارونهٔ فایروال نگه داشته می‌شود.
-- **D5. حذف‌کننده دفترچه را با قواعدِ خودش بازپخش می‌کند.** باز. [`uninstall.sh`](https://github.com/Iman/caspian/blob/main/uninstall.sh)
+- **D5. حذف‌کننده دفترچه را با قواعدِ خودش بازپخش می‌کند.** باز. [<span dir="ltr">`uninstall.sh`</span>](https://github.com/Iman/caspian/blob/main/uninstall.sh)
   یک پیاده‌سازیِ مستقلِ Python از همان بازپخش را با خود دارد. هیچ معادلی برای آن
   قاعده ندارد که وقتی وارونه‌ای پیش‌تر شکست خورده وارونهٔ فایروال را نگه می‌دارد،
   پس حذفی که وارونه‌های مسیریابی‌اش شکست بخورند باز هم جدول را پاک می‌کند.
 
-[`docs/DEFECTS.md`](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md) همچنین فهرست می‌کند چه چیزی بسته شد و فقط ثبت نشد، تا فهرستِ
+[<span dir="ltr">`docs/DEFECTS.md`</span>](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md) همچنین فهرست می‌کند چه چیزی بسته شد و فقط ثبت نشد، تا فهرستِ
 بازها با کلِ تصویر اشتباه گرفته نشود.
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

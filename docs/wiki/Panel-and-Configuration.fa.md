@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # پنل و تنظیمات
 
 [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh)
@@ -13,6 +15,8 @@
 اینترنتِ دستگاه‌های وصل به هات‌اسپات را قطع می‌کنند، و یک کنترلِ واحد نیستند. این
 بخش برای این هست که تفاوتِ آن دو فقط در کد نوشته شده بود، جایی که کسی که گوشی
 دستش است نمی‌تواند بخواندش.
+
+<div dir="ltr" align="left">
 
 ```mermaid
 stateDiagram-v2
@@ -36,9 +40,11 @@ stateDiagram-v2
     end note
 ```
 
-### کلید، `POST /power`
+</div>
 
-کلید کلِ دستگاه را روشن و خاموش می‌کند. خاموش کردن، `Stop` را روی سرویسِ ممتاز
+### کلید، <span dir="ltr">`POST /power`</span>
+
+کلید کلِ دستگاه را روشن و خاموش می‌کند. خاموش کردن، <span dir="ltr">`Stop`</span> را روی سرویسِ ممتاز
 صدا می‌زند، که پنج کار را به ترتیب انجام می‌دهد:
 
 1. نرم‌افزار اتصال را متوقف می‌کند
@@ -47,40 +53,45 @@ stateDiagram-v2
 4. اگر کاسپین همان چیزی بوده که رادیو را باز کرده، دوباره آن را می‌بندد
 5. دفترچهٔ برچیدن را بازپخش می‌کند
 
-ببینید [`internal/privsvc/start.go`](https://github.com/Iman/caspian/blob/main/internal/privsvc/start.go)، تابع `stopLocked`، و
-[`internal/hotspot/supervisor.go`](https://github.com/Iman/caspian/blob/main/internal/hotspot/supervisor.go)، تابع `Supervisor.Stop`.
+ببینید [<span dir="ltr">`internal/privsvc/start.go`</span>](https://github.com/Iman/caspian/blob/main/internal/privsvc/start.go)، تابع <span dir="ltr">`stopLocked`</span>، و
+[<span dir="ltr">`internal/hotspot/supervisor.go`</span>](https://github.com/Iman/caspian/blob/main/internal/hotspot/supervisor.go)، تابع <span dir="ltr">`Supervisor.Stop`</span>.
 
 پیامدی که اهمیت دارد همان وسطی است. شبکهٔ وای‌فای دیگر وجود ندارد. هر دستگاهِ
 وصل‌شده از آن می‌افتد، و این شاملِ گوشیِ در دستِ همان کسی است که دکمه را زده.
 
-### قطعِ ترافیک، `POST /cut`
+### قطعِ ترافیک، <span dir="ltr">`POST /cut`</span>
 
 قطعِ ترافیک فقط ترافیکی را متوقف می‌کند که دستگاه از طرفِ آن دستگاه‌ها عبور
 می‌دهد. یک مجموعه‌قواعدِ nftables را جای مجموعه‌قواعدِ دیگری بار می‌کند. ببینید
-[`internal/privsvc/cut.go`](https://github.com/Iman/caspian/blob/main/internal/privsvc/cut.go)، تابع `setForward`، و [`internal/netcfg/nftables.go`](https://github.com/Iman/caspian/blob/main/internal/netcfg/nftables.go)،
-تابع `RulesetFor`.
+[<span dir="ltr">`internal/privsvc/cut.go`</span>](https://github.com/Iman/caspian/blob/main/internal/privsvc/cut.go)، تابع <span dir="ltr">`setForward`</span>، و [<span dir="ltr">`internal/netcfg/nftables.go`</span>](https://github.com/Iman/caspian/blob/main/internal/netcfg/nftables.go)،
+تابع <span dir="ltr">`RulesetFor`</span>.
 
 آن دو مجموعه‌قواعد فقط در زنجیرهٔ forward فرق دارند و جای دیگری فرق نمی‌کنند.
-`TestForwardCut_DiffersFromNormalOnlyInTheForwardChain` این را با مقایسهٔ
+<span dir="ltr">`TestForwardCut_DiffersFromNormalOnlyInTheForwardChain`</span> این را با مقایسهٔ
 خط‌به‌خطِ زنجیره‌های input، output، prerouting و postrouting تصدیق می‌کند. در
-مجموعه‌قواعدِ قطع، زنجیرهٔ forward هیچ چیزی را نمی‌پذیرد. یک `drop` صریح با
+مجموعه‌قواعدِ قطع، زنجیرهٔ forward هیچ چیزی را نمی‌پذیرد. یک <span dir="ltr">`drop`</span> صریح با
 دلیلِ نوشته‌شده روی آن دارد، تا کسی که مجموعه‌قواعدِ زنده را می‌خواند دلیلِ
 توقفِ ترافیک را ببیند، نه نبودِ قاعده را:
 
+<div dir="ltr" align="left">
+
     iifname "wlan0" drop comment "client traffic cut by the user"
+
+
+</div>
 
 به زنجیرهٔ input دست زده نمی‌شود. پس دستگاه به جواب دادن ادامه می‌دهد: DHCP روی
 پورت 67، DNS روی پورتِ DNS دستگاه‌ها، و پنل روی پورتِ خودش، هر کدام از سمتِ رابط
 هات‌اسپات. نرم‌افزار اتصال متوقف نمی‌شود و نقطهٔ دسترسی هم متوقف نمی‌شود.
 دستگاه‌ها وصل می‌مانند، اجارهٔ آدرسشان را نگه می‌دارند، و هنوز می‌توانند پنل را
-باز کنند. آزمون: `TestForwardCut_StopsClientsAndKeepsThePanelReachable`.
+باز کنند. آزمون: <span dir="ltr">`TestForwardCut_StopsClientsAndKeepsThePanelReachable`</span>.
 
 ### چرا این تفاوت تعیین می‌کند از روی گوشی کدام را می‌توانید بزنید
 
 پنل به‌طور پیش‌فرض فقط به آدرسِ هات‌اسپات بایند می‌شود و به هیچ آدرس دیگری. سرو
 کردنش روی شبکه‌ای که خودِ دستگاه روی آن نشسته، تنظیمی است که کاربر باید روشنش
-کند، و در پیش‌فرضِ منتشرشده خاموش است. ببینید [`internal/panel/listen.go`](https://github.com/Iman/caspian/blob/main/internal/panel/listen.go)، تابع
-`BindAddrs`، و [`internal/state/state.go`](https://github.com/Iman/caspian/blob/main/internal/state/state.go)، فیلد `PanelOnLAN`.
+کند، و در پیش‌فرضِ منتشرشده خاموش است. ببینید [<span dir="ltr">`internal/panel/listen.go`</span>](https://github.com/Iman/caspian/blob/main/internal/panel/listen.go)، تابع
+<span dir="ltr">`BindAddrs`</span>، و [<span dir="ltr">`internal/state/state.go`</span>](https://github.com/Iman/caspian/blob/main/internal/state/state.go)، فیلد <span dir="ltr">`PanelOnLAN`</span>.
 
 پس کسی که تنها دستگاهش یک گوشی روی هات‌اسپات است، می‌تواند از همان گوشی قطعِ
 ترافیک را برگرداند. اما نمی‌تواند خاموش کردن را از آن برگرداند، چون خاموش کردن
@@ -99,22 +110,22 @@ stateDiagram-v2
 می‌گوید نه به شکلِ یک شکستِ ناشناخته. عبوری در کار نیست که متوقف شود. و
 مجموعه‌قواعدی که رابطِ هات‌اسپاتِ ناموجودی را نام ببرد، تغییری است در دستگاهی که
 تمام ثابتِ حالت خاموشش این است که همان‌طور که پیدا شده رها شده باشد. ببینید
-`errNotRunning` و خطای `not-running`. دوم، قطعِ ترافیک در حافظه نگه داشته می‌شود
+<span dir="ltr">`errNotRunning`</span> و خطای <span dir="ltr">`not-running`</span>. دوم، قطعِ ترافیک در حافظه نگه داشته می‌شود
 و در هیچ فایلی نوشته نمی‌شود، پس راه‌اندازیِ دوبارهٔ دستگاه آن را از بین می‌برد.
 این عمدی است: کسی که نمی‌فهمد چرا اینترنتش قطع شده، با کشیدنِ برق آن را
 برمی‌گرداند. کاری که راه‌اندازیِ دوباره **نمی‌کند** روشن کردنِ دستگاه است. سرویسِ
 ممتاز هنگام راه‌اندازی دفترچه را بازپخش می‌کند و هیچ چیز را شروع نمی‌کند. ببینید
-[`cmd/caspian/serve_priv.go`](https://github.com/Iman/caspian/blob/main/cmd/caspian/serve_priv.go). پس راه‌اندازیِ دوباره قطعِ ترافیک را پاک می‌کند و
+[<span dir="ltr">`cmd/caspian/serve_priv.go`</span>](https://github.com/Iman/caspian/blob/main/cmd/caspian/serve_priv.go). پس راه‌اندازیِ دوباره قطعِ ترافیک را پاک می‌کند و
 دستگاه را خاموش می‌گذارد، و ترافیک وقتی دوباره جاری می‌شود که کلید زده شود، نه
 پیش از آن.
 
-### کنترلِ بازیابی، `POST /recover`
+### کنترلِ بازیابی، <span dir="ltr">`POST /recover`</span>
 
 کنترلِ سوم راهِ بیرون آمدن از دستگاهی است که گیر کرده، بدون راه‌اندازیِ دوباره و
 بدون ترمینال. همه چیز را متوقف می‌کند، دفترچهٔ برچیدن را بازپخش می‌کند تا هر
 رابط و مسیر و قاعدهٔ فایروالی که این دستگاه عوض کرده سر جایش برگردد، و بعد از
-روی تنظیماتِ ذخیره‌شده دوباره شروع می‌کند. `Service.Recover` همان
-`recoverToCleanMachine` است و بعدش همان `Start` ای که کلید استفاده می‌کند، پس
+روی تنظیماتِ ذخیره‌شده دوباره شروع می‌کند. <span dir="ltr">`Service.Recover`</span> همان
+<span dir="ltr">`recoverToCleanMachine`</span> است و بعدش همان <span dir="ltr">`Start`</span> ای که کلید استفاده می‌کند، پس
 بازیابی پیاده‌سازیِ دومِ شروع کردن نیست که بتواند از آن فاصله بگیرد.
 
 این کنترل به خاطرِ یک روزِ اندازه‌گیری‌شده وجود دارد. در 2026-08-30 دستگاه بارها
@@ -129,3 +140,5 @@ stateDiagram-v2
 شبکه بیرون می‌رود و وقتی هات‌اسپات برگشت دوباره وصل می‌شود.
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>

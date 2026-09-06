@@ -1,3 +1,5 @@
+<div dir="rtl" align="right">
+
 # نصب
 
 [English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh)
@@ -28,11 +30,11 @@
 
 بیشتر کامپیوترهای Intel و AMD از این فایل استفاده می‌کنند:
 
-- `CaspianSetup-0.2.1-windows-x64.exe`
+- <span dir="ltr">`CaspianSetup-0.2.1-windows-x64.exe`</span>
 
 کامپیوترهای Windows با پردازندهٔ Snapdragon یا ARM از این فایل استفاده می‌کنند:
 
-- `CaspianSetup-0.2.1-windows-arm64.exe`
+- <span dir="ltr">`CaspianSetup-0.2.1-windows-arm64.exe`</span>
 
 اگر نوع کامپیوتر را نمی‌دانید، **Settings** را باز کنید. **System** و سپس
 **About** را انتخاب کنید. نوع دستگاه در بخش **System type** نوشته شده است.
@@ -73,7 +75,7 @@ Caspian در Windows دو صفحهٔ جدا دارد:
 | صفحه | کجا باز می‌شود | چه کاری انجام می‌دهد |
 |---|---|---|
 | **Caspian Control** | برنامهٔ کوچک Windows و آیکون کنار ساعت | سرویس‌های پس‌زمینهٔ Caspian را شروع، متوقف یا دوباره راه‌اندازی می‌کند |
-| **پنل وب Caspian** | مرورگر در `http://127.0.0.1:8088/` | نام و رمز وای‌فای، باند و اتصال پروکسی را تنظیم می‌کند |
+| **پنل وب Caspian** | مرورگر در <span dir="ltr">`http://127.0.0.1:8088/`</span> | نام و رمز وای‌فای، باند و اتصال پروکسی را تنظیم می‌کند |
 
 ابتدا از **Caspian Control** استفاده کنید. وقتی **Ready** ظاهر شد، **Open
 panel** را انتخاب کنید. پنل وب صفحهٔ دوم است. هات‌اسپات و تونل را در این صفحه
@@ -102,7 +104,7 @@ panel** را انتخاب کنید. پنل وب صفحهٔ دوم است. هات
 15. یک وب‌سایت را روی همان دستگاه باز کنید و اتصال را آزمایش کنید.
 
 پنل دستگاه‌های متصل را نشان می‌دهد. Windows به آن‌ها نشانی‌هایی از
-`192.168.137.0/24` می‌دهد. Caspian ترافیک اینترنت آن‌ها را از تونل `xray0`
+<span dir="ltr">`192.168.137.0/24`</span> می‌دهد. Caspian ترافیک اینترنت آن‌ها را از تونل <span dir="ltr">`xray0`</span>
 می‌فرستد.
 
 رمز پنل و رمز وای‌فای دو رمز جدا هستند. رمز پنل، پنل وب را باز می‌کند. رمز
@@ -133,18 +135,23 @@ Windows هنگام توقف یا شروع دوبارهٔ هات‌اسپات، �
 و [Git for Windows](https://git-scm.com/download/win) را نصب کنید. سپس PowerShell
 را با دسترسی مدیر باز کنید و این فرمان را اجرا کنید:
 
+<div dir="ltr" align="left">
+
     powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\Users\YOUR-NAME\Documents\caspian\packaging\windows\install.ps1" -NoOpen
 
-گزینهٔ `-NoOpen` از باز شدن خودکار پنل جلوگیری می‌کند. برنامه‌های Windows از
+
+</div>
+
+گزینهٔ <span dir="ltr">`-NoOpen`</span> از باز شدن خودکار پنل جلوگیری می‌کند. برنامه‌های Windows از
 [.NET runtime and Windows Forms](https://github.com/dotnet/runtime) و
-`System.ServiceProcess.ServiceController` استفاده می‌کنند. مجوزها و اعلان‌های
-.NET در `third_party/dotnet/` قرار دارند. مجوز Wintun در
-[`third_party/wintun/PREBUILT-BINARIES-LICENSE.txt`](https://github.com/Iman/caspian/blob/main/third_party/wintun/PREBUILT-BINARIES-LICENSE.txt) قرار دارد و نسخهٔ اصلی آن از
+<span dir="ltr">`System.ServiceProcess.ServiceController`</span> استفاده می‌کنند. مجوزها و اعلان‌های
+.NET در <span dir="ltr">`third_party/dotnet/`</span> قرار دارند. مجوز Wintun در
+[<span dir="ltr">`third_party/wintun/PREBUILT-BINARIES-LICENSE.txt`</span>](https://github.com/Iman/caspian/blob/main/third_party/wintun/PREBUILT-BINARIES-LICENSE.txt) قرار دارد و نسخهٔ اصلی آن از
 [وب‌سایت Wintun](https://www.wintun.net/) دریافت می‌شود.
 
-سرویس `caspian-panel` پنل وب را اجرا می‌کند. فایل `caspian.exe` تونل را می‌سازد.
-فایل `caspian-tethering.exe` هات‌اسپات Windows را کنترل می‌کند. برنامهٔ
-`CaspianControl.exe` سرویس‌ها را کنترل می‌کند و `wintun.dll` رابط تونل را فراهم
+سرویس <span dir="ltr">`caspian-panel`</span> پنل وب را اجرا می‌کند. فایل <span dir="ltr">`caspian.exe`</span> تونل را می‌سازد.
+فایل <span dir="ltr">`caspian-tethering.exe`</span> هات‌اسپات Windows را کنترل می‌کند. برنامهٔ
+<span dir="ltr">`CaspianControl.exe`</span> سرویس‌ها را کنترل می‌کند و <span dir="ltr">`wintun.dll`</span> رابط تونل را فراهم
 می‌کند.
 
 ## نصب در macOS 13 یا جدیدتر
@@ -156,9 +163,9 @@ Mac شود.
 
 ### فایل درست را انتخاب کنید
 
-- Macهای Intel از `Caspian-v0.2.4-macos-amd64.dmg` استفاده می‌کنند.
+- Macهای Intel از <span dir="ltr">`Caspian-v0.2.4-macos-amd64.dmg`</span> استفاده می‌کنند.
 - Macهای Apple Silicon، یعنی M1 و جدیدتر، از
-  `Caspian-v0.2.4-macos-arm64.dmg` استفاده می‌کنند.
+  <span dir="ltr">`Caspian-v0.2.4-macos-arm64.dmg`</span> استفاده می‌کنند.
 
 اگر نوع پردازنده را نمی‌دانید، **Apple menu → About This Mac** را باز کنید.
 
@@ -173,7 +180,7 @@ Opened** را نشان می‌دهد و می‌گوید Apple نتوانسته �
 1. [آخرین انتشار Caspian](https://github.com/Iman/caspian/releases/latest) را باز
    و بخش **Assets** را باز کنید.
 2. DMG مناسب پردازندهٔ Mac را دانلود و باز کنید.
-3. `Caspian.app` را داخل پوشهٔ **Applications** بکشید.
+3. <span dir="ltr">`Caspian.app`</span> را داخل پوشهٔ **Applications** بکشید.
 4. نسخه‌ای را که در **Applications** است یک بار باز کنید.
 5. وقتی Gatekeeper آن را مسدود کرد، **Done** را بزنید.
 6. مسیر **Apple menu → System Settings → Privacy & Security** را باز کنید.
@@ -188,9 +195,9 @@ macOS این برنامه را به‌عنوان یک استثنا نگه می�
 
 ### اگر macOS همچنان سرویس پس‌زمینه را مسدود می‌کند
 
-فایل اجرایی نصب‌شدهٔ سرویس پس‌زمینه، `/usr/local/bin/caspian`، ممکن است پس از
-تأیید `Caspian.app` همچنان ویژگی قرنطینه را داشته باشد. در این حالت هشدار نام
-`caspian` را با حروف کوچک نشان می‌دهد و پنجرهٔ کنترل ممکن است پیام
+فایل اجرایی نصب‌شدهٔ سرویس پس‌زمینه، <span dir="ltr">`/usr/local/bin/caspian`</span>، ممکن است پس از
+تأیید <span dir="ltr">`Caspian.app`</span> همچنان ویژگی قرنطینه را داشته باشد. در این حالت هشدار نام
+<span dir="ltr">`caspian`</span> را با حروف کوچک نشان می‌دهد و پنجرهٔ کنترل ممکن است پیام
 **Caspian needs attention** را نمایش دهد.
 
 **اگر هشدار نام تروجان را ذکر می‌کند یا از شناسایی بدافزار خبر می‌دهد، دستور زیر را اجرا نکنید.**
@@ -203,21 +210,25 @@ macOS این برنامه را به‌عنوان یک استثنا نگه می�
 
 فقط برای هشدار تأیید نشدن توسعه‌دهنده یا notarize نشدن برنامه، و پس از اطمینان
 به فایل و منبع آن، از این روش جایگزین استفاده کنید. فایل انتشار را از صفحهٔ
-رسمی انتشار Caspian بگیرید و چک‌سام DMG را با `SHA256SUMS` همان انتشار مقایسه
+رسمی انتشار Caspian بگیرید و چک‌سام DMG را با <span dir="ltr">`SHA256SUMS`</span> همان انتشار مقایسه
 کنید. تطابق چک‌سام، یکسان بودن فایل با فایل انتشار را تأیید می‌کند، نه ایمن بودن آن را.
 
 1. **Terminal** را باز کنید.
 2. ویژگی قرنطینه را از فایل اجرایی نصب‌شدهٔ سرویس پس‌زمینه بردارید:
 
+   <div dir="ltr" align="left">
+
    ```bash
    sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
    ```
+
+   </div>
 
 3. رمز ورود Mac را وارد کنید. Terminal هنگام تایپ، رمز را نمایش نمی‌دهد.
 4. در Caspian، **Advanced options → Restart services** را انتخاب کنید.
 
 این دستور فقط ویژگی قرنطینهٔ فایل مشخص‌شده را حذف می‌کند. فایل اجرایی را
-اسکن، امضا یا notarize نمی‌کند. اگر Terminal پیام `No such xattr` را نشان داد،
+اسکن، امضا یا notarize نمی‌کند. اگر Terminal پیام <span dir="ltr">`No such xattr`</span> را نشان داد،
 این ویژگی از قبل وجود ندارد. اگر سرویس همچنان اجرا نمی‌شود، خطا را گزارش کنید
 و سایر کنترل‌های امنیتی را غیرفعال نکنید.
 
@@ -250,22 +261,27 @@ macOS این برنامه را به‌عنوان یک استثنا نگه می�
 
 ### خودکار: یک خط
 
+<div dir="ltr" align="left">
+
     sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+
+
+</div>
 
 نصب‌کننده تشخیص می‌دهد روی چه دستگاهی است، فایل اجراییِ متناظر را از آخرین
 انتشار می‌گیرد، و اگر آنچه دانلود شد با چک‌سامِ منتشرشده نخواند، کار را رد
 می‌کند.
 
-| `uname -m` | فایل | دستگاهِ معمول |
+| <span dir="ltr">`uname -m`</span> | فایل | دستگاهِ معمول |
 |---|---|---|
-| `x86_64` | `caspian-linux-amd64` | یک لپ‌تاپ یا یک مینی‌پی‌سی |
-| `aarch64` | `caspian-linux-arm64` | Raspberry Pi 3، 4، 5 روی سیستم 64 بیتی |
-| `armv7l` | `caspian-linux-arm` | Raspberry Pi 2 و 3 روی سیستم 32 بیتی |
-| `armv6l` | `caspian-linux-arm` | Raspberry Pi 1، Zero، Zero W |
+| <span dir="ltr">`x86_64`</span> | <span dir="ltr">`caspian-linux-amd64`</span> | یک لپ‌تاپ یا یک مینی‌پی‌سی |
+| <span dir="ltr">`aarch64`</span> | <span dir="ltr">`caspian-linux-arm64`</span> | Raspberry Pi 3، 4، 5 روی سیستم 64 بیتی |
+| <span dir="ltr">`armv7l`</span> | <span dir="ltr">`caspian-linux-arm`</span> | Raspberry Pi 2 و 3 روی سیستم 32 بیتی |
+| <span dir="ltr">`armv6l`</span> | <span dir="ltr">`caspian-linux-arm`</span> | Raspberry Pi 1، Zero، Zero W |
 
 وقتی مطمئن نیست حدس نمی‌زند، بلکه رد می‌کند. لینوکس نبودن، معماری‌ای که در آن
 جدول نیست، نبودِ systemd، یا چک‌سامی که نمی‌خواند: هر کدام یک ردکردن است که
-می‌گوید چه دیده. `armv8l`، یعنی فضای کاربریِ 32 بیتی روی هستهٔ 64 بیتی، عمداً
+می‌گوید چه دیده. <span dir="ltr">`armv8l`</span>، یعنی فضای کاربریِ 32 بیتی روی هستهٔ 64 بیتی، عمداً
 به هیچ فایلی نگاشت نشده است، چون حدس زدن در همان‌جا بود که یک پروژهٔ قبلی کدِ
 ARMv7 را روی دستگاه‌های ARMv6 فرستاد و آن‌ها در نخستین اجرا با دستورالعمل
 غیرمجاز مردند.
@@ -273,25 +289,40 @@ ARMv7 را روی دستگاه‌های ARMv6 فرستاد و آن‌ها در �
 **اسکریپت را پیش از آنکه به یک shell بدهید بخوانید.** برای نرم‌افزاری از این
 جنس، این توصیه تشریفات نیست، و اسکریپت طوری نوشته شده که خوانده شود.
 
+<div dir="ltr" align="left">
+
     curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh | less
+
+
+</div>
 
 برای سنجاق کردن یک نسخهٔ مشخص به‌جای گرفتن آخرین نسخه:
 
+<div dir="ltr" align="left">
+
     sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
+
+
+</div>
 
 ### وارسی کردن دانلود، خودتان
 
-هر انتشار یک فایل `SHA256SUMS` همراه دارد. نصب‌کننده آن را برای شما بررسی
+هر انتشار یک فایل <span dir="ltr">`SHA256SUMS`</span> همراه دارد. نصب‌کننده آن را برای شما بررسی
 می‌کند، و شما هم می‌توانید مستقل بررسی کنید:
+
+<div dir="ltr" align="left">
 
     curl -fsSLO https://github.com/Iman/caspian/releases/latest/download/caspian-linux-arm64
     curl -fsSLO https://github.com/Iman/caspian/releases/latest/download/SHA256SUMS
     sha256sum -c SHA256SUMS --ignore-missing
 
+
+</div>
+
 این چه چیزی را ثابت می‌کند و چه چیزی را نه: ثابت می‌کند فایلی که دارید همان
 فایلی است که آن انتشار منتشر کرده. ثابت نمی‌کند چه کسی آن انتشار را ساخته است.
 فایل‌های اجرایی را GitHub Actions از یک کامیتِ تگ‌خورده می‌سازد، و گردش‌کاری که
-آن‌ها را می‌سازد در همین مخزن است، در [`.github/workflows/release.yml`](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml). پس ساخت
+آن‌ها را می‌سازد در همین مخزن است، در [<span dir="ltr">`.github/workflows/release.yml`</span>](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml). پس ساخت
 خواندنی است، هرچند به‌طور مستقل بازتولیدپذیر نیست.
 
 ### دستی: خودتان بسازید
@@ -299,34 +330,51 @@ ARMv7 را روی دستگاه‌های ARMv6 فرستاد و آن‌ها در �
 هیچ‌چیزِ راهِ خودکار اجباری نیست. ساخت از روی کد به Go 1.26 یا بالاتر نیاز دارد
 و فایل اجرایی‌ای می‌دهد که در عملکرد یکی است.
 
+<div dir="ltr" align="left">
+
     git clone https://github.com/Iman/caspian.git
     cd caspian
     go build -trimpath -o caspian ./cmd/caspian
     sudo CASPIAN_LOCAL_BINARY="$PWD/caspian" bash install.sh
 
-`CASPIAN_LOCAL_BINARY` به نصب‌کننده می‌گوید به‌جای دانلود، از فایلی که همین حالا
+
+</div>
+
+<span dir="ltr">`CASPIAN_LOCAL_BINARY`</span> به نصب‌کننده می‌گوید به‌جای دانلود، از فایلی که همین حالا
 ساخته‌اید استفاده کند. باقی کارهای نصب‌کننده، یعنی ساختن حساب سرویس و پوشه‌ها و
 یونیت‌ها و دسترسی‌هایشان، به همان شکل انجام می‌شود.
 
 کامپایل متقابل برای یک Pi از روی دستگاهی دیگر:
 
+<div dir="ltr" align="left">
+
     GOOS=linux GOARCH=arm64 go build -trimpath -o caspian-linux-arm64 ./cmd/caspian
     GOOS=linux GOARCH=arm GOARM=6 go build -trimpath -o caspian-linux-arm ./cmd/caspian
 
-**`GOARM=6` در ساخت 32 بیتی اختیاری نیست.** دستگاه‌های `armv6l` و `armv7l` هر دو
-همان فایل `arm` را نصب می‌کنند، پس یک ساختِ ARMv7 هر Pi 1 و Zero و Zero W ای را
-که آن را نصب کند از کار می‌اندازد. گردش‌کارِ انتشار این را با `readelf` بررسی
+
+</div>
+
+**<span dir="ltr">`GOARM=6`</span> در ساخت 32 بیتی اختیاری نیست.** دستگاه‌های <span dir="ltr">`armv6l`</span> و <span dir="ltr">`armv7l`</span> هر دو
+همان فایل <span dir="ltr">`arm`</span> را نصب می‌کنند، پس یک ساختِ ARMv7 هر Pi 1 و Zero و Zero W ای را
+که آن را نصب کند از کار می‌اندازد. گردش‌کارِ انتشار این را با <span dir="ltr">`readelf`</span> بررسی
 می‌کند و به‌جای منتشر کردن فایلی که دربارهٔ معماریِ خودش دروغ می‌گوید، شکست
 می‌خورد.
 
 پیش از آنکه به یک ساخت اعتماد کنید، دروازه را اجرا کنید:
 
+<div dir="ltr" align="left">
+
     bash scripts/gate.sh
 
-این دروازه قالب‌بندی، `go vet`، کل مجموعهٔ آزمون همراه با race detector، کف
+
+</div>
+
+این دروازه قالب‌بندی، <span dir="ltr">`go vet`</span>، کل مجموعهٔ آزمون همراه با race detector، کف
 پوششِ هر بسته، لایهٔ رگرسیونِ golden، یک پویش حریم خصوصی و یک زیرمجموعهٔ smoke را
 اجرا می‌کند. در صورت شکست با کد غیرصفر بیرون می‌آید. آن را به هیچ لوله‌ای ندهید:
-یک لولهٔ shell وضعیتِ آخرین فرمانش را گزارش می‌کند، پس دادنش به `tail` همان
+یک لولهٔ shell وضعیتِ آخرین فرمانش را گزارش می‌کند، پس دادنش به <span dir="ltr">`tail`</span> همان
 جوابی را که خواسته بودید دور می‌ریزد.
 
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+
+</div>
