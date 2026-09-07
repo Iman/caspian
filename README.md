@@ -31,12 +31,14 @@ passphrase, the configuration name and the server address in it are substituted,
 and the join code is blurred, because that code encodes the network name and its
 password. Nothing else is altered.
 
-The panel is Persian first and English second. There is no account, no
+The panel opens in English. Choose Persian from the language menu at the top. There is no account, no
 telemetry, and the panel fetches nothing from the internet.
 
 ![Caspian Control on Windows](docs/images/caspian-control-windows.png)
 
 ## Install and read the guides
+
+CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
 
 [Downloads](https://github.com/Iman/caspian/releases/latest) | [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 

@@ -8,6 +8,8 @@
 
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
+浏览器没有保存语言选择时，面板默认使用英语。在页面顶部的语言菜单中选择波斯语或英语，然后按 Apply。该选择保存在当前浏览器中，登录页和帮助页也会沿用。菜单无需 JavaScript 即可使用。窄屏下，页头和导航会换行以适应屏幕宽度。
+
 > 本指南从现有 README 迁移而来。测量结果保留原有日期；此次文档迁移不代表重新运行了测试。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 

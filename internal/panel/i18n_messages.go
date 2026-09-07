@@ -12,9 +12,6 @@ package panel
 // half its Persian. Two independent literals can genuinely disagree, so the
 // test genuinely checks something.
 //
-// Persian is first because Persian is the default, and reading order here
-// should match the product's.
-//
 // Latin digits throughout both maps, including in Persian prose. The reasoning
 // is in i18n.go under "Numerals"; the short version is that almost every number
 // on this screen is compared against something outside the panel that shows
@@ -24,7 +21,7 @@ var messages = map[Lang]map[Key]string{
 	LangEN: messagesEN,
 }
 
-// messagesFA is Persian, the default language of this appliance.
+// messagesFA contains the Persian messages.
 //
 // Not reviewed by a native speaker; see the caveat in i18n.go. The fault
 // sentences are the ones where that matters.
@@ -38,7 +35,8 @@ var messagesFA = map[Key]string{
 	"footer.note":      "این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.",
 	"footer.developer": "توسعه‌دهنده: ایمان سمیع زاده",
 	"footer.github":    "پروژه در GitHub",
-	"lang.other":       "English",
+	"lang.label":       "زبان",
+	"lang.apply":       "اعمال",
 
 	// Status and the switch.
 	"status.heading":      "وضعیت اتصال",
@@ -461,7 +459,8 @@ var messagesEN = map[Key]string{
 	"footer.note":      "This panel comes from this box itself. It fetches nothing from the internet.",
 	"footer.developer": "Developed by Iman Samizadeh",
 	"footer.github":    "GitHub project",
-	"lang.other":       "فارسی",
+	"lang.label":       "Language",
+	"lang.apply":       "Apply",
 
 	// Status and the switch.
 	"status.heading":      "Connection status",

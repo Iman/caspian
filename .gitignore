@@ -16,6 +16,19 @@
 *.trojan
 *.subscription
 configs-local/
+# Local credentials, appliance state, and network captures.
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+state.json
+state.json.*
+*.pcap
+*.pcapng
 key.txt
 *.txt
 *.log

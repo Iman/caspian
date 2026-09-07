@@ -62,7 +62,7 @@ class CaspianApiWorld extends World {
   }
 
   msg(key, lang) {
-    const table = this.messages[lang || 'fa'];
+    const table = this.messages[lang || 'en'];
     if (!table || !(key in table)) {
       throw new Error(
         'the harness did not export the message key "' + key + '". ' +

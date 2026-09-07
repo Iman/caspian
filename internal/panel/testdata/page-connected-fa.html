@@ -146,9 +146,6 @@
   </ul>
 
   <div class="rail-foot">
-    <a class="rail-act" href="/?lang=en" lang="en">
-      <svg aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>
-      <span>English</span></a>
     <form class="signout" method="post" action="/logout">
       <input type="hidden" name="csrf" value="<redacted:csrf-token>">
       <button type="submit" class="rail-act">
@@ -160,11 +157,21 @@
 
 
 <div class="column">
-  
   <header class="topbar">
+
     <p class="topbar-title">وضعیت اتصال</p>
+
+    <form class="language-picker" method="get">
+      <label for="panel-language">زبان</label>
+      <div class="language-controls">
+        <select id="panel-language" name="lang" dir="ltr">
+          <option value="en" lang="en" dir="ltr">English</option><option value="fa" selected lang="fa" dir="rtl">فارسی</option>
+        </select>
+
+        <button type="submit" class="language-apply">اعمال</button>
+      </div>
+    </form>
   </header>
-  
 
   <main id="main">
     <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden

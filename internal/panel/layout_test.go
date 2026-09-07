@@ -4,6 +4,7 @@
 package panel
 
 import (
+	"html"
 	"net/url"
 	"strings"
 	"testing"
@@ -359,9 +360,8 @@ func TestTheDashboardSaysWhatHappensWhenTheTunnelDrops(t *testing.T) {
 	for _, lang := range Langs {
 		h := newHarness(t)
 		h.ready()
-		if lang == LangEN {
-			h.useEnglish()
-		}
+		h.get("/?lang=" + string(lang))
+		h.lang = lang
 
 		_, body := h.get("/")
 
@@ -467,7 +467,7 @@ func TestTheInstructionFollowsTheStateRatherThanTheRunningHotspot(t *testing.T) 
 	h.priv.SetHotspot(HotspotStatus{Running: true, SSID: "Caspian-test"})
 	h.priv.SetEngineState(engine.State{Phase: engine.PhaseRunning})
 	_, on := h.get("/")
-	if !strings.Contains(on, h.msg(MsgNextJoin)) {
+	if !strings.Contains(html.UnescapeString(on), h.msg(MsgNextJoin)) {
 		t.Error("a working box with nothing joined does not say how to join a device")
 	}
 
@@ -495,9 +495,8 @@ func TestBothControlsSayWhatTheyStopOnTheBarItself(t *testing.T) {
 	for _, lang := range Langs {
 		h := newHarness(t)
 		h.ready()
-		if lang == LangEN {
-			h.useEnglish()
-		}
+		h.get("/?lang=" + string(lang))
+		h.lang = lang
 		// The cut control is offered only while the box is running, so its
 		// caption can only be on the page of a running box.
 		h.priv.SetHotspot(HotspotStatus{Running: true, SSID: "Caspian-test"})
@@ -541,9 +540,8 @@ func TestTheHelpPageExplainsWhyThereAreTwoControls(t *testing.T) {
 	for _, lang := range Langs {
 		h := newHarness(t)
 		h.ready()
-		if lang == LangEN {
-			h.useEnglish()
-		}
+		h.get("/?lang=" + string(lang))
+		h.lang = lang
 
 		_, body := h.get("/help")
 

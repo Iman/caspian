@@ -6,6 +6,7 @@ package panel
 import (
 	"bytes"
 	"encoding/json"
+	"html"
 	"io"
 	"log/slog"
 	"net/http"
@@ -136,10 +137,7 @@ func newHarness(t *testing.T) *harness {
 	}
 	return &harness{
 		t: t,
-		// Persian is the product default, so the harness runs in Persian
-		// unless a test asks otherwise. Assertions go through h.msg, so they
-		// hold in whichever language the harness is in rather than pinning the
-		// English wording.
+		// Match the initial browser language unless a test chooses another.
 		lang:  DefaultLang,
 		panel: p,
 		store: store,
@@ -736,7 +734,7 @@ func TestAdvancedModeRevealsAndNeverHides(t *testing.T) {
 		{"the engine log", h.msg(MsgAdvLogHeading)},
 		{"the parsed fields of the config", h.msg(MsgAdvConfigHeading)},
 	} {
-		if !strings.Contains(advanced, want.needle) {
+		if !strings.Contains(html.UnescapeString(advanced), want.needle) {
 			t.Errorf("advanced mode does not show %s (looked for %q)", want.what, want.needle)
 		}
 	}

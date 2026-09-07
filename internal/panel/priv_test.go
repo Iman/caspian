@@ -6,6 +6,7 @@ package panel
 import (
 	"context"
 	"errors"
+	"html"
 	"net/url"
 	"reflect"
 	"strings"
@@ -168,7 +169,7 @@ func TestPanelStillDrawsWhenThePrivilegedServiceIsDown(t *testing.T) {
 	if res.StatusCode != 200 {
 		t.Fatalf("GET / with the privileged service down: status %d", res.StatusCode)
 	}
-	if want := h.msg(MsgFaultUnavailable); !strings.Contains(body, want) {
+	if want := h.msg(MsgFaultUnavailable); !strings.Contains(html.UnescapeString(body), want) {
 		t.Error("the page does not say the background service is not answering")
 	}
 	// The hotspot name and password are read from state, not from the
@@ -267,7 +268,7 @@ func TestSwitchingOffAsksTheServiceToStop(t *testing.T) {
 		t.Errorf("the privileged service was asked to stop %d times, want 1", h.priv.Stops())
 	}
 	_, body := h.get("/")
-	if want := h.msg(MsgNoticeOff); !strings.Contains(body, want) {
+	if want := h.msg(MsgNoticeOff); !strings.Contains(html.UnescapeString(body), want) {
 		t.Error("the page does not confirm it was switched off")
 	}
 }
@@ -283,7 +284,7 @@ func TestSwitchingOnRefusesWithoutAConfigOrAHotspot(t *testing.T) {
 		}
 		h.postForm("/power", url.Values{"csrf": {h.tokenOn("/")}, "on": {"1"}})
 		_, body := h.get("/")
-		if want := h.msg(MsgNoConfigYet); !strings.Contains(body, want) {
+		if want := h.msg(MsgNoConfigYet); !strings.Contains(html.UnescapeString(body), want) {
 			t.Error("the page does not say there is no config")
 		}
 		if len(h.priv.Starts()) != 0 {
@@ -299,7 +300,7 @@ func TestSwitchingOnRefusesWithoutAConfigOrAHotspot(t *testing.T) {
 		}
 		h.postForm("/power", url.Values{"csrf": {h.tokenOn("/")}, "on": {"1"}})
 		_, body := h.get("/")
-		if want := h.msg(MsgNoHotspotYet); !strings.Contains(body, want) {
+		if want := h.msg(MsgNoHotspotYet); !strings.Contains(html.UnescapeString(body), want) {
 			t.Error("the page does not say the hotspot needs a name")
 		}
 		if len(h.priv.Starts()) != 0 {
@@ -370,7 +371,7 @@ func TestAdvancedOverridesAreCheckedAgainstDetection(t *testing.T) {
 				t.Fatalf("status %d", res.StatusCode)
 			}
 			_, body := h.get("/")
-			if want := h.msg(c.says); !strings.Contains(body, want) {
+			if want := h.msg(c.says); !strings.Contains(html.UnescapeString(body), want) {
 				t.Errorf("the page does not say %q", want)
 			}
 			// Nothing was stored.
@@ -444,7 +445,7 @@ func TestSettingTheHotspotIsValidated(t *testing.T) {
 				"csrf": {h.tokenOn("/")}, "ssid": {c.ssid}, "passphrase": {c.pass},
 			})
 			_, body := h.get("/")
-			if want := h.msg(c.says); !strings.Contains(body, want) {
+			if want := h.msg(c.says); !strings.Contains(html.UnescapeString(body), want) {
 				t.Errorf("the page does not say %q", want)
 			}
 			if h.store.Hotspot().SSID == c.ssid && c.ssid != "" {

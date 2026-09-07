@@ -21,7 +21,7 @@
 const assert = require('node:assert/strict');
 const zlib = require('node:zlib');
 const { Given, When, Then } = require('@cucumber/cucumber');
-const { By, until } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 
 // The palette roles the feature files name, and the custom property each one
 // resolves to. The words are the ones the stylesheet's own comments use for
@@ -130,10 +130,10 @@ When('I sign in with the right password', async function () {
 });
 
 When('I choose the other language', async function () {
-  // The link in the rail, clicked the way a person clicks it, rather than a
-  // navigation to a URL this file made up. If the link ever stops pointing
-  // where it should, this step fails, which is the point.
-  await this.click('a[href^="/?lang="]');
+  const current = await this.attr('html', 'lang');
+  const next = current === 'en' ? 'fa' : 'en';
+  await this.click('#panel-language option[value="' + next + '"]');
+  await this.click('.language-apply');
   await this.driver.wait(until.elementLocated(By.css('#hero')), 15 * 1000);
   const lang = await this.attr('html', 'lang');
   this.lang = lang;
@@ -608,11 +608,8 @@ Then('the first thing the keyboard reaches is the link that jumps to the page', 
   // claim a keyboard user cares about, and it is not the same claim as "a skip
   // link exists in the markup": a link that is present but ordered after the
   // rail is a link nobody reaches.
-  const focused = await this.driver.executeScript(
-    'document.body.focus();' +
-    'const focusable = document.querySelectorAll("a[href], button, input, select, textarea");' +
-    'return focusable.length ? focusable[0].outerHTML : "";'
-  );
+  await this.driver.findElement(By.css('body')).sendKeys(Key.TAB);
+  const focused = await this.driver.executeScript('return document.activeElement.outerHTML;');
   assert.ok(
     focused.includes('class="skip"'),
     'the first thing in the focus order is ' + JSON.stringify(focused.slice(0, 120))
@@ -662,4 +659,53 @@ Then('every control that takes a value has a label', async function () {
     'return document.querySelectorAll("input:not([type=hidden]), select, textarea").length;'
   );
   assert.ok(counted > 0, 'this page has no controls on it, so the check above proved nothing');
+});
+
+When('I use a viewport width of {int}', async function (width) {
+  await this.driver.manage().window().setRect({ width, height: 900 });
+  await this.driver.sendDevToolsCommand('Emulation.setDeviceMetricsOverride', { width, height: 900, deviceScaleFactor: 1, mobile: false });
+});
+When('I open {string} in {string}', async function (path, language) {
+  await this.goto(path + (path.includes('?') ? '&' : '?') + 'lang=' + language);
+  this.lang = language;
+});
+Then('the language control fits without horizontal scrolling', async function () {
+  const metrics = await this.driver.executeScript(function () {
+    const control = document.querySelector('.language-picker').getBoundingClientRect();
+    return { width: innerWidth, scroll: document.documentElement.scrollWidth, left: control.left, right: control.right, overflow: Array.from(document.querySelectorAll('body *')).filter(e => { const r=e.getBoundingClientRect(); return r.width>0 && (r.right>innerWidth+1 || r.left< -1); }).map(e=>e.tagName+'.'+e.className).slice(0,80) };
+  });
+  assert.ok(metrics.scroll <= metrics.width + 1, JSON.stringify(metrics));
+  assert.ok(metrics.left >= 0 && metrics.right <= metrics.width + 1, JSON.stringify(metrics));
+});
+Then('language controls have touch-sized targets', async function () {
+  for (const selector of ['#panel-language', '.language-apply']) {
+    const rect = await this.driver.findElement(By.css(selector)).getRect();
+    assert.ok(rect.height >= 44 && rect.width >= 44, JSON.stringify(rect));
+  }
+});
+Then('the language label names its dropdown', async function () {
+  const label = await this.driver.findElement(By.css('label[for="panel-language"]'));
+  assert.ok((await label.getText()).trim());
+});
+When('browser scripting is disabled', async function () {
+  await this.driver.sendDevToolsCommand('Emulation.setScriptExecutionDisabled', { value: true });
+});
+When('I choose Persian with the keyboard', async function () {
+  const select = await this.driver.findElement(By.id('panel-language'));
+  await select.sendKeys('ف', Key.TAB);
+  assert.equal(await select.getAttribute('value'), 'fa', 'keyboard selected Persian');
+  await this.driver.findElement(By.css('.language-apply')).sendKeys(Key.ENTER);
+  await this.driver.wait(async () => (await this.attr('html', 'lang')) === 'fa', 15000);
+  this.lang = 'fa';
+});
+Then('I remain on {string}', async function (path) {
+  assert.equal(new URL(await this.driver.getCurrentUrl()).pathname, path);
+});
+When('I reload the page without language parameters', async function () {
+  const url = new URL(await this.driver.getCurrentUrl());
+  await this.goto(url.pathname);
+});
+
+Given('the test appliance has not been set up', async function () {
+  await this.control('unconfigured', {});
 });

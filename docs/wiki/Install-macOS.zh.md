@@ -6,6 +6,8 @@
 
 </div>
 
+处理器和内存：Caspian 尚未通过测量确定最低内存容量、处理器核心数或时钟频率。资源占用取决于流量、代理协议和并发连接数。发布最低配置要求前，需要测量空闲和负载状态下的资源占用。
+
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
 [查看安装步骤](https://github.com/Iman/caspian/wiki/Installation.zh#macos-13-或更高版本).

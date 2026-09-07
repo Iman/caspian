@@ -8,6 +8,8 @@
 
 [Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
+Если в браузере нет сохранённого выбора, панель открывается на английском. В меню языка вверху выберите персидский или английский и нажмите Apply. Выбор сохраняется в этом браузере, в том числе на страницах входа и справки. Меню работает без JavaScript. На узком экране заголовок и навигация переносятся на несколько строк.
+
 > Руководство перенесено из README. Даты измерений сохранены; перенос документации не означает нового запуска тестов.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 

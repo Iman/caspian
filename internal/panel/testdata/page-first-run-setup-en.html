@@ -124,15 +124,24 @@
 
 
 <div class="column">
-  
   <header class="topbar topbar-plain">
+
     <a class="rail-brand" href="/">
       <svg class="rail-mark" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg>
       <span class="rail-word">Caspian</span>
     </a>
-    <a class="langswitch" href="/?lang=fa" lang="fa">فارسی</a>
+
+    <form class="language-picker" method="get">
+      <label for="panel-language">Language</label>
+      <div class="language-controls">
+        <select id="panel-language" name="lang" dir="ltr">
+          <option value="en" selected lang="en" dir="ltr">English</option><option value="fa" lang="fa" dir="rtl">فارسی</option>
+        </select>
+
+        <button type="submit" class="language-apply">Apply</button>
+      </div>
+    </form>
   </header>
-  
 
   <main id="main">
     <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden

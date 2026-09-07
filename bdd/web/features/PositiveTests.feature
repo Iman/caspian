@@ -26,25 +26,25 @@ Feature: PositiveTests.feature
     And the control bar is on the page
 
   # -------------------------------------------------------------------------
-  # Persian first
+  # English default
   # -------------------------------------------------------------------------
 
-  @smoke @ready @persian-default
-  Scenario: the dashboard is drawn in Persian before anybody chooses a language
+  @smoke @ready @english-default
+  Scenario: the dashboard is drawn in English before anybody chooses a language
     Given I am signed in
     When I open the dashboard
-    Then the page is drawn in Persian
-    And the page reads right to left
-    And the power control carries the Persian word for it
-
-  @ready @english-switch
-  Scenario: the dashboard changes to English when English is chosen
-    Given I am signed in
-    And I open the dashboard
-    When I choose the other language
     Then the page is drawn in English
     And the page reads left to right
     And the power control carries the English word for it
+
+  @ready @persian-switch
+  Scenario: the dashboard changes to Persian when Persian is chosen
+    Given I am signed in
+    And I open the dashboard
+    When I choose the other language
+    Then the page is drawn in Persian
+    And the page reads right to left
+    And the power control carries the Persian word for it
 
   # -------------------------------------------------------------------------
   # The control bar is a traffic light

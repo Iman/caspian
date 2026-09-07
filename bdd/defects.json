@@ -19,10 +19,12 @@
   ],
 
   "web": {
+    "@language-responsive": { "defect": "language-overflow", "expect": "red" },
+    "@language-persistence": { "defect": "language-choice-ignored", "expect": "red" },
     "@right-password": { "defect": "every-password-rejected", "expect": "red" },
     "@wrong-password": { "defect": "any-password-accepted", "expect": "red" },
-    "@persian-default": { "defect": "always-english", "expect": "red" },
-    "@english-switch": { "defect": "language-choice-ignored", "expect": "red" },
+    "@english-default": { "defect": "always-persian", "expect": "red" },
+    "@persian-switch": { "defect": "language-choice-ignored", "expect": "red" },
     "@hero-ok": { "defect": "hero-ground-overridden", "expect": "red" },
     "@hero-off": { "defect": "hero-ground-overridden", "expect": "red" },
     "@hero-wait": { "defect": "hero-ground-overridden", "expect": "red" },
@@ -39,6 +41,8 @@
   },
 
   "api": {
+    "@api-language-default": { "defect": "always-persian", "expect": "red" },
+    "@api-language-choice": { "defect": "language-choice-ignored", "expect": "red" },
     "@api-login-ok": { "defect": "every-password-rejected", "expect": "red" },
     "@api-login-wrong": { "defect": "any-password-accepted", "expect": "red" },
     "@api-status-json": { "defect": "status-json-field-lost", "expect": "red" },

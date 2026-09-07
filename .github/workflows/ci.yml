@@ -24,3 +24,27 @@ jobs:
           check-latest: true
       - name: Run the build gate
         run: bash scripts/gate.sh
+
+  bdd:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            bdd/api/package-lock.json
+            bdd/web/package-lock.json
+      - name: Install API test dependencies
+        run: npm ci --prefix bdd/api
+      - name: Install browser test dependencies
+        run: npm ci --prefix bdd/web
+      - name: Run API and browser BDD
+        run: bash bdd/run-all.sh
+      - name: Verify BDD detects deliberate defects
+        run: bash bdd/mutation.sh

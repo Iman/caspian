@@ -10,17 +10,17 @@
      that reaches this page lands in this file and test/goldenscan fails.
 -->
 <!doctype html>
-<html lang="fa" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
-<title>ورود به کاسپین</title>
+<title>Sign in to Caspian</title>
 <link rel="stylesheet" href="/assets/panel.css">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 </head>
 <body class="plain">
-<a class="skip" href="#main">رفتن به بخش اصلی</a>
+<a class="skip" href="#main">Skip to the controls</a>
 
 <svg class="sprite" aria-hidden="true" focusable="false">
   <symbol id="i-mark" viewBox="0 0 32 32">
@@ -124,24 +124,33 @@
 
 
 <div class="column">
-  
   <header class="topbar topbar-plain">
+
     <a class="rail-brand" href="/">
       <svg class="rail-mark" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg>
       <span class="rail-word">Caspian</span>
     </a>
-    <a class="langswitch" href="/?lang=en" lang="en">English</a>
+
+    <form class="language-picker" method="get">
+      <label for="panel-language">Language</label>
+      <div class="language-controls">
+        <select id="panel-language" name="lang" dir="ltr">
+          <option value="en" selected lang="en" dir="ltr">English</option><option value="fa" lang="fa" dir="rtl">فارسی</option>
+        </select>
+
+        <button type="submit" class="language-apply">Apply</button>
+      </div>
+    </form>
   </header>
-  
 
   <main id="main">
     <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden
-       data-working="در حال انجام درخواست… صفحه همچنان قابل استفاده است. لطفاً دوباره دکمه را نزنید." data-stopping="در حال خاموش کردن هات‌اسپات و تونل… گوشی ارتباط با این صفحه را از دست می‌دهد. برای روشن کردن دوباره، پنل را روی خود دستگاه باز کنید."
-       data-failed="پاسخ درخواست دریافت نشد؛ ممکن است هنوز در حال انجام باشد. قبل از تلاش دوباره، وضعیت را بررسی کنید. روی مک پنل محلی را باز کنید: 127.0.0.1:8088" data-stopped-remote="پس از درخواست خاموش کردن، ارتباط با پنل قطع شد. این اتفاق هنگام خاموش شدن وای‌فای طبیعی است، اما نتیجه هنوز تأیید نشده. برای بررسی و روشن کردن دوباره، پنل را روی خود دستگاه باز کنید؛ روی مک: 127.0.0.1:8088"
-       data-stale="وضعیت زنده در دسترس نیست؛ اطلاعات نمایش‌داده‌شده ممکن است قدیمی باشد. ارتباط با دستگاه را بررسی کنید."></p>
+       data-working="Applying your request… You can still use the page. Please do not submit it again." data-stopping="Stopping the hotspot and tunnel… Your phone will lose this page. To switch on again, open the panel on the host device."
+       data-failed="No response received; the operation may still be running. Check the status before retrying. On a Mac, use the local panel: 127.0.0.1:8088" data-stopped-remote="The panel disconnected after the stop request. This is expected if Wi-Fi stopped, but the result is not yet confirmed. Check and restart from the host device; on a Mac: 127.0.0.1:8088"
+       data-stale="Live status is unavailable. Displayed information may be out of date. Check your connection to this device."></p>
   
 <section class="card narrow">
-  <h1>ورود</h1>
+  <h1>Sign in</h1>
 
   
 
@@ -149,21 +158,21 @@
 
   <form method="post" action="/login" class="stack">
     <input type="hidden" name="csrf" value="<redacted:csrf-token>">
-    <label for="password">رمز این صفحه</label>
+    <label for="password">Panel password</label>
     <input id="password" name="password" type="password" required autofocus dir="ltr"
            autocomplete="current-password" autocapitalize="off" spellcheck="false">
-    <button type="submit" class="go">ورود</button>
+    <button type="submit" class="go">Sign in</button>
   </form>
 
-  <p class="hint">رمز پنل را که هنگام نصب چاپ شد یا در راه‌اندازی انتخاب کردید وارد کنید.</p>
+  <p class="hint">Use the panel password printed during installation or the one you chose during setup.</p>
   <details class="password-recovery">
-    <summary>رمزتان را فراموش کرده‌اید؟</summary>
-    <p>روی دستگاه کاسپین ترمینال باز کنید یا با SSH به آن وصل شوید. در ویندوز PowerShell را با دسترسی مدیر باز کنید. این دستور را اجرا کنید:</p>
-    <p>لینوکس / مک</p>
+    <summary>Forgot your password?</summary>
+    <p>Open a terminal on the Caspian computer, or connect to it with SSH. On Windows, open PowerShell as administrator. Run this command:</p>
+    <p>Linux / macOS</p>
     <pre dir="ltr"><code>sudo /usr/local/bin/caspian reset-password</code></pre>
-    <p>ویندوز (PowerShell)</p>
+    <p>Windows (PowerShell)</p>
     <pre dir="ltr"><code>&amp; &#34;$env:ProgramFiles\Caspian\caspian.exe&#34; reset-password</code></pre>
-    <p>این دستور رمز تازهٔ پنل را چاپ و پنل را دوباره اجرا می‌کند. تنظیمات وای‌فای و پراکسی حفظ می‌شوند. با رمز تازه وارد شوید.</p>
+    <p>The command prints a new panel password and restarts the panel. Your Wi-Fi and proxy settings stay saved. Use the new password to sign in.</p>
   </details>
 </section>
 
@@ -172,10 +181,10 @@
   <footer class="foot">
     <div class="about-box">
       <strong>Caspian dev</strong>
-      <span>توسعه‌دهنده: ایمان سمیع زاده</span>
-      <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">پروژه در GitHub</a>
+      <span>Developed by Iman Samizadeh</span>
+      <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">GitHub project</a>
     </div>
-    <span>این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.</span>
+    <span>This panel comes from this box itself. It fetches nothing from the internet.</span>
   </footer>
 </div>
 <script src="/assets/panel.js" defer></script>

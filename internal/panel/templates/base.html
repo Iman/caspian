@@ -185,9 +185,6 @@ any letters left behind.
   </ul>
 
   <div class="rail-foot">
-    <a class="rail-act" href="{{.LangSwitchHref}}" lang="{{.Lang.Other}}">
-      <svg aria-hidden="true" focusable="false"><use href="#i-globe"/></svg>
-      <span>{{.LangSwitchLabel}}</span></a>
     <form class="signout" method="post" action="/logout">
       <input type="hidden" name="csrf" value="{{.CSRF}}">
       <button type="submit" class="rail-act">
@@ -199,19 +196,26 @@ any letters left behind.
 {{end}}
 
 <div class="column">
-  {{if .SignedIn}}
-  <header class="topbar">
+  <header class="topbar{{if not .SignedIn}} topbar-plain{{end}}">
+{{if .SignedIn}}
     <p class="topbar-title">{{.T "status.heading"}}</p>
-  </header>
-  {{else}}
-  <header class="topbar topbar-plain">
+{{else}}
     <a class="rail-brand" href="/">
       <svg class="rail-mark" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg>
       <span class="rail-word">{{.T "app.name"}}</span>
     </a>
-    <a class="langswitch" href="{{.LangSwitchHref}}" lang="{{.Lang.Other}}">{{.LangSwitchLabel}}</a>
+{{end}}
+    <form class="language-picker" method="get">
+      <label for="panel-language">{{.T "lang.label"}}</label>
+      <div class="language-controls">
+        <select id="panel-language" name="lang" dir="ltr">
+          {{range .Languages}}<option value="{{.}}"{{if eq . $.Lang}} selected{{end}} lang="{{.}}" dir="{{.Dir}}">{{.NativeName}}</option>{{end}}
+        </select>
+{{if .Advanced}}<input type="hidden" name="advanced" value="1">{{end}}
+        <button type="submit" class="language-apply">{{.T "lang.apply"}}</button>
+      </div>
+    </form>
   </header>
-  {{end}}
 
   <main id="main">
     <p id="action-feedback" class="notice" role="status" aria-live="polite" hidden

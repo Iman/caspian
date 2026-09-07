@@ -6,6 +6,10 @@
 
 </div>
 
+İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
+
+Linux sürüm dosyaları x86-64, ARM64 ve ARMv6/ARMv7 mimarilerini hedefler. Mimari uyumluluğu tek başına yeterli performansı kanıtlamaz.
+
 Linux, systemd 240 veya sonrası ve root yetkisi gerekir. Kabul edilen mimariler `x86_64`, `aarch64`, `armv7l` ve `armv6l` biçimindedir. İki ağ arayüzünün düzenini İngilizce başlangıç kılavuzundan okuyun.
 
 Önce betiği okuyun. Bu komut betiği gösterir, kurulum yapmaz:

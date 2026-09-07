@@ -6,6 +6,8 @@
 
 </div>
 
+CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
+
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 [Read the installation steps](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11).

@@ -8,6 +8,7 @@ import (
 	"go/parser"
 	"go/token"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -300,26 +301,61 @@ func TestEveryTemplateKeyExists(t *testing.T) {
 // Language selection
 // ---------------------------------------------------------------------------
 
-// TestPersianIsTheDefault is the requirement itself: a fresh box shows Persian,
-// and English is the alternative.
-func TestPersianIsTheDefault(t *testing.T) {
+// TestEnglishIsTheDefault checks a browser with no saved preference.
+func TestEnglishIsTheDefault(t *testing.T) {
 	h := newHarness(t)
-
 	res, body := h.get("/setup")
 	if res.StatusCode != http.StatusOK {
 		t.Fatalf("GET /setup: %d", res.StatusCode)
 	}
-	if !strings.Contains(body, `lang="fa"`) {
-		t.Error("a browser that has never chosen is not served Persian")
+	if !strings.Contains(body, `<html lang="en" dir="ltr">`) {
+		t.Error("a fresh browser must receive English LTR")
 	}
-	if !strings.Contains(body, `dir="rtl"`) {
-		t.Error("the Persian page is not right-to-left")
+	if !strings.Contains(body, T(LangEN, MsgSetupHeading)) {
+		t.Error("English setup heading is missing")
 	}
-	if !strings.Contains(body, T(LangFA, MsgSetupHeading)) {
-		t.Error("the Persian setup heading is not on the page")
+}
+
+func TestLanguageDropdownOnEveryPage(t *testing.T) {
+	for _, lang := range Langs {
+		h := newHarness(t)
+		h.get("/?lang=" + string(lang))
+		for _, path := range []string{"/setup"} {
+			_, body := h.get(path)
+			checkLanguageDropdown(t, body, lang)
+		}
+		h.lang = lang
+		h.ready()
+		for _, path := range []string{"/", "/?advanced=1", "/help"} {
+			_, body := h.get(path)
+			checkLanguageDropdown(t, body, lang)
+		}
+		h.signedOut()
+		_, body := h.get("/login?lang=" + string(lang))
+		checkLanguageDropdown(t, body, lang)
 	}
-	if strings.Contains(body, T(LangEN, MsgSetupSubmit)) {
-		t.Error("English text is on the default page")
+}
+
+func checkLanguageDropdown(t *testing.T, body string, lang Lang) {
+	t.Helper()
+	header := regexp.MustCompile(`(?s)<header class="topbar[^>]*>(.*?)</header>`).FindString(body)
+	if !strings.Contains(header, `<label for="panel-language">`) || !strings.Contains(header, `<select id="panel-language" name="lang"`) {
+		t.Fatal("topbar lacks a labelled language dropdown")
+	}
+	for _, available := range Langs {
+		option := `value="` + string(available) + `"`
+		if available == lang {
+			option += ` selected`
+		}
+		if !strings.Contains(header, option) {
+			t.Errorf("missing option or selection: %s", option)
+		}
+	}
+	if strings.Count(header, ` selected`) != 1 {
+		t.Error("exactly one language must be selected")
+	}
+	if !strings.Contains(header, `method="get"`) || !strings.Contains(header, `type="submit"`) {
+		t.Error("language choice must work without JavaScript")
 	}
 }
 
@@ -533,5 +569,50 @@ func TestEveryEnginePhaseIsADistinctWordInEveryLanguage(t *testing.T) {
 			}
 			seen[w] = k
 		}
+	}
+}
+
+func TestLanguagePreferencePrecedenceAndCookie(t *testing.T) {
+	for _, tc := range []struct {
+		name, query, cookie string
+		want                Lang
+		sets                bool
+	}{
+		{"fresh", "", "", LangEN, false},
+		{"invalid query", "xx", "", LangEN, false},
+		{"invalid cookie", "", "xx", LangEN, false},
+		{"saved Persian", "", "fa", LangFA, false},
+		{"invalid query preserves choice", "xx", "fa", LangFA, false},
+		{"explicit English wins", "en", "fa", LangEN, true},
+		{"explicit Persian wins", "fa", "en", LangFA, true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			for _, secure := range []bool{false, true} {
+				p := &Panel{secureCookies: secure}
+				r := httptest.NewRequest(http.MethodGet, "/help?lang="+tc.query, nil)
+				r.Header.Set("Accept-Language", "fa")
+				if tc.cookie != "" {
+					r.AddCookie(&http.Cookie{Name: langCookie, Value: tc.cookie})
+				}
+				w := httptest.NewRecorder()
+				if got := p.langFor(w, r); got != tc.want {
+					t.Fatalf("got %s, want %s", got, tc.want)
+				}
+				cookies := w.Result().Cookies()
+				if !tc.sets {
+					if len(cookies) != 0 {
+						t.Fatal("invalid or absent choice wrote cookie")
+					}
+					continue
+				}
+				if len(cookies) != 1 {
+					t.Fatal("choice must write one cookie")
+				}
+				c := cookies[0]
+				if c.Value != string(tc.want) || c.Path != "/" || !c.HttpOnly || c.Secure != secure || c.SameSite != http.SameSiteStrictMode || c.MaxAge <= 0 {
+					t.Errorf("incorrect preference cookie: %+v", c)
+				}
+			}
+		})
 	}
 }

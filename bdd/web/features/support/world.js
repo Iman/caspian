@@ -37,7 +37,7 @@ class CaspianWorld extends World {
     // The language the scenario believes the page is in. It starts at the
     // product default and moves when a step chooses the other one, so an
     // assertion holds in whichever language the page is actually in.
-    this.lang = 'fa';
+    this.lang = 'en';
   }
 
   // ---- addresses ----------------------------------------------------------

@@ -61,9 +61,8 @@ type pageData struct {
 	Title   string
 	Version string
 
-	// LangSwitchHref and LangSwitchLabel offer the other language.
-	LangSwitchHref  string
-	LangSwitchLabel string
+	// Languages supplies the native names for the top-bar selector.
+	Languages []Lang
 
 	// CSRF is the token every form on the page carries.
 	CSRF string
@@ -282,19 +281,17 @@ const (
 )
 
 func (p *Panel) newPageData(l Lang, title Key, csrf string, advanced bool) pageData {
-	other := l.Other()
 	return pageData{
-		Lang:            l,
-		Dir:             l.Dir(),
-		Title:           T(l, title),
-		Version:         Version,
-		LangSwitchHref:  "/?lang=" + string(other),
-		LangSwitchLabel: T(l, MsgOtherLanguage),
-		CSRF:            csrf,
-		Advanced:        advanced,
-		AdvancedHref:    advancedHref(advanced),
-		StatusWord:      T(l, MsgStatusOff),
-		StatusShape:     shapeOff,
+		Lang:         l,
+		Dir:          l.Dir(),
+		Title:        T(l, title),
+		Version:      Version,
+		Languages:    Langs,
+		CSRF:         csrf,
+		Advanced:     advanced,
+		AdvancedHref: advancedHref(advanced),
+		StatusWord:   T(l, MsgStatusOff),
+		StatusShape:  shapeOff,
 	}
 }
 

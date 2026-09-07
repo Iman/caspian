@@ -6,6 +6,8 @@
 
 </div>
 
+İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
+
 macOS 13 veya sonrası ve yönetici hesabı gerekir. Yerleşik Wi-Fi erişim noktası olduğunda interneti Ethernet üzerinden sağlayın.
 
 1. Resmî sürüm sayfasından işlemcinize uygun DMG dosyasını seçin: Apple Silicon için `arm64`, Intel için `amd64`.

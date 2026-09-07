@@ -90,7 +90,7 @@
  * ============================================================================
  *
  * The base size and line height are set for Persian and English inherits them,
- * which is the right way round for a product whose default language is Persian.
+ * so the same layout supports both LTR and RTL languages.
  * Persian script carries more of its meaning in small marks above and below the
  * line, so it needs more size and more leading than Latin at the same nominal
  * point size, and it needs both more in a low-contrast scheme than in a
@@ -408,10 +408,36 @@ body.plain { display: block; }
 .topbar-plain .rail-brand { color: var(--ink); }
 .topbar-plain .rail-mark { color: var(--edge-strong); }
 
-.langswitch {
-  font-size: var(--fs-base);
-  font-weight: 600;
+.language-picker {
+  display: grid;
+  gap: var(--s1);
+  inline-size: min(100%, 18rem);
+  margin-inline-start: auto;
 }
+
+.language-picker label { margin-block-start: 0; }
+
+.language-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.language-controls select { min-inline-size: 0; }
+.language-apply {
+  min-block-size: 46px;
+  min-inline-size: 64px;
+  padding: var(--s2) var(--s3);
+  border: 1px solid var(--edge-strong);
+  border-radius: var(--r-ctl);
+  color: var(--ink);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.language-apply:hover { background: var(--ground); }
 
 /* ---- main and footer ---- */
 
@@ -1005,7 +1031,7 @@ button {
    config, detected, events on a phone. */
 .pair {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
   gap: var(--s5);
   align-items: start;
 }
@@ -1583,10 +1609,11 @@ button:disabled, input[type="submit"]:disabled {
   .rail {
     position: static;
     block-size: auto;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--s3);
-    overflow-x: auto;
+    min-inline-size: 0;
     padding: var(--s3) var(--s4);
   }
 
@@ -1594,8 +1621,10 @@ button:disabled, input[type="submit"]:disabled {
   .rail-mark { inline-size: 28px; block-size: 28px; }
 
   .rail-nav {
-    flex-direction: row;
-    flex: 1;
+    display: grid;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
     gap: var(--s1);
   }
 
@@ -1636,11 +1665,16 @@ button:disabled, input[type="submit"]:disabled {
   .creds { inline-size: 100%; }
 
   .topbar { padding: var(--s3) var(--s4); }
+  .language-picker { inline-size: 100%; margin-inline-start: 0; }
 
   .card > h2,
   .card > h1 { padding: var(--s3) var(--s4); }
 
   .card > :not(h1):not(h2) { margin-inline: var(--s4); }
+}
+
+@media (max-width: 360px) {
+  .rail-nav { grid-template-columns: repeat(4, minmax(44px, 1fr)); }
 }
 
 /* Somebody who has asked their system not to animate things has usually asked

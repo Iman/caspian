@@ -9,12 +9,8 @@ import (
 	"sort"
 )
 
-// The panel is in Persian and English, and Persian is what a fresh box shows.
-//
-// That ordering is the requirement, not a preference. The people this appliance
-// is for read Persian, and an English default makes them do work before they
-// can do anything at all. So Persian is not a translation laid over an English
-// product; it is the product, and English is the alternative.
+// English is the initial language. A browser can choose another language
+// without changing the appliance settings.
 //
 // Three consequences that are easy to get wrong and are handled here rather
 // than left to whoever adds the next string:
@@ -65,17 +61,17 @@ import (
 type Lang string
 
 const (
-	// LangFA is Persian, and the default.
+	// LangFA is Persian.
 	LangFA Lang = "fa"
-	// LangEN is English.
+	// LangEN is English and the default.
 	LangEN Lang = "en"
 )
 
 // DefaultLang is what a browser that has never chosen gets.
-const DefaultLang = LangFA
+const DefaultLang = LangEN
 
 // Langs is every language, in the order the switcher offers them.
-var Langs = []Lang{LangFA, LangEN}
+var Langs = []Lang{LangEN, LangFA}
 
 // langCookie remembers the choice.
 //
@@ -106,13 +102,14 @@ func (l Lang) Dir() string {
 // RTL reports whether the language reads right to left.
 func (l Lang) RTL() bool { return l.Dir() == "rtl" }
 
-// Other is the language the switcher offers, which with two languages is
-// simply the one you are not in.
-func (l Lang) Other() Lang {
-	if l == LangFA {
-		return LangEN
+// NativeName lets readers recognize their language before selecting it.
+func (l Lang) NativeName() string {
+	switch l {
+	case LangFA:
+		return "فارسی"
+	default:
+		return "English"
 	}
-	return LangFA
 }
 
 // Key names one message. Every user-facing string in this package is one of
@@ -163,14 +160,11 @@ func keys(l Lang) []Key {
 // langFor decides which language to serve and records a change.
 //
 // A ?lang= parameter switches and is remembered; otherwise the cookie decides;
-// otherwise Persian. An unknown value is ignored rather than being an error:
+// otherwise English. An unknown value is ignored rather than being an error:
 // the worst outcome of a bad language parameter should be the default language,
 // not a page the user cannot read.
 //
-// Accept-Language is deliberately not consulted. The default is Persian
-// because of who this is for, and a browser that happens to be configured for
-// English would otherwise override that for exactly the user the default
-// exists to serve.
+// Accept-Language does not override the English default or a saved choice.
 func (p *Panel) langFor(w http.ResponseWriter, r *http.Request) Lang {
 	if v := Lang(r.URL.Query().Get("lang")); v.Valid() {
 		http.SetCookie(w, &http.Cookie{
@@ -206,7 +200,8 @@ const (
 	MsgSkipToMain    Key = "nav.skip"
 	MsgSignOut       Key = "nav.signout"
 	MsgFooterNote    Key = "footer.note"
-	MsgOtherLanguage Key = "lang.other"
+	MsgLanguage      Key = "lang.label"
+	MsgApplyLanguage Key = "lang.apply"
 	MsgBackToMain    Key = "nav.back"
 
 	// The status line and the switch.

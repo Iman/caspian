@@ -124,6 +124,7 @@ cd "$root"
 
 floors=$(
     /bin/cat <<'EOF'
+internal/panel 85.2 darwin
 internal/engine 83.0 linux
 internal/link 98.6 darwin
 internal/link 98.4 linux

@@ -8,6 +8,8 @@
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
+The panel opens in English when the browser has no saved choice. Use the language menu at the top and select Apply to switch to Persian or back to English. The choice stays with that browser, including on the sign-in and help pages. The menu works without JavaScript. On narrow screens, the header and navigation wrap to fit the available width.
+
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 

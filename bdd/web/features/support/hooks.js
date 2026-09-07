@@ -162,7 +162,10 @@ Before({ timeout: 60 * 1000 }, async function (scenario) {
   this.driver = driver;
   this.base = base;
   this.messages = messages;
-  this.lang = 'fa';
+  this.lang = 'en';
+  await driver.sendDevToolsCommand('Emulation.setScriptExecutionDisabled', { value: false });
+  await driver.sendDevToolsCommand('Emulation.clearDeviceMetricsOverride');
+  await driver.manage().window().setRect({ width: 1280, height: 1024 });
 
   // In an ordinary run this is the empty string, and the appliance is built
   // healthy. In a mutation run it is the defect named by this scenario's own

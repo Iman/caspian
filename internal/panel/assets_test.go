@@ -213,7 +213,7 @@ func TestEveryAssetTheHTMLNamesIsServed(t *testing.T) {
 // shipped and that only a Persian reader would have reported.
 //
 // panel.js relabelled the switch on every poll with the words "Switch off" and
-// "Switch on" written into the file. On a Persian page, which is the default,
+// "Switch on" written into the file. On a Persian page, then the default,
 // the button read correctly for five seconds and then turned English and
 // stayed English until the page was reloaded. The file's own comment two
 // blocks above claimed it "has no idea which language the page is in and must

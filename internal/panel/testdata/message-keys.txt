@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 375 keys
+## fa: 376 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -247,7 +247,8 @@
   kind.ethernet
   kind.usbwifi
   kind.wifi
-  lang.other
+  lang.apply
+  lang.label
   login.corrupt.advice
   login.corrupt.headline
   login.heading
@@ -382,7 +383,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 375 keys
+## en: 376 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -624,7 +625,8 @@
   kind.ethernet
   kind.usbwifi
   kind.wifi
-  lang.other
+  lang.apply
+  lang.label
   login.corrupt.advice
   login.corrupt.headline
   login.heading

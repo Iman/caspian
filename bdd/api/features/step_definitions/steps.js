@@ -195,3 +195,7 @@ Then('no credential should appear anywhere in the response', async function () {
     );
   }
 });
+
+Given('the test appliance has not been set up', async function () {
+  await this.control('unconfigured', {});
+});

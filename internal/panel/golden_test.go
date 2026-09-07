@@ -272,8 +272,8 @@ func goldenStates() []goldenState {
 	}
 }
 
-// goldenLangs is every language a page is pinned in. Persian is first because
-// it is the product's default and the one most users see.
+// goldenLangs is every language a page is pinned in. Snapshot order is
+// independent of the language served to a fresh browser.
 var goldenLangs = []Lang{LangFA, LangEN}
 
 // ---------------------------------------------------------------------------
@@ -410,12 +410,11 @@ func header(state goldenState, lang Lang, kind string) string {
 func fetchGolden(t *testing.T, s goldenState, lang Lang, path string) (int, string, bool) {
 	t.Helper()
 	h := newHarness(t)
-	if lang == LangEN {
-		h.useEnglish()
-	}
 	if s.arrange != nil {
 		s.arrange(h)
 	}
+	h.get("/?lang=" + string(lang))
+	h.lang = lang
 	res, body := h.get(path)
 	return res.StatusCode, body, h.store.Snapshot().Hotspot.SSID != ""
 }

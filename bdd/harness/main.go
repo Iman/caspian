@@ -270,6 +270,15 @@ func (h *harness) control(w http.ResponseWriter, r *http.Request) {
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "defect": body.Defect})
 
+	case "/__control/unconfigured":
+		h.mu.RLock()
+		app := h.cur
+		h.mu.RUnlock()
+		if err := app.store.Update(func(st *state.State) error { st.Panel = state.PanelAuth{}; return nil }); err != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]any{"error": "could not clear test setup"})
+			return
+		}
+		writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 	case "/__control/messages":
 		// The suites assert on the words the panel actually ships, resolved
 		// from the Go catalogue, rather than on Persian and English strings
@@ -384,6 +393,8 @@ type defect struct {
 	anyPasswordAccepted   bool
 	everyPasswordRejected bool
 	alwaysEnglish         bool
+	alwaysPersian         bool
+	languageOverflow      bool
 	languageChoiceIgnored bool
 	heroGroundOverridden  bool
 	cutStateFlattened     bool
@@ -411,6 +422,8 @@ var defectsByName = map[string]defect{
 	"any-password-accepted":   {anyPasswordAccepted: true},
 	"every-password-rejected": {everyPasswordRejected: true},
 	"always-english":          {alwaysEnglish: true},
+	"always-persian":          {alwaysPersian: true},
+	"language-overflow":       {languageOverflow: true},
 	"language-choice-ignored": {languageChoiceIgnored: true},
 	"hero-ground-overridden":  {heroGroundOverridden: true},
 	"cut-state-flattened":     {cutStateFlattened: true},
@@ -545,13 +558,18 @@ func (f faulty) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func (d defect) needsBodyRewrite() bool {
-	return d.heroGroundOverridden || d.cutStateFlattened || d.quietZonePaintedDark ||
+	return d.languageOverflow || d.heroGroundOverridden || d.cutStateFlattened || d.quietZonePaintedDark ||
 		d.powerLabelFrozen || d.cutRoleRemoved || d.cutStateFrozen ||
 		d.skipLinkRemoved || d.labelsUnhooked ||
 		d.statusJSONFieldLost || d.secretsEchoed
 }
 
 func (f faulty) mutateRequest(r *http.Request) {
+	if f.d.alwaysPersian {
+		q := r.URL.Query()
+		q.Set("lang", "fa")
+		r.URL.RawQuery = q.Encode()
+	}
 	if f.d.alwaysEnglish {
 		q := r.URL.Query()
 		q.Set("lang", "en")
@@ -619,6 +637,9 @@ func (f faulty) mutateHTML(s string) string {
 }
 
 func (f faulty) mutateCSS(s string) string {
+	if f.d.languageOverflow {
+		s += "\n.language-picker { min-inline-size: 1600px; }\n"
+	}
 	if f.d.heroGroundOverridden {
 		s += "\n.hero { background: var(--ground); }\n"
 	}

@@ -6,6 +6,10 @@
 
 </div>
 
+İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
+
+Linux sürüm dosyaları x86-64, ARM64 ve ARMv6/ARMv7 mimarilerini hedefler. Mimari uyumluluğu tek başına yeterli performansı kanıtlamaz.
+
 Aşağıdan işletim sisteminizi seçin. Dosyaları [resmî Caspian sürümlerinden](https://github.com/Iman/caspian/releases/latest) indirin. İşlemcinize uygun dosyayı seçin ve sağlama toplamını yayımlanan `SHA256SUMS` ile karşılaştırın. Eşleşme, dosyanın yayımlanan sürümle aynı olduğunu gösterir; zararlı yazılım içermediğini kanıtlamaz.
 
 Windows ve macOS için grafik kurulum programları bulunur. Linux ve Raspberry Pi kurulum betiğini kullanır. Yönetici izni vermeden önce sisteminizin kılavuzunu okuyun.

@@ -49,6 +49,10 @@ in the panel.
 
 ## Requirements, and what it refuses
 
+CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
+
+Linux release binaries target x86-64, ARM64, and ARMv6/ARMv7. Architecture compatibility alone does not establish usable performance.
+
 | Requirement | Refusal message names |
 |---|---|
 | Linux | what `uname -s` said |
