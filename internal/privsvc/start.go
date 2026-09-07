@@ -5,6 +5,7 @@ package privsvc
 
 import (
 	"context"
+	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/hex"
@@ -39,7 +40,7 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	s.opMu.Lock()
 	defer s.opMu.Unlock()
 
-	fp := requestFingerprint(req)
+	fp := s.requestFingerprint(req)
 
 	if s.isRunning() {
 		if s.Applied() == fp {
@@ -591,12 +592,11 @@ func (s *Service) serverPort() uint16 {
 // network policy. A change in any of them has to stop and restart, because
 // internal/netcfg's steps are not idempotent.
 //
-// It is a SHA-256 and only its first eight hex digits are ever logged, which is
-// the same identifier and the same length internal/state uses for a stored
-// config (ProxyConfig.Fingerprint): enough to tell two configurations apart in
-// a log, and no part of either.
-func requestFingerprint(req panel.StartRequest) string {
-	h := sha256.New()
+// A random key scopes this HMAC to one service instance. Logged prefixes cannot
+// be reproduced by guessing a hotspot password without that key. The key stays
+// in memory and is not part of saved state or the teardown journal.
+func (s *Service) requestFingerprint(req panel.StartRequest) string {
+	h := hmac.New(sha256.New, s.fingerprintKey[:])
 	write := func(s string) {
 		var n [8]byte
 		binary.BigEndian.PutUint64(n[:], uint64(len(s)))

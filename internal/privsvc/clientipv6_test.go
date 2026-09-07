@@ -89,7 +89,8 @@ func TestTheRequestFingerprintCoversTheClientIPv6Policy(t *testing.T) {
 	b := startRequest(t)
 	b.Network.ClientIPv6 = "tunnel"
 
-	if requestFingerprint(a) == requestFingerprint(b) {
+	s := newWorld(t).svc
+	if s.requestFingerprint(a) == s.requestFingerprint(b) {
 		t.Error("two requests differing only in the client IPv6 policy have the same fingerprint, " +
 			"so a change of policy would be skipped as 'already running'")
 	}

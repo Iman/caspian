@@ -154,11 +154,11 @@ func (proxy xrayShareLink) shadowsocksOutbound() (*conf.OutboundDetourConfig, er
 
 	settings := &conf.ShadowsocksClientConfig{}
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	user := proxy.link.User.String()
 	passwordText, err := decodeBase64Text(user)
@@ -199,11 +199,11 @@ func (proxy xrayShareLink) vmessOutbound() (*conf.OutboundDetourConfig, error) {
 
 	settings := conf.VMessOutboundConfig{}
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	id, err := url.QueryUnescape(proxy.link.User.String())
 	if err != nil {
@@ -236,11 +236,11 @@ func (proxy xrayShareLink) vlessOutbound() (*conf.OutboundDetourConfig, error) {
 
 	settings := &conf.VLessOutboundConfig{}
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	id, err := url.QueryUnescape(proxy.link.User.String())
 	if err != nil {
@@ -277,11 +277,11 @@ func (proxy xrayShareLink) socksOutbound() (*conf.OutboundDetourConfig, error) {
 
 	settings := &conf.SocksClientConfig{}
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	if userPassword := proxy.link.User.String(); userPassword != "" {
 		passwordText, err := decodeBase64Text(userPassword)
@@ -317,11 +317,11 @@ func (proxy xrayShareLink) trojanOutbound() (*conf.OutboundDetourConfig, error) 
 
 	settings := &conf.TrojanClientConfig{}
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	password, err := url.QueryUnescape(proxy.link.User.String())
 	if err != nil {
@@ -351,11 +351,11 @@ func (proxy xrayShareLink) hysteriaOutbound() (*conf.OutboundDetourConfig, error
 	settings := &conf.HysteriaClientConfig{}
 	settings.Version = 2
 	settings.Address = parseAddress(proxy.link.Hostname())
-	port, err := strconv.Atoi(proxy.link.Port())
+	port, err := parseSharePort(proxy.link.Port())
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 
 	settingsRawMessage, err := convertJsonToRawMessage(settings)
 	if err != nil {
@@ -398,4 +398,14 @@ func (proxy xrayShareLink) hysteriaOutbound() (*conf.OutboundDetourConfig, error
 	}
 	outbound.StreamSetting = streamSettings
 	return outbound, nil
+}
+
+// parseSharePort rejects values that would wrap when stored in Xray's uint16 port.
+// Zero is preserved for the caller's existing missing-port validation.
+func parseSharePort(text string) (uint16, error) {
+	port, err := strconv.ParseUint(text, 10, 16)
+	if err != nil {
+		return 0, fmt.Errorf("port must fit in an unsigned 16-bit integer")
+	}
+	return uint16(port), nil
 }

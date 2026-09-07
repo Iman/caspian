@@ -3,7 +3,6 @@ package share
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/xtls/xray-core/infra/conf"
@@ -42,11 +41,11 @@ func (proxy vmessQrCode) outbound() (*conf.OutboundDetourConfig, error) {
 	settings := conf.VMessOutboundConfig{}
 	settings.Address = parseAddress(proxy.Add)
 	portStr := fmt.Sprintf("%v", proxy.Port)
-	port, err := strconv.Atoi(portStr)
+	port, err := parseSharePort(portStr)
 	if err != nil {
 		return nil, err
 	}
-	settings.Port = uint16(port)
+	settings.Port = port
 	settings.ID = proxy.Id
 	settings.Security = proxy.Scy
 

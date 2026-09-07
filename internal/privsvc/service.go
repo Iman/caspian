@@ -5,6 +5,7 @@ package privsvc
 
 import (
 	"context"
+	"crypto/rand"
 	"fmt"
 	"net/netip"
 	"sort"
@@ -34,14 +35,15 @@ type Service struct {
 	diag *diagRing
 	opMu sync.Mutex
 
-	mu          sync.RWMutex
-	applier     *netcfg.Applier
-	plan        *netcfg.Plan
-	facts       netcfg.Facts
-	hotspotPlan hotspot.Plan
-	engineDoc   []byte
-	running     bool
-	fingerprint string
+	mu             sync.RWMutex
+	applier        *netcfg.Applier
+	plan           *netcfg.Plan
+	facts          netcfg.Facts
+	hotspotPlan    hotspot.Plan
+	engineDoc      []byte
+	running        bool
+	fingerprint    string
+	fingerprintKey [32]byte
 
 	// forward is whether client traffic is being forwarded, and it lives HERE
 	// and nowhere else. It is deliberately not persisted: see cut.go. Its zero
@@ -68,11 +70,16 @@ func New(cfg Config) (*Service, error) {
 		return nil, err
 	}
 	cfg = cfg.withDefaults()
+	var fingerprintKey [32]byte
+	if _, err := rand.Read(fingerprintKey[:]); err != nil {
+		return nil, fmt.Errorf("create request fingerprint key: %w", err)
+	}
 	return &Service{
-		cfg:     cfg,
-		sup:     cfg.AccessPoint,
-		diag:    newDiagRing(diagCapacity, cfg.Now),
-		country: cfg.Country,
+		cfg:            cfg,
+		sup:            cfg.AccessPoint,
+		diag:           newDiagRing(diagCapacity, cfg.Now),
+		country:        cfg.Country,
+		fingerprintKey: fingerprintKey,
 	}, nil
 }
 
