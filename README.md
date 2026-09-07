@@ -38,6 +38,8 @@ telemetry, and the panel fetches nothing from the internet.
 
 ![Caspian Control on Windows](docs/images/caspian-control-windows.png)
 
+![Caspian Control on macOS](docs/images/caspian-control-macos.png)
+
 ## Connections and supported formats
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.

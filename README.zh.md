@@ -32,6 +32,9 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
 面板默认使用英语，可在页面顶部的语言菜单中选择波斯语。没有账号，没有遥测，面板也不从互联网上取任何东西。
 
+![Windows 上的 Caspian Control](docs/images/caspian-control-windows.png)
+
+![macOS 上的 Caspian Control](docs/images/caspian-control-macos.png)
 
 ## 连接方式与支持的配置格式
 

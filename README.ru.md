@@ -36,6 +36,9 @@ Trojan и Hysteria2, а также YAML Clash и Clash.Meta, необработ�
 По умолчанию панель открывается на английском. Персидский можно выбрать в меню языка вверху страницы. Никаких учётных записей,
 никакой телеметрии, и панель ничего не запрашивает из интернета.
 
+![Caspian Control в Windows](docs/images/caspian-control-windows.png)
+
+![Caspian Control в macOS](docs/images/caspian-control-macos.png)
 
 ## Варианты подключения и поддерживаемые форматы
 
