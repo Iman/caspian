@@ -34,13 +34,10 @@ REALITY را هم شامل می‌شود، به‌علاوهٔ <span dir="ltr">`
 
 ## به چه نیاز دارد
 
-انتشارهای کنونی Windows 11 روی x64 و ARM64، نسخهٔ macOS 13 یا جدیدتر روی Intel
+انتشارهای کنونی Windows 10 نسخهٔ 2004 (بیلد 19041) یا جدیدتر و Windows 11 روی x64 و ARM64، نسخهٔ macOS 13 یا جدیدتر روی Intel
 و Apple Silicon، و Linux روی x86_64، ARM64، ARMv7 و ARMv6 را در بر می‌گیرند.
 Android و iOS میزبان دروازه نیستند؛ تلفن و تبلت به‌عنوان دستگاه به وای‌فای
 Caspian وصل می‌شوند.
-
-Windows 10 نسخهٔ 2004 (بیلد 19041) یا جدیدتر روی x64 یک هدف آزمایشی برای
-انتشار Windows است. نصب و عملکرد هات‌اسپات روی آن هنوز به تست نیاز دارد.
 
 [<span dir="ltr">`internal/netcfg/testdata/PROVENANCE.md`</span>](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) دستگاهی را که این پروژه روی آن توسعه و
 اندازه‌گیری شده ثبت کرده است: یک Raspberry Pi 5 Model B Rev 1.0، Debian 13

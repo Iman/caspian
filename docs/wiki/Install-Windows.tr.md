@@ -10,7 +10,7 @@
 
 İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
 
-Windows 11 veya x64 üzerinde Windows 10 sürüm 2004 ve sonrası, yönetici hesabı ve Mobile Hotspot destekleyen Wi-Fi adaptörü gerekir. Windows 10 desteği deneyseldir ve henüz test edilmemiştir. Windows 10 ARM64 uyumluluğu doğrulanmamıştır.
+x64 veya ARM64 üzerinde Windows 10 sürüm 2004 (yapı 19041) ve sonrası ya da Windows 11, yönetici hesabı ve Mobile Hotspot destekleyen Wi-Fi adaptörü gerekir.
 
 1. Resmî sürüm sayfasından Windows kurulum dosyasını indirin: Intel ve AMD için x64, ARM işlemciler için ARM64. Türü bilmiyorsanız Settings, System, About altında System type satırına bakın.
 2. Kurulum dosyasını çalıştırın. Unknown publisher uyarısını geçmeden önce dosyanın kaynağını kontrol edin. Yönetici izni verin.

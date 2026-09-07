@@ -29,7 +29,8 @@ const (
 	// the built-in radio, the firewall is pf, and routes come from route(8).
 	PlatformDarwin Platform = "darwin"
 
-	// PlatformWindows is Windows 11. The access point is Mobile Hotspot, the
+	// PlatformWindows is Windows 10 version 2004 (build 19041) or later and
+	// Windows 11. The access point is Mobile Hotspot, the
 	// firewall is the Windows Filtering Platform, and routes come from the IP
 	// Helper API.
 	PlatformWindows Platform = "windows"

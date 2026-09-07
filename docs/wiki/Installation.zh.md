@@ -24,11 +24,8 @@ Linux 发布版本面向 x86-64、ARM64 和 ARMv6/ARMv7。架构兼容本身并�
 
 ### Windows 10 和 11
 
-Windows 10 支持仍处于实验阶段，尚未测试。当前代码在 x64 上要求 Windows 10
-版本 2004（内部版本 19041）或更高版本。Windows 10 ARM64 的兼容性尚未验证。
-
-您需要 Windows 11 电脑，或运行 Windows 10 版本 2004 或更高版本的 x64 电脑
-（实验性支持）、管理员账户、支持 Windows Mobile Hotspot 的 Wi-Fi 适配器和互联网连接。
+您需要运行 Windows 10 版本 2004（内部版本 19041）或更高版本或 Windows 11 的
+x64 或 ARM64 电脑、管理员账户、支持 Windows Mobile Hotspot 的 Wi-Fi 适配器和互联网连接。
 安装程序包含所需组件，无需安装 Go 或 .NET SDK。
 详细步骤请参阅[英文 Windows 安装说明](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11)。
 

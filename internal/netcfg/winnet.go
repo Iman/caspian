@@ -14,7 +14,8 @@ import (
 	"time"
 )
 
-// windowsBackend is Windows 11.
+// windowsBackend is Windows 10 version 2004 (build 19041) or later and
+// Windows 11.
 //
 // Untagged for the same reason darwinnet.go is: the commands a Windows plan
 // turns into are generated and tested on every development machine. Only

@@ -29,10 +29,8 @@ REALITY），加上 `vmess`、`trojan`、`ss`、`socks`、`hysteria2` 和 `hy2`�
 
 ## 它需要什么
 
-Windows 发布版以 x64 上的 Windows 10 版本 2004（内部版本 19041）或更高版本
-作为实验性兼容目标。安装和热点功能仍需测试。
-
-当前发布支持 x64 和 ARM64 上的 Windows 11、Intel 和 Apple Silicon 上的 macOS 13
+当前发布支持 x64 和 ARM64 上的 Windows 10 版本 2004（内部版本 19041）或更高版本以及
+Windows 11、Intel 和 Apple Silicon 上的 macOS 13
 或更高版本，以及 x86_64、ARM64、ARMv7 和 ARMv6 上的 Linux。Android 和 iOS 不作为
 网关主机；手机和平板作为客户端加入 Caspian Wi-Fi。
 

@@ -32,12 +32,10 @@ refused by name.
 
 ## What it needs
 
-Current releases include Windows 11 on x64 and ARM64, macOS 13 or later on Intel
-and Apple Silicon, and Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
+Current releases include Windows 10 version 2004 (build 19041) or later and
+Windows 11 on x64 and ARM64, macOS 13 or later on Intel and Apple Silicon, and
+Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
 are not gateway hosts; phones and tablets join the Caspian Wi-Fi as clients.
-
-Windows 10 version 2004 (build 19041) or later on x64 is an experimental target
-for the Windows release. It still needs installation and hotspot testing.
 
 [`internal/netcfg/testdata/PROVENANCE.md`](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) records the machine this has been
 developed and measured against: a Raspberry Pi 5 Model B Rev 1.0, Debian 13

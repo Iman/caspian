@@ -25,16 +25,12 @@ from source.
 
 ### Windows 10 and 11
 
-Windows 10 support is experimental and not yet tested. On x64, the current code
-requires version 2004 (build 19041) or later. Windows 10 ARM64 compatibility
-is not yet verified.
-
 The setup program installs everything that Caspian needs. You do not need
 PowerShell, Go, or the .NET SDK.
 
 #### What you need
 
-- A Windows 11 computer, or Windows 10 version 2004 or later on x64 (experimental).
+- A computer running Windows 10 version 2004 (build 19041) or later, or Windows 11, on x64 or ARM64.
 - An administrator account on that computer.
 - A Wi-Fi adapter that supports Windows Mobile Hotspot.
 - An internet connection.

@@ -13,7 +13,8 @@ import (
 	"time"
 )
 
-// MobileHotspot is the Windows AccessPoint: Windows 11's Mobile Hotspot,
+// MobileHotspot is the Windows AccessPoint: Mobile Hotspot on Windows 10
+// version 2004 (build 19041) or later and Windows 11,
 // driven through a small helper program because the API that controls it is
 // WinRT (Windows.Networking.NetworkOperators.NetworkOperatorTetheringManager)
 // and Go has no projection of that namespace.
