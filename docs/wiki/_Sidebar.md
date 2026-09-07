@@ -4,10 +4,9 @@
 
 </div>
 
-<details open>
-<summary>English</summary>
-
 <div dir="ltr" align="left">
+
+## English
 
 - [Getting started](https://github.com/Iman/caspian/wiki/Getting-Started)
 - [Installation](https://github.com/Iman/caspian/wiki/Installation)
@@ -25,12 +24,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>فارسی</summary>
 
 <div dir="rtl" align="right">
+
+## فارسی
 
 - [شروع کار](https://github.com/Iman/caspian/wiki/Getting-Started.fa)
 - [نصب](https://github.com/Iman/caspian/wiki/Installation.fa)
@@ -48,12 +45,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>Русский</summary>
 
 <div dir="ltr" align="left">
+
+## Русский
 
 - [Начало работы](https://github.com/Iman/caspian/wiki/Getting-Started.ru)
 - [Установка](https://github.com/Iman/caspian/wiki/Installation.ru)
@@ -71,12 +66,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>中文</summary>
 
 <div dir="ltr" align="left">
+
+## 中文
 
 - [开始使用](https://github.com/Iman/caspian/wiki/Getting-Started.zh)
 - [安装](https://github.com/Iman/caspian/wiki/Installation.zh)
@@ -94,12 +87,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>العربية</summary>
 
 <div dir="rtl" align="right">
+
+## العربية
 
 - [ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
 - [بدء الاستخدام](https://github.com/Iman/caspian/wiki/Getting-Started.ar)
@@ -112,12 +103,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>اردو</summary>
 
 <div dir="rtl" align="right">
+
+## اردو
 
 - [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 - [شروع کریں](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
@@ -130,12 +119,10 @@
 
 </div>
 
-</details>
-
-<details>
-<summary>Türkçe</summary>
 
 <div dir="ltr" align="left">
+
+## Türkçe
 
 - [Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
 - [Başlangıç](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
@@ -148,7 +135,6 @@
 
 </div>
 
-</details>
 
 <div dir="ltr" align="left">
 
