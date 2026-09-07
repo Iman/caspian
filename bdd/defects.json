@@ -19,6 +19,7 @@
   ],
 
   "web": {
+    "@country-recovery": { "defect": "advanced-save-ignored", "expect": "red" },
     "@language-responsive": { "defect": "language-overflow", "expect": "red" },
     "@language-persistence": { "defect": "language-choice-ignored", "expect": "red" },
     "@right-password": { "defect": "every-password-rejected", "expect": "red" },

@@ -125,7 +125,7 @@ class CaspianWorld extends World {
     await el.click();
   }
 
-  async clickAndWaitForPageUpdate(selector) {
+  async clickAndWaitForPageUpdate(selector, readySelector = '#hero') {
     await this.driver.executeScript('document.body.__caspianBddBeforeSubmit = true');
     await this.click(selector);
     // POST forms replace the body through fetch; GET forms navigate normally.
@@ -135,7 +135,7 @@ class CaspianWorld extends World {
       'return document.body && document.body.__caspianBddBeforeSubmit !== true && ' +
       'document.readyState === "complete"'
     ), 15 * 1000, 'the form did not finish updating the page');
-    await this.find('#hero');
+    await this.find(readySelector);
   }
 
   // css returns a COMPUTED property, which is the whole reason this suite
@@ -176,7 +176,7 @@ class CaspianWorld extends World {
     const field = await this.find('#password');
     await field.clear();
     await field.sendKeys(password);
-    await this.click('form[action="/login"] button[type="submit"]');
+    await this.clickAndWaitForPageUpdate('form[action="/login"] button[type="submit"]', 'body');
   }
 
   async signedIn() {

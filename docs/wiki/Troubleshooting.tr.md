@@ -8,6 +8,13 @@
 
 Önce yönlendiriciden Caspian çalıştıran bilgisayara Ethernet kablosu bağlayın. Erişim noktası için bilgisayarın dahili Wi-Fi adaptörünü veya Linux'ta uyumlu bir USB Wi-Fi adaptörünü kullanın. Böylece internet girişi ve erişim noktası ayrı adaptörlerde çalışır. Bu, önerilen başlangıç düzenidir; ölçülmüş bir hız garantisi değildir.
 
+## Wi-Fi ülkesi ayarlanmamış
+
+Otomatik algılama varsayılan olarak kalır. Caspian ülkeyi algılayabiliyorsa Country alanını boş bırakın. Wi-Fi country is not set hatasında Set Wi-Fi country bağlantısını açın. Gelişmiş ayarlarda bilgisayarın bulunduğu gerçek ülkenin iki harfli kodunu girin, kaydedin ve Caspian’ı yeniden açın. Seçim, hizmet yeniden başlatıldığında korunur. Otomatik algılamaya dönmek için alanı boşaltıp kaydedin. Caspian IR kodunu varsaymaz; panel dilinden veya proxy sunucusundan ülke seçmez.
+
+Kurulu sürüm Country alanını gizliyorsa görünür alan issue #3 güncellemesinin parçasıdır. Caspian ve Linux sürümlerini, adaptör bağlantılarını ve güncel panelde ülke seçmenin sonucunu bildirin. Özel yapılandırma veya tam günlük göndermeyin. Elle çalıştırılan iw komutunun işe yaraması, uygulamanın sistem radyo ayarlarını değiştirmesi gerektiğini kanıtlamaz. Bu değişiklik otomatik iw reg set içermez.
+
+
 ## Bağlantı düzenini seçin
 
 Şemalarda [1] internet yönlendiricisini, [2] Caspian bilgisayarını, [3] telefonu veya başka bir cihazı gösterir. ETH, Ethernet kablosudur. USB Ethernet adaptörü bilgisayara internet getirir; USB Wi-Fi adaptörü kablosuz bağlantı sağlar. Görevleri farklıdır.

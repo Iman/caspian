@@ -173,6 +173,23 @@ func (h *harness) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	faulty{inner: app.panel, d: app.defect}.ServeHTTP(w, r)
 }
 
+// countryAware models the service's country refusal; service tests cover the real planner.
+type countryAware struct {
+	panel.Privileged
+	fake *panel.FakePrivileged
+}
+
+func (c countryAware) Start(ctx context.Context, req panel.StartRequest) error {
+	d, err := c.fake.Detect(ctx)
+	if err != nil {
+		return err
+	}
+	if d.Country == "" && req.Hotspot.Country == "" {
+		return &panel.FaultError{Fault: panel.FaultCountryMissing}
+	}
+	return c.Privileged.Start(ctx, req)
+}
+
 // reset builds a fresh appliance: set up, with a hotspot and a config, switched
 // off.
 func (h *harness) reset(defectName string) error {
@@ -227,7 +244,7 @@ func (h *harness) reset(defectName string) error {
 
 	p, err := panel.New(panel.Config{
 		Store:  store,
-		Priv:   served,
+		Priv:   countryAware{Privileged: served, fake: priv},
 		Logger: slog.New(slog.DiscardHandler),
 	})
 	if err != nil {
@@ -244,6 +261,7 @@ func (h *harness) reset(defectName string) error {
 // controlState is the body of POST /__control/state. Every field is a pointer,
 // so a scenario changes one thing without having to restate the rest.
 type controlState struct {
+	Country *string `json:"country"`
 	Engine  *string `json:"engine"`
 	Hotspot *bool   `json:"hotspot"`
 	Devices *int    `json:"devices"`
@@ -269,6 +287,28 @@ func (h *harness) control(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true, "defect": body.Defect})
+
+	case "/__control/restart":
+		h.mu.Lock()
+		app := h.cur
+		store, err := state.Load(app.store.Dir())
+		if err == nil {
+			var served panel.Privileged = app.priv
+			if app.defect.deviceCountGated {
+				served = gatedDeviceCount{app.priv}
+			}
+			var p *panel.Panel
+			p, err = panel.New(panel.Config{Store: store, Priv: countryAware{Privileged: served, fake: app.priv}, Logger: slog.New(slog.DiscardHandler)})
+			if err == nil {
+				h.cur = &appliance{store: store, priv: app.priv, panel: p, defect: app.defect}
+			}
+		}
+		h.mu.Unlock()
+		if err != nil {
+			writeJSON(w, 500, map[string]any{"error": "test restart failed"})
+			return
+		}
+		writeJSON(w, 200, map[string]any{"ok": true})
 
 	case "/__control/unconfigured":
 		h.mu.RLock()
@@ -322,6 +362,14 @@ func (h *harness) applyState(c controlState) error {
 	app := h.cur
 	h.mu.RUnlock()
 
+	if c.Country != nil {
+		d, err := app.priv.Detect(context.Background())
+		if err != nil {
+			return err
+		}
+		d.Country = *c.Country
+		app.priv.SetDetection(d)
+	}
 	st, err := app.priv.Status(context.Background())
 	if err != nil {
 		return err
@@ -723,6 +771,7 @@ func (noCloseReader) Close() error { return nil }
 // visible in one place rather than scattered through JavaScript string
 // literals.
 var exportedKeys = []panel.Key{
+	panel.MsgCountryMissing, panel.MsgCountryAdvice,
 	panel.MsgAppName,
 	panel.MsgSkipToMain,
 	panel.MsgLoginHeading,

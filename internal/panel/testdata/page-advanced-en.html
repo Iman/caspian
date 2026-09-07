@@ -472,7 +472,13 @@
       
       <option value="5GHz" >5 GHz (faster, shorter range)</option>
       
-    </select><input type="hidden" name="country" dir="ltr" value="">
+    </select>
+
+    <label for="country">Country</label>
+    <input id="country" name="country" type="text" dir="ltr" value=""
+           maxlength="2" pattern="[A-Za-z]{2}" placeholder="GB"
+           aria-describedby="country-hint" autocomplete="off" spellcheck="false">
+    <p id="country-hint" class="hint">Automatic detection is the default: leave this blank. If detection fails, enter the two-letter code for your actual country. Save, then retry. Clear the field to return to automatic detection.</p>
 
     <label for="subnet">Hotspot network</label>
     <input id="subnet" name="subnet" type="text" dir="ltr" value=""

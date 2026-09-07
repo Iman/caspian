@@ -117,6 +117,7 @@ type pageData struct {
 	Running bool
 
 	// ---- messages ----
+	ProblemCountry  bool
 	ProblemHeadline string
 	ProblemAdvice   string
 	ProblemDetail   string
@@ -308,6 +309,7 @@ func (d *pageData) setProblem(p Problem) {
 		return
 	}
 	d.HasProblem = true
+	d.ProblemCountry = p.Headline == MsgCountryMissing
 	if p.Headline != "" {
 		d.ProblemHeadline = T(d.Lang, p.Headline)
 	}

@@ -472,7 +472,13 @@
       
       <option value="5GHz" >5 گیگاهرتز (سریع‌تر، برد کمتر)</option>
       
-    </select><input type="hidden" name="country" dir="ltr" value="">
+    </select>
+
+    <label for="country">کشور</label>
+    <input id="country" name="country" type="text" dir="ltr" value=""
+           maxlength="2" pattern="[A-Za-z]{2}" placeholder="GB"
+           aria-describedby="country-hint" autocomplete="off" spellcheck="false">
+    <p id="country-hint" class="hint">پیش‌فرض، تشخیص خودکار است: این کادر را خالی بگذارید. اگر تشخیص انجام نشد، کد دوحرفی کشور واقعی محل دستگاه را وارد و ذخیره کنید، سپس دوباره تلاش کنید. برای بازگشت به تشخیص خودکار، کادر را خالی کنید.</p>
 
     <label for="subnet">شبکه هات‌اسپات</label>
     <input id="subnet" name="subnet" type="text" dir="ltr" value=""

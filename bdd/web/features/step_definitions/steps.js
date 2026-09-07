@@ -706,3 +706,34 @@ When('I reload the page without language parameters', async function () {
 Given('the test appliance has not been set up', async function () {
   await this.control('unconfigured', {});
 });
+
+Given('the radio reports no country', async function () {
+  await this.setState({ country: '' });
+});
+
+Then('the missing Wi-Fi country instructions are shown', async function () {
+  assert.equal(await this.text('.problem-head'), this.msg('fault.countrymissing'));
+  assert.equal(await this.text('.problem-advice'), this.msg('fault.countrymissing.advice'));
+  assert.ok((await this.attr('#country-recovery', 'href')).endsWith('/?advanced=1#country'));
+});
+
+When('I follow the country setting link', async function () {
+  await this.click('#country-recovery');
+  const field = await this.find('#country');
+  assert.ok(await field.isDisplayed());
+});
+
+When('I save Wi-Fi country {string}', async function (country) {
+  const field = await this.find('#country');
+  await field.clear();
+  if (country) await field.sendKeys(country);
+  await this.clickAndWaitForPageUpdate('form[action="/advanced"]:has(#country) button[type="submit"]');
+});
+
+Then('the saved Wi-Fi country is {string}', async function (country) {
+  assert.equal(await this.attr('#country', 'value'), country);
+});
+
+When('the panel restarts from saved state', async function () {
+  await this.control('restart', {});
+});

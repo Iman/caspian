@@ -177,7 +177,7 @@ func TestEveryFieldOfAStartRequestIsCheckedAgainstThisMachine(t *testing.T) {
 			world: func(w *world) {
 				w.runner = newRecordedMachine(fixtureIWList, fixtureIWRegGetWorld)
 			},
-			want: panel.FaultUnknown,
+			want: panel.FaultCountryMissing,
 		},
 		{
 			name: "a clock earlier than the date this software was written",
@@ -480,5 +480,29 @@ func TestTheStartRequestNamesTheValuesInternalStateGuarantees(t *testing.T) {
 	}
 	if req.Network.OnTunnelDown != state.OnTunnelDownBlock {
 		t.Fatalf("the test request does not carry state.OnTunnelDownBlock")
+	}
+}
+
+func TestMissingCountryCanRetryWithAnExplicitCountry(t *testing.T) {
+	w := newWorld(t, func(w *world) {
+		w.runner = newRecordedMachine(fixtureIWList, fixtureIWRegGetWorld)
+		w.cfg.Runner = tracedRunner{inner: w.runner, tl: w.tl}
+	})
+	req := startRequest(t)
+	if req.Hotspot.Country != "" {
+		t.Fatal("automatic must be the default")
+	}
+	if got := panel.FaultOf(w.svc.Start(context.Background(), req)); got != panel.FaultCountryMissing {
+		t.Fatalf("missing country: %s", got)
+	}
+	if len(w.mutatingCommands()) != 0 {
+		t.Fatal("missing country changed the machine")
+	}
+	req.Hotspot.Country = "IE"
+	if err := w.svc.Start(context.Background(), req); err != nil {
+		t.Fatal(err)
+	}
+	if w.eng.startCount() != 1 {
+		t.Fatal("retry did not start the engine")
 	}
 }

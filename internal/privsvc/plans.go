@@ -144,11 +144,7 @@ func (s *Service) hotspotPlanFor(p *netcfg.Plan, f netcfg.Facts, req panel.Start
 		// appears. internal/hotspot refuses it for that reason and this
 		// refusal happens earlier, before anything has been applied.
 		//
-		// There is no Fault in the panel's closed vocabulary for "no
-		// regulatory domain", so this is reported as unclassified rather than
-		// forced into the nearest word. See the report accompanying this
-		// package.
-		return hotspot.Plan{}, fail("country", panel.FaultUnknown,
+		return hotspot.Plan{}, fail("country", panel.FaultCountryMissing,
 			errors.New("no country is set and the radio did not report one, so the hotspot cannot legally pick a channel"))
 	}
 

@@ -8,6 +8,13 @@
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.
 
+## Wi-Fi country is not set
+
+Automatic detection remains the default. Leave Country blank unless Caspian cannot detect it. If you see “Wi-Fi country is not set”, follow Set Wi-Fi country to Advanced settings. Enter the two-letter code for the country where the computer is located, save, then switch Caspian on again. The saved choice survives a service restart. Clear the field and save to return to automatic detection. Caspian does not assume IR or choose a country from the panel language or proxy server.
+
+If your installed version hides the Country field, this recovery control is part of the issue #3 update. Record your Caspian and Linux versions, adapter arrangement, and whether choosing Country in the updated panel is enough. Do not send private configuration or complete logs. A report that a manual iw command helped does not prove that the app must change the system radio settings. Automatic iw reg set is not part of this change.
+
+
 ## Choose your connection
 
 In these diagrams, [1] is your internet router, [2] is the computer running Caspian, and [3] is your phone or another device. ETH means an Ethernet cable. A USB Ethernet adapter brings internet in; a USB Wi-Fi adapter creates a wireless connection. They do different jobs.

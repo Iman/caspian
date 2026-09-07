@@ -179,6 +179,8 @@ func StartProblem(f Fault) Problem {
 		return EngineProblem()
 	case FaultServerNoAnswer:
 		return ServerProblem()
+	case FaultCountryMissing:
+		return Problem{Headline: MsgCountryMissing, Advice: MsgCountryAdvice}
 	default:
 		return Problem{Stage: StageNone, Headline: f.Key()}
 	}
@@ -219,6 +221,8 @@ func (f Fault) Key() Key {
 		return MsgFaultUnavailable
 	case FaultIPv6Unsupported:
 		return MsgFaultIPv6Unsupported
+	case FaultCountryMissing:
+		return MsgCountryMissing
 	case FaultUnknown:
 		return MsgFaultUnknown
 	default:
@@ -236,7 +240,7 @@ var faults = []Fault{
 	FaultNoAPAdapter, FaultHotspotInterfaceBusy, FaultNotRunning, FaultRadioBlocked, FaultNoInternetInterface, FaultChannelRefused,
 	FaultHotspotFailed, FaultDHCPFailed, FaultEngineRejectedConfig, FaultServerNoAnswer,
 	FaultClockImplausible, FaultPermissionDenied, FaultSoftwareMissing, FaultUnavailable,
-	FaultIPv6Unsupported, FaultUnknown,
+	FaultIPv6Unsupported, FaultCountryMissing, FaultUnknown,
 }
 
 // Key is what to call an interface kind on screen.

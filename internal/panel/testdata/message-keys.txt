@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 376 keys
+## fa: 379 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -131,6 +131,9 @@
   events.note
   fault.channelrefused
   fault.clock
+  fault.countrymissing
+  fault.countrymissing.action
+  fault.countrymissing.advice
   fault.dhcpfailed
   fault.hotspotfailed
   fault.interfacebusy
@@ -383,7 +386,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 376 keys
+## en: 379 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -509,6 +512,9 @@
   events.note
   fault.channelrefused
   fault.clock
+  fault.countrymissing
+  fault.countrymissing.action
+  fault.countrymissing.advice
   fault.dhcpfailed
   fault.hotspotfailed
   fault.interfacebusy

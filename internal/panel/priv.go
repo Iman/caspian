@@ -241,6 +241,9 @@ const (
 	// that the answer is to put it back.
 	FaultIPv6Unsupported Fault = "ipv6-unsupported"
 
+	// FaultCountryMissing asks for an explicit country when detection has none.
+	FaultCountryMissing Fault = "country-missing"
+
 	// FaultUnknown is for a failure the privileged side could not classify.
 	// It exists so that an unclassified failure is reported as unclassified
 	// rather than being forced into the nearest category, which would send the

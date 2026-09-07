@@ -146,6 +146,7 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
   <div class="banner-body">
   {{if .ProblemHeadline}}<p class="problem-head">{{.ProblemHeadline}}</p>{{end}}
   {{if .ProblemAdvice}}<p class="problem-advice">{{.ProblemAdvice}}</p>{{end}}
+  {{if .ProblemCountry}}<a id="country-recovery" href="/?advanced=1#country">{{.T "fault.countrymissing.action"}}</a>{{end}}
   {{if and .Advanced .ProblemDetail}}
   <p class="problem-detail"><span class="label">{{.T "problem.detail.label"}}</span>
     <bdi dir="ltr" class="mono">{{.ProblemDetail}}</bdi></p>
@@ -349,21 +350,11 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
       {{end}}
     </select>
 
-    {{- /*
-      The country code is carried and not shown. It decides which channels and
-      what power are legal, and getting it wrong can silence the radio, but the
-      box already reads the regulatory domain from the machine and picks a
-      channel that is legal there, so asking the user is asking a question whose
-      right answer is the one already in the field.
-
-      It is hidden rather than deleted, and hidden as a value rather than with
-      CSS, so an existing setting round-trips instead of being wiped by a form
-      that no longer mentions it. Everything behind it stays: the state field,
-      the validation, and the hostapd line it produces. If a radio is ever met
-      that needs a human to say where it is, this becomes an input again and
-      nothing else has to change.
-    */ -}}
-    <input type="hidden" name="country" dir="ltr" value="{{.CurrentCountry}}">
+    <label for="country">{{.T "advanced.country"}}</label>
+    <input id="country" name="country" type="text" dir="ltr" value="{{.CurrentCountry}}"
+           maxlength="2" pattern="[A-Za-z]{2}" placeholder="{{.PlaceCountry}}"
+           aria-describedby="country-hint" autocomplete="off" spellcheck="false">
+    <p id="country-hint" class="hint">{{.T "advanced.country.hint"}}</p>
 
     <label for="subnet">{{.T "advanced.subnet"}}</label>
     <input id="subnet" name="subnet" type="text" dir="ltr" value="{{.CurrentSubnet}}"

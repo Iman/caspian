@@ -197,3 +197,30 @@ Feature: PositiveTests.feature
     Given I am signed in
     When I open the dashboard with the advanced section showing
     Then every control that takes a value has a label
+
+  @ready @country-recovery
+  Scenario: a missing Wi-Fi country can be selected and survives a panel restart
+    Given I am signed in
+    And the radio reports no country
+    When I open the dashboard with the advanced section showing
+    Then the saved Wi-Fi country is ""
+    When I press the power control
+    Then the missing Wi-Fi country instructions are shown
+    When I follow the country setting link
+    And I save Wi-Fi country "IE"
+    Then the saved Wi-Fi country is "IE"
+    When I press the power control
+    Then the power control offers to switch the box off
+    When I press the power control
+    And the panel restarts from saved state
+    And I sign in with the right password
+    And I open the dashboard with the advanced section showing
+    Then the saved Wi-Fi country is "IE"
+    When I press the power control
+    Then the power control offers to switch the box off
+    When I press the power control
+    And I open the dashboard with the advanced section showing
+    And I save Wi-Fi country ""
+    Then the saved Wi-Fi country is ""
+    When I press the power control
+    Then the missing Wi-Fi country instructions are shown
