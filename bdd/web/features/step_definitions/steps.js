@@ -133,23 +133,17 @@ When('I choose the other language', async function () {
   const current = await this.attr('html', 'lang');
   const next = current === 'en' ? 'fa' : 'en';
   await this.click('#panel-language option[value="' + next + '"]');
-  const previousDocument = await this.find('html');
-  await this.click('.language-apply');
-  // The old page also has #hero. Wait for navigation before reading language.
-  await this.driver.wait(until.stalenessOf(previousDocument), 15 * 1000);
-  await this.driver.wait(until.elementLocated(By.css('#hero')), 15 * 1000);
+  await this.clickAndWaitForPageUpdate('.language-apply');
   const lang = await this.attr('html', 'lang');
   this.lang = lang;
 });
 
 When('I press the power control', async function () {
-  await this.click('#power-button');
-  await this.driver.wait(until.elementLocated(By.css('#hero')), 15 * 1000);
+  await this.clickAndWaitForPageUpdate('#power-button');
 });
 
 When('I press the client traffic control', async function () {
-  await this.click('#cut-button');
-  await this.driver.wait(until.elementLocated(By.css('#hero')), 15 * 1000);
+  await this.clickAndWaitForPageUpdate('#cut-button');
 });
 
 When('the control bar is put into the waiting state by hand', async function () {

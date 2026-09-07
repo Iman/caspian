@@ -125,6 +125,19 @@ class CaspianWorld extends World {
     await el.click();
   }
 
+  async clickAndWaitForPageUpdate(selector) {
+    await this.driver.executeScript('document.body.__caspianBddBeforeSubmit = true');
+    await this.click(selector);
+    // POST forms replace the body through fetch; GET forms navigate normally.
+    // Both old and new pages contain #hero, so wait for the old body to leave.
+    // Inspect the current body in the browser, without passing a stale node.
+    await this.driver.wait(async () => this.driver.executeScript(
+      'return document.body && document.body.__caspianBddBeforeSubmit !== true && ' +
+      'document.readyState === "complete"'
+    ), 15 * 1000, 'the form did not finish updating the page');
+    await this.find('#hero');
+  }
+
   // css returns a COMPUTED property, which is the whole reason this suite
   // exists. A class name says what the page intended; this says what the
   // browser drew after the cascade had its say.
