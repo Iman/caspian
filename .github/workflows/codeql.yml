@@ -1,0 +1,72 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '23 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: actions
+            runner: ubuntu-latest
+            build-mode: none
+          - language: csharp
+            runner: ubuntu-latest
+            build-mode: none
+          - language: go
+            runner: ubuntu-latest
+            build-mode: autobuild
+          - language: javascript-typescript
+            runner: ubuntu-latest
+            build-mode: none
+          - language: python
+            runner: ubuntu-latest
+            build-mode: none
+          - language: swift
+            runner: macos-15
+            build-mode: manual
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        if: matrix.language == 'go'
+        with:
+          go-version: '1.26'
+      - uses: github/codeql-action/init@v4
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+      - uses: github/codeql-action/autobuild@v4
+        if: matrix.build-mode == 'autobuild'
+      - name: Build Swift sources
+        if: matrix.language == 'swift'
+        env:
+          CLANG_MODULE_CACHE_PATH: ${{ runner.temp }}/caspian-codeql/clang-cache
+        run: |
+          set -eu
+          mkdir -p "$RUNNER_TEMP/caspian-codeql"
+          # The release compiles standalone Swift files, without an Xcode project.
+          xcrun swiftc -O -target arm64-apple-macos13.0 \
+            packaging/darwin/CaspianControl.swift -o "$RUNNER_TEMP/caspian-codeql/Caspian"
+          xcrun swiftc -O -target arm64-apple-macos13.0 \
+            packaging/darwin/make-icon.swift -o "$RUNNER_TEMP/caspian-codeql/make-icon"
+      - uses: github/codeql-action/analyze@v4
+        with:
+          category: /language:${{ matrix.language }}
