@@ -1,0 +1,36 @@
+name: Improve a guide or translation
+description: Report unclear instructions, a wrong translation, or a broken link.
+title: "[Docs] "
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page link
+      description: Paste the README or wiki page URL, without private query parameters.
+    validations:
+      required: true
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - English
+        - فارسی
+        - Русский
+        - 中文
+        - العربية
+        - اردو
+        - Türkçe
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is unclear or incorrect?
+      description: Quote the sentence or name the step. You may write in your own language. Do not include private configuration or network details.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Suggested wording or missing information

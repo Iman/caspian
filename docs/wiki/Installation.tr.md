@@ -6,6 +6,8 @@
 
 </div>
 
+[Bağlantı şemaları, önce kabloyu bağlama adımları, hizmetleri yeniden başlatma ve yaygın hatalar için ev kullanıcısı sorun giderme kılavuzunu okuyun.](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
 İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
 
 Linux sürüm dosyaları x86-64, ARM64 ve ARMv6/ARMv7 mimarilerini hedefler. Mimari uyumluluğu tek başına yeterli performansı kanıtlamaz.

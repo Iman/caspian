@@ -1,0 +1,92 @@
+name: Something is not working
+description: Report an installation, connection, hotspot, or panel problem.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        You can write in English, فارسی, Русский, 中文, العربية, اردو, or Türkçe.
+        Start with the [troubleshooting guide](https://github.com/Iman/caspian/wiki/Troubleshooting); choose your language at the top.
+        This report is public. Do not paste proxy links, subscription contents, config files, passwords, keys, or QR codes.
+        Remove public IPs, Wi-Fi names, MAC/BSSID addresses, serial numbers, and personal hostnames from errors or screenshots.
+  - type: input
+    id: caspian-version
+    attributes:
+      label: Caspian version
+      description: Copy the version shown in Caspian Control or the web panel. Write unknown if you cannot open it.
+    validations:
+      required: true
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating system
+      options:
+        - Linux laptop or desktop
+        - Raspberry Pi / Linux board
+        - macOS
+        - Windows
+        - Linux container
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: os-version
+    attributes:
+      label: OS or Linux distribution and version
+      description: Use the About page in your system settings. Write unknown if needed.
+    validations:
+      required: true
+  - type: dropdown
+    id: connection
+    attributes:
+      label: How is everything connected?
+      description: The first connection brings internet to Caspian; the second is the hotspot for your devices.
+      options:
+        - Ethernet to built-in Wi-Fi
+        - Ethernet to external USB Wi-Fi
+        - Wi-Fi to a separate Wi-Fi adapter
+        - Wi-Fi to the same Wi-Fi adapter
+        - Other / not sure
+    validations:
+      required: true
+  - type: input
+    id: adapters
+    attributes:
+      label: Adapter details, if known
+      description: Say which adapter brings internet in and which creates the hotspot. A chipset or driver name helps. Do not include serial numbers, MAC addresses, or personal device names.
+  - type: dropdown
+    id: internet-before-start
+    attributes:
+      label: Did internet work on the computer while Caspian was off?
+      options:
+        - "Yes"
+        - "No"
+        - Not tested / not sure
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened, and what did you expect?
+      description: Include the exact short error after removing private values. If Control says Ready but the panel shows an error, include the panel's message.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce and things already tried
+      description: Include when you connected the cable or adapter, started Caspian, and joined the hotspot. Mention restarts and whether they changed the result.
+    validations:
+      required: true
+  - type: input
+    id: protocol
+    attributes:
+      label: Proxy protocol and transport, if known
+      description: Names only, such as VLESS with raw/TCP and REALITY. Never paste the actual link or server address.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked the text and any attachments and removed credentials and personal network identifiers.
+          required: true

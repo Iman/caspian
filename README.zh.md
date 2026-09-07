@@ -33,6 +33,34 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 面板默认使用英语，可在页面顶部的语言菜单中选择波斯语。没有账号，没有遥测，面板也不从互联网上取任何东西。
 
 
+## 连接方式与支持的配置格式
+
+建议先用以太网线连接路由器和运行 Caspian 的电脑，再用电脑内置 Wi-Fi 建立热点。Linux 也可以使用兼容的 USB Wi-Fi 适配器。这样，互联网接入和热点各用一个适配器。这是推荐的起步方案，并不是经过测速的性能保证。
+
+图中 [1] 是互联网路由器，[2] 是运行 Caspian 的电脑，[3] 是手机或其他设备。ETH 表示以太网线。USB 以太网适配器负责接入互联网；USB Wi-Fi 适配器负责无线连接。两者用途不同。
+
+```text
+A  [1] --ETH--> [2] --built-in Wi-Fi--> [3]
+B  [1] --ETH--> [2] --USB Wi-Fi-------> [3]
+C  [1] --Wi-Fi A--> [2] --Wi-Fi B----> [3]
+D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
+```
+
+| Caspian 的互联网来源 | 供设备连接的热点 | Linux / Raspberry Pi | macOS |
+|---|---|---|---|
+| A. 以太网 | 内置 Wi-Fi | 驱动支持建立热点时可用 | 支持的连接方式 |
+| B. 以太网 | 外置 USB Wi-Fi | 需要支持接入点（AP）模式的 Linux 驱动 | Caspian 不支持将其用作热点 |
+| C. Wi-Fi 适配器 A | 独立的 Wi-Fi 适配器 B | 适配器 B 需要支持 AP | 不支持外置 USB Wi-Fi 热点 |
+| D. Wi-Fi | 同一个 Wi-Fi 无线模块 | 有条件支持：驱动须允许客户端和 AP 同时运行，可能共用信道 | 不支持用内置无线模块这样连接 |
+
+此表说明当前代码能够规划或拒绝的连接方式，不代表所有适配器、系统更新或笔记本电脑都经过验证。能连接家庭 Wi-Fi 的适配器，不一定能建立热点。Linux 的 USB 连接方案有模型测试，但现有硬件记录不能证明所有 USB 适配器都可用。在 Mac 上请使用文档规定的以太网接入和内置 Wi-Fi 热点。添加 USB Wi-Fi 无法解除这个限制。
+
+Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接，包括 hy2 别名。也接受受支持的 Clash/Clash.Meta YAML、Xray JSON、链接列表和 base64 订阅内容。列表只使用第一条链接；面板不会下载订阅 URL。请向提供者索取实际支持的配置，而不是账户密码或网页链接。
+
+支持的传输名称包括 raw/tcp、ws、grpc、httpupgrade、xhttp/splithttp 和 kcp/mkcp。协议、传输和安全参数必须兼容，并非任意组合都能使用。不支持 TUIC、WireGuard、SSR、AnyTLS 和 Hysteria v1 链接。不要通过改名让不支持的协议通过验证。限制和测试证据见协议指南。
+
+[连接示意图、先接网线再启动、服务重启和常见错误，请阅读家庭用户故障排查指南。](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
+
 ## 安装与指南
 
 处理器和内存：Caspian 尚未通过测量确定最低内存容量、处理器核心数或时钟频率。资源占用取决于流量、代理协议和并发连接数。发布最低配置要求前，需要测量空闲和负载状态下的资源占用。

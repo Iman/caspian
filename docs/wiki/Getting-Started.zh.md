@@ -6,6 +6,8 @@
 
 </div>
 
+[连接示意图、先接网线再启动、服务重启和常见错误，请阅读家庭用户故障排查指南。](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
+
 [Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南从现有 README 迁移而来。测量结果保留原有日期；此次文档迁移不代表重新运行了测试。

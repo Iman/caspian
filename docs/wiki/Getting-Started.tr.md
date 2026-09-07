@@ -6,6 +6,8 @@
 
 </div>
 
+[Bağlantı şemaları, önce kabloyu bağlama adımları, hizmetleri yeniden başlatma ve yaygın hatalar için ev kullanıcısı sorun giderme kılavuzunu okuyun.](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
 Caspian, sizin sağladığınız proxy yapılandırmasıyla bilgisayarı bir Wi-Fi erişim noktasına dönüştürür. Çalışan bir internet bağlantısı ve erişilebilir bir proxy sunucusu gerekir. Proxy, ağın tamamen kesildiği durumda interneti geri getiremez.
 
 1. İşletim sisteminizin kurulum kılavuzunu seçin.

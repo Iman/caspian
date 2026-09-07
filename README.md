@@ -38,6 +38,34 @@ telemetry, and the panel fetches nothing from the internet.
 
 ![Caspian Control on Windows](docs/images/caspian-control-windows.png)
 
+## Connections and supported formats
+
+Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.
+
+In these diagrams, [1] is your internet router, [2] is the computer running Caspian, and [3] is your phone or another device. ETH means an Ethernet cable. A USB Ethernet adapter brings internet in; a USB Wi-Fi adapter creates a wireless connection. They do different jobs.
+
+```text
+A  [1] --ETH--> [2] --built-in Wi-Fi--> [3]
+B  [1] --ETH--> [2] --USB Wi-Fi-------> [3]
+C  [1] --Wi-Fi A--> [2] --Wi-Fi B----> [3]
+D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
+```
+
+| Internet into Caspian | Hotspot to your devices | Linux / Raspberry Pi | macOS |
+|---|---|---|---|
+| A. Ethernet | Built-in Wi-Fi | Supported when the driver can create a hotspot | Supported arrangement |
+| B. Ethernet | External USB Wi-Fi | Requires a Linux driver with access point (AP) support | Not supported as the hotspot by Caspian |
+| C. Wi-Fi adapter A | Separate Wi-Fi adapter B | Requires AP support on adapter B | An external USB Wi-Fi hotspot is not supported |
+| D. Wi-Fi | The same Wi-Fi radio | Conditional: the driver must allow a station and AP together; the channel may be shared | Not supported on the built-in radio |
+
+These are the arrangements the current code can plan or refuse. They do not certify every adapter, OS update, or laptop. A Wi-Fi adapter that can join your home network may still be unable to create a hotspot. Linux USB arrangements have modelled tests; the existing hardware record does not establish that every USB adapter works. On macOS, use Ethernet and built-in Wi-Fi for the documented path. Plugging in USB Wi-Fi does not remove that restriction.
+
+Caspian accepts VLESS, VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 links, including the hy2 alias. It also accepts supported Clash/Clash.Meta YAML, Xray JSON, lists of links, and base64 subscription content. It uses the first link in a list; it does not fetch a subscription URL. Ask your provider for the actual supported configuration, not an account password or a web page link.
+
+Supported transport names include raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp, and kcp/mkcp. Protocol, transport, and security settings must be compatible; not every combination works. TUIC, WireGuard, SSR, AnyTLS, and Hysteria v1 links are not supported. Do not rename an unsupported protocol to make it pass validation. See the protocol guide for restrictions and test evidence.
+
+[For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
 ## Install and read the guides
 
 CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.

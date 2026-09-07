@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Setup and troubleshooting in seven languages
+    url: https://github.com/Iman/caspian/wiki/Troubleshooting
+    about: Connection diagrams, cable-first setup, service restarts, and common errors. Choose your language at the top.

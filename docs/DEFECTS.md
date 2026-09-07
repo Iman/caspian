@@ -111,36 +111,25 @@ reasoning is the record of why D2b was opened.
 Closing them: journal the rfkill change like any other, and remove the two
 configuration files in `Supervisor.Stop`.
 
-## D3. A created hotspot interface is not released from NetworkManager
+## D3. Release created hotspot interfaces from NetworkManager
 
-**Status: OPEN by decision. The measurable half was fixed on 2026-08-30.**
+**Status: implemented and guarded by tests. The previous open entry was stale.**
 
-The plan emits `nmcli device set <iface> managed no` whenever its measured
-`HotspotManager` is NetworkManager. That covers the takeover and the free
-interface a second radio offers, which is mode B, the USB adapter this product
-tells people to buy.
+When detection finds NetworkManager, `VirtualIfaceSteps` releases a newly
+created hotspot interface before assigning its address. The order is interface
+creation, `nmcli device set <iface> managed no`, then address assignment.
+`HotspotManager` remains unknown for an interface that did not exist during
+detection; the release uses `NetworkManagerPresent` instead.
 
-It does NOT cover the two paths where this package CREATES the access point's
-interface, because detection ran before that interface existed and no manager
-was measured for it. `Plan.HotspotManager` is deliberately left unknown there
-rather than guessed from the parent radio.
+`TestACreatedHotspotInterfaceIsReleasedFromNetworkManager` checks that order.
+`TestNoNmcliOnTheCreatedPathWhenNetworkManagerIsNotThere` checks that a system
+without NetworkManager does not run `nmcli` on this path.
+`TestTheHotspotInterfaceIsReleasedFromNetworkManagerOnEveryPathThatNamesOne`
+covers the paths that use an existing interface.
 
-What is unknown, and it is a live-machine question: whether NetworkManager takes
-an interface that appears from `iw phy ... interface add`. If it does, the
-2026-08-30 incident recorded above `HotspotReleaseSteps` can arrive by that
-door.
-
-The check, on a box where the mode A path succeeds: bring the appliance up, then
-`nmcli device status | grep ap0`. `unmanaged` means there is nothing to fix.
-Anything else means the release has to be extended to created interfaces, which
-needs a way to tolerate `nmcli` being asked about a device it has not enumerated
-yet.
-
-Guard: `TestACreatedHotspotInterfaceHasNoMeasuredManagerAndIsNotReleased` pins
-the gap so it stays a decision. It fails if a future change starts measuring a
-created interface, and the right response then is to extend
-`TestTheHotspotInterfaceIsReleasedFromNetworkManagerOnEveryPathThatNamesOne` and
-delete it.
+These tests use controlled system responses. They do not prove that every
+adapter and NetworkManager version works on real hardware. This documentation
+correction does not report a new hardware test.
 
 ## D4. Stop reports success when it undid nothing
 

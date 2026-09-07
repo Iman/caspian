@@ -6,6 +6,8 @@
 
 </div>
 
+[For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
 CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
 
 Linux release binaries target x86-64, ARM64, and ARMv6/ARMv7. Architecture compatibility alone does not establish usable performance.

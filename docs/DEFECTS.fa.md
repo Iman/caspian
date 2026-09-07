@@ -116,36 +116,26 @@
 بستن آنها: تغییر rfkill را مثل هر تغییر دیگری ژورنال کنید، و دو فایل پیکربندی را
 در <span dir="ltr">`Supervisor.Stop`</span> حذف کنید.
 
-## D3. رابط هات‌اسپاتی که ساخته می‌شود از NetworkManager آزاد نمی‌شود
+## D3. آزاد کردن رابط هات‌اسپات ساخته‌شده از NetworkManager
 
-**وضعیت: OPEN با تصمیم. نیمهٔ قابل اندازه‌گیری در 2026-08-30 اصلاح شد.**
+**وضعیت: پیاده‌سازی شده و آزمون دارد. توضیح قبلیِ باز بودن این نقص قدیمی بود.**
 
-هر جا <span dir="ltr">`HotspotManager`</span> اندازه‌گرفته‌شدهٔ نقشه برابر NetworkManager باشد، نقشه
-<span dir="ltr">`nmcli device set <iface> managed no`</span> را صادر می‌کند. این کار تصاحب را پوشش
-می‌دهد و همچنین رابط آزادی را که رادیوی دوم عرضه می‌کند، یعنی حالت B، همان
-آداپتور USB که این محصول به مردم می‌گوید بخرند.
+وقتی شناسایی، وجود NetworkManager را نشان دهد، تابع <span dir="ltr">`VirtualIfaceSteps`</span>
+رابط تازهٔ هات‌اسپات را پیش از دادن آدرس آزاد می‌کند. ترتیب کار چنین است: ساخت رابط،
+اجرای <span dir="ltr">`nmcli device set <iface> managed no`</span> و سپس دادن آدرس.
+برای رابطی که هنگام شناسایی وجود نداشت، مقدار <span dir="ltr">`HotspotManager`</span>
+ناشناخته می‌ماند. آزاد کردن رابط از مقدار <span dir="ltr">`NetworkManagerPresent`</span> استفاده می‌کند.
 
-اما دو مسیری را پوشش **نمی‌دهد** که این بسته خودش رابط اکسس‌پوینت را **می‌سازد**،
-چون تشخیص پیش از وجود آن رابط اجرا شده بود و هیچ مدیری برای آن اندازه گرفته
-نشده بود. <span dir="ltr">`Plan.HotspotManager`</span> آنجا عمداً ناشناخته رها می‌شود تا از روی رادیوی
-والد حدس زده نشود.
+آزمون <span dir="ltr">`TestACreatedHotspotInterfaceIsReleasedFromNetworkManager`</span>
+این ترتیب را بررسی می‌کند.
+آزمون <span dir="ltr">`TestNoNmcliOnTheCreatedPathWhenNetworkManagerIsNotThere`</span>
+بررسی می‌کند که در سیستمی بدون NetworkManager، دستور <span dir="ltr">`nmcli`</span> در این مسیر اجرا نشود.
+آزمون <span dir="ltr">`TestTheHotspotInterfaceIsReleasedFromNetworkManagerOnEveryPathThatNamesOne`</span>
+مسیرهایی را پوشش می‌دهد که از رابط موجود استفاده می‌کنند.
 
-آنچه ناشناخته است یک پرسش دربارهٔ ماشین زنده است: اینکه آیا NetworkManager رابطی
-را که از <span dir="ltr">`iw phy ... interface add`</span> پدیدار می‌شود در دست می‌گیرد یا نه. اگر
-بگیرد، رخداد 2026-08-30 که بالای <span dir="ltr">`HotspotReleaseSteps`</span> ثبت شده است می‌تواند از
-همین در وارد شود.
-
-بررسی، روی دستگاهی که مسیر حالت A در آن موفق می‌شود: دستگاه را بالا بیاورید،
-سپس <span dir="ltr">`nmcli device status | grep ap0`</span>. اگر <span dir="ltr">`unmanaged`</span> بود، چیزی برای اصلاح
-نیست. هر چیز دیگری یعنی آزادسازی باید به رابط‌های ساخته‌شده هم گسترش یابد، و آن
-کار به راهی نیاز دارد که پرسیدن از <span dir="ltr">`nmcli`</span> دربارهٔ دستگاهی که هنوز شمارش نکرده
-است را تحمل کند.
-
-نگهبان: <span dir="ltr">`TestACreatedHotspotInterfaceHasNoMeasuredManagerAndIsNotReleased`</span> این
-شکاف را سنجاق می‌کند تا یک تصمیم بماند. اگر تغییری در آینده شروع به اندازه‌گیریِ
-یک رابط ساخته‌شده کند این آزمون قرمز می‌شود، و پاسخ درست در آن حال گسترش‌دادنِ
-<span dir="ltr">`TestTheHotspotInterfaceIsReleasedFromNetworkManagerOnEveryPathThatNamesOne`</span> و
-حذف این یکی است.
+این آزمون‌ها از پاسخ‌های کنترل‌شدهٔ سیستم استفاده می‌کنند. موفقیت آن‌ها ثابت نمی‌کند که
+هر آداپتور و نسخهٔ NetworkManager روی سخت‌افزار واقعی کار می‌کند. این اصلاح مستندات،
+گزارش آزمون تازه روی سخت‌افزار نیست.
 
 ## D4. توقف موفقیت گزارش می‌دهد در حالی که هیچ چیز را برنگردانده است
 

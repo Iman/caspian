@@ -1,0 +1,27 @@
+name: Suggest an improvement
+description: Explain a user need or a missing capability.
+title: "[Feature] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Write in any of the seven documentation languages. Describe your goal without sharing passwords, proxy links, or personal network details.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to do?
+      description: Describe the problem and who encounters it. Include the OS and connection arrangement if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-behaviour
+    attributes:
+      label: What should Caspian do?
+      description: Give a concrete example of the desired result.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What have you tried instead?
+      description: Describe any workaround and its limits, or say that none is available.
