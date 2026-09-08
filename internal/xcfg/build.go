@@ -57,11 +57,12 @@ type routingSection struct {
 }
 
 // rule is the subset of the anonymous RawFieldRule struct at
-// infra/conf/router.go:532-551 that this appliance uses.
+// infra/conf/router.go:133-152 (pinned engine
+// v1.260327.1-0.20260415235634-c5edc122b70e) that this appliance uses.
 //
 // There is no "type": "field" key. Every rule is a field rule now: parseRule
-// at router.go:678-690 unmarshals into RouterRule, which carries only
-// ruleTag, outboundTag and balancerTag (router.go:126-130), and then calls
+// at router.go:275 unmarshals into RouterRule, which carries only
+// ruleTag, outboundTag and balancerTag (router.go:120-124), and then calls
 // parseFieldRule unconditionally. Emitting "type" would be a dead key that
 // the loader silently drops, and this package does not write keys the engine
 // does not read.

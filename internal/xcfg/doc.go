@@ -67,6 +67,17 @@
 // TestLocalDNSQueriesCannotFallOutToTheUplink and TestPrivateRangesRouteDirect
 // assert the two halves of that.
 //
+// One more property of the rule set is pinned because a future consumer of the
+// loopback SOCKS inbound depends on it: a connection arriving on TagSOCKSIn
+// with a HOSTNAME destination can reach only the proxy outbound. Under AsIs the
+// router never resolves the name (app/router/router.go:253 and :263), so no
+// rule sees an IP for it; no rule here matches on a domain; and the only rule
+// off the tunnel, private-direct, matches on IP literals alone. An IP-LITERAL
+// destination inside a private range goes direct by design, on any inbound,
+// which is the case a hostname-only URL check on that consumer has to exclude.
+// TestAHostnameDestinationOnTheSOCKSInboundReachesOnlyTheProxy and
+// TestPrivateDirectMatchesByIPOnly assert the two halves of that.
+//
 // # No Google, in any default
 //
 // docs/2026-08-29-design.md, section 2 and section 6: Google is not used
