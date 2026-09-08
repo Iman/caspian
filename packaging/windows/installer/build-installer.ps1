@@ -1,11 +1,14 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true)][string]$Version,
-    [ValidateSet("x64", "arm64")][string]$Architecture = "x64"
+    [ValidateSet("x64", "arm64")][string]$Architecture = "x64",
+    [switch]$PayloadOnly
 )
 $ErrorActionPreference = "Stop"
-$numericVersion = $Version.TrimStart("v")
-$releaseVersion = "v$numericVersion"
+$env:NO_COLOR = "1"
+if ($Version -ne 'dev' -and $Version -notmatch '^v?[0-9]+\.[0-9]+\.[0-9]+$') { throw "Use a release version such as v1.2.3." }
+$numericVersion = if ($Version -eq "dev") { "0.0.0" } else { $Version.TrimStart("v") }
+$releaseVersion = if ($Version -eq "dev") { "dev" } else { "v$numericVersion" }
 $runtime = "win-$Architecture"
 $goArchitecture = if ($Architecture -eq "arm64") { "arm64" } else { "amd64" }
 $wintunArchitecture = if ($Architecture -eq "arm64") { "arm64" } else { "amd64" }
@@ -13,22 +16,36 @@ $installerArchitecture = if ($Architecture -eq "arm64") { "arm64" } else { "x64o
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\..\.."))
 $payload = Join-Path $PSScriptRoot "payload\$Architecture"
 $output = Join-Path $repo "out\installer"
+if (Test-Path -LiteralPath $payload) { Remove-Item -LiteralPath $payload -Recurse -Force }
 New-Item -ItemType Directory -Force -Path $payload, $output | Out-Null
 
 Push-Location $repo
 $previousGOOS = $env:GOOS
 $previousGOARCH = $env:GOARCH
 try {
+    Push-Location (Join-Path $repo "ui")
+    try {
+        & flutter --suppress-analytics pub get
+        if ($LASTEXITCODE -ne 0) { throw "Flutter dependency resolution failed." }
+        & flutter --suppress-analytics build web --release --no-web-resources-cdn --pwa-strategy=none --build-name $numericVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
+        if ($LASTEXITCODE -ne 0) { throw "The Flutter web build failed." }
+        $webAssets = Join-Path $repo "internal\panel\flutter"
+        New-Item -ItemType Directory -Force -Path $webAssets | Out-Null
+        Get-ChildItem -LiteralPath $webAssets | Where-Object { $_.Name -ne ".keep" } | Remove-Item -Recurse -Force
+        Copy-Item -Path "build\web\*" -Destination $webAssets -Recurse -Force
+        & flutter --suppress-analytics build windows --release --build-name $numericVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
+        if ($LASTEXITCODE -ne 0) { throw "The Flutter Windows build failed." }
+        $flutterBundle = "build\windows\$Architecture\runner\Release"
+        if (-not (Test-Path "$flutterBundle\caspian_ui.exe")) { throw "Build on a Windows $Architecture host with a matching Flutter SDK." }
+        Copy-Item -Path "$flutterBundle\*" -Destination $payload -Recurse -Force
+    } finally { Pop-Location }
     $env:GOOS = "windows"
     $env:GOARCH = $goArchitecture
-    & go.exe build -trimpath -ldflags "-X main.version=$releaseVersion -X caspianbyoc.org/caspian/internal/panel.Version=$releaseVersion" -o (Join-Path $payload "caspian.exe") .\cmd\caspian
+    & go.exe build -tags flutterui -trimpath -buildvcs=false -ldflags "-X main.version=$releaseVersion -X caspianbyoc.org/caspian/internal/panel.Version=$releaseVersion" -o (Join-Path $payload "caspian.exe") .\cmd\caspian
     if ($LASTEXITCODE -ne 0) { throw "The Go build failed." }
     & dotnet.exe publish .\tools\caspian-tethering\caspian-tethering.csproj -c Release -r $runtime --self-contained true -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The hotspot helper build failed." }
-    & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$numericVersion -p:InformationalVersion=$releaseVersion -p:IncludeSourceRevisionInInformationalVersion=false -o $payload
-    if ($LASTEXITCODE -ne 0) { throw "The tray app build failed." }
-    $controlVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $payload "CaspianControl.exe")).ProductVersion
-    if ($controlVersion -ne $releaseVersion) { throw "The control window version '$controlVersion' does not match CI release '$releaseVersion'." }
+
 } finally {
     $env:GOOS = $previousGOOS
     $env:GOARCH = $previousGOARCH
@@ -64,9 +81,12 @@ function Assert-PEArchitecture([string]$Path, [uint16]$ExpectedMachine) {
 }
 
 $expectedMachine = if ($Architecture -eq "arm64") { [uint16]0xaa64 } else { [uint16]0x8664 }
-foreach ($binary in @("caspian.exe", "caspian-tethering.exe", "CaspianControl.exe", "wintun.dll")) {
+foreach ($binary in @("caspian.exe", "caspian-tethering.exe", "caspian_ui.exe", "flutter_windows.dll", "msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll", "wintun.dll")) {
     Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
 }
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot "lifecycle.ps1") -Destination $payload -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot "service-install.ps1") -Destination $payload -Force
+if ($PayloadOnly) { return }
 $compiler = @(
     "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
     "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",

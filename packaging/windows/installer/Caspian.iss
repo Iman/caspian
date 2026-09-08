@@ -20,6 +20,7 @@ DefaultGroupName=Caspian
 ArchitecturesAllowed={#AllowedArchitecture}
 ArchitecturesInstallIn64BitMode={#AllowedArchitecture}
 PrivilegesRequired=admin
+MinVersion=10.0.19041
 OutputDir=..\..\..\out\installer
 OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-{#BuildArchitecture}
 Compression=lzma2/max
@@ -27,7 +28,7 @@ SolidCompression=yes
 WizardStyle=modern
 LicenseFile=..\..\..\LICENSE
 InfoBeforeFile=INSTALL-NOTES.txt
-UninstallDisplayIcon={app}\CaspianControl.exe
+UninstallDisplayIcon={app}\caspian_ui.exe
 SetupLogging=yes
 SetupIconFile=..\caspian.ico
 CloseApplications=no
@@ -38,7 +39,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Shortcuts:"; Flags: unchecked
-Name: "startupicon"; Description: "Start Caspian Control when I sign in"; GroupDescription: "Shortcuts:"; Flags: unchecked
+Name: "startupicon"; Description: "Start Caspian when I sign in"; GroupDescription: "Shortcuts:"; Flags: unchecked
 
 [Dirs]
 Name: "{commonappdata}\Caspian"
@@ -46,7 +47,9 @@ Name: "{commonappdata}\Caspian"
 [Files]
 Source: "payload\{#BuildArchitecture}\caspian.exe"; DestDir: "{app}"; Flags: ignoreversion; BeforeInstall: StopCaspianProcesses
 Source: "payload\{#BuildArchitecture}\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "payload\{#BuildArchitecture}\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\*"; DestDir: "{app}"; Excludes: "caspian.exe,caspian-tethering.exe,wintun.dll,lifecycle.ps1,service-install.ps1"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "lifecycle.ps1"; DestDir: "{app}"; Flags: ignoreversion
+Source: "service-install.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "payload\{#BuildArchitecture}\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\..\..\NOTICE"; DestDir: "{app}"; DestName: "NOTICE.txt"; Flags: ignoreversion
 Source: "..\..\..\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
@@ -57,15 +60,18 @@ Source: "service-install.ps1"; DestDir: "{tmp}"; Flags: deleteafterinstall; Afte
 
 [InstallDelete]
 Type: files; Name: "{app}\Caspian Control.exe"
+Type: files; Name: "{app}\CaspianControl.exe"
+Type: files; Name: "{group}\Caspian Control.lnk"
+Type: files; Name: "{commonstartup}\Caspian Control.lnk"
 Type: files; Name: "{commondesktop}\Caspian Control.lnk"
 
 [Icons]
-Name: "{group}\Caspian Control"; Filename: "{app}\CaspianControl.exe"; WorkingDir: "{app}"
-Name: "{autodesktop}\Caspian Control"; Filename: "{app}\CaspianControl.exe"; WorkingDir: "{app}"; Tasks: desktopicon
-Name: "{commonstartup}\Caspian Control"; Filename: "{app}\CaspianControl.exe"; WorkingDir: "{app}"; Tasks: startupicon
+Name: "{group}\Caspian"; Filename: "{app}\caspian_ui.exe"; WorkingDir: "{app}"
+Name: "{autodesktop}\Caspian"; Filename: "{app}\caspian_ui.exe"; WorkingDir: "{app}"; Tasks: desktopicon
+Name: "{commonstartup}\Caspian"; Filename: "{app}\caspian_ui.exe"; WorkingDir: "{app}"; Tasks: startupicon
 
 [Run]
-Filename: "{app}\CaspianControl.exe"; Description: "Open Caspian Control"; Verb: runas; Flags: shellexec postinstall nowait skipifsilent
+Filename: "{app}\caspian_ui.exe"; Description: "Open Caspian"; Flags: postinstall nowait skipifsilent runasoriginaluser
 
 [UninstallRun]
 Filename: "{sys}\sc.exe"; Parameters: "stop caspian-panel"; Flags: runhidden waituntilterminated; RunOnceId: "StopPanel"
@@ -80,10 +86,10 @@ var
 procedure InitializeWizard;
 begin
   PasswordPage := CreateInputQueryPage(wpSelectTasks,
-    'Protect the Caspian web panel',
-    'Choose the password for the web panel.',
-    'Use at least 8 characters. You will type this password in your web browser.');
-  PasswordPage.Add('Panel password:', True);
+    'Protect Caspian',
+    'Choose your Caspian password.',
+    'Use at least 8 characters. You will type this password in the Caspian application.');
+  PasswordPage.Add('Caspian password:', True);
   PasswordPage.Add('Type the password again:', True);
 end;
 
@@ -138,6 +144,7 @@ var
   ResultCode: Integer;
 begin
   Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM CaspianControl.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  Exec(ExpandConstant('{sys}\taskkill.exe'), '/F /IM caspian_ui.exe', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Exec(ExpandConstant('{sys}\sc.exe'), 'config caspian-panel start= disabled', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Exec(ExpandConstant('{sys}\sc.exe'), 'config caspian start= disabled', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   Exec(ExpandConstant('{sys}\sc.exe'), 'stop caspian-panel', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);

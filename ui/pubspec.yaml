@@ -1,0 +1,45 @@
+name: caspian
+description: "Caspian gateway application."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.4
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  http: ^1.6.0
+  flutter_svg: ^2.2.3
+  shared_preferences: ^2.5.5
+
+dev_dependencies:
+  integration_test:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/OFL.txt
+    - assets/fonts/NotoSans-OFL.txt
+    - assets/fonts/NotoSansMono-OFL.txt
+  fonts:
+    - family: Vazirmatn
+      fonts:
+        - asset: assets/fonts/Vazirmatn.ttf
+    - family: CaspianMono
+      fonts:
+        - asset: assets/fonts/NotoSansMono.ttf
+    - family: CaspianSans
+      fonts:
+        - asset: assets/fonts/NotoSans.ttf
+    # CanvasKit and Skwasm require a registered family named Roboto.
+    # Use the bundled Vazirmatn font for that renderer fallback alias too.
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Vazirmatn.ttf

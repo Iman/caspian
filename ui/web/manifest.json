@@ -1,0 +1,11 @@
+{
+  "name": "Caspian",
+  "short_name": "Caspian",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#E6F2F3",
+  "theme_color": "#097C87",
+  "description": "Caspian gateway application.",
+  "prefer_related_applications": false,
+  "icons": [{"src":"favicon.svg","sizes":"any","type":"image/svg+xml"}]
+}

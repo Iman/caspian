@@ -1,0 +1,129 @@
+name: Flutter application
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NO_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.41.6"
+          channel: stable
+          cache: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Check coverage gate behavior
+        run: python3 -m unittest discover -s scripts -p test_check_unit_coverage.py
+      - name: Analyze and run unit tests with fresh coverage
+        run: bash scripts/test-ui.sh
+      - name: Check service lifecycle helpers
+        run: |
+          bash packaging/linux/test-service-action.sh
+          bash packaging/linux/test-uninstall-desktop.sh
+          bash packaging/darwin/test-service-action.sh
+      - name: Run Flutter browser integration
+        run: |
+          bash scripts/build-ui.sh web dev
+          bash bdd/flutter/run.sh
+      - name: Preserve test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-test-evidence
+          path: |
+            ui/build/unit-tests/
+            bdd/flutter/reports/
+
+  native-build-and-integration:
+    name: Native ${{ matrix.target }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: macos
+            runner: macos-15
+          - target: windows
+            runner: windows-2022
+          - target: linux
+            runner: ubuntu-24.04
+    defaults:
+      run:
+        shell: bash
+    env:
+      NO_COLOR: "1"
+      CASPIAN_TEST_TARGET: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.41.6"
+          channel: stable
+          cache: true
+      - name: Install Linux desktop and display dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang cmake ninja-build pkg-config \
+            libgtk-3-dev libstdc++-12-dev libgl1-mesa-dri xvfb xauth dbus-x11
+      - name: Check Windows service setup and recovery
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: '& packaging/windows/installer/test-service-install.ps1'
+      - name: Stage the shared web assets for the Go fixture
+        run: bash scripts/build-ui.sh web dev
+      - name: Compile the native release application
+        run: |
+          set -euo pipefail
+          mkdir -p ui/build/native-tests
+          if [[ "$CASPIAN_TEST_TARGET" == windows ]]; then
+            (
+              cd ui
+              flutter --suppress-analytics build windows --release \
+                --build-name 0.0.0 --dart-define=CASPIAN_VERSION=dev
+            ) 2>&1 | tee ui/build/native-tests/build.log
+          else
+            bash scripts/build-ui.sh "$CASPIAN_TEST_TARGET" dev \
+              2>&1 | tee ui/build/native-tests/build.log
+          fi
+      - name: Exercise the native application against the Go fixture
+        run: |
+          set -euo pipefail
+          if [[ "$CASPIAN_TEST_TARGET" == linux ]]; then
+            export LIBGL_ALWAYS_SOFTWARE=1
+            dbus-run-session -- xvfb-run -a -s '-screen 0 1280x1024x24' \
+              bash scripts/test-integration.sh "$CASPIAN_TEST_TARGET" \
+              2>&1 | tee ui/build/native-tests/integration.log
+          else
+            bash scripts/test-integration.sh "$CASPIAN_TEST_TARGET" \
+              2>&1 | tee ui/build/native-tests/integration.log
+          fi
+      - name: Preserve native build and test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-native-${{ matrix.target }}
+          path: ui/build/native-tests/
+          if-no-files-found: warn

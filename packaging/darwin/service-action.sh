@@ -50,9 +50,9 @@ main() {
     for label in org.caspianbyoc.caspian org.caspianbyoc.caspian-panel; do
       start_job "$label" "/Library/LaunchDaemons/$label.plist" || return 1
     done
-    echo 'Services started. Open the panel to configure and switch on the hotspot.'
+    echo 'Services started. Sign in to Caspian to configure and switch on the hotspot.'
   else
-    echo 'Services stopped. The hotspot and web panel are unavailable. Use Start services here to restore access.'
+    echo 'Services stopped. Use Start services in Caspian to restore access.'
   fi
 }
 

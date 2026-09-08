@@ -3,9 +3,7 @@
 # Copyright (C) 2026 Iman Samizadeh
 #
 # Build a drag-and-run macOS distribution image. The image contains a native
-# double-click installer app, the Go binary and the launchd plists. The app
-# uses macOS's own administrator-authorization dialog and does not download a
-# closed-source runtime.
+# Flutter application, the Go binary and the launchd plists.
 set -euo pipefail
 
 VERSION="${1:-dev}"
@@ -36,6 +34,13 @@ case "$VERSION" in
   *[!a-zA-Z0-9._-]*) printf 'caspian: invalid version\n' >&2; exit 2 ;;
 esac
 BUNDLE_VERSION=0.0.0
+# Go 1.26 supports macOS 12; Go 1.27 raised its runtime minimum to 13.
+GO_VERSION="$(go env GOVERSION)"
+case "$GO_VERSION" in
+  go1.26*) MACOS_MINIMUM=12.0 ;;
+  go1.27*) MACOS_MINIMUM=13.0 ;;
+  *) printf 'caspian: unverified macOS minimum for Go %s\n' "$GO_VERSION" >&2; exit 2 ;;
+esac
 NUMERIC_VERSION="${VERSION#v}"
 NUMERIC_VERSION="${NUMERIC_VERSION%%-*}"
 if [[ "$NUMERIC_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then BUNDLE_VERSION="$NUMERIC_VERSION"; fi
@@ -45,17 +50,33 @@ APP="$STAGE/Caspian.app"
 CONTENTS="$APP/Contents"
 trap 'rm -rf "$WORK"' EXIT
 
-mkdir -p "$CONTENTS/MacOS" "$CONTENTS/Resources" "$(dirname -- "$OUT")"
+bash "$ROOT/scripts/build-ui.sh" web "$VERSION"
+bash "$ROOT/scripts/build-ui.sh" macos "$VERSION"
+mkdir -p "$STAGE" "$(dirname -- "$OUT")"
+cp -R "$ROOT/ui/build/macos/Build/Products/Release/Caspian.app" "$APP"
+test -d "$CONTENTS/Frameworks"
+# The Flutter build is universal, while each release bundles one Go backend.
+# Ship matching native executables so the other architecture cannot launch a
+# GUI whose bundled service cannot run on that machine.
+UI_ARCH="$ARCH"
+if [ "$UI_ARCH" = amd64 ]; then UI_ARCH=x86_64; fi
+UI_BINARY="$CONTENTS/MacOS/Caspian"
+if [ "$(lipo -archs "$UI_BINARY")" != "$UI_ARCH" ]; then
+  lipo "$UI_BINARY" -thin "$UI_ARCH" -output "$WORK/caspian-ui"
+  chmod 0755 "$WORK/caspian-ui"
+  mv "$WORK/caspian-ui" "$UI_BINARY"
+fi
+test "$(lipo -archs "$UI_BINARY")" = "$UI_ARCH"
 # The familiar Applications alias gives somebody who has never installed a
-# DMG an obvious permanent home for the control app. Running it directly from
-# the image still works and offers setup, but password recovery must remain
+# DMG an obvious permanent home for Caspian. Password recovery must remain
 # available after the image is ejected.
 ln -s /Applications "$STAGE/Applications"
 CLANG_MODULE_CACHE_PATH="$WORK/clang-cache" swift "$ROOT/packaging/darwin/make-icon.swift" "$CONTENTS/Resources/Caspian.icns"
 CGO_ENABLED=0 GOOS=darwin GOARCH="$ARCH" \
-	go build -trimpath -buildvcs=false \
+	go build -tags flutterui -trimpath -buildvcs=false \
 		-ldflags "-s -w -X main.version=$VERSION -X caspianbyoc.org/caspian/internal/panel.Version=$VERSION" \
 		-o "$CONTENTS/Resources/caspian" "$ROOT/cmd/caspian"
+test "$(lipo -archs "$CONTENTS/Resources/caspian")" = "$UI_ARCH"
 
 cp "$ROOT/packaging/darwin/install-darwin.sh" "$CONTENTS/Resources/"
 cp "$ROOT/packaging/darwin/reset-password.sh" "$CONTENTS/Resources/"
@@ -64,42 +85,34 @@ cp "$ROOT/LICENSE" "$CONTENTS/Resources/LICENSE.txt"
 cp "$ROOT/NOTICE" "$CONTENTS/Resources/NOTICE.txt"
 cp "$ROOT/third_party/libxray-share/LICENSE" "$CONTENTS/Resources/libxray-share-LICENSE.txt"
 cp "$ROOT/packaging/darwin/"org.caspianbyoc.caspian*.plist "$CONTENTS/Resources/"
-cat > "$CONTENTS/Info.plist" <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0"><dict>
-  <key>CFBundleDisplayName</key><string>Caspian</string>
-  <key>CFBundleExecutable</key><string>Caspian</string>
-  <key>CFBundleIdentifier</key><string>org.caspianbyoc.caspian</string>
-  <key>CFBundleName</key><string>Caspian</string>
-  <key>CFBundleIconFile</key><string>Caspian.icns</string>
-  <key>CFBundlePackageType</key><string>APPL</string>
-  <key>CFBundleShortVersionString</key><string>$BUNDLE_VERSION</string>
-  <key>CFBundleVersion</key><string>$BUNDLE_VERSION</string>
-  <key>CaspianVersion</key><string>$VERSION</string>
-  <key>LSMinimumSystemVersion</key><string>13.0</string>
-  <key>NSAppTransportSecurity</key><dict><key>NSAllowsLocalNetworking</key><true/></dict>
-</dict></plist>
-EOF
-SWIFT_ARCH="$ARCH"
-if [ "$ARCH" = amd64 ]; then SWIFT_ARCH=x86_64; fi
-CLANG_MODULE_CACHE_PATH="$WORK/clang-cache" swiftc -O -target "$SWIFT_ARCH-apple-macos13.0" \
-	"$ROOT/packaging/darwin/CaspianControl.swift" -o "$CONTENTS/MacOS/Caspian"
-chmod 0755 "$CONTENTS/MacOS/Caspian" "$CONTENTS/Resources/caspian" "$CONTENTS/Resources/install-darwin.sh"
+/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $BUNDLE_VERSION" "$CONTENTS/Info.plist"
+/usr/libexec/PlistBuddy -c "Add :CaspianVersion string $VERSION" "$CONTENTS/Info.plist"
+/usr/libexec/PlistBuddy -c "Set :CFBundleIconFile Caspian.icns" "$CONTENTS/Info.plist"
+/usr/libexec/PlistBuddy -c "Set :LSMinimumSystemVersion $MACOS_MINIMUM" "$CONTENTS/Info.plist"
+chmod 0755 "$CONTENTS/Resources/caspian" "$CONTENTS/Resources/install-darwin.sh"
+# Flutter includes signed frameworks; preserve their signatures and sign the
+# changed outer application only after adding the backend and setup resources.
 codesign --force --sign - "$CONTENTS/Resources/caspian"
 codesign --force --sign - "$APP"
 codesign --verify --deep --strict "$APP"
 
 cat > "$STAGE/README.txt" <<EOF
 Caspian $VERSION for macOS ($ARCH)
+Requires macOS $MACOS_MINIMUM or later.
 
-Drag “Caspian.app” onto “Applications”, then open the copy in Applications.
-Caspian checks its bundled background service against the installed one. On a
-first run or after an update, it starts setup automatically and macOS asks for
-your administrator password. When the installed version already matches, it
-does not ask again. Save the panel password shown after first setup, then choose
-“Open panel”. These are different passwords.
-Use the panel's password section to change it, or “Reset Password” in this app
+Drag "Caspian.app" onto "Applications", then open the copy in Applications.
+Follow the setup guide inside the app. If the service is unavailable, choose
+"Install and continue" and approve the macOS administrator prompt.
+If services are already installed but stopped, choose "Start existing services".
+The guide waits for the service to respond. Save the Caspian password shown,
+confirm that you saved it, and continue to sign in inside the application.
+The Caspian password differs from your administrator password.
+After signing in, follow the connection checklist to add a configuration,
+set up the hotspot, switch Caspian on, and connect another device.
+After replacing the app with an update, open "Service recovery" and choose
+"Install services" to
+update its background services. Your saved configuration and password remain.
+Use the password section to change it, or "Reset password" in this app
 if you have forgotten it. Keep a copy of Caspian.app outside the disk image.
 
 Terminal fallback:

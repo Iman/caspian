@@ -58,6 +58,10 @@ var pages = func() map[string]*template.Template {
 // the panel is broken in some way they cannot describe. With the buffer, a
 // failed render is a clean error page instead.
 func (p *Panel) render(w http.ResponseWriter, status int, name string, data any) {
+	if response, ok := w.(*apiResponse); ok {
+		response.capture(status, name, data)
+		return
+	}
 	t, ok := pages[name]
 	if !ok {
 		p.log.Error("no such page template", "page", name)

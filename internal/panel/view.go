@@ -131,6 +131,7 @@ type pageData struct {
 	QR                  template.HTML
 	QRProblem           string
 	DeviceLine          string
+	DeviceCount         int
 	SuggestedSSID       LTR
 	SuggestedPassphrase LTR
 
@@ -324,6 +325,7 @@ func (d *pageData) fillStatus(st SystemStatus, fault Fault) {
 	l := d.Lang
 	d.DetectedLine = DetectedLineIn(l, st.Detection)
 	d.DeviceLine = DeviceCountLine(l, st.Hotspot)
+	d.DeviceCount = st.Hotspot.Devices
 	d.EnginePhase = T(l, phaseKey(st.Engine.Phase.String()))
 	d.EngineReason = LTR(st.Engine.Reason)
 	d.TrafficCut = st.ClientTrafficCut

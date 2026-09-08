@@ -23,6 +23,17 @@ POST   /logout              false    false    303         403
 POST   /password            false    false    303         403
 GET    /status.json         false    true     401         n/a
 GET    /identifiers.json    false    true     401         n/a
+GET    /api/v1/state        true     true     200         n/a
+POST   /api/v1/setup        true     true     403         403
+POST   /api/v1/login        true     true     403         403
+POST   /api/v1/power        false    true     401         403
+POST   /api/v1/cut          false    true     401         403
+POST   /api/v1/config       false    true     401         403
+POST   /api/v1/hotspot      false    true     401         403
+POST   /api/v1/advanced     false    true     401         403
+POST   /api/v1/recover      false    true     401         403
+POST   /api/v1/password     false    true     401         403
+POST   /api/v1/logout       false    true     401         403
 GET    /login               true     false    200         n/a
 POST   /login               true     false    403         403
 GET    /setup               true     false    303         n/a

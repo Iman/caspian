@@ -170,7 +170,7 @@ func (h *harness) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.mu.RLock()
 	app := h.cur
 	h.mu.RUnlock()
-	faulty{inner: app.panel, d: app.defect}.ServeHTTP(w, r)
+	panel.Application(faulty{inner: app.panel, d: app.defect}).ServeHTTP(w, r)
 }
 
 // countryAware models the service's country refusal; service tests cover the real planner.
@@ -261,12 +261,13 @@ func (h *harness) reset(defectName string) error {
 // controlState is the body of POST /__control/state. Every field is a pointer,
 // so a scenario changes one thing without having to restate the rest.
 type controlState struct {
-	Country *string `json:"country"`
-	Engine  *string `json:"engine"`
-	Hotspot *bool   `json:"hotspot"`
-	Devices *int    `json:"devices"`
-	Cut     *bool   `json:"cut"`
-	SSID    *string `json:"ssid"`
+	Country    *string `json:"country"`
+	Engine     *string `json:"engine"`
+	Hotspot    *bool   `json:"hotspot"`
+	Devices    *int    `json:"devices"`
+	Cut        *bool   `json:"cut"`
+	SSID       *string `json:"ssid"`
+	StartFault *bool   `json:"start_fault"`
 }
 
 func (h *harness) control(w http.ResponseWriter, r *http.Request) {
@@ -319,6 +320,20 @@ func (h *harness) control(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+	case "/__control/first-run":
+		h.mu.RLock()
+		app := h.cur
+		h.mu.RUnlock()
+		if err := app.store.Update(func(st *state.State) error {
+			st.Panel = state.PanelAuth{}
+			st.Proxy = state.ProxyConfig{}
+			st.Hotspot = state.HotspotConfig{}
+			return nil
+		}); err != nil {
+			writeJSON(w, http.StatusInternalServerError, map[string]any{"error": "could not clear first-run fixture"})
+			return
+		}
+		writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 	case "/__control/messages":
 		// The suites assert on the words the panel actually ships, resolved
 		// from the Go catalogue, rather than on Persian and English strings
@@ -362,6 +377,13 @@ func (h *harness) applyState(c controlState) error {
 	app := h.cur
 	h.mu.RUnlock()
 
+	if c.StartFault != nil {
+		if *c.StartFault {
+			app.priv.FailStartWith(panel.FaultPermissionDenied)
+		} else {
+			app.priv.FailStartWith(panel.FaultNone)
+		}
+	}
 	if c.Country != nil {
 		d, err := app.priv.Detect(context.Background())
 		if err != nil {
@@ -631,7 +653,7 @@ func (f faulty) mutateRequest(r *http.Request) {
 	if !f.d.anyPasswordAccepted && !f.d.everyPasswordRejected {
 		return
 	}
-	if r.Method != http.MethodPost || r.URL.Path != "/login" {
+	if r.Method != http.MethodPost || (r.URL.Path != "/login" && r.URL.Path != "/api/v1/login") {
 		return
 	}
 	// The body is read, rewritten and put back, so the panel's own form parsing

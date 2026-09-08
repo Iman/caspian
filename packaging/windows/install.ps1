@@ -3,12 +3,12 @@
 #
 # Install Caspian-BYOC on Windows 10 (version 2004 or later) or Windows 11.
 # Run from an elevated PowerShell in the
-# directory that holds caspian.exe, caspian-tethering.exe and wintun.dll:
+# repository with Go, Flutter and the .NET SDK installed:
 #
 #   powershell -ExecutionPolicy Bypass -File packaging\windows\install.ps1
 #
 # What it creates, and nothing else:
-#   %ProgramFiles%\Caspian\{caspian.exe, caspian-tethering.exe, wintun.dll}
+#   %ProgramFiles%\Caspian containing the Flutter app and background services
 #   %ProgramData%\Caspian                    owned by the panel's service account
 #   %ProgramData%\Caspian\first-run-password  (fresh install only)
 #   service "caspian"        LocalSystem, automatic: the privileged half
@@ -24,7 +24,6 @@ param([switch]$NoOpen)
 
 $ErrorActionPreference = "Stop"
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot "..\.."))
-$build = Join-Path $repo "out\windows"
 $panelUrl = "http://127.0.0.1:8088/"
 
 function Refuse($msg) { Write-Error "caspian: $msg"; exit 1 }
@@ -46,11 +45,14 @@ function Invoke-ICACLS([string[]]$AclArgs) {
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     $arguments = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$PSCommandPath`"")
-    if ($NoOpen) { $arguments += "-NoOpen" }
+    $arguments += "-NoOpen"
     try {
         $process = Start-Process powershell.exe -Verb RunAs -Wait -PassThru -ArgumentList $arguments
     } catch {
         Refuse "administrator access was not granted: $($_.Exception.Message)"
+    }
+    if ($process.ExitCode -eq 0 -and -not $NoOpen) {
+        Start-Process -FilePath (Join-Path $env:ProgramFiles "Caspian\caspian_ui.exe")
     }
     exit $process.ExitCode
 }
@@ -58,48 +60,14 @@ if ($PSVersionTable.PSEdition -eq "Core" -and $PSVersionTable.PSVersion.Major -g
     Write-Host "note: this script also runs under Windows PowerShell 5.1; either is fine for installing."
 }
 
-New-Item -ItemType Directory -Force -Path $build | Out-Null
-if (-not (Get-Command go.exe -ErrorAction SilentlyContinue)) { Refuse "Go is not installed" }
-if (-not (Get-Command dotnet.exe -ErrorAction SilentlyContinue)) { Refuse "the .NET SDK is not installed" }
 $nativeArchitecture = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
-$runtime = switch ($nativeArchitecture) {
-    "AMD64" { "win-x64" }
-    "ARM64" { "win-arm64" }
+$architecture = switch ($nativeArchitecture) {
+    "AMD64" { "x64" }
+    "ARM64" { "arm64" }
     default { Refuse "unsupported Windows architecture: $nativeArchitecture" }
 }
-
-Write-Host "building Caspian..."
-Push-Location $repo
-& go.exe build -trimpath -o (Join-Path $build "caspian.exe") .\cmd\caspian
-if ($LASTEXITCODE -ne 0) { Refuse "the Go build failed" }
-& dotnet.exe publish (Join-Path $repo "tools\caspian-tethering\caspian-tethering.csproj") -c Release -r $runtime --self-contained true -o $build
-if ($LASTEXITCODE -ne 0) { Refuse "the Mobile Hotspot helper build failed" }
-if ($runtime -eq "win-x64") {
-    & dotnet.exe publish (Join-Path $repo "tools\caspian-control\caspian-control.csproj") -c Release -r $runtime --self-contained true -o $build
-    if ($LASTEXITCODE -ne 0) { Refuse "the tray launcher build failed" }
-}
-Pop-Location
-
-$wintun = Join-Path $repo "wintun.dll"
-if (-not (Test-Path -LiteralPath $wintun)) {
-    $version = "0.14.1"
-    $expectedHash = "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51"
-    $architecture = if ($runtime -eq "win-arm64") { "arm64" } else { "amd64" }
-    $temporary = Join-Path ([IO.Path]::GetTempPath()) ("caspian-wintun-" + [Guid]::NewGuid().ToString("N"))
-    $archive = Join-Path $temporary "wintun.zip"
-    New-Item -ItemType Directory -Path $temporary | Out-Null
-    try {
-        Write-Host "downloading Wintun $version..."
-        Invoke-WebRequest -UseBasicParsing -Uri "https://www.wintun.net/builds/wintun-$version.zip" -OutFile $archive
-        $actualHash = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
-        if ($actualHash -ne $expectedHash) { Refuse "the Wintun archive checksum does not match" }
-        Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $temporary "expanded")
-        Copy-Item -LiteralPath (Join-Path $temporary "expanded\wintun\bin\$architecture\wintun.dll") -Destination $wintun
-    } finally {
-        if (Test-Path -LiteralPath $temporary) { Remove-Item -LiteralPath $temporary -Recurse -Force }
-    }
-}
-Copy-Item -LiteralPath $wintun -Destination (Join-Path $build "wintun.dll") -Force
+& (Join-Path $PSScriptRoot "installer\build-installer.ps1") -Version dev -Architecture $architecture -PayloadOnly
+$build = Join-Path $PSScriptRoot "installer\payload\$architecture"
 
 $src = $build
 foreach ($f in @("caspian.exe", "caspian-tethering.exe", "wintun.dll")) {
@@ -125,22 +93,14 @@ foreach ($svc in @("caspian-panel", "caspian")) {
         $service.WaitForStatus("Stopped", [TimeSpan]::FromSeconds(30))
     }
 }
-foreach ($f in @("caspian.exe", "caspian-tethering.exe", "wintun.dll")) {
-    $source = Join-Path $src $f
-    $destination = Join-Path $programs $f
-    $copied = $false
-    for ($attempt = 1; $attempt -le 10; $attempt++) {
-        try {
-            Copy-Item -Force -LiteralPath $source -Destination $destination
-            $copied = $true
-            break
-        } catch [IO.IOException] {
-            if ($attempt -eq 10) { throw }
-            Start-Sleep -Milliseconds 500
-        }
-    }
-    if (-not $copied) { Refuse "could not install $f" }
+foreach ($name in @("CaspianControl.exe", "caspian_ui.exe")) {
+    $installedExecutable = Join-Path $programs $name
+    Get-CimInstance Win32_Process -Filter "Name = '$name'" |
+        Where-Object { $_.ExecutablePath -eq $installedExecutable } |
+        ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
 }
+Copy-Item -Path (Join-Path $src "*") -Destination $programs -Recurse -Force
+Remove-Item -LiteralPath (Join-Path $programs "CaspianControl.exe") -Force -ErrorAction SilentlyContinue
 if (Test-Path -LiteralPath $wintunLicense) {
     Copy-Item -LiteralPath $wintunLicense -Destination (Join-Path $programs "WINTUN-LICENSE.txt") -Force
 }
@@ -192,22 +152,18 @@ if (-not (Test-Path $stateFile) -and -not (Test-Path $seed)) {
 Start-Service -Name "caspian"
 Start-Service -Name "caspian-panel"
 
-$controlSource = Join-Path $src "CaspianControl.exe"
-$controlTarget = Join-Path $programs "CaspianControl.exe"
+$controlSource = Join-Path $src "caspian_ui.exe"
+$controlTarget = Join-Path $programs "caspian_ui.exe"
 if (Test-Path -LiteralPath $controlSource) {
-    Get-CimInstance Win32_Process -Filter "Name = 'CaspianControl.exe'" |
-        Where-Object { $_.ExecutablePath -eq $controlTarget } |
-        ForEach-Object { Stop-Process -Id $_.ProcessId -Force }
-    Copy-Item -LiteralPath $controlSource -Destination $controlTarget -Force
     $shell = New-Object -ComObject WScript.Shell
-    $shortcut = $shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath("CommonDesktopDirectory")) "Caspian Control.lnk"))
+    $shortcut = $shell.CreateShortcut((Join-Path ([Environment]::GetFolderPath("CommonDesktopDirectory")) "Caspian.lnk"))
     $shortcut.TargetPath = $controlTarget
     $shortcut.WorkingDirectory = $programs
     $shortcut.Description = "Start, stop, restart, and open Caspian"
     $shortcut.Save()
 }
 
-Write-Host "installed. Panel: http://127.0.0.1:8088 (and the hotspot address once it is up)"
+Write-Host "installed. Open Caspian from the desktop shortcut."
 if ($fresh) {
     Write-Host "first-run panel password: $password"
     Write-Host "It is consumed and deleted by the panel on its first start."

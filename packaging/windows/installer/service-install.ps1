@@ -1,6 +1,7 @@
 param(
     [Parameter(Mandatory = $true)][string]$InstallDirectory,
-    [string]$PasswordFile = ""
+    [string]$PasswordFile = "",
+    [switch]$GeneratePassword
 )
 $ErrorActionPreference = "Stop"
 
@@ -33,19 +34,36 @@ if ($LASTEXITCODE -ne 0) { throw "icacls.exe failed for $state" }
 
 $stateFile = Join-Path $state "state.json"
 $seed = Join-Path $state "first-run-password"
+$password = $null
 if (-not (Test-Path $stateFile)) {
-    if (-not $PasswordFile -or -not (Test-Path -LiteralPath $PasswordFile)) {
-        throw "A fresh installation needs a panel password from Setup."
-    }
-    try {
-        $password = ([IO.File]::ReadAllText($PasswordFile, [Text.Encoding]::UTF8)) -replace "`r?`n$", ""
-    } finally {
-        Remove-Item -LiteralPath $PasswordFile -Force -ErrorAction SilentlyContinue
+    if ($GeneratePassword) {
+        if (Test-Path -LiteralPath $seed) {
+            # Retain the credential after an interrupted installation.
+            $password = [IO.File]::ReadAllText($seed)
+        } else {
+            $bytes = New-Object byte[] 12
+            $random = [Security.Cryptography.RandomNumberGenerator]::Create()
+            try { $random.GetBytes($bytes) } finally { $random.Dispose() }
+            $password = ([BitConverter]::ToString($bytes)).Replace('-', '').ToLowerInvariant()
+        }
+    } else {
+        if (-not $PasswordFile -or -not (Test-Path -LiteralPath $PasswordFile)) {
+            throw "A fresh installation needs a panel password from Setup."
+        }
+        try {
+            $password = ([IO.File]::ReadAllText($PasswordFile, [Text.Encoding]::UTF8)) -replace "`r?`n$", ""
+        } finally {
+            Remove-Item -LiteralPath $PasswordFile -Force -ErrorAction SilentlyContinue
+        }
     }
     if ($password.Length -lt 8) { throw "The panel password must contain at least 8 characters." }
     [IO.File]::WriteAllText($seed, $password)
     & icacls.exe $seed /inheritance:r /grant:r "${panelAccount}:F" "*S-1-5-18:F" | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw 'The Caspian password permissions could not be set.' }
 }
 
 Start-Service caspian
 Start-Service caspian-panel
+# Only the elevated in-app helper requests this value. It displays the password
+# in its administrator window and never passes it to the unelevated process.
+if ($GeneratePassword -and $password) { Write-Output $password }

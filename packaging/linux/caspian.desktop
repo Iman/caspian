@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Caspian
+Comment=Configure your Caspian gateway
+Exec=/opt/caspian/caspian_ui
+Terminal=false
+Categories=Network;
+StartupWMClass=org.caspianbyoc.caspian

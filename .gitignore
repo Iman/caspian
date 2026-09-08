@@ -80,3 +80,10 @@ bdd/**/node_modules/
 # If you add a rule here, run: git status --porcelain --ignored
 # and read what it excludes, rather than trusting the pattern to mean what you
 # meant.
+
+# Flutter source manifests and bundled font license must remain versioned.
+!/ui/**/CMakeLists.txt
+!/ui/assets/fonts/OFL.txt
+!/ui/assets/fonts/*-OFL.txt
+/internal/panel/flutter/
+/scripts/__pycache__/

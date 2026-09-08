@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -104,6 +105,96 @@ func TestScanRepoWalksMoreThanTestdata(t *testing.T) {
 				"in files of exactly this kind, so a walk that misses it reports CLEAN over the "+
 				"thing the scan exists to find.", w)
 		}
+	}
+}
+
+// Generated executable/package output is not source evidence. Scope these
+// exclusions to exact repository paths so a source directory named build or
+// dist elsewhere cannot silently stop receiving the privacy checks.
+func TestPrivacyGeneratedArtifactsDoNotHideSourcePlants(t *testing.T) {
+	root := t.TempDir()
+	generated := []string{
+		"dist/release/caspian", "ui/build/test_cache/program.dill",
+		"ui/.dart_tool/flutter_build/program.dill", "internal/panel/flutter/main.dart.js",
+		"ui/linux/flutter/ephemeral/plugin.cc", "ui/windows/flutter/ephemeral/plugin.cc",
+		"ui/macos/Flutter/ephemeral/plugin.swift",
+	}
+	source := []string{
+		"ui/lib/planted.dart", "ui/build-tools/planted.txt", "ui/.dart_tool_source/planted.txt",
+		"internal/panel/flutter_source.go", "internal/panel/fluttering/planted.txt",
+		"docs/build/planted.txt", "test/hardware/planted.txt",
+		"nested/ui/build/planted.txt", "package/dist/planted.txt", "distribution/planted.txt",
+		"ui/linux/flutter/ephemeral_source/planted.cc", "ui/linux/runner/planted.cc",
+		"ui/windows/flutter/ephemeral_source/planted.cc", "ui/windows/runner/planted.cc",
+		"ui/macos/Flutter/ephemeral_source/planted.swift", "ui/macos/Runner/planted.swift",
+		"nested/ui/linux/flutter/ephemeral/planted.cc",
+		"nested/ui/windows/flutter/ephemeral/planted.cc",
+		"nested/ui/macos/Flutter/ephemeral/planted.swift",
+	}
+	for _, rel := range append(append([]string{}, generated...), source...) {
+		path := filepath.Join(root, filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, []byte(plantedSentinel), 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	findings, err := ScanRepo(root, []PrivacySentinel{plantedSentinelEntry()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := map[string]bool{}
+	for _, finding := range findings {
+		seen[finding.Path] = true
+	}
+	for _, rel := range generated {
+		if seen[rel] {
+			t.Errorf("generated output remains in source scan: %s", rel)
+		}
+		if walk, why := PrivacyRoots(rel); walk || len(why) < 20 {
+			t.Errorf("missing explicit generated-path decision: %s", rel)
+		}
+	}
+	for _, rel := range source {
+		if !seen[rel] {
+			t.Errorf("source privacy plant was missed: %s", rel)
+		}
+	}
+}
+
+func TestPrivacySkipsOnlyGeneratedFlutterPluginSymlinks(t *testing.T) {
+	root := t.TempDir()
+	plugin := t.TempDir()
+	if err := os.WriteFile(filepath.Join(plugin, "plugin.txt"), []byte(plantedSentinel), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, rel := range []string{
+		"ui/linux/flutter/ephemeral/.plugin_symlinks/plugin",
+		"ui/windows/flutter/ephemeral/.plugin_symlinks/plugin",
+		"ui/macos/Flutter/ephemeral/.symlinks/plugins/plugin",
+	} {
+		path := filepath.Join(root, filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Symlink(plugin, path); err != nil {
+			if runtime.GOOS == "windows" {
+				t.Skip("directory symlinks require Windows developer mode or symlink privilege; exact generated/source path boundaries have a separate test")
+			}
+			t.Fatal(err)
+		}
+	}
+	const source = "ui/linux/flutter/source.txt"
+	if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(source)), []byte(plantedSentinel), 0600); err != nil {
+		t.Fatal(err)
+	}
+	findings, err := ScanRepo(root, []PrivacySentinel{plantedSentinelEntry()})
+	if err != nil {
+		t.Fatalf("generated plugin directory symlinks must not be read as source files: %v", err)
+	}
+	if len(findings) != 1 || findings[0].Path != source {
+		t.Fatalf("expected only the source sibling plant; found %d findings", len(findings))
 	}
 }
 

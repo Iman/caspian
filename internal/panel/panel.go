@@ -10,6 +10,7 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -142,6 +143,17 @@ var routes = []routeSpec{
 	{Method: "POST", Path: "/password"},
 	{Method: "GET", Path: "/status.json", JSON: true},
 	{Method: "GET", Path: "/identifiers.json", JSON: true},
+	{Method: "GET", Path: "/api/v1/state", Public: true, JSON: true},
+	{Method: "POST", Path: "/api/v1/setup", Public: true, JSON: true},
+	{Method: "POST", Path: "/api/v1/login", Public: true, JSON: true},
+	{Method: "POST", Path: "/api/v1/power", JSON: true},
+	{Method: "POST", Path: "/api/v1/cut", JSON: true},
+	{Method: "POST", Path: "/api/v1/config", JSON: true},
+	{Method: "POST", Path: "/api/v1/hotspot", JSON: true},
+	{Method: "POST", Path: "/api/v1/advanced", JSON: true},
+	{Method: "POST", Path: "/api/v1/recover", JSON: true},
+	{Method: "POST", Path: "/api/v1/password", JSON: true},
+	{Method: "POST", Path: "/api/v1/logout", JSON: true},
 
 	// The public routes.
 	{Method: "GET", Path: "/login", Public: true},
@@ -218,6 +230,10 @@ func New(cfg Config) (*Panel, error) {
 	}
 
 	seen := map[string]bool{}
+	handlers["GET /api/v1/state"] = p.handleAPIState
+	for _, action := range []string{"setup", "login", "power", "cut", "config", "hotspot", "advanced", "recover", "password", "logout"} {
+		handlers["POST /api/v1/"+action] = handlers["POST /"+action]
+	}
 	for _, rt := range routes {
 		key := rt.Method + " " + rt.Path
 		h, ok := handlers[key]
@@ -251,6 +267,11 @@ func (p *Panel) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// would serve Persian to somebody who had chosen English with no error
 	// anywhere.
 	r = r.WithContext(context.WithValue(r.Context(), langCtxKey, p.langFor(w, r)))
+	if strings.HasPrefix(r.URL.Path, "/api/v1/") {
+		response := &apiResponse{ResponseWriter: w}
+		defer p.finishAPI(response, r)
+		w = response
+	}
 
 	// Refuse an unsafe request that came from another origin before any
 	// handler runs, so that no route can forget to ask. The per-form tokens

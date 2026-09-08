@@ -114,7 +114,7 @@ func servePanel(ctx context.Context, log *slog.Logger, extraListen []string) err
 		return err
 	}
 
-	srv := &panelListeners{handler: p, log: log}
+	srv := &panelListeners{handler: panel.Application(p), log: log}
 	defer srv.closeAll()
 
 	srv.reconcile(initial)

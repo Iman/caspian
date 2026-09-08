@@ -1,5 +1,10 @@
 # Caspian-BYOC
 
+This branch introduces one [Caspian Flutter application](ui/README.md) for native
+Windows, macOS, and Linux windows and the Raspberry Pi web UI. The guide records
+build commands, test coverage scope, and platform validation limits. The images
+below show the earlier web panel and desktop controls that this work replaces.
+
 [**Download latest release**](https://github.com/Iman/caspian/releases/latest) | [**Open wiki**](https://github.com/Iman/caspian/wiki/Home)
 
 <div dir="ltr" align="left">
@@ -18,7 +23,7 @@
 
 Caspian-BYOC turns a Windows PC, Mac running macOS, Raspberry Pi, or Linux
 computer into a bring-your-own-config WiFi gateway. Paste a V2Ray or
-Xray-compatible proxy configuration into the web panel and press one switch.
+Xray-compatible proxy configuration into Caspian and press one switch.
 Caspian accepts VLESS,
 VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 share links. It also accepts
 Clash and Clash.Meta YAML, raw Xray JSON, link lists, and base64 subscription

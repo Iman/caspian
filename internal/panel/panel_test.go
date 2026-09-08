@@ -352,6 +352,9 @@ func TestEveryRouteRefusesWithoutASession(t *testing.T) {
 // to change rather than a line in a table nobody re-reads.
 func TestThePublicRoutesAreTheExpectedSeven(t *testing.T) {
 	want := map[string]bool{
+		"GET /api/v1/state":     true,
+		"POST /api/v1/setup":    true,
+		"POST /api/v1/login":    true,
 		"GET /login":            true,
 		"POST /login":           true,
 		"GET /setup":            true,
