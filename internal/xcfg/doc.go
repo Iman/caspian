@@ -30,14 +30,16 @@
 //
 // # No geo rules, and why that is a constraint rather than a preference
 //
-// The engine embeds no geo data. The only go:embed in xray-core v1.260327.0 is
+// The engine embeds no geo data. The only go:embed in the pinned xray-core
+// (v1.260327.1-0.20260415235634-c5edc122b70e) is
 // transport/internet/browser_dialer/dialer.go:18, which embeds an HTML file.
-// A "geoip:" prefix in a routing rule reaches ToCidrList at
-// infra/conf/router.go:445-458, which calls loadIP("geoip.dat"), which is
-// loadFile at router.go:180-192 opening the file through filesystem.OpenAsset,
-// located by the "xray.location.asset" environment variable
-// (common/platform/platform.go:13). "geosite:" is the same story at
-// router.go:373 and dns.go:318.
+// A "geoip:" prefix in a routing rule is rewritten to "ext:geoip.dat:" at
+// common/geodata/rule_parser.go:20-21, and the file is opened by loadIP and
+// loadFile at common/geodata/geodat_loader.go:28-42 through
+// filesystem.OpenAsset, located by the "xray.location.asset" environment
+// variable (common/platform/platform.go:13, others.go:16-17). "geosite:" is
+// the same story at rule_parser.go:125-126 and :154-155, reached from
+// infra/conf/router.go:175-191 and infra/conf/dns.go:89.
 //
 // So one geo rule reintroduces a downloaded data file to a product whose whole
 // installer story is one verified binary. This package emits none, and the

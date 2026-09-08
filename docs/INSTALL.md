@@ -492,8 +492,8 @@ Everything below needs a Raspberry Pi and none of it has been run:
   `root:caspian 0750` on the target.
 - Whether a real `sha256sum` on the Pi and the checksums file produced by the
   release pipeline agree in format.
-- Anything about the panel: nothing consumes the first-run password yet, and the
-  printed address has not been shown to be one the panel answers on.
+- Whether the printed address is one the panel answers on. The first-run
+  password handoff itself is implemented and tested (see above).
 - Whether a journal written by a real run replays cleanly. The replay was
   written against `internal/netcfg/journal.go` and is tested against fixtures in
   that shape, but no journal produced by the actual `Applier` on a real box has

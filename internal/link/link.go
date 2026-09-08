@@ -96,8 +96,9 @@ type Link struct {
 	// describes the first; the rest were discarded, and the panel needs to be
 	// able to say so. It counts what the parser accepted, not what was pasted:
 	// parsePlainShareLines drops a line it cannot read and says nothing
-	// (third_party/libxray-share/parse_share.go:104-106), so a paste of five
-	// lines of which two are malformed reports three.
+	// (third_party/libxray-share/parse_share.go:102-103 for a line url.Parse
+	// rejects, :107-109 for a line whose outbound cannot be built), so a paste
+	// of five lines of which two are malformed reports three.
 	Count int `json:"count"`
 
 	// outbound holds the credential material. It is unexported so that

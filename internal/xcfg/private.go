@@ -8,13 +8,14 @@ package xcfg
 // # Why these are written out and not fetched from geoip.dat
 //
 // The obvious way to write this rule is "ip": ["geoip:private"], and it is
-// forbidden here. That string reaches ToCidrList at
-// infra/conf/router.go:445-458, which calls loadIP("geoip.dat", "PRIVATE"),
-// which is loadFile at router.go:180-192 opening the file through
-// filesystem.OpenAsset. The engine embeds no such file: the only go:embed in
-// xray-core v1.260327.0 is an HTML file at
-// transport/internet/browser_dialer/dialer.go:18, and the search path is the
-// "xray.location.asset" environment variable (common/platform/platform.go:13).
+// forbidden here. That string is rewritten to "ext:geoip.dat:private" at
+// common/geodata/rule_parser.go:20-21, and loadIP at
+// common/geodata/geodat_loader.go:42 calls loadFile (:28-30), which opens the
+// file through filesystem.OpenAsset. The engine embeds no such file: the only
+// go:embed in the pinned xray-core (v1.260327.1-0.20260415235634-c5edc122b70e)
+// is an HTML file at transport/internet/browser_dialer/dialer.go:18, and the
+// search path is the "xray.location.asset" environment variable
+// (common/platform/platform.go:13, others.go:16-17).
 //
 // So the convenient form of this rule would add a downloaded data file to a
 // product whose installer verifies exactly one artefact by SHA-256. The list
