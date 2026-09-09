@@ -65,6 +65,12 @@ run_suite() {
     local dir="$root/bdd/$suite"
     local report="$work/$suite.json"
     local log="$work/$suite.log"
+    local report_target="$report"
+    # Git Bash cannot translate a path embedded inside Cucumber's json: option.
+    # Give native Windows Node the matching Windows path explicitly.
+    case "$(uname -s)" in
+        MINGW*|MSYS*) report_target=$(cygpath -m "$report") ;;
+    esac
 
     printf '\n=== mutation run: %s\n' "$suite"
 
@@ -78,7 +84,7 @@ run_suite() {
     local status=0
     (
         cd "$dir"
-        CASPIAN_MUTATION=1 npx cucumber-js --profile all --format "json:$report"
+        CASPIAN_MUTATION=1 npx cucumber-js --profile all --format "json:\"$report_target\""
     ) > "$log" 2>&1 || status=$?
 
     # The cucumber exit code is EXPECTED to be non-zero here: nearly every

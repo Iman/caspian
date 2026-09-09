@@ -19,6 +19,8 @@ It does not certify Windows 10 hardware, Linux/macOS packet behavior, or bypass 
 | Smoke | 87 test executions passed; 297 seconds under concurrent load, above the script's 30-second budget |
 | API BDD | Full run: 31 scenarios and 274 steps; final SNI rerun: 2 scenarios and 11 steps passed |
 | Browser BDD | Full run in real headless Chrome: 35 scenarios and 311 steps; final SNI rerun: 2 scenarios and 13 steps passed |
+| BDD mutation checks | All 31 API and 36 browser scenarios matched their expected failure or known-defect repair result, including ignored SNI saves and invalid input acceptance |
+| Cross-compilation | SNI test binaries built for Linux/macOS amd64 and arm64, and the unsupported Windows ARM64 backend |
 | Packet parser fuzzing | 58,219 executions in a 15-second campaign; no crash |
 | Linux installer fixtures | 148 checks passed, including complete license payloads and uninstall preservation of unrelated documentation |
 | Windows local build | Go app, .NET helpers and x64 installer built successfully; installer checksum verified; WinDivert driver signature valid |
@@ -27,6 +29,13 @@ The first complete gate invocation failed on missing documentation translations 
 Those documentation failures were fixed and checked again; the unchanged configuration package passed with a 45-minute timeout.
 The results above combine those runs; they are not a claim that one final invocation of the gate script passed.
 The standalone scripts also passed after the final source and documentation changes.
+
+## CI follow-up on 2026-09-10
+
+The first Linux CI run passed the normal API and browser suites, but found missing SNI mutation registrations, a state fixture created with loose Unix permissions, and the configuration package's 10-minute timeout.
+The follow-up registers both SNI defects, uses the existing private-directory fixture, and gives the gate 30 minutes per package on Linux/macOS and 45 minutes on Windows.
+Set `CASPIAN_TEST_TIMEOUT` to override that bound; all cases and coverage floors remain enabled.
+The mutation runner also converts and quotes its report path for native Windows Node when run from Git Bash.
 
 ## Native Windows packet and TLS proof
 

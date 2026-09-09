@@ -180,10 +180,13 @@ fi
 # The output is kept so the coverage floors below are computed from THIS run
 # rather than from a stored number.
 
-# The exhaustive option matrix exceeded Go's default ten-minute package
-# timeout under the Windows race detector. Keep every case and allow it to finish.
-test_timeout=10m
-if [ "$goos" = "windows" ]; then test_timeout=30m; fi
+# The full race matrix exceeded ten minutes on Linux and thirty on Windows.
+# Keep every case, with a bounded package timeout that can be overridden.
+test_timeout=${CASPIAN_TEST_TIMEOUT:-}
+if [ -z "$test_timeout" ]; then
+    test_timeout=30m
+    if [ "$goos" = "windows" ]; then test_timeout=45m; fi
+fi
 step "go test -count=1 -race -cover -timeout=$test_timeout ./..."
 test_output=$(mktemp)
 trap 'rm -f "$test_output"' EXIT

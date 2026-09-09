@@ -79,6 +79,7 @@ import (
 	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/netcfg"
 	"caspianbyoc.org/caspian/internal/panel"
+	"caspianbyoc.org/caspian/internal/snispoof"
 	"caspianbyoc.org/caspian/internal/state"
 )
 
@@ -538,6 +539,8 @@ type defect struct {
 	deviceCountGated       bool
 	statusJSONFieldLost    bool
 	advancedSaveIgnored    bool
+	sniSaveIgnored         bool
+	sniInvalidAccepted     bool
 	csrfCheckDisabled      bool
 	sessionGateOpen        bool
 	secretsEchoed          bool
@@ -601,6 +604,8 @@ var defectsByName = map[string]defect{
 
 	"status-json-field-lost": {statusJSONFieldLost: true},
 	"advanced-save-ignored":  {advancedSaveIgnored: true},
+	"sni-save-ignored":       {sniSaveIgnored: true},
+	"sni-invalid-accepted":   {sniInvalidAccepted: true},
 	"csrf-check-disabled":    {csrfCheckDisabled: true},
 	"session-gate-open":      {sessionGateOpen: true},
 	"secrets-echoed":         {secretsEchoed: true},
@@ -657,6 +662,11 @@ type faulty struct {
 }
 
 func (f faulty) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	if f.d.sniSaveIgnored && r.Method == http.MethodPost && r.URL.Path == "/sni" {
+		// A successful-looking save that never changes the stored preference.
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	if f.d.helpPageBroken && r.URL.Path == "/help" {
 		// What an unregistered page actually did before "help" was added to
 		// pageNames in internal/panel/assets.go: the render failed and the
@@ -740,6 +750,17 @@ func (d defect) needsBodyRewrite() bool {
 }
 
 func (f faulty) mutateRequest(r *http.Request) {
+	if f.d.sniInvalidAccepted && r.Method == http.MethodPost && r.URL.Path == "/sni" {
+		// Preserve valid setup requests. Model accepting invalid input as a new
+		// preference by replacing it with a valid but different name, so the real
+		// store records a change that the refusal scenario must catch.
+		rewriteForm(r, func(form url.Values) {
+			if _, err := snispoof.NormalizeName(form.Get("spoof_sni")); err != nil {
+				form.Set("spoof_sni", "invalid-accepted.example.invalid")
+			}
+		})
+		return
+	}
 	if f.d.alwaysPersian {
 		q := r.URL.Query()
 		q.Set("lang", "fa")

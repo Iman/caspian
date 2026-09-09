@@ -8,7 +8,7 @@ import (
 )
 
 func TestSpoofSNIIsOptionalPersistentAndIndependent(t *testing.T) {
-	dir := t.TempDir()
+	dir := tempStateDir(t)
 	s, err := Load(dir)
 	if err != nil {
 		t.Fatal(err)

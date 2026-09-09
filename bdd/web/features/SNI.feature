@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 Feature: Optional SNI spoofing
-  @smoke @ready @sni
+  @smoke @ready @sni @sni-save
   Scenario: save and disable a spoof name beside an existing config
     Given I am signed in
     When I save spoof name " COVER.Example.Invalid. "
@@ -8,7 +8,7 @@ Feature: Optional SNI spoofing
     When I save spoof name ""
     Then the spoof name is ""
 
-  @ready @sni
+  @ready @sni @sni-invalid
   Scenario: an invalid spoof name does not replace the saved value
     Given I am signed in
     When I save spoof name "cover.example.invalid"
