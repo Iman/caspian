@@ -579,3 +579,7 @@ JSON را تجزیه کند، و بردار آرگومان باید به <span d
 نشود، <span dir="ltr">`releases/latest`</span> به هیچ چیز نمی‌رسد و نصب تک‌سطری چیزی برای واکشی ندارد.
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

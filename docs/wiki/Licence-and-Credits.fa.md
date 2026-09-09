@@ -83,3 +83,12 @@ Apache-2.0 برای آن در دسترس نیست.
 پروانه‌ها و اعلان‌های آن در <span dir="ltr">`third_party/dotnet/`</span> قرار دارند. بستهٔ مرجع Windows SDK ورودی ساخت است و همراه Caspian نصب نمی‌شود.
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)

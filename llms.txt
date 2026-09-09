@@ -1,0 +1,27 @@
+# Caspian-BYOC
+
+> A bring-your-own-config WiFi gateway for Windows, macOS, Raspberry Pi, and Linux. Caspian shares an Xray proxy tunnel with connected devices.
+
+Caspian accepts supported VLESS, VMess, Trojan, Shadowsocks, SOCKS, and Hysteria2 configurations. Protocol support does not mean every transport combination is supported.
+Optional SNI spoofing for deep packet inspection (DPI) circumvention is under development on feature/sni and is not in the current released installer.
+That mode supports VLESS, VMess, and Trojan on supported IPv4 TCP transports. It preserves the real TLS or REALITY name and certificate verification.
+DPI bypass depends on the network. Local packet and TLS tests do not prove provider-level bypass or universal detection resistance.
+The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-3.0. GoodbyeDPI and zapret are research references, not bundled engines.
+
+## Canonical guides
+
+- [Repository and release status](https://github.com/Iman/caspian)
+- [Documentation home](https://github.com/Iman/caspian/wiki/Home)
+- [SNI spoofing setup and limitations](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+- [Third-party source versions and licenses](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
+- [Windows local build and installer](https://github.com/Iman/caspian/blob/feature/sni/docs/WINDOWS-BUILD.md)
+- [SNI source review and future candidates](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)
+- [Primary SNI reference](https://github.com/patterniha/SNI-Spoofing)
+
+- [Validation evidence and remaining hardware checks](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)
+
+## Persian guides
+
+- [راهنمای فارسی](https://github.com/Iman/caspian/wiki/Home.fa)
+- [تنظیم SNI و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
+- [منابع و مجوزهای شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)

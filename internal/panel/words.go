@@ -219,6 +219,12 @@ func StartProblem(f Fault) Problem {
 // Key is the message for a fault.
 func (f Fault) Key() Key {
 	switch f {
+	case FaultSNISpoofInvalid:
+		return MsgSNISpoofInvalid
+	case FaultSNISpoofUnsupported:
+		return MsgSNISpoofUnsupported
+	case FaultSNISpoofUnavailable:
+		return MsgSNISpoofUnavailable
 	case FaultNone:
 		return ""
 	case FaultNoAPAdapter:

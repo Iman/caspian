@@ -81,3 +81,12 @@ xray-core, а парсер share-ссылок принадлежит XTLS. Ни 
 
 Файлы `caspian-tethering.exe` и `CaspianControl.exe` содержат среду выполнения .NET внутри исполняемых файлов.
 Лицензии и уведомления находятся в `third_party/dotnet/`. Пакет ссылок Windows SDK нужен для сборки и не устанавливается вместе с Caspian.
+
+<!-- SNI upstream credits -->
+
+Основной код и идея подмены SNI взяты из [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0); версия для Windows x64 использует WinDivert (LGPL-3.0).
+[Лицензии, источники и благодарности сторонним проектам](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

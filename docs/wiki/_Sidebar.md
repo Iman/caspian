@@ -141,3 +141,11 @@
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
+
+* [SNI spoofing (feature branch)](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+* [Third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)

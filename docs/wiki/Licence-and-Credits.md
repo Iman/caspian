@@ -81,3 +81,12 @@ from its own licence file, and the compatibility reasoning.
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

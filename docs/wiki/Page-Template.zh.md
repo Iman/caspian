@@ -31,3 +31,7 @@ TODO: 记录错误、恢复步骤、测试结果、日期和已知限制。
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

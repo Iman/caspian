@@ -123,3 +123,7 @@ sudo systemctl restart caspian.service caspian-panel.service
 </div>
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

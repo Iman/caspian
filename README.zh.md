@@ -36,6 +36,15 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
 ![macOS 上的 Caspian Control](docs/images/caspian-control-macos.png)
 
+## SNI 欺骗与 DPI 规避
+
+`feature/sni` 分支增加了可选的 SNI 欺骗功能，用于尝试规避深度包检测（DPI）。
+该模式保留真实的 TLS 或 REALITY 服务器名称和证书验证，支持通过兼容 IPv4 TCP 传输的 VLESS、VMess 和 Trojan。
+此功能仍在开发中，尚未包含在当前发布的安装程序中。
+效果取决于网络；Caspian 不保证绕过所有 DPI，也不保证连接无法被检测。
+[SNI 设置与限制（English）](docs/SNI.md) · [来源与许可证（English）](docs/THIRD-PARTY.md)。
+
+
 ## 连接方式与支持的配置格式
 
 建议先用以太网线连接路由器和运行 Caspian 的电脑，再用电脑内置 Wi-Fi 建立热点。Linux 也可以使用兼容的 USB Wi-Fi 适配器。这样，互联网接入和热点各用一个适配器。这是推荐的起步方案，并不是经过测速的性能保证。
@@ -441,3 +450,8 @@ stateDiagram-v2
 ## 许可证
 
 AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+<!-- SNI upstream credits -->
+
+SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)（GPL-3.0）；Windows x64 版本使用 WinDivert（LGPL-3.0）。
+[第三方许可证、来源和致谢](docs/THIRD-PARTY.md).

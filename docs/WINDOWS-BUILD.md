@@ -1,3 +1,5 @@
+[English](WINDOWS-BUILD.md) · [فارسی](WINDOWS-BUILD.fa.md) · [Русский](../README.ru.md) · [中文](../README.zh.md)
+
 # Build Windows locally
 
 From the repository folder, run:
@@ -41,3 +43,20 @@ The installer needs administrator access when you run it.
 The command uses the same builder as the release workflow.
 It stops when a build, version comparison, architecture comparison, or checksum comparison fails.
 It does not run the full test suite.
+
+## SNI spoofing files
+
+The x64 build also downloads WinDivert 2.2.2-A and its v2.2.2 source archive.
+The script checks pinned SHA256 hashes before it packages either archive.
+The installer includes the DLL, signed driver, source archive, license, and credits.
+The ARM64 build omits WinDivert and does not support SNI spoofing.
+See [SNI setup](SNI.md) and [third-party notices](THIRD-PARTY.md).
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

@@ -111,3 +111,7 @@ Caspian принимает ссылки VLESS, VMess, Shadowsocks, SOCKS, Trojan
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

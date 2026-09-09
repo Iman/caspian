@@ -56,6 +56,15 @@ Source: "payload\{#BuildArchitecture}\caspian.exe"; DestDir: "{app}"; Flags: ign
 Source: "payload\{#BuildArchitecture}\caspian-tethering.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "payload\{#BuildArchitecture}\CaspianControl.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "payload\{#BuildArchitecture}\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
+#if BuildArchitecture == "x64"
+Source: "payload\{#BuildArchitecture}\WinDivert-source.zip"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\WinDivert.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\WinDivert64.sys"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\..\third_party\windivert\LICENSE.txt"; DestDir: "{app}"; DestName: "WINDIVERT-LICENSE.txt"; Flags: ignoreversion
+Source: "..\..\..\third_party\windivert\README.md"; DestDir: "{app}"; DestName: "WINDIVERT-CREDITS.md"; Flags: ignoreversion
+#endif
+Source: "..\..\..\third_party\sni-spoofing\LICENSE.txt"; DestDir: "{app}"; DestName: "SNI-SPOOFING-LICENSE.txt"; Flags: ignoreversion
+Source: "..\..\..\third_party\sni-spoofing\README.md"; DestDir: "{app}"; DestName: "SNI-SPOOFING-CREDITS.md"; Flags: ignoreversion
 Source: "..\..\..\NOTICE"; DestDir: "{app}"; DestName: "NOTICE.txt"; Flags: ignoreversion
 Source: "..\..\..\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
 Source: "..\..\..\third_party\wintun\PREBUILT-BINARIES-LICENSE.txt"; DestDir: "{app}"; DestName: "WINTUN-LICENSE.txt"; Flags: ignoreversion

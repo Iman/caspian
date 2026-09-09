@@ -349,3 +349,12 @@ buy an adapter for is proven against bytes nobody measured.
 </div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

@@ -43,6 +43,20 @@ Refresh on a subscription address you saved.
 
 ![Caspian Control on macOS](docs/images/caspian-control-macos.png)
 
+## SNI spoofing for DPI circumvention
+
+Caspian's `feature/sni` branch adds optional SNI spoofing to a bring-your-own-config WiFi gateway.
+Deep packet inspection (DPI) examines network traffic to classify or filter connections.
+This mode sends a decoy TLS ClientHello before the real proxy stream, while preserving the real TLS or REALITY server name and certificate checks.
+It supports VLESS, VMess, and Trojan over supported IPv4 TCP transports.
+It is under development and is not in the current released installer.
+
+DPI bypass depends on the network and its filtering rules; Caspian does not promise to be undetectable or universally “DPI safe”.
+The Windows loopback tests verify unchanged data, a real TLS handshake, and rejection of an incorrect certificate name.
+They do not establish bypass success against an internet provider.
+See [SNI setup, supported platforms, and limits](docs/SNI.md) and [upstream research and credits](docs/THIRD-PARTY.md).
+
+
 ## Connections and supported formats
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.
@@ -483,3 +497,8 @@ stateDiagram-v2
 ## Licence
 
 AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).

@@ -51,3 +51,7 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/m
 </div>
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

@@ -505,3 +505,12 @@ that settles it.
 reading any of these files at an interactive prompt injects ANSI escapes. It
 does not affect the harness: aliases are not expanded in non-interactive shells.
 Use `sed -n '1,200p' <file>` if you are parsing something by hand.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

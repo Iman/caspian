@@ -116,6 +116,9 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	if err := s.validateStatic(req); err != nil {
 		return err
 	}
+	if err := validateSpoof(l, req.SpoofSNI); err != nil {
+		return err
+	}
 
 	// -----------------------------------------------------------------------
 	// 3. Clean up after a previous run that was killed. Nothing is applied at
@@ -272,6 +275,12 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// -----------------------------------------------------------------------
 	if err := s.assertHotspotInterfaceReleased(ctx, plan); err != nil {
 		return err
+	}
+	if req.SpoofSNI != "" {
+		doc, err = s.spoofDocument(l, req, plan, netOpts)
+		if err != nil {
+			return err
+		}
 	}
 
 	s.mu.Lock()
@@ -513,6 +522,12 @@ func (s *Service) stopLocked(ctx context.Context) error {
 		s.cfg.Logger.Warn("the engine complained while stopping", "error", err.Error())
 		errs = append(errs, err)
 	}
+	if s.sniForwarder != nil {
+		if err := s.sniForwarder.Close(); err != nil {
+			errs = append(errs, err)
+		}
+		s.sniForwarder = nil
+	}
 	if err := s.sup.Stop(ctx); err != nil {
 		s.cfg.Logger.Warn("the hotspot complained while stopping", "error", err.Error())
 		errs = append(errs, err)
@@ -610,6 +625,7 @@ func (s *Service) requestFingerprint(req panel.StartRequest) string {
 		h.Write([]byte(s))
 	}
 	write(string(req.ConfigJSON))
+	write(req.SpoofSNI)
 	write(req.Hotspot.SSID)
 	write(req.Hotspot.Passphrase)
 	write(req.Hotspot.Interface)

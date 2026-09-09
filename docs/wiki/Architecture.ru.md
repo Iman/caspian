@@ -346,3 +346,7 @@ flowchart LR
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

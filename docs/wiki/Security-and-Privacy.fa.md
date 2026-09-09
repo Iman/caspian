@@ -351,3 +351,12 @@ ICMP echo می‌رسد و به هیچ چیزِ دیگری روی دستگاه �
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با GPL-3.0، همراه WinDivert با LGPL-3.0 در Windows x64.
+[مجوزها، نسخه‌های منبع و انتساب شخص ثالث](../THIRD-PARTY.fa.md).
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)

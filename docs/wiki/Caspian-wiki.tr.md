@@ -32,3 +32,12 @@ Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur.
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI yanıltmanın temel kodu ve fikri [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) projesinden gelir (GPL-3.0); Windows x64 sürümü WinDivert kullanır (LGPL-3.0).
+[Üçüncü taraf lisansları, kaynaklar ve teşekkürler](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

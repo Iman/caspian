@@ -23,6 +23,26 @@ English, served from the box with no internet. `README.md` is the long form.
 
 ---
 
+## DPI bypass, SNI spoofing, and security
+
+### Is Caspian DPI safe?
+
+There is no universal DPI-safe guarantee. Optional SNI spoofing attempts to influence how a filtering system reads the initial TCP traffic.
+It does not hide the server IP, traffic volume, or timing, and a provider can still block the connection.
+The `feature/sni` implementation keeps the real TLS identity and rejects failed spoof confirmation instead of sending the real stream directly.
+
+### Does Caspian include GoodbyeDPI or zapret?
+
+No. [GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI) and [zapret](https://github.com/bol-van/zapret) are research references for possible future strategies.
+The primary SNI code and idea come from [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing), with GPL attribution preserved.
+Caspian does not bundle those other projects or claim their authors endorse it.
+
+### Does a config with SNI enable DPI bypass automatically?
+
+No. The imported SNI is the real server identity. Set the separate optional spoof name to enable this mode.
+Read [SNI setup and limitations](docs/SNI.md) before enabling it.
+
+
 ## Before you start
 
 ### What is this for?
@@ -561,3 +581,8 @@ each one. None of them is a leak of client traffic. The summary is in
   fail-closed.
 - the uninstaller replays the journal by its own rules, without the rule that
   holds the firewall's inverse.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).

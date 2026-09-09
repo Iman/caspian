@@ -541,3 +541,7 @@ The installer resolves the latest published release once. It downloads the
 binary and checksums from that same release. `CASPIAN_VERSION` still permits
 an explicit version. Downloading the installer script with `curl ... | less`
 only displays the script; it does not update the installed portal.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

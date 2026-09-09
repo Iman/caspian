@@ -27,3 +27,7 @@ The installation guide contains the prerequisites, download choices, and availab
 [English](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-windows-10-و-11) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#windows-10-и-11) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#windows-10-和-11)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

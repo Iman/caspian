@@ -44,3 +44,28 @@
 </div>
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](../THIRD-PARTY.md).
+
+## جعل SNI برای عبور از بازرسی عمیق بسته
+
+شاخهٔ `feature/sni` در Caspian، جعل اختیاری SNI را به دروازهٔ WiFi با پیکربندی دلخواه کاربر اضافه می‌کند.
+بازرسی عمیق بسته (DPI) ترافیک شبکه را برای دسته‌بندی یا فیلتر کردن اتصال بررسی می‌کند.
+این حالت پیش از جریان واقعی پراکسی یک TLS ClientHello با نام جعلی می‌فرستد و نام واقعی TLS یا REALITY و بررسی گواهی را حفظ می‌کند.
+VLESS، VMess و Trojan روی انتقال‌های پشتیبانی‌شدهٔ TCP در IPv4 قابل استفاده‌اند.
+این قابلیت در حال توسعه است و در نصب‌کنندهٔ منتشرشدهٔ فعلی نیست.
+
+عبور از DPI به شبکه و قواعد فیلترینگ بستگی دارد؛ Caspian نامرئی بودن یا ایمنی همگانی در برابر DPI را تضمین نمی‌کند.
+آزمون‌های حلقهٔ محلی Windows دادهٔ بدون تغییر، دست‌دهی واقعی TLS و رد نام نادرست گواهی را بررسی می‌کنند.
+این آزمون‌ها موفقیت در عبور از محدودیت ارائه‌دهندهٔ اینترنت را ثابت نمی‌کنند.
+[تنظیم SNI، سکوها و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) و [پژوهش و انتساب بالادستی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) را ببینید.
+
+[English SNI guide](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [English credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
+
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)

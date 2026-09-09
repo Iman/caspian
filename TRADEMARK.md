@@ -99,3 +99,8 @@ This document records the author's position. It is not legal advice, it was not
 drafted by a lawyer, and the strength of an unregistered mark varies by
 jurisdiction. If enforcement ever matters, take advice and consider registering
 the mark in the jurisdictions that matter to you.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).

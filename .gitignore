@@ -31,6 +31,7 @@ state.json.*
 *.pcapng
 key.txt
 *.txt
+!/llms.txt
 *.log
 .gocache
 out/
@@ -67,6 +68,7 @@ coverage.txt
 # Node dependency trees for the Cucumber suites. bdd/README.md says how to
 # install them.
 bdd/**/node_modules/
+bdd/web/se-metadata.json
 
 # NOTE for whoever edits this next.
 #

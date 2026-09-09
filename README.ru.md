@@ -40,6 +40,15 @@ Trojan и Hysteria2, а также YAML Clash и Clash.Meta, необработ�
 
 ![Caspian Control в macOS](docs/images/caspian-control-macos.png)
 
+## SNI spoofing и обход DPI
+
+Ветка `feature/sni` добавляет необязательную подмену SNI для обхода глубокой проверки пакетов (DPI).
+Этот режим сохраняет настоящее имя TLS или REALITY и проверку сертификата; он поддерживает VLESS, VMess и Trojan через совместимые транспорты IPv4 TCP.
+Функция находится в разработке и ещё не входит в опубликованный установщик.
+Результат зависит от сети: Caspian не гарантирует обход любого DPI или незаметность соединения.
+[Настройка SNI и ограничения (English)](docs/SNI.md) · [Источники и лицензии (English)](docs/THIRD-PARTY.md).
+
+
 ## Варианты подключения и поддерживаемые форматы
 
 Начните с кабеля Ethernet от роутера к компьютеру с Caspian. Для точки доступа используйте встроенный Wi-Fi, а на Linux можно использовать совместимый USB-адаптер Wi-Fi. Так интернет и точка доступа работают через разные адаптеры. Это рекомендуемая начальная схема, а не гарантия измеренной скорости.
@@ -492,3 +501,8 @@ stateDiagram-v2
 ## Лицензия
 
 AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+
+<!-- SNI upstream credits -->
+
+Основной код и идея подмены SNI взяты из [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0); версия для Windows x64 использует WinDivert (LGPL-3.0).
+[Лицензии, источники и благодарности сторонним проектам](docs/THIRD-PARTY.md).

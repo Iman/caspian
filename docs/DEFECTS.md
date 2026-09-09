@@ -195,3 +195,7 @@ the whole picture:
   watches its uplink and reloads the firewall when it moves. Both rewritten
   2026-08-30, with `TestNothingInTheApplianceWatchesTheUplink` left behind so
   the sentence cannot drift back.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

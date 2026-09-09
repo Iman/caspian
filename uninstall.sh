@@ -486,6 +486,16 @@ remove_units() {
 }
 
 remove_binaries() {
+  local doc_dir="${CASPIAN_SYSROOT}/usr/local/share/doc/caspian" name
+  for name in LICENSE NOTICE SNI-SPOOFING-LICENSE.txt SNI-SPOOFING-CREDITS.md; do
+    if [ -f "$doc_dir/$name" ]; then
+      run_tolerant rm -f "$doc_dir/$name"
+    fi
+  done
+  # Remove only an empty documentation directory; preserve other files.
+  if [ -d "$doc_dir" ]; then
+    run_tolerant rmdir "$doc_dir"
+  fi
   if [ -f "$DEST_BIN" ]; then
     run_tolerant rm -f "$DEST_BIN"
   fi

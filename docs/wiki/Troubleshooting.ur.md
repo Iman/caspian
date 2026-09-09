@@ -123,3 +123,7 @@ Caspian، VLESS، VMess، Shadowsocks، SOCKS، Trojan اور Hysteria2 لنکس
 </div>
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

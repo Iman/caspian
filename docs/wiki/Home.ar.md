@@ -36,3 +36,12 @@
 </div>
 
 </div>
+
+<!-- SNI upstream credits -->
+
+المصدر الأساسي لكود وفكرة تمويه SNI هو [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) بترخيص GPL-3.0؛ وتستخدم نسخة Windows x64 مكتبة WinDivert بترخيص LGPL-3.0.
+[تراخيص ومصادر وشكر المشاريع الخارجية](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

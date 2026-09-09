@@ -26,6 +26,7 @@
 | مسیر | مجوز | مالک | چیست |
 |---|---|---|---|
 | <span dir="ltr">`/usr/local/bin/caspian`</span> | 0755 | root | تنها باینری. زیرفرمان‌ها نقش را انتخاب می‌کنند |
+| <span dir="ltr">`/usr/local/share/doc/caspian`</span> | 0755 | root | مجوزها و انتساب نصب‌شده؛ فایل‌ها 0644 هستند |
 | <span dir="ltr">`/var/lib/caspian`</span> | 0700 | caspian | وضعیت ماندگار. یک اعتبارنامه را نگه می‌دارد |
 | <span dir="ltr">`/var/lib/caspian/state.json`</span> | 0600 | caspian | بستهٔ state آن را اتمی می‌نویسد |
 | <span dir="ltr">`/run/caspian`</span> | 0750 | root:caspian | سوکت‌های زمان اجرا |
@@ -175,3 +176,7 @@ arm64، و <span dir="ltr">`armv7l`</span> و <span dir="ltr">`armv6l`</span> ب
 آرتیفکت armv7 نگاشت کرد و مدل‌های قدیمی‌تر Pi را خراب کرد. این را تکرار نکنید.
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

@@ -204,3 +204,7 @@
   برگردد.
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

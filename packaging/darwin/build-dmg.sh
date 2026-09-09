@@ -62,6 +62,8 @@ cp "$ROOT/packaging/darwin/reset-password.sh" "$CONTENTS/Resources/"
 cp "$ROOT/packaging/darwin/service-action.sh" "$CONTENTS/Resources/"
 cp "$ROOT/LICENSE" "$CONTENTS/Resources/LICENSE.txt"
 cp "$ROOT/NOTICE" "$CONTENTS/Resources/NOTICE.txt"
+cp "$ROOT/third_party/sni-spoofing/LICENSE.txt" "$CONTENTS/Resources/SNI-SPOOFING-LICENSE.txt"
+cp "$ROOT/third_party/sni-spoofing/README.md" "$CONTENTS/Resources/SNI-SPOOFING-CREDITS.md"
 cp "$ROOT/third_party/libxray-share/LICENSE" "$CONTENTS/Resources/libxray-share-LICENSE.txt"
 cp "$ROOT/packaging/darwin/"org.caspianbyoc.caspian*.plist "$CONTENTS/Resources/"
 cat > "$CONTENTS/Info.plist" <<EOF

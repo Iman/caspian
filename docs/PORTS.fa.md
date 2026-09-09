@@ -227,3 +227,7 @@ Unix را لازم می‌دانست، اما <span dir="ltr">`os.Stat`</span> �
   (<span dir="ltr">`perm_other.go`</span> این را می‌گوید)؛ ACLهای نصاب جای آن را می‌گیرند.
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

@@ -141,3 +141,11 @@
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)（GPL-3.0）；Windows x64 版本使用 WinDivert（LGPL-3.0）。
+[第三方许可证、来源和致谢](../THIRD-PARTY.md).
+
+* [SNI spoofing (feature branch)](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+* [Third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)

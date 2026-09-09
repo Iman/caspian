@@ -30,10 +30,11 @@ import (
 // reads, and is only ever held for the length of a struct copy. This is the
 // same shape internal/engine uses for the same reason.
 type Service struct {
-	cfg  Config
-	sup  hotspot.AccessPoint
-	diag *diagRing
-	opMu sync.Mutex
+	cfg          Config
+	sup          hotspot.AccessPoint
+	diag         *diagRing
+	opMu         sync.Mutex
+	sniForwarder SNIForwarder // guarded by opMu
 
 	mu             sync.RWMutex
 	applier        *netcfg.Applier

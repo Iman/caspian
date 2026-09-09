@@ -47,3 +47,7 @@ sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
 </div>
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

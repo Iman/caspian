@@ -14,6 +14,7 @@ import (
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/hotspot"
 	"caspianbyoc.org/caspian/internal/netcfg"
+	"caspianbyoc.org/caspian/internal/snispoof"
 	"caspianbyoc.org/caspian/internal/xcfg"
 )
 
@@ -64,6 +65,8 @@ type Reachability interface {
 // environment: cmd/caspian reads docs/LAYOUT.md and passes the values in, so
 // that no package hardcodes a value it does not own.
 type Config struct {
+	// StartSNI owns the optional raw-packet forwarder. Tests can supply a fake.
+	StartSNI SNIStarter
 	// Runner executes the network commands. Required.
 	// Use netcfg.NewSystemRunner on the appliance and netcfg.RecordingRunner
 	// in a test.
@@ -207,6 +210,11 @@ func (c Config) check() error {
 }
 
 func (c Config) withDefaults() Config {
+	if c.StartSNI == nil {
+		c.StartSNI = func(remote netip.AddrPort, iface, name string) (SNIForwarder, error) {
+			return snispoof.Start(remote, iface, name)
+		}
+	}
 	if c.Backend == nil {
 		c.Backend = netcfg.BackendFor(netcfg.PlatformLinux)
 	}

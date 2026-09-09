@@ -29,3 +29,7 @@ Windows ve macOS için grafik kurulum programları bulunur. Linux ve Raspberry P
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

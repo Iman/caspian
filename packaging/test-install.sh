@@ -240,6 +240,10 @@ check_embedded unit_caspian_service packaging/caspian.service
 check_embedded unit_caspian_panel_service packaging/caspian-panel.service
 check_embedded unit_tmpfiles_conf packaging/caspian.tmpfiles.conf
 check_embedded unit_modules_load_conf packaging/caspian.modules-load.conf
+check_embedded license_project LICENSE
+check_embedded notice_project NOTICE
+check_embedded license_sni third_party/sni-spoofing/LICENSE.txt
+check_embedded notice_sni third_party/sni-spoofing/README.md
 
 # /run is a tmpfs, so both runtime directories have to be recreated at every
 # boot with the exact modes docs/LAYOUT.md fixes, not just at install time.
@@ -529,6 +533,10 @@ check_contains "fresh run creates the dnsmasq run directory at 0700 caspian" "$o
 check_not_contains "fresh run does not create /etc/caspian" "$out" "/etc/caspian"
 check_contains "fresh run writes the privileged unit" "$out" "caspian.service (mode 0644"
 check_contains "fresh run writes the panel unit" "$out" "caspian-panel.service (mode 0644"
+check_contains "fresh run writes LICENSE" "$out" "/usr/local/share/doc/caspian/LICENSE (mode 0644, owner root:root"
+check_contains "fresh run writes NOTICE" "$out" "/usr/local/share/doc/caspian/NOTICE (mode 0644, owner root:root"
+check_contains "fresh run writes SNI-SPOOFING-LICENSE.txt" "$out" "/usr/local/share/doc/caspian/SNI-SPOOFING-LICENSE.txt (mode 0644, owner root:root"
+check_contains "fresh run writes SNI-SPOOFING-CREDITS.md" "$out" "/usr/local/share/doc/caspian/SNI-SPOOFING-CREDITS.md (mode 0644, owner root:root"
 check_contains "fresh run writes the tmpfiles fragment" "$out" "tmpfiles.d/caspian.conf (mode 0644"
 check_contains "fresh run seeds a password at 0600" "$out" "first-run-password (mode 0600, owner caspian:caspian"
 check_contains "fresh run enables both units" "$out" "systemctl enable caspian-panel.service"
@@ -572,11 +580,23 @@ printf 'placeholder\n' >"${FAKE_ROOT}/sysroot/etc/systemd/system/caspian-panel.s
 printf '%s\n' '{"seq":1,"phase":"begin","op":"route","do":{"path":"ip","args":["route","add","203.0.113.7","via","192.168.4.1"]},"undo":{"path":"ip","args":["route","del","203.0.113.7","via","192.168.4.1"]}}' \
   >"${FAKE_ROOT}/sysroot/var/lib/caspian/netcfg.journal"
 
+doc_dir="${FAKE_ROOT}/sysroot/usr/local/share/doc/caspian"
+mkdir -p "$doc_dir"
+for name in LICENSE NOTICE SNI-SPOOFING-LICENSE.txt SNI-SPOOFING-CREDITS.md local-notes.txt; do
+  printf 'placeholder\n' >"$doc_dir/$name"
+done
+
 out="$(run_uninstaller --keep-state)"
 check_contains "uninstall disables the panel first" "$out" "systemctl disable --now caspian-panel.service"
 check_contains "uninstall replays the journal" "$out" "would replay entry 1 (route)"
 check_not_contains "uninstall does not print the server address" "$out" "203.0.113.7"
 check_contains "uninstall removes the binary" "$out" "rm -f ${FAKE_ROOT}/sysroot/usr/local/bin/caspian"
+for name in LICENSE NOTICE SNI-SPOOFING-LICENSE.txt SNI-SPOOFING-CREDITS.md; do
+  check_contains "uninstall removes $name" "$out" "rm -f $doc_dir/$name"
+done
+check_contains "uninstall only removes an empty doc directory" "$out" "rmdir $doc_dir"
+check_not_contains "uninstall preserves local documentation" "$out" "rm -f $doc_dir/local-notes.txt"
+
 # One rm -rf of /run/caspian takes the dnsmasq directory inside it as well.
 check_contains "uninstall removes the run directory" "$out" "rm -rf ${FAKE_ROOT}/sysroot/run/caspian"
 check_not_contains "uninstall does not look for /etc/caspian" "$out" "/etc/caspian"

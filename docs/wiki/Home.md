@@ -40,3 +40,28 @@ Arabic, Urdu, and Turkish have short guides for getting started, installation, a
 [English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
+
+## SNI spoofing for DPI circumvention
+
+Caspian's `feature/sni` branch adds optional SNI spoofing to a bring-your-own-config WiFi gateway.
+Deep packet inspection (DPI) examines network traffic to classify or filter connections.
+This mode sends a decoy TLS ClientHello before the real proxy stream, while preserving the real TLS or REALITY server name and certificate checks.
+It supports VLESS, VMess, and Trojan over supported IPv4 TCP transports.
+It is under development and is not in the current released installer.
+
+DPI bypass depends on the network and its filtering rules; Caspian does not promise to be undetectable or universally “DPI safe”.
+The Windows loopback tests verify unchanged data, a real TLS handshake, and rejection of an incorrect certificate name.
+They do not establish bypass success against an internet provider.
+See [SNI setup, supported platforms, and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing) and [upstream research and credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits).
+
+[English SNI guide](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [English credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
+
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

@@ -145,3 +145,11 @@
 </div>
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](../THIRD-PARTY.md).
+
+* [جعل SNI (شاخهٔ قابلیت)](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
+* [انتساب شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)

@@ -26,6 +26,14 @@ var messages = map[Lang]map[Key]string{
 // Not reviewed by a native speaker; see the caveat in i18n.go. The fault
 // sentences are the ones where that matters.
 var messagesFA = map[Key]string{
+	MsgSNISpoofHeading:     "جعل SNI (اختیاری)",
+	MsgSNISpoofLabel:       "نام جعلی سرور",
+	MsgSNISpoofHint:        "پیش از اتصال اصلی، یک پیام آغاز TLS با نام جعلی می‌فرستد. نام سرور در تنظیمات شما تغییر نمی‌کند. برای خاموش کردن، این کادر را خالی بگذارید. به اتصال TCP با IPv4 نیاز دارد.",
+	MsgSNISpoofSave:        "ذخیرهٔ جعل SNI",
+	MsgSNISpoofSaved:       "انتخاب جعل SNI ذخیره شد.",
+	MsgSNISpoofInvalid:     "یک نام دامنه با حداکثر 219 نویسهٔ ASCII وارد کنید، یا برای خاموش کردن کادر را خالی بگذارید.",
+	MsgSNISpoofUnsupported: "این حالت SNI از VLESS، VMess یا Trojan روی TCP با IPv4 پشتیبانی می‌کند. پروتکل‌های دیگر، split HTTP و ویندوز ARM64 پشتیبانی نمی‌شوند.",
+	MsgSNISpoofUnavailable: "جعل SNI شروع نشد. نصب ابزار دریافت بسته و دسترسی سرویس را بررسی کنید. در ویندوز، بستهٔ x64 دارای WinDivert را نصب کنید.",
 	// Chrome.
 	"app.name":         "Caspian",
 	"nav.skip":         "رفتن به بخش اصلی",
@@ -517,6 +525,14 @@ var messagesFA = map[Key]string{
 
 // messagesEN is English, the alternative.
 var messagesEN = map[Key]string{
+	MsgSNISpoofHeading:     "SNI spoofing (optional)",
+	MsgSNISpoofLabel:       "Fake server name",
+	MsgSNISpoofHint:        "Send a fake TLS greeting before the real connection. The server name in your configuration stays unchanged. Leave this empty to turn spoofing off. Requires an IPv4 TCP connection.",
+	MsgSNISpoofSave:        "Save SNI spoofing",
+	MsgSNISpoofSaved:       "SNI spoofing preference saved.",
+	MsgSNISpoofInvalid:     "Enter a DNS hostname of at most 219 ASCII characters, or leave it empty to turn spoofing off.",
+	MsgSNISpoofUnsupported: "This SNI mode supports VLESS, VMess, or Trojan over IPv4 TCP. Other protocols, split HTTP, and Windows ARM64 are not supported.",
+	MsgSNISpoofUnavailable: "SNI spoofing could not start. Make sure the packet backend is installed and the service has permission to use it. On Windows, install the x64 package with WinDivert.",
 	// Chrome.
 	"app.name":         "Caspian",
 	"nav.skip":         "Skip to the controls",

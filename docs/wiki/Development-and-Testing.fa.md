@@ -113,3 +113,7 @@ PASS، و با کد 1 بیرون می‌آید.
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)

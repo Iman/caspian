@@ -137,6 +137,7 @@ type pageData struct {
 	// ---- the config ----
 	SetupIncomplete bool
 	HasConfig       bool
+	SpoofSNI        string
 	ConfigName      string
 	ConfigSummary   LTR
 	// ConfigEntries is the list the person chooses from when the pasted text
@@ -460,6 +461,7 @@ type ConfigEntry struct {
 // it. What leaves this function is the parsed, redacted view.
 func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 	d.HasConfig = proxy.IsConfigured()
+	d.SpoofSNI = proxy.SpoofSNI.Reveal()
 	if !d.HasConfig {
 		return
 	}

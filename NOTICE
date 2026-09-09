@@ -115,6 +115,7 @@ noted in brackets.
     golang.org/x/sys                            BSD-3-Clause
     golang.org/x/text                           BSD-3-Clause
     golang.org/x/time                           BSD-3-Clause
+    golang.zx2c4.com/wintun                     MIT (Windows runtime binding)
     golang.zx2c4.com/wireguard                  MIT
     google.golang.org/genproto/googleapis/rpc   Apache-2.0
     google.golang.org/grpc                      Apache-2.0
@@ -134,7 +135,6 @@ TEST AND BUILD TOOLING, NOT DISTRIBUTED
     github.com/davecgh/go-spew                  ISC
     github.com/pmezard/go-difflib               BSD-2-Clause
     golang.org/x/mod, golang.org/x/tools        BSD-3-Clause
-    golang.zx2c4.com/wintun                     MIT (Windows only, never built here)
     @cucumber/cucumber                          MIT
     selenium-webdriver                          Apache-2.0
 
@@ -174,3 +174,36 @@ WINDOWS DISTRIBUTION FILES
     Microsoft.Windows.SDK.NET.Ref           build input only
         The Mobile Hotspot helper uses this reference package at build time.
         Caspian does not distribute it as a separate DLL.
+
+SNI SPOOFING ATTRIBUTION
+------------------------
+
+    Primary code and idea: patterniha/SNI-Spoofing contributors
+    https://github.com/patterniha/SNI-Spoofing
+    Reviewed source: 13b78cf7e073f38d9cadcff542faf4a00b0a6de2
+    License: GPL-3.0; full text in third_party/sni-spoofing/LICENSE.txt.
+
+    Caspian translates the ClientHello template and adapts the handshake
+    algorithm in internal/snispoof. Modifications by Iman Samizadeh (2026)
+    add name validation, complete connection ownership, bounds checking,
+    resource limits, service rollback, platform backends, and tests.
+    The derived files retain GPL-3.0-only notices. GPLv3 section 13 permits
+    combination with AGPLv3 code; each part retains its own license and the
+    AGPL network-interaction requirements apply to the combination.
+    Caspian's additional terms do not relicense the upstream material.
+    This attribution does not claim upstream endorsement.
+
+    WinDivert 2.2.2-A by Basil (basil00) and contributors
+    https://github.com/basil00/WinDivert/tree/v2.2.2
+    Windows x64 optional runtime: WinDivert.dll and WinDivert64.sys,
+    unmodified, dynamically loaded. Caspian selects LGPL-3.0 from the
+    upstream dual license. The complete license bundle and source reference
+    are in third_party/windivert/ and installed beside the binaries.
+
+    Research references, no copied code or bundled executable:
+      selfishblackberry177/sni-spoof (no license found at reviewed commit)
+      ValdikSS/GoodbyeDPI (Apache-2.0)
+      bol-van/zapret (MIT)
+      Floxu1/UAC-SNI-Spoofer-Android (no top-level app license found)
+      therealaleph/sni-spoofing-rust (declares MIT; derived-code terms unverified)
+    See docs/THIRD-PARTY.md and docs/THIRD-PARTY.md for scope and versions.

@@ -32,3 +32,7 @@ README معرفی، تصاویر و آزمایش‌های ثبت‌شده را �
 </div>
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)

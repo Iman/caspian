@@ -229,3 +229,7 @@ To finish on the Windows machine, in this order:
   platform installers are under `packaging/darwin` and `packaging/windows`.
 - On Windows the 0600 protection `internal/state` promises is not in force
   (`perm_other.go` says so); the installer's ACLs stand in for it.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

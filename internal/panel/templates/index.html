@@ -232,6 +232,18 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
   {{if .RefreshDisabledWhy}}<p class="hint">{{.RefreshDisabledWhy}}</p>{{end}}
   {{end}}
 
+{{if .HasConfig}}
+  <details class="disclose">
+    <summary>{{.T "sni.heading"}}</summary>
+    <form method="post" action="/sni" class="stack">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label for="spoof_sni">{{.T "sni.label"}}</label>
+      <input id="spoof_sni" name="spoof_sni" type="text" value="{{.SpoofSNI}}" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <p class="hint">{{.T "sni.hint"}}</p>
+      <button type="submit">{{.T "sni.save"}}</button>
+    </form>
+  </details>
+{{end}}
   <details class="disclose" {{if .SetupIncomplete}}open{{end}}>
     <summary>{{if .HasConfig}}{{.T "config.replace"}}{{else}}{{.T "config.add"}}{{end}}</summary>
     <form method="post" action="/config" class="stack">

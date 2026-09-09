@@ -300,6 +300,14 @@ const (
 	MsgAdvConfigCount     Key = "advanced.config.count"
 	// The entry list in the config card, shown when the pasted text holds
 	// more than one entry.
+	MsgSNISpoofHeading      Key = "sni.heading"
+	MsgSNISpoofLabel        Key = "sni.label"
+	MsgSNISpoofHint         Key = "sni.hint"
+	MsgSNISpoofSave         Key = "sni.save"
+	MsgSNISpoofSaved        Key = "sni.saved"
+	MsgSNISpoofInvalid      Key = "sni.invalid"
+	MsgSNISpoofUnsupported  Key = "sni.unsupported"
+	MsgSNISpoofUnavailable  Key = "sni.unavailable"
 	MsgConfigEntriesHeading Key = "config.entries.heading"
 	MsgConfigEntryNumber    Key = "config.entries.number"
 	MsgConfigEntriesSubmit  Key = "config.entries.submit"

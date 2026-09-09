@@ -36,3 +36,12 @@
 </div>
 
 </div>
+
+<!-- SNI upstream credits -->
+
+SNI کی جعل سازی کے بنیادی کوڈ اور خیال کا ماخذ [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) ہے (GPL-3.0)؛ Windows x64 میں WinDivert استعمال ہوتا ہے (LGPL-3.0)۔
+[دیگر منصوبوں کے لائسنس، ماخذ اور اعتراف](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

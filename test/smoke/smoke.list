@@ -77,3 +77,9 @@ test/goldenscan        ^TestNoCommittedFixtureCarriesACredential$|^TestScannerCa
 # The command line: it must still build and its check subcommand must still run
 # without touching the box.
 cmd/caspian            ^TestCheckChangesNothingAndSaysWhatItLookedAt$
+
+# Optional SNI: preserve the real identity and close before sending real bytes on failure.
+internal/snispoof      ^TestForwarderNeverLeaksRealBytesWithoutConfirmation$|^TestClientHelloMatchesMasterLayoutAndTLSParser$
+internal/link          ^TestThroughLoopbackPreservesIdentityAndCredentials$|^TestThroughLoopbackPreservesImplicitTLSAndHTTPNames$
+internal/panel         ^TestSNIFormPreservesRealConfigAndReconnects$|^TestSNIFormRejectsBadInputAndCSRF$
+internal/privsvc       ^TestSNIServicePreservesIdentityAndOwnsLifecycle$|^TestSNIServiceRollsBackFailures$

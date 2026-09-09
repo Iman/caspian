@@ -42,6 +42,20 @@ Raspberry Pi 5 در تاریخ 2026-09-03 با تونلِ بالا و پیش ا�
 
 ![Caspian Control در macOS](docs/images/caspian-control-macos.png)
 
+## جعل SNI برای عبور از بازرسی عمیق بسته
+
+شاخهٔ `feature/sni` در Caspian، جعل اختیاری SNI را به دروازهٔ WiFi با پیکربندی دلخواه کاربر اضافه می‌کند.
+بازرسی عمیق بسته (DPI) ترافیک شبکه را برای دسته‌بندی یا فیلتر کردن اتصال بررسی می‌کند.
+این حالت پیش از جریان واقعی پراکسی یک TLS ClientHello با نام جعلی می‌فرستد و نام واقعی TLS یا REALITY و بررسی گواهی را حفظ می‌کند.
+VLESS، VMess و Trojan روی انتقال‌های پشتیبانی‌شدهٔ TCP در IPv4 قابل استفاده‌اند.
+این قابلیت در حال توسعه است و در نصب‌کنندهٔ منتشرشدهٔ فعلی نیست.
+
+عبور از DPI به شبکه و قواعد فیلترینگ بستگی دارد؛ Caspian نامرئی بودن یا ایمنی همگانی در برابر DPI را تضمین نمی‌کند.
+آزمون‌های حلقهٔ محلی Windows دادهٔ بدون تغییر، دست‌دهی واقعی TLS و رد نام نادرست گواهی را بررسی می‌کنند.
+این آزمون‌ها موفقیت در عبور از محدودیت ارائه‌دهندهٔ اینترنت را ثابت نمی‌کنند.
+[تنظیم SNI، سکوها و محدودیت‌ها](docs/SNI.fa.md) و [پژوهش و انتساب بالادستی](docs/THIRD-PARTY.fa.md) را ببینید.
+
+
 ## روش‌های اتصال و قالب‌های پشتیبانی‌شده
 
 برای شروع، مودم یا روتر را با کابل اترنت به کامپیوتر کاسپین وصل کنید. برای هات‌اسپات از وای‌فای داخلی آن کامپیوتر، یا در لینوکس از یک آداپتور USB وای‌فای سازگار استفاده کنید. در این چیدمان، ورودی اینترنت و هات‌اسپات آداپتورهای جدا دارند. این پیشنهاد برای شروع است؛ تضمین سرعت اندازه‌گیری‌شده نیست.
@@ -542,3 +556,8 @@ stateDiagram-v2
 AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](docs/THIRD-PARTY.md).

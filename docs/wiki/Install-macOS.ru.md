@@ -27,3 +27,7 @@
 [English](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-macos-13-یا-جدیدتر) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-или-новее) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#macos-13-或更高版本)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

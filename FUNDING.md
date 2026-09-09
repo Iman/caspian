@@ -54,3 +54,8 @@ page says.
 
 This file records the author's position and the reasoning behind it. It is not
 legal advice and it was not drafted by a lawyer.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).

@@ -27,3 +27,7 @@
 [English](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-windows-10-و-11) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#windows-10-и-11) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#windows-10-和-11)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

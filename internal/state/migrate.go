@@ -27,6 +27,7 @@ var migrations = map[int]func(*State) error{
 	0: migrateV0ToV1,
 	1: migrateV1ToV2,
 	2: migrateV2ToV3,
+	3: migrateV3ToV4,
 }
 
 // ErrFutureVersion is the sentinel behind the refusal of a newer file, so a
@@ -130,5 +131,12 @@ func migrateV1ToV2(st *State) error {
 // ErrFutureVersion instead. See the note on CurrentVersion.
 func migrateV2ToV3(st *State) error {
 	st.Version = 3
+	return nil
+}
+
+// migrateV3ToV4 introduces the optional spoof name, disabled in older state.
+func migrateV3ToV4(st *State) error {
+	st.Proxy.SpoofSNI = ""
+	st.Version = 4
 	return nil
 }

@@ -71,3 +71,12 @@ Windows 安装包含独立文件 `wintun.dll`。项目原样分发官方签名�
 
 `caspian-tethering.exe` 和 `CaspianControl.exe` 的 .NET 运行时包含在可执行文件内部。
 相关许可证和声明位于 `third_party/dotnet/`。Windows SDK 引用包仅用于构建，不随 Caspian 安装。
+
+<!-- SNI upstream credits -->
+
+SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)（GPL-3.0）；Windows x64 版本使用 WinDivert（LGPL-3.0）。
+[第三方许可证、来源和致谢](../THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

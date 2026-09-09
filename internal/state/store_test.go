@@ -47,6 +47,7 @@ func fullState(t *testing.T) State {
 			Scheme:   fakeProxyScheme,
 			Label:    fakeProxyLabel,
 			Selected: 2,
+			SpoofSNI: Secret("cover.example.invalid"),
 			AddedAt:  time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
 
 			SubscriptionURL: Secret(fakeSubscriptionURL),

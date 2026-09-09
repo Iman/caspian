@@ -29,3 +29,7 @@ The installation guide contains the prerequisites, download choices, and availab
 [English](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#linux-和-raspberry-pi)
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

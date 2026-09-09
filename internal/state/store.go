@@ -4,6 +4,7 @@ package state
 
 import (
 	"bytes"
+	"caspianbyoc.org/caspian/internal/snispoof"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -227,6 +228,7 @@ func (s *Store) SetProxyConfig(raw, scheme, label string) error {
 		// A new paste is a new list. Whatever entry was chosen in the old one
 		// has no meaning in this one, so the choice goes back to the first.
 		st.Proxy.Selected = 0
+		st.Proxy.SpoofSNI = ""
 		st.Proxy.AddedAt = time.Now().UTC()
 		// The figures and the refresh time describe the config that was
 		// fetched, and this paste has just replaced it. The address stays: it
@@ -304,6 +306,12 @@ func (s *Store) VerifyPanelPassword(plaintext string) (bool, error) {
 // internal/hotspot and internal/netcfg, and duplicating them would put two
 // packages in disagreement about what is legal.
 func (s State) validate() error {
+	name := s.Proxy.SpoofSNI.Reveal()
+	normalized, err := snispoof.NormalizeName(name)
+	if err != nil || normalized != name || (name != "" && !s.Proxy.IsConfigured()) {
+		return errors.New("state: invalid SNI spoofing setting")
+	}
+
 	if s.Version != CurrentVersion {
 		return fmt.Errorf("state: refusing to write schema version %d, this build writes %d", s.Version, CurrentVersion)
 	}

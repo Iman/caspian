@@ -77,6 +77,31 @@ if ($actual -ne "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef5
 Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $wintunCache "expanded") -Force
 Copy-Item -LiteralPath (Join-Path $wintunCache "expanded\wintun\bin\$wintunArchitecture\wintun.dll") -Destination (Join-Path $payload "wintun.dll") -Force
 
+# SNI spoofing is optional and supported by the official x64 driver only.
+if ($Architecture -eq "x64") {
+    $divertCache = Join-Path $repo ".cache\windivert-2.2.2"
+    $divertArchive = Join-Path $divertCache "WinDivert.zip"
+    New-Item -ItemType Directory -Force -Path $divertCache | Out-Null
+    if (-not (Test-Path -LiteralPath $divertArchive)) {
+        Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/basil00/WinDivert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip" -OutFile $divertArchive
+    }
+    if ((Get-FileHash -LiteralPath $divertArchive -Algorithm SHA256).Hash.ToLowerInvariant() -ne "63cb41763bb4b20f600b6de04e991a9c2be73279e317d4d82f237b150c5f3f15") {
+        throw "The WinDivert checksum does not match. Delete '$divertArchive', then run the build again."
+    }
+    $divertSource = Join-Path $divertCache "WinDivert-source.zip"
+    if (-not (Test-Path -LiteralPath $divertSource)) {
+        Invoke-WebRequest -UseBasicParsing -Uri "https://codeload.github.com/basil00/WinDivert/zip/refs/tags/v2.2.2" -OutFile $divertSource
+    }
+    if ((Get-FileHash -LiteralPath $divertSource -Algorithm SHA256).Hash.ToLowerInvariant() -ne "65ec79c9e6afa99f648a3f4d1f6db794640b40d0b65bd438770ea503ee14ecb7") {
+        throw "The WinDivert source checksum does not match. Delete '$divertSource', then run the build again."
+    }
+    Copy-Item -LiteralPath $divertSource -Destination (Join-Path $payload "WinDivert-source.zip") -Force
+    Expand-Archive -LiteralPath $divertArchive -DestinationPath (Join-Path $divertCache "expanded") -Force
+    foreach ($divertFile in @("WinDivert.dll", "WinDivert64.sys")) {
+        Copy-Item -LiteralPath (Join-Path $divertCache "expanded\WinDivert-2.2.2-A\x64\$divertFile") -Destination (Join-Path $payload $divertFile) -Force
+    }
+}
+
 function Assert-PEArchitecture([string]$Path, [uint16]$ExpectedMachine) {
     $bytes = [IO.File]::ReadAllBytes($Path)
     if ($bytes.Length -lt 64 -or $bytes[0] -ne 0x4d -or $bytes[1] -ne 0x5a) {
@@ -97,6 +122,11 @@ function Assert-PEArchitecture([string]$Path, [uint16]$ExpectedMachine) {
 $expectedMachine = if ($Architecture -eq "arm64") { [uint16]0xaa64 } else { [uint16]0x8664 }
 foreach ($binary in @("caspian.exe", "caspian-tethering.exe", "CaspianControl.exe", "wintun.dll")) {
     Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
+}
+if ($Architecture -eq "x64") {
+    foreach ($binary in @("WinDivert.dll", "WinDivert64.sys")) {
+        Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
+    }
 }
 Write-Host "Building the installer..."
 & $compiler "/DAppVersion=$numericVersion" "/DBuildArchitecture=$Architecture" "/DAllowedArchitecture=$installerArchitecture" (Join-Path $PSScriptRoot "Caspian.iss")

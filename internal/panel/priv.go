@@ -176,7 +176,10 @@ type Fault string
 
 const (
 	// FaultNone means nothing is wrong.
-	FaultNone Fault = ""
+	FaultNone                Fault = ""
+	FaultSNISpoofInvalid     Fault = "sni-spoof-invalid"
+	FaultSNISpoofUnsupported Fault = "sni-spoof-unsupported"
+	FaultSNISpoofUnavailable Fault = "sni-spoof-unavailable"
 
 	// FaultNoAPAdapter means no radio on the machine can host an access point.
 	FaultNoAPAdapter Fault = "no-ap-adapter"
@@ -520,6 +523,8 @@ type EngineLog struct {
 //
 // It carries two credentials, so it redacts itself; see String below.
 type StartRequest struct {
+	// SpoofSNI is separate from the real TLS name in ConfigJSON.
+	SpoofSNI string
 	// ConfigJSON is the engine config document. It is produced by
 	// internal/link from parsed structures and never by interpolating the text
 	// the user pasted (design section 6). It is a credential: it carries the

@@ -24,6 +24,7 @@ here first, not in one package.
 | Path | Mode | Owner | What |
 |---|---|---|---|
 | `/usr/local/bin/caspian` | 0755 | root | The single binary. Subcommands select the role |
+| `/usr/local/share/doc/caspian` | 0755 | root | Installed licenses and credits; files are 0644 |
 | `/var/lib/caspian` | 0700 | caspian | Persistent state. Holds a credential |
 | `/var/lib/caspian/state.json` | 0600 | caspian | Written atomically by package state |
 | `/run/caspian` | 0750 | root:caspian | Runtime sockets |
@@ -165,3 +166,7 @@ The release artefacts follow the Go convention, not the kernel's:
 maps `uname -m` onto those: `x86_64` to amd64, `aarch64` to arm64, `armv7l` and
 `armv6l` to arm. A previous project in this workspace mapped armv6 onto an armv7
 artefact and broke the older Pi models. Do not repeat that.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).
