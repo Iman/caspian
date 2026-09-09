@@ -2,6 +2,8 @@
 # Copyright (C) 2026 Iman Samizadeh
 #
 # Install Caspian-BYOC on Windows 10 (version 2004 or later) or Windows 11.
+# Version 1607 is the floor for installing; connecting needs 2004, and a box
+# between the two says so in the panel. See internal/netcfg/winversion.go.
 # Run from an elevated PowerShell in the
 # directory that holds caspian.exe, caspian-tethering.exe and wintun.dll:
 #

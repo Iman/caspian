@@ -31,6 +31,11 @@ PowerShell, Go, or the .NET SDK.
 #### What you need
 
 - A computer running Windows 10 version 2004 (build 19041) or later, or Windows 11, on x64 or ARM64.
+  The installer refuses anything older than Windows 10 version 1607, which is the
+  first with Mobile Hotspot. Between 1607 and 1909 Caspian installs and the panel
+  opens, but connecting is refused with a message naming the version: those builds
+  have no way to send name lookups through the tunnel, and Caspian will not run in
+  a state where names either leak or stop resolving.
 - An administrator account on that computer.
 - A Wi-Fi adapter that supports Windows Mobile Hotspot.
 - An internet connection.

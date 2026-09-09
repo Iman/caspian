@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 434 keys
+## en: 435 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -165,6 +165,7 @@
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  fault.windowstooold
   footer.developer
   footer.github
   footer.note
@@ -441,7 +442,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 434 keys
+## fa: 435 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -601,6 +602,7 @@
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  fault.windowstooold
   footer.developer
   footer.github
   footer.note

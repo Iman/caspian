@@ -32,7 +32,9 @@ refused by name.
 
 ## What it needs
 
-Current releases include Windows 10 version 2004 (build 19041) or later and
+Connecting needs Windows 10 version 2004 (build 19041) or later. On an older
+Windows, back to version 1607, Caspian installs and the panel opens and says
+what that version cannot do. Current releases include Windows 10 version 2004 (build 19041) or later and
 Windows 11 on x64 and ARM64, macOS 13 or later on Intel and Apple Silicon, and
 Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
 are not gateway hosts; phones and tablets join the Caspian Wi-Fi as clients.

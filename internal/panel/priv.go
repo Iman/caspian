@@ -269,6 +269,13 @@ const (
 	// status comes back on the reply, because a number is data and not a
 	// word from this closed set.
 
+	// FaultWindowsTooOld means the box runs a Windows older than version
+	// 2004, which is the first with the call that points DNS at the tunnel.
+	// Everything else Caspian needs exists from 1607, so this is the one
+	// threshold that decides whether it runs, and the remedy is a Windows
+	// update rather than anything about Caspian.
+	FaultWindowsTooOld Fault = "windows-too-old"
+
 	// FaultRefreshBadAddress means the stored address is not one this box
 	// will fetch from: not https, no name, an IP literal, or a user name in
 	// front of the host. The store refuses the same shapes on the way in, so

@@ -19,6 +19,14 @@ DefaultDirName={autopf}\Caspian
 DefaultGroupName=Caspian
 ArchitecturesAllowed={#AllowedArchitecture}
 ArchitecturesInstallIn64BitMode={#AllowedArchitecture}
+; Windows 10 version 1607 (build 14393) is the first with Mobile Hotspot at
+; all, so an older Windows has nothing for Caspian to drive and the installer
+; says so rather than installing something that cannot work. Connecting needs
+; version 2004 (build 19041), which is where the call that points DNS at the
+; tunnel arrives; that threshold is enforced at run time with a sentence
+; naming it, because a person on 1809 can still install, read the panel and
+; see what their Windows cannot do. See internal/netcfg/winversion.go.
+MinVersion=10.0.14393
 PrivilegesRequired=admin
 OutputDir=..\..\..\out\installer
 OutputBaseFilename=CaspianSetup-{#AppVersion}-windows-{#BuildArchitecture}

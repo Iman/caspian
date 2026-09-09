@@ -576,6 +576,7 @@ const (
 	MsgRefreshBadStatusAdvice   Key = "problem.refresh.badstatus.advice"
 	MsgRefreshNotConfig         Key = "problem.refresh.notconfig.headline"
 	MsgRefreshNotConfigAdvice   Key = "problem.refresh.notconfig.advice"
+	MsgFaultWindowsTooOld       Key = "fault.windowstooold"
 	MsgRefreshFailedOther       Key = "problem.refresh.other.headline"
 	MsgRefreshFailedOtherAdvice Key = "problem.refresh.other.advice"
 	MsgEventConfigRefreshed     Key = "event.configrefreshed"

@@ -123,6 +123,15 @@ func (w *windowsRunner) ipHelper(args []string) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		if c := windowsCapability(); !c.DNSPinning {
+			// Refused here rather than attempted, because the call below is
+			// the one this build does not have. Failing on the missing symbol
+			// would report a machine problem; failing here reports the fact,
+			// which is that this Windows is too old. The apply journal rolls
+			// the half-built plan back, so the box ends up off rather than
+			// running with DNS blocked and nothing answering it.
+			return "", fmt.Errorf("%w (build %d)", ErrWindowsTooOld, c.Build)
+		}
 		server := ""
 		if args[1] == "set" {
 			server = "9.9.9.9"

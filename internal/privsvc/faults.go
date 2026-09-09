@@ -112,6 +112,11 @@ func faultOf(err error) panel.Fault {
 		// cannot help, because the box boots, the network manager rejoins the
 		// same network, and the refusal is identical.
 		return panel.FaultHotspotInterfaceBusy
+	case errors.Is(err, netcfg.ErrWindowsTooOld):
+		// Not FaultSoftwareMissing: nothing is missing that installing
+		// something would supply. The remedy is a Windows update, and the
+		// sentence has to say so or the person reinstalls Caspian instead.
+		return panel.FaultWindowsTooOld
 	case errors.Is(err, netcfg.ErrUnsupportedPlatform):
 		return panel.FaultSoftwareMissing
 	case errors.Is(err, netcfg.ErrDisallowedBinary):

@@ -253,6 +253,8 @@ func (f Fault) Key() Key {
 		return MsgFaultIPv6Unsupported
 	case FaultCountryMissing:
 		return MsgCountryMissing
+	case FaultWindowsTooOld:
+		return MsgFaultWindowsTooOld
 	case FaultRefreshBadAddress:
 		return MsgRefreshBadAddress
 	case FaultRefreshNoAnswer:
@@ -280,6 +282,7 @@ var faults = []Fault{
 	FaultClockImplausible, FaultPermissionDenied, FaultSoftwareMissing, FaultUnavailable,
 	FaultIPv6Unsupported, FaultCountryMissing, FaultUnknown,
 	FaultRefreshBadAddress, FaultRefreshNoAnswer, FaultRefreshTooLarge, FaultRefreshNotHTTPS,
+	FaultWindowsTooOld,
 }
 
 // Key is what to call an interface kind on screen.
