@@ -2,10 +2,62 @@
 package state
 
 import (
+	"bytes"
 	"encoding/json"
+	"os"
 	"reflect"
+	"strings"
 	"testing"
+	"time"
 )
+
+// An encoding failure must leave the last usable configuration and SNI choice
+// intact both on disk and in memory, with no partial temporary file.
+func TestSpoofSNIUpdateRollsBackWhenStateCannotBeEncoded(t *testing.T) {
+	dir := tempStateDir(t)
+	s, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := s.SetProxyConfig(fakeProxyLink, fakeProxyScheme, fakeProxyLabel); err != nil {
+		t.Fatal(err)
+	}
+	if err := s.SetSpoofSNI("cover.example.invalid"); err != nil {
+		t.Fatal(err)
+	}
+	before := s.Snapshot()
+	diskBefore, err := os.ReadFile(s.Path())
+	if err != nil {
+		t.Fatal(err)
+	}
+	err = s.Update(func(st *State) error {
+		st.Proxy.SpoofSNI = "replacement.example.invalid"
+		st.Proxy.AddedAt = time.Date(10000, 1, 1, 0, 0, 0, 0, time.UTC)
+		return nil
+	})
+	if err == nil || !strings.Contains(err.Error(), "encoding state") {
+		t.Fatalf("want an encoding error, got %v", err)
+	}
+	if !reflect.DeepEqual(before, s.Snapshot()) {
+		t.Fatal("failed encoding published a new state")
+	}
+	diskAfter, err := os.ReadFile(s.Path())
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !bytes.Equal(diskBefore, diskAfter) {
+		t.Fatal("failed encoding changed the persisted state")
+	}
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), ".state-") {
+			t.Fatal("failed encoding left a temporary state file")
+		}
+	}
+}
 
 func TestSpoofSNIIsOptionalPersistentAndIndependent(t *testing.T) {
 	dir := tempStateDir(t)

@@ -94,6 +94,7 @@ func TestSetSubscriptionURLRefusesEachRule(t *testing.T) {
 		{"ipv4 literal with port", "https://192.0.2.10:8443/sub", ErrSubscriptionIPLiteral},
 		{"ipv6 literal", "https://[2001:db8::1]/sub", ErrSubscriptionIPLiteral},
 		{"ipv6 literal with port", "https://[2001:db8::1]:8443/sub", ErrSubscriptionIPLiteral},
+		{"ipv6 literal with zone", "https://[fe80::1%25eth0]/sub", ErrSubscriptionIPLiteral},
 		{"ipv4-mapped ipv6 literal", "https://[::ffff:192.0.2.10]/sub", ErrSubscriptionIPLiteral},
 		{"userinfo", "https://user:pass@sub.example.com/sub", ErrSubscriptionUserinfo},
 		{"user only", "https://token@sub.example.com/sub", ErrSubscriptionUserinfo},
