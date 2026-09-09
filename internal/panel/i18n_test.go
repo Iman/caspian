@@ -4,6 +4,7 @@
 package panel
 
 import (
+	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -12,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -20,66 +22,238 @@ import (
 // the language they speak, nothing fails, and the other language quietly
 // develops holes. These are the mechanical guards against that.
 
-// TestEveryMessageExistsInBothLanguages is the parity check, in both
-// directions.
+// Every check below derives its language set from Langs and compares each
+// language against DefaultLang as the reference. A third language added to
+// Langs is therefore checked on the day it is added, with no edit here. The
+// checks themselves live in helpers that return the defects as errors, so
+// TestCatalogueChecksBiteOnABrokenLanguage can prove they detect what they
+// claim to detect.
+
+// sameOnPurpose lists the keys whose text is legitimately identical in every
+// language. Each one is here because it is a proper noun or a token, not
+// because nobody translated it.
+var sameOnPurpose = map[Key]bool{
+	MsgAppName: true, // the product's name
+}
+
+// sortedKeysOf returns every key of one catalogue, sorted, so a defect list is
+// stable between runs.
+func sortedKeysOf(m map[Key]string) []Key {
+	out := make([]Key, 0, len(m))
+	for k := range m {
+		out = append(out, k)
+	}
+	sort.Slice(out, func(i, j int) bool { return out[i] < out[j] })
+	return out
+}
+
+// catalogueParityDefects is the parity check, in both directions, between the
+// reference language and every other language in langs.
 //
-// It can genuinely fail, which is the reason the two catalogues are written out
-// as separate literals instead of being generated from one table of pairs. A
+// It returns one error per defect and never fails a test itself, so a negative
+// test can run it over a deliberately broken catalogue.
+func catalogueParityDefects(cat map[Lang]map[Key]string, langs []Lang, ref Lang) []error {
+	var errs []error
+	refMsgs := cat[ref]
+	if len(refMsgs) == 0 {
+		return []error{fmt.Errorf("the %s catalogue is empty, so nothing can be compared against it", ref)}
+	}
+	for _, lang := range langs {
+		if lang == ref {
+			continue
+		}
+		msgs := cat[lang]
+		if len(msgs) == 0 {
+			errs = append(errs, fmt.Errorf("the %s catalogue is empty", lang))
+			continue
+		}
+		for _, k := range sortedKeysOf(msgs) {
+			if _, ok := refMsgs[k]; !ok {
+				errs = append(errs, fmt.Errorf("%q is in %s and missing from %s", k, lang, ref))
+			}
+		}
+		for _, k := range sortedKeysOf(refMsgs) {
+			if _, ok := msgs[k]; !ok {
+				errs = append(errs, fmt.Errorf("%q is in %s and missing from %s", k, ref, lang))
+			}
+		}
+		if len(msgs) != len(refMsgs) {
+			errs = append(errs, fmt.Errorf("%s has %d messages and %s has %d", lang, len(msgs), ref, len(refMsgs)))
+		}
+	}
+	return errs
+}
+
+// catalogueContentDefects catches the other way a catalogue rots: the key is
+// present, so the parity check passes, and the value is a placeholder, a copy
+// of the reference text, or a sentence with a different number of format verbs.
+//
+// Only keys present in both the reference and the language under test are
+// compared; a missing key is a parity defect and is reported there.
+func catalogueContentDefects(cat map[Lang]map[Key]string, langs []Lang, ref Lang, allowSame map[Key]bool) []error {
+	var errs []error
+	refMsgs := cat[ref]
+	for _, k := range sortedKeysOf(refMsgs) {
+		if strings.TrimSpace(refMsgs[k]) == "" {
+			errs = append(errs, fmt.Errorf("%q has an empty %s message", k, ref))
+		}
+	}
+	for _, lang := range langs {
+		if lang == ref {
+			continue
+		}
+		msgs := cat[lang]
+		for _, k := range sortedKeysOf(msgs) {
+			got := msgs[k]
+			want, ok := refMsgs[k]
+			if !ok {
+				continue
+			}
+			if strings.TrimSpace(got) == "" {
+				errs = append(errs, fmt.Errorf("%q has an empty %s message", k, lang))
+			}
+			if got == want && !allowSame[k] {
+				errs = append(errs, fmt.Errorf("%q is identical in %s and %s (%q), which usually means it was never translated", k, lang, ref, got))
+			}
+			// A format verb in one language and not the other is a crash
+			// waiting for whichever language nobody tested.
+			if strings.Count(got, "%") != strings.Count(want, "%") {
+				errs = append(errs, fmt.Errorf("%q has %d format verbs in %s and %d in %s", k,
+					strings.Count(got, "%"), lang, strings.Count(want, "%"), ref))
+			}
+		}
+	}
+	return errs
+}
+
+// TestEveryMessageExistsInBothLanguages is the parity check, in both
+// directions, for every language in Langs against the default language.
+//
+// It can genuinely fail, which is the reason the catalogues are written out as
+// separate literals instead of being generated from one table of pairs. A
 // generator would make them agree by construction and this test would report
 // success on a catalogue that had lost half its Persian.
+//
+// The name predates the loop over Langs and is kept because i18n.go and
+// i18n_messages.go refer to it by name.
 func TestEveryMessageExistsInBothLanguages(t *testing.T) {
-	fa, en := messages[LangFA], messages[LangEN]
-	if len(fa) == 0 || len(en) == 0 {
-		t.Fatal("a catalogue is empty, so this test checked nothing")
+	if len(Langs) < 2 {
+		t.Fatalf("Langs is %v, so there is no second language to compare and this test checked nothing", Langs)
 	}
-
-	for _, k := range keys(LangFA) {
-		if _, ok := en[k]; !ok {
-			t.Errorf("%q is in Persian and missing from English", k)
+	for _, lang := range Langs {
+		if len(messages[lang]) == 0 {
+			t.Fatalf("the %s catalogue is empty, so this test checked nothing", lang)
 		}
 	}
-	for _, k := range keys(LangEN) {
-		if _, ok := fa[k]; !ok {
-			t.Errorf("%q is in English and missing from Persian", k)
-		}
+	for _, err := range catalogueParityDefects(messages, Langs, DefaultLang) {
+		t.Error(err)
 	}
-	if len(fa) != len(en) {
-		t.Errorf("Persian has %d messages and English has %d", len(fa), len(en))
-	}
-	t.Logf("%d messages in each language", len(fa))
+	t.Logf("%d messages in %s, compared against %d other languages", len(messages[DefaultLang]), DefaultLang, len(Langs)-1)
 }
 
 // TestNoMessageIsEmptyOrUntranslated catches the other way a catalogue rots:
 // the key is present, so the parity test passes, and the value is a placeholder
 // or a copy of the English.
 func TestNoMessageIsEmptyOrUntranslated(t *testing.T) {
-	// Keys whose two languages are legitimately identical. Each one is here
-	// because it is a proper noun or a token, not because nobody translated it.
-	sameOnPurpose := map[Key]bool{
-		MsgAppName: true, // the product's name
-	}
+	errs := catalogueContentDefects(messages, Langs, DefaultLang, sameOnPurpose)
 	identical := 0
-	for _, k := range keys(LangFA) {
-		fa, en := messages[LangFA][k], messages[LangEN][k]
-		if strings.TrimSpace(fa) == "" {
-			t.Errorf("%q has an empty Persian message", k)
-		}
-		if strings.TrimSpace(en) == "" {
-			t.Errorf("%q has an empty English message", k)
-		}
-		if fa == en && !sameOnPurpose[k] {
-			t.Errorf("%q is identical in both languages (%q), which usually means it was never translated", k, fa)
+	for _, err := range errs {
+		t.Error(err)
+		if strings.Contains(err.Error(), "identical") {
 			identical++
-		}
-		// A format verb in one language and not the other is a crash waiting
-		// for whichever language nobody tested.
-		if strings.Count(fa, "%") != strings.Count(en, "%") {
-			t.Errorf("%q has %d format verbs in Persian and %d in English", k,
-				strings.Count(fa, "%"), strings.Count(en, "%"))
 		}
 	}
 	if identical > 0 {
 		t.Logf("%d untranslated messages", identical)
+	}
+}
+
+// TestCatalogueChecksBiteOnABrokenLanguage is the negative control for the two
+// tests above. It builds a catalogue with a third, fake language that has one
+// key missing, one key extra, one empty value, one untranslated value and one
+// wrong format-verb count, and asserts that every defect is named.
+//
+// Without this, the checks could be refactored into something that loops over
+// Langs and finds nothing, and the green run would look identical. The fake
+// language is NOT registered in Langs; it exists only inside this test.
+func TestCatalogueChecksBiteOnABrokenLanguage(t *testing.T) {
+	const fake = Lang("xx")
+	if fake.Valid() {
+		t.Fatalf("%s is a real language in this build; pick another code for the fake", fake)
+	}
+	ref := DefaultLang
+	cat := map[Lang]map[Key]string{
+		ref: {
+			"k.missing": "Missing from language xx",
+			"k.empty":   "Present but empty in language xx",
+			"k.same":    "Copied verbatim into language xx",
+			"k.verbs":   "Needs %s and %d",
+			"k.fine":    "Translated properly",
+			MsgAppName:  "Caspian",
+		},
+		// A well-formed second language: nothing about it may be reported.
+		LangFA: {
+			"k.missing": "fa missing",
+			"k.empty":   "fa empty",
+			"k.same":    "fa same",
+			"k.verbs":   "fa %s %d",
+			"k.fine":    "fa fine",
+			MsgAppName:  "Caspian",
+		},
+		fake: {
+			"k.empty":  "   ",
+			"k.same":   "Copied verbatim into language xx",
+			"k.verbs":  "only %s",
+			"k.fine":   "xx fine",
+			"k.extra":  "Not in the reference at all",
+			MsgAppName: "Caspian",
+		},
+	}
+	langs := []Lang{ref, LangFA, fake}
+
+	var all []string
+	for _, err := range catalogueParityDefects(cat, langs, ref) {
+		all = append(all, err.Error())
+	}
+	for _, err := range catalogueContentDefects(cat, langs, ref, sameOnPurpose) {
+		all = append(all, err.Error())
+	}
+	joined := strings.Join(all, "\n")
+	t.Logf("defects reported:\n%s", joined)
+
+	want := []string{
+		`"k.missing" is in en and missing from xx`,
+		`"k.extra" is in xx and missing from en`,
+		`"k.empty" has an empty xx message`,
+		`"k.same" is identical in xx and en`,
+		`"k.verbs" has 1 format verbs in xx and 2 in en`,
+	}
+	for _, w := range want {
+		if !strings.Contains(joined, w) {
+			t.Errorf("no defect says %q", w)
+		}
+	}
+	// Five planted defects, no more: an extra report here would be a check that
+	// fires on healthy input, which is how a guard gets commented out.
+	if len(all) != len(want) {
+		t.Errorf("%d defects reported, want exactly %d", len(all), len(want))
+	}
+	healthyLang := regexp.MustCompile(`\b` + string(LangFA) + `\b`)
+	for _, line := range all {
+		if healthyLang.MatchString(line) {
+			t.Errorf("the healthy language was reported: %s", line)
+		}
+		if strings.Contains(line, string(MsgAppName)) {
+			t.Errorf("an allow-listed key was reported: %s", line)
+		}
+	}
+
+	// And the checks return nothing on the real catalogue with no fake
+	// language, which is what the two positive tests rely on.
+	healthy := append(catalogueParityDefects(messages, Langs, DefaultLang),
+		catalogueContentDefects(messages, Langs, DefaultLang, sameOnPurpose)...)
+	if len(healthy) != 0 {
+		t.Errorf("the shipped catalogue reports %d defects; the positive tests should be failing", len(healthy))
 	}
 }
 
@@ -488,7 +662,7 @@ func TestNoTemplateCallsAFormatMessageWithNoArgument(t *testing.T) {
 		for _, m := range call.FindAllStringSubmatch(string(body), -1) {
 			key := Key(m[1])
 			seen++
-			for _, l := range []Lang{LangFA, LangEN} {
+			for _, l := range Langs {
 				raw, ok := messages[l][key]
 				if !ok {
 					t.Errorf("%s: %s has no %s message", e.Name(), key, l)
@@ -555,7 +729,7 @@ func TestThePersianNameIsSpelledCorrectly(t *testing.T) {
 // collapses two states of the product into one word.
 func TestEveryEnginePhaseIsADistinctWordInEveryLanguage(t *testing.T) {
 	phases := []Key{"phase.stopped", "phase.starting", "phase.running", "phase.failed"}
-	for _, lang := range []Lang{LangFA, LangEN} {
+	for _, lang := range Langs {
 		seen := map[string]Key{}
 		for _, k := range phases {
 			w := T(lang, k)
@@ -572,20 +746,42 @@ func TestEveryEnginePhaseIsADistinctWordInEveryLanguage(t *testing.T) {
 	}
 }
 
+// TestLanguagePreferencePrecedenceAndCookie derives its valid cases from Langs:
+// every language can be saved, survives an invalid query, and wins over every
+// other saved language when asked for explicitly. The invalid cases use a code
+// that is checked NOT to be in Langs, so a future language cannot turn them
+// into accidental positives.
 func TestLanguagePreferencePrecedenceAndCookie(t *testing.T) {
-	for _, tc := range []struct {
+	type tc struct {
 		name, query, cookie string
 		want                Lang
 		sets                bool
-	}{
-		{"fresh", "", "", LangEN, false},
-		{"invalid query", "xx", "", LangEN, false},
-		{"invalid cookie", "", "xx", LangEN, false},
-		{"saved Persian", "", "fa", LangFA, false},
-		{"invalid query preserves choice", "xx", "fa", LangFA, false},
-		{"explicit English wins", "en", "fa", LangEN, true},
-		{"explicit Persian wins", "fa", "en", LangFA, true},
-	} {
+	}
+	const invalid = "xx"
+	if Lang(invalid).Valid() {
+		t.Fatalf("%q is a real language in this build; the invalid cases need another code", invalid)
+	}
+	if len(Langs) < 2 {
+		t.Fatalf("Langs is %v, so no case can show one language winning over another", Langs)
+	}
+	cases := []tc{
+		{"fresh", "", "", DefaultLang, false},
+		{"invalid query", invalid, "", DefaultLang, false},
+		{"invalid cookie", "", invalid, DefaultLang, false},
+	}
+	for _, lang := range Langs {
+		cases = append(cases,
+			tc{"saved " + string(lang), "", string(lang), lang, false},
+			tc{"invalid query preserves saved " + string(lang), invalid, string(lang), lang, false},
+		)
+		for _, other := range Langs {
+			if other == lang {
+				continue
+			}
+			cases = append(cases, tc{"explicit " + string(lang) + " wins over saved " + string(other), string(lang), string(other), lang, true})
+		}
+	}
+	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			for _, secure := range []bool{false, true} {
 				p := &Panel{secureCookies: secure}

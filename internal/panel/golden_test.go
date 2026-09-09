@@ -272,9 +272,11 @@ func goldenStates() []goldenState {
 	}
 }
 
-// goldenLangs is every language a page is pinned in. Snapshot order is
-// independent of the language served to a fresh browser.
-var goldenLangs = []Lang{LangFA, LangEN}
+// goldenLangs is every language a page is pinned in. It is Langs itself, so a
+// language added there gets its own golden files (the file names carry the
+// Lang value as their suffix) and TestGolden_EveryGoldenFileIsProducedBySomeCase
+// fails until they are generated. Snapshot order follows Langs.
+var goldenLangs = Langs
 
 // ---------------------------------------------------------------------------
 // The golden mechanism
