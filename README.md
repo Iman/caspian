@@ -2,6 +2,8 @@
 
 [**Download latest release**](https://github.com/Iman/caspian/releases/latest) | [**Open wiki**](https://github.com/Iman/caspian/wiki/Home)
 
+To build the Windows app and installer locally, see [Windows build instructions](docs/WINDOWS-BUILD.md).
+
 <div dir="ltr" align="left">
 
 [English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [中文](README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)

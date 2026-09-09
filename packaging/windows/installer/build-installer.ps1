@@ -4,6 +4,26 @@ param(
     [ValidateSet("x64", "arm64")][string]$Architecture = "x64"
 )
 $ErrorActionPreference = "Stop"
+if ($env:OS -ne "Windows_NT") { throw "Run this build on Windows." }
+if ($Version -notmatch '^v?\d+\.\d+\.\d+(?:\.\d+)?$') {
+    throw "Use a numeric version such as 1.2.3 or v1.2.3."
+}
+foreach ($tool in @("go.exe", "dotnet.exe")) {
+    if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
+        throw "Missing $tool. See docs/WINDOWS-BUILD.md for the build prerequisites."
+    }
+}
+$compiler = @(
+    (Get-Command ISCC.exe -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source),
+    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
+    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+    "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
+) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+if (-not $compiler) { throw "Install Inno Setup 6, then run this command again." }
+$sdkVersions = & dotnet.exe --list-sdks
+if ($LASTEXITCODE -ne 0 -or -not ($sdkVersions | Where-Object { $_ -match '^(9|[1-9]\d+)\.' })) {
+    throw "Install .NET SDK 9 or later, then run this command again."
+}
 $numericVersion = $Version.TrimStart("v")
 $releaseVersion = "v$numericVersion"
 $runtime = "win-$Architecture"
@@ -18,9 +38,15 @@ New-Item -ItemType Directory -Force -Path $payload, $output | Out-Null
 Push-Location $repo
 $previousGOOS = $env:GOOS
 $previousGOARCH = $env:GOARCH
+$previousCGO = $env:CGO_ENABLED
+$previousGOCACHE = $env:GOCACHE
 try {
     $env:GOOS = "windows"
     $env:GOARCH = $goArchitecture
+    # Release builds use Go's Windows implementation without a C compiler.
+    $env:CGO_ENABLED = "0"
+    if (-not $env:GOCACHE) { $env:GOCACHE = Join-Path $repo ".gocache" }
+    Write-Host "Building Caspian $releaseVersion for $Architecture..."
     & go.exe build -trimpath -ldflags "-X main.version=$releaseVersion -X caspianbyoc.org/caspian/internal/panel.Version=$releaseVersion" -o (Join-Path $payload "caspian.exe") .\cmd\caspian
     if ($LASTEXITCODE -ne 0) { throw "The Go build failed." }
     & dotnet.exe publish .\tools\caspian-tethering\caspian-tethering.csproj -c Release -r $runtime --self-contained true -o $payload
@@ -28,23 +54,28 @@ try {
     & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$numericVersion -p:InformationalVersion=$releaseVersion -p:IncludeSourceRevisionInInformationalVersion=false -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The tray app build failed." }
     $controlVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $payload "CaspianControl.exe")).ProductVersion
-    if ($controlVersion -ne $releaseVersion) { throw "The control window version '$controlVersion' does not match CI release '$releaseVersion'." }
+    if ($controlVersion -ne $releaseVersion) { throw "The control window version '$controlVersion' does not match build version '$releaseVersion'." }
 } finally {
     $env:GOOS = $previousGOOS
     $env:GOARCH = $previousGOARCH
+    $env:CGO_ENABLED = $previousCGO
+    $env:GOCACHE = $previousGOCACHE
     Pop-Location
 }
 
-$temporary = Join-Path ([IO.Path]::GetTempPath()) ("caspian-wintun-" + [Guid]::NewGuid().ToString("N"))
-$archive = Join-Path $temporary "wintun.zip"
-New-Item -ItemType Directory -Path $temporary | Out-Null
-try {
+$wintunCache = Join-Path $repo ".cache\wintun-0.14.1"
+$archive = Join-Path $wintunCache "wintun.zip"
+New-Item -ItemType Directory -Force -Path $wintunCache | Out-Null
+if (-not (Test-Path -LiteralPath $archive)) {
+    Write-Host "Downloading Wintun 0.14.1..."
     Invoke-WebRequest -UseBasicParsing -Uri "https://www.wintun.net/builds/wintun-0.14.1.zip" -OutFile $archive
-    $actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
-    if ($actual -ne "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51") { throw "The Wintun checksum does not match." }
-    Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $temporary "expanded")
-    Copy-Item -LiteralPath (Join-Path $temporary "expanded\wintun\bin\$wintunArchitecture\wintun.dll") -Destination (Join-Path $payload "wintun.dll") -Force
-} finally { Remove-Item -LiteralPath $temporary -Recurse -Force -ErrorAction SilentlyContinue }
+}
+$actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($actual -ne "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51") {
+    throw "The Wintun checksum does not match. Delete '$archive', then run the build again."
+}
+Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $wintunCache "expanded") -Force
+Copy-Item -LiteralPath (Join-Path $wintunCache "expanded\wintun\bin\$wintunArchitecture\wintun.dll") -Destination (Join-Path $payload "wintun.dll") -Force
 
 function Assert-PEArchitecture([string]$Path, [uint16]$ExpectedMachine) {
     $bytes = [IO.File]::ReadAllBytes($Path)
@@ -67,12 +98,14 @@ $expectedMachine = if ($Architecture -eq "arm64") { [uint16]0xaa64 } else { [uin
 foreach ($binary in @("caspian.exe", "caspian-tethering.exe", "CaspianControl.exe", "wintun.dll")) {
     Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
 }
-$compiler = @(
-    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
-    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
-    "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
-) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-if (-not $compiler) { throw "Install Inno Setup 6, then run this command again." }
+Write-Host "Building the installer..."
 & $compiler "/DAppVersion=$numericVersion" "/DBuildArchitecture=$Architecture" "/DAllowedArchitecture=$installerArchitecture" (Join-Path $PSScriptRoot "Caspian.iss")
 if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed." }
-Get-ChildItem $output -Filter "CaspianSetup-*.exe"
+$installer = Join-Path $output "CaspianSetup-$numericVersion-windows-$Architecture.exe"
+$checksumFile = "$installer.sha256"
+$checksum = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+"$checksum  $([IO.Path]::GetFileName($installer))" | Set-Content -LiteralPath $checksumFile -Encoding ASCII
+Write-Host "Build complete."
+Write-Host "App and helpers: $payload"
+Write-Host "Installer:       $installer"
+Write-Host "SHA256:          $checksumFile"
