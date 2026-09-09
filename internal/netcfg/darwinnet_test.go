@@ -251,7 +251,7 @@ func TestDarwinSystemSOCKSJournalRestoresInReverseOrder(t *testing.T) {
 		}},
 	}
 	steps := p.darwinSystemSOCKSSteps()
-	ap, err := NewApplier(r, filepath.Join(t.TempDir(), "netcfg.journal"))
+	ap, err := newTestApplier(t, r, filepath.Join(t.TempDir(), "netcfg.journal"))
 	if err != nil {
 		t.Fatal(err)
 	}

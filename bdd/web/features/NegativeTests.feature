@@ -113,3 +113,11 @@ Feature: NegativeTests.feature
     When I open the dashboard
     Then the control bar carries the "off" state
     And the page does not claim any device is connected
+
+  @smoke @ready @windows-old
+  Scenario: an older Windows explains the required update without switching on
+    Given I am signed in
+    And Windows reports build 19040
+    When I press the power control
+    Then the Windows update explanation is visible
+    And the power control offers to switch the box on

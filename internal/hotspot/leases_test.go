@@ -4,7 +4,6 @@ package hotspot
 
 import (
 	"net/netip"
-	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -132,14 +131,9 @@ func TestMissingLeaseFileIsZeroDevices(t *testing.T) {
 func TestUnreadableLeaseFileIsAnError(t *testing.T) {
 	// A file that exists but cannot be read is a real fault and must not be
 	// silently reported as zero devices.
-	dir := t.TempDir()
-	path := filepath.Join(dir, "leases")
-	if err := os.WriteFile(path, []byte("1788051600 02:00:5e:02:00:01 192.168.66.51 x *\n"), 0o000); err != nil {
-		t.Fatalf("setup: %v", err)
-	}
-	if os.Geteuid() == 0 {
-		t.Skip("running as root, which can read a mode 000 file")
-	}
+	// A directory is unreadable as lease data on Windows and Unix, including root.
+	path := t.TempDir()
+
 	if _, _, err := ReadLeaseFile(path); err == nil {
 		t.Error("an unreadable lease file was reported as zero devices")
 	}

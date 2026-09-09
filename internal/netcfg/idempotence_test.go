@@ -118,7 +118,7 @@ func TestApply_TwiceConverges(t *testing.T) {
 	k := capturedKernel(t)
 	before := k.Snapshot()
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -190,7 +190,7 @@ func TestApply_SecondApplyDoesNotOverwriteTheHonestInverse(t *testing.T) {
 	before := k.Snapshot()
 
 	path := tmpJournal(t)
-	a, err := NewApplier(k, path)
+	a, err := newTestApplier(t, k, path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -266,7 +266,7 @@ func TestApply_LeavesPreexistingObjectsAloneAndDoesNotJournalThem(t *testing.T) 
 	before := k.Snapshot()
 
 	path := tmpJournal(t)
-	a, err := NewApplier(k, path)
+	a, err := newTestApplier(t, k, path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -332,7 +332,7 @@ func TestApply_TeardownThenApplyAgain(t *testing.T) {
 
 	for cycle := 1; cycle <= 2; cycle++ {
 		path := tmpJournal(t)
-		a, err := NewApplier(k, path)
+		a, err := newTestApplier(t, k, path)
 		if err != nil {
 			t.Fatalf("cycle %d: %v", cycle, err)
 		}
@@ -361,7 +361,7 @@ func TestRecover_AfterACrashMidApplyReturnsTheMachine(t *testing.T) {
 	path := tmpJournal(t)
 
 	func() {
-		a, err := NewApplier(k, path)
+		a, err := newTestApplier(t, k, path)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -369,7 +369,8 @@ func TestRecover_AfterACrashMidApplyReturnsTheMachine(t *testing.T) {
 		if _, err := a.Apply(ctx, steps[:6]); err != nil {
 			t.Fatal(err)
 		}
-		// Killed: no Close, no Teardown, and one step half-recorded.
+		// The process exits with one step half-recorded; the OS closes its handle.
+		defer a.Close()
 		if _, err := a.j.Begin(steps[6]); err != nil {
 			t.Fatal(err)
 		}
@@ -406,7 +407,7 @@ func TestApply_ConvergesWhenTheInterfaceExistsButTheJournalDoesNot(t *testing.T)
 	before := k.Snapshot()
 
 	path := tmpJournal(t)
-	a, err := NewApplier(k, path) // a journal that knows nothing
+	a, err := newTestApplier(t, k, path) // a journal that knows nothing
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -557,7 +558,7 @@ func TestApply_PermissiveRunnerStillCreatesTheInterface(t *testing.T) {
 	f, p := mustPlan(t, pi5Captured(), DefaultOptions())
 
 	r := NewRecordingRunner() // no responses registered: success, no output
-	a, err := NewApplier(r, tmpJournal(t))
+	a, err := newTestApplier(t, r, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}

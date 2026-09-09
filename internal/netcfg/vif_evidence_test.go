@@ -142,7 +142,7 @@ func TestVifEvidence_ThePlanTakesOverRatherThanFailingAtTheLinkUp(t *testing.T) 
 	k.Preload("ifacephy", "wlan1", "phy1")
 	before := k.Snapshot()
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}

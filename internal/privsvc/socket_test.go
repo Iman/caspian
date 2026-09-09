@@ -8,12 +8,14 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/fs"
 	"net"
 	"os"
 	"os/user"
 	"path/filepath"
+	"runtime"
 	"testing"
 	"time"
 
@@ -27,6 +29,9 @@ import (
 // test that failed for that reason would look like a bug in this package.
 func shortTempDir(t *testing.T) string {
 	t.Helper()
+	if runtime.GOOS == "windows" {
+		return t.TempDir()
+	}
 	dir, err := os.MkdirTemp("/tmp", "caspian-privsvc-")
 	if err != nil {
 		t.Fatalf("making a temporary directory: %v", err)
@@ -52,6 +57,9 @@ func serving(t *testing.T, w *world, cfg ListenConfig) string {
 	t.Helper()
 	if cfg.Path == "" {
 		cfg.Path = filepath.Join(shortTempDir(t), "priv.sock")
+		if runtime.GOOS == "windows" {
+			cfg.Path = fmt.Sprintf(`\\.\pipe\caspian-test-%d-%d`, os.Getpid(), time.Now().UnixNano())
+		}
 	}
 	ln, err := Listen(w.svc, cfg)
 	if err != nil {
@@ -194,7 +202,7 @@ func TestAMalformedFrameIsRefusedWithoutBeingRead(t *testing.T) {
 		w := newWorld(t)
 		path := serving(t, w, ListenConfig{ServiceAccount: currentAccount(t)})
 
-		conn, err := net.Dial("unix", path)
+		conn, err := dialEndpoint(context.Background(), path, 5*time.Second)
 		if err != nil {
 			t.Fatalf("dial: %v", err)
 		}
@@ -207,7 +215,7 @@ func TestAMalformedFrameIsRefusedWithoutBeingRead(t *testing.T) {
 		}
 		// Deliberately no body. The length alone has to be enough to refuse,
 		// which is the whole reason the frame carries one.
-		_ = conn.(*net.UnixConn).SetReadDeadline(time.Now().Add(5 * time.Second))
+		_ = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 		resp := readResponse(t, conn)
 		if resp.Refusal != RefusalTooLarge {
 			t.Fatalf("refusal was %q, want %q", resp.Refusal, RefusalTooLarge)
@@ -221,7 +229,7 @@ func TestAMalformedFrameIsRefusedWithoutBeingRead(t *testing.T) {
 		w := newWorld(t)
 		path := serving(t, w, ListenConfig{ServiceAccount: currentAccount(t), ReadTimeout: 300 * time.Millisecond})
 
-		conn, err := net.Dial("unix", path)
+		conn, err := dialEndpoint(context.Background(), path, 5*time.Second)
 		if err != nil {
 			t.Fatalf("dial: %v", err)
 		}
@@ -232,7 +240,7 @@ func TestAMalformedFrameIsRefusedWithoutBeingRead(t *testing.T) {
 		if _, err := conn.Write(append(hdr[:], []byte(`{"v":1,`)...)); err != nil {
 			t.Fatalf("write: %v", err)
 		}
-		_ = conn.(*net.UnixConn).SetReadDeadline(time.Now().Add(5 * time.Second))
+		_ = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 		// The read deadline on the service side fires, so the answer is either
 		// a bad-frame refusal or a closed connection. Both are refusals; what
 		// must not happen is anything running.
@@ -254,6 +262,9 @@ func TestAMalformedFrameIsRefusedWithoutBeingRead(t *testing.T) {
 // root:caspian, which admits anyone in the caspian GROUP, and this admits only
 // the caspian ACCOUNT and root.
 func TestAnUnauthorisedPeerIsRefused(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix socket semantics; Windows uses a named pipe and DACL")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("this test proves a non-root account is refused, and it is running as root")
 	}
@@ -261,7 +272,7 @@ func TestAnUnauthorisedPeerIsRefused(t *testing.T) {
 	// ServiceAccount empty, so the permitted set is root and nobody else.
 	path := serving(t, w, ListenConfig{})
 
-	conn, err := net.Dial("unix", path)
+	conn, err := dialEndpoint(context.Background(), path, 5*time.Second)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -273,7 +284,7 @@ func TestAnUnauthorisedPeerIsRefused(t *testing.T) {
 		// refusal, and is a pass.
 		t.Logf("the service closed the connection before the request was written: %v", err)
 	}
-	_ = conn.(*net.UnixConn).SetReadDeadline(time.Now().Add(5 * time.Second))
+	_ = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 
 	if _, err := readFrame(conn); err == nil {
 		t.Fatalf("an account that may not drive this service got an answer")
@@ -299,6 +310,9 @@ func TestAnAuthorisedPeerIsAccepted(t *testing.T) {
 
 // TestTheSocketCarriesTheModeLayoutFixes.
 func TestTheSocketCarriesTheModeLayoutFixes(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix socket semantics; Windows uses a named pipe and DACL")
+	}
 	w := newWorld(t)
 	path := serving(t, w, ListenConfig{ServiceAccount: currentAccount(t)})
 
@@ -347,6 +361,9 @@ func TestASecondCopyIsRefusedRatherThanTakingOver(t *testing.T) {
 // TestALeftoverSocketIsReplaced is the other side of the test above: a socket
 // from a process that died has to be cleared, or the service can never restart.
 func TestALeftoverSocketIsReplaced(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix socket semantics; Windows uses a named pipe and DACL")
+	}
 	dir := shortTempDir(t)
 	path := filepath.Join(dir, "priv.sock")
 
@@ -368,6 +385,9 @@ func TestALeftoverSocketIsReplaced(t *testing.T) {
 
 // TestSomethingThatIsNotASocketIsLeftAlone.
 func TestSomethingThatIsNotASocketIsLeftAlone(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Unix socket semantics; Windows uses a named pipe and DACL")
+	}
 	dir := shortTempDir(t)
 	path := filepath.Join(dir, "priv.sock")
 	if err := os.WriteFile(path, []byte("somebody else's file"), 0o600); err != nil {
@@ -414,7 +434,7 @@ func mustJSON(t *testing.T, v any) []byte {
 // message Client would never build can still be sent.
 func sendRaw(t *testing.T, path string, payload []byte) wireResponse {
 	t.Helper()
-	conn, err := net.Dial("unix", path)
+	conn, err := dialEndpoint(context.Background(), path, 5*time.Second)
 	if err != nil {
 		t.Fatalf("dial: %v", err)
 	}
@@ -422,7 +442,7 @@ func sendRaw(t *testing.T, path string, payload []byte) wireResponse {
 	if err := writeFrame(conn, payload); err != nil {
 		t.Fatalf("write: %v", err)
 	}
-	_ = conn.(*net.UnixConn).SetReadDeadline(time.Now().Add(5 * time.Second))
+	_ = conn.SetReadDeadline(time.Now().Add(5 * time.Second))
 	return readResponse(t, conn)
 }
 

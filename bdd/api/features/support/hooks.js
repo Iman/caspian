@@ -35,7 +35,7 @@ const messages = { fa: {}, en: {} };
 // does not reliably kill what it started, and a harness left holding a port
 // outlives the run that created it.
 function buildHarness() {
-  const out = path.join(os.tmpdir(), 'caspian-bdd-api-harness-' + process.pid);
+  const out = path.join(os.tmpdir(), 'caspian-bdd-api-harness-' + process.pid + (process.platform === 'win32' ? '.exe' : ''));
   const built = spawnSync('go', ['build', '-o', out, './bdd/harness'], {
     cwd: repoRoot,
     encoding: 'utf8',

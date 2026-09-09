@@ -258,3 +258,10 @@ Feature: PositiveTests.feature
     Then the saved Wi-Fi country is ""
     When I press the power control
     Then the missing Wi-Fi country instructions are shown
+
+  @smoke @ready @windows-floor
+  Scenario: the first supported Windows build permits startup
+    Given I am signed in
+    And Windows reports build 19041
+    When I press the power control
+    Then the power control offers to switch the box off

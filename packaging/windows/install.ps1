@@ -45,6 +45,11 @@ function Invoke-ICACLS([string[]]$AclArgs) {
     }
 }
 
+# Refuse before elevation, builds, directories, or service changes.
+if ([Environment]::OSVersion.Version -lt [Version]"10.0.14393") {
+    Refuse "Windows 10 version 1607 or later is required to install; connecting requires version 2004 or later."
+}
+
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
     $arguments = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "`"$PSCommandPath`"")

@@ -115,3 +115,13 @@ func TestTheRefusalNamesTheVersionAndNotTheMachine(t *testing.T) {
 		t.Errorf("the refusal calls the platform unsupported, which sends the person to the wrong remedy: %s", msg)
 	}
 }
+
+func TestWindowsSupportAtTheDNSFloor(t *testing.T) {
+	for _, build := range []uint32{0, 14392, 14393, 17763, 18363, 19040, 19041, 19045, 26100} {
+		err := WindowsCapabilityFor(build).CheckSupport()
+		want := build != 0 && build < 19041
+		if (err != nil) != want {
+			t.Fatalf("build %d: error = %v", build, err)
+		}
+	}
+}

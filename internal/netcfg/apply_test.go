@@ -13,7 +13,7 @@ import (
 func TestApply_RunsInOrderAndJournalsEveryInverse(t *testing.T) {
 	r := NewRecordingRunner()
 	path := tmpJournal(t)
-	a, err := NewApplier(r, path)
+	a, err := newTestApplier(t, r, path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -42,7 +42,7 @@ func TestApply_RunsInOrderAndJournalsEveryInverse(t *testing.T) {
 // address it depends on would fail; the reverse order is the whole point.
 func TestTeardown_ReplaysInExactReverseOrder(t *testing.T) {
 	r := NewRecordingRunner()
-	a, err := NewApplier(r, tmpJournal(t))
+	a, err := newTestApplier(t, r, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -71,7 +71,7 @@ func TestTeardown_ContinuesPastAFailingInverse(t *testing.T) {
 	// which is a different path with its own test below.
 	r.SetError("ip route del b", errors.New("RTNETLINK answers: Operation not permitted"))
 	path := tmpJournal(t)
-	a, _ := NewApplier(r, path)
+	a, _ := newTestApplier(t, r, path)
 	if _, err := a.Apply(context.Background(), []Step{step(OpAddr, "a"), step(OpRoute, "b"), step(OpRule, "c")}); err != nil {
 		t.Fatal(err)
 	}
@@ -104,7 +104,7 @@ func TestTeardown_ContinuesPastAFailingInverse(t *testing.T) {
 func TestTeardown_IsIdempotent(t *testing.T) {
 	r := NewRecordingRunner()
 	path := tmpJournal(t)
-	a, _ := NewApplier(r, path)
+	a, _ := newTestApplier(t, r, path)
 	a.Apply(context.Background(), []Step{step(OpAddr, "a"), step(OpRoute, "b")})
 	if _, err := a.Teardown(context.Background()); err != nil {
 		t.Fatal(err)
@@ -132,7 +132,7 @@ func TestRecover_UndoesAJournalLeftByAKilledProcess(t *testing.T) {
 	// it completes. Nothing is closed and no teardown runs.
 	func() {
 		r := NewRecordingRunner()
-		a, err := NewApplier(r, path)
+		a, err := newTestApplier(t, r, path)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -142,7 +142,10 @@ func TestRecover_UndoesAJournalLeftByAKilledProcess(t *testing.T) {
 		if _, err := a.j.Begin(step(OpRule, "c")); err != nil {
 			t.Fatal(err)
 		}
-		// No Done, no Close: the process is gone.
+		// No Done or teardown: exiting closes the OS handle.
+		if err := a.Close(); err != nil {
+			t.Fatal(err)
+		}
 	}()
 
 	// Second process: a fresh runner and no memory of the first.
@@ -172,14 +175,17 @@ func TestRecover_CoversRoutesRulesAndFirewall(t *testing.T) {
 
 	func() {
 		r := NewRecordingRunner()
-		a, err := NewApplier(r, path)
+		a, err := newTestApplier(t, r, path)
 		if err != nil {
 			t.Fatal(err)
 		}
 		if _, err := a.Apply(context.Background(), p.AllSteps(f.Sysctl)); err != nil {
 			t.Fatal(err)
 		}
-		// Killed: no Close, no Teardown.
+		// Exiting closes the handle without replaying the journal.
+		if err := a.Close(); err != nil {
+			t.Fatal(err)
+		}
 	}()
 
 	r2 := NewRecordingRunner()
@@ -238,7 +244,7 @@ func TestApply_StopsAtTheFirstFailureButStillJournalsIt(t *testing.T) {
 	r := NewRecordingRunner()
 	r.SetError("ip route add b", errors.New("RTNETLINK answers: Network is unreachable"))
 	path := tmpJournal(t)
-	a, _ := NewApplier(r, path)
+	a, _ := newTestApplier(t, r, path)
 
 	_, err := a.Apply(context.Background(), []Step{step(OpAddr, "a"), step(OpRoute, "b"), step(OpRule, "c")})
 	if err == nil {
@@ -259,7 +265,7 @@ func TestApply_StopsAtTheFirstFailureButStillJournalsIt(t *testing.T) {
 
 func TestApply_SkipsStepsWithNoCommand(t *testing.T) {
 	r := NewRecordingRunner()
-	a, _ := NewApplier(r, tmpJournal(t))
+	a, _ := newTestApplier(t, r, tmpJournal(t))
 	if _, err := a.Apply(context.Background(), []Step{{Op: "noop"}, step(OpAddr, "a")}); err != nil {
 		t.Fatal(err)
 	}
@@ -270,7 +276,7 @@ func TestApply_SkipsStepsWithNoCommand(t *testing.T) {
 // A step with no inverse is not replayed and does not count as a failure.
 func TestTeardown_SkipsStepsWithNoInverse(t *testing.T) {
 	r := NewRecordingRunner()
-	a, _ := NewApplier(r, tmpJournal(t))
+	a, _ := newTestApplier(t, r, tmpJournal(t))
 	noInverse := Step{Op: OpLink, Do: Command{Path: BinIP, Args: []string{"link", "set", "dev", "ap0", "up"}}}
 	a.Apply(context.Background(), []Step{noInverse, step(OpAddr, "a")})
 	r.Reset()
@@ -295,7 +301,7 @@ func TestTeardown_AnAlreadyGoneObjectCountsAsUndone(t *testing.T) {
 	r := NewRecordingRunner()
 	r.SetError("ip route del b", errors.New("RTNETLINK answers: No such process"))
 	path := tmpJournal(t)
-	a, _ := NewApplier(r, path)
+	a, _ := newTestApplier(t, r, path)
 	if _, err := a.Apply(context.Background(), []Step{step(OpAddr, "a"), step(OpRoute, "b")}); err != nil {
 		t.Fatal(err)
 	}
@@ -322,7 +328,7 @@ func TestRecover_AnUndoForAStepThatNeverTookEffectConverges(t *testing.T) {
 	ctx := context.Background()
 	k := NewSimulatedKernel("eth0", "wlan0")
 	path := tmpJournal(t)
-	a, err := NewApplier(k, path)
+	a, err := newTestApplier(t, k, path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -355,4 +361,15 @@ func TestRecover_AnUndoForAStepThatNeverTookEffectConverges(t *testing.T) {
 	if _, err := os.Stat(path); !os.IsNotExist(err) {
 		t.Errorf("journal file still present, stat err = %v", err)
 	}
+}
+
+// Closing a test's handles does not undo its network operations. Windows needs
+// them released before TempDir can remove the journal.
+func newTestApplier(t *testing.T, r Runner, path string) (*Applier, error) {
+	t.Helper()
+	a, err := NewApplier(r, path)
+	if err == nil {
+		t.Cleanup(func() { _ = a.Close() })
+	}
+	return a, err
 }

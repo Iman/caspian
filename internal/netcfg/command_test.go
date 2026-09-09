@@ -5,6 +5,7 @@ package netcfg
 import (
 	"context"
 	"errors"
+	"runtime"
 	"testing"
 )
 
@@ -87,6 +88,9 @@ func TestNewSystemRunner_RefusesOffLinux(t *testing.T) {
 	// macOS: "ip" is Linux's and is not on this runner's list.
 	if !errors.Is(err, ErrDisallowedBinary) {
 		t.Errorf("err = %v, want ErrDisallowedBinary for a Linux binary on a non-Linux runner", err)
+	}
+	if runtime.GOOS == "windows" {
+		return
 	}
 	if _, err := r.Run(context.Background(), Command{Path: "ifconfig", Args: []string{"lo0"}}); err != nil {
 		t.Errorf("ifconfig lo0 on the macOS runner: %v", err)

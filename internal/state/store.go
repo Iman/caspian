@@ -73,6 +73,22 @@ func Load(dir string) (*Store, error) {
 	di, err := os.Stat(dir)
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
+		// Windows reports PATH_NOT_FOUND even when an ancestor is a file.
+		for parent := filepath.Dir(dir); ; parent = filepath.Dir(parent) {
+			info, parentErr := os.Stat(parent)
+			if parentErr == nil {
+				if !info.IsDir() {
+					return nil, fmt.Errorf("state: examining %s: parent %s is not a directory", dir, parent)
+				}
+				break
+			}
+			if !errors.Is(parentErr, fs.ErrNotExist) {
+				return nil, fmt.Errorf("state: examining %s: %w", parent, parentErr)
+			}
+			if filepath.Dir(parent) == parent {
+				break
+			}
+		}
 		return s.asFirstRun(), nil
 	case err != nil:
 		return nil, fmt.Errorf("state: examining %s: %w", dir, err)
@@ -96,7 +112,7 @@ func Load(dir string) (*Store, error) {
 		return nil, err
 	}
 
-	raw, err := os.ReadFile(s.path)
+	raw, err := readStateFile(s.path)
 	if err != nil {
 		return nil, fmt.Errorf("state: reading %s: %w", s.path, err)
 	}
@@ -383,7 +399,7 @@ func (s *Store) writeAtomic(st State) (err error) {
 		}
 	}
 
-	if err := os.Rename(tmpPath, s.path); err != nil {
+	if err := replaceStateFile(tmpPath, s.path); err != nil {
 		return fmt.Errorf("state: replacing %s: %w", s.path, err)
 	}
 	renamed = true

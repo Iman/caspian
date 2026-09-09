@@ -40,7 +40,7 @@ func TestTheFirewallIsNotRemovedWhenAnEarlierInverseFailed(t *testing.T) {
 	r.Fallback = func(Command) (Result, error) { return Result{}, nil }
 
 	journal := filepath.Join(t.TempDir(), "netcfg.journal")
-	ap, err := NewApplier(r, journal)
+	ap, err := newTestApplier(t, r, journal)
 	if err != nil {
 		t.Fatalf("opening the journal: %v", err)
 	}
@@ -135,7 +135,7 @@ func TestAHeldFirewallIsReplayedOnceTheRestSucceeds(t *testing.T) {
 	r := NewRecordingRunner()
 	r.Fallback = func(Command) (Result, error) { return Result{}, nil }
 	journal := filepath.Join(t.TempDir(), "netcfg.journal")
-	ap, err := NewApplier(r, journal)
+	ap, err := newTestApplier(t, r, journal)
 	if err != nil {
 		t.Fatalf("opening the journal: %v", err)
 	}
@@ -203,7 +203,7 @@ func TestTeardownReportsFailedInversesInItsReportAndNotInItsError(t *testing.T) 
 
 	r := NewRecordingRunner()
 	r.Fallback = func(Command) (Result, error) { return Result{}, nil }
-	ap, err := NewApplier(r, filepath.Join(t.TempDir(), "netcfg.journal"))
+	ap, err := newTestApplier(t, r, filepath.Join(t.TempDir(), "netcfg.journal"))
 	if err != nil {
 		t.Fatalf("opening the journal: %v", err)
 	}

@@ -140,3 +140,23 @@ Feature: NegativeTests.feature
     When I GET "/"
     Then response code should be 200
     And the page lists no entries
+
+  @smoke @ready @api-windows-old
+  Scenario Outline: Windows below the DNS floor explains the refusal and stays off
+    Given I am signed in as the panel owner
+    And Windows reports build <build>
+    And I have a form token from "/"
+    When I POST to "/power" with the form token and
+      | name | value |
+      | on   | 1     |
+    Then response code should be 303
+    When I GET "/"
+    Then response body should carry the message "fault.windowstooold"
+    When I GET "/status.json"
+    Then response body path "running" should be the boolean false
+
+    Examples:
+      | build |
+      | 14393 |
+      | 18363 |
+      | 19040 |

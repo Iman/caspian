@@ -60,7 +60,7 @@ const messages = { fa: {}, en: {} };
 // outlives the run that created it. Building first costs a second on a cold
 // cache and nothing afterwards.
 function buildHarness() {
-  const out = path.join(os.tmpdir(), 'caspian-bdd-harness-' + process.pid);
+  const out = path.join(os.tmpdir(), 'caspian-bdd-harness-' + process.pid + (process.platform === 'win32' ? '.exe' : ''));
   const built = spawnSync('go', ['build', '-o', out, './bdd/harness'], {
     cwd: repoRoot,
     encoding: 'utf8',

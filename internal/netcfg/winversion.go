@@ -3,7 +3,10 @@
 
 package netcfg
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
 // This file holds what each Windows 10 build can and cannot do, as a plain
 // function of the build number, so that the decision is readable and testable
@@ -98,6 +101,14 @@ type WindowsCapability struct {
 
 // Usable reports whether Caspian can run on this build at all.
 func (c WindowsCapability) Usable() bool { return c.MobileHotspot && c.DNSPinning }
+
+// CheckSupport reports an actionable refusal without changing the machine.
+func (c WindowsCapability) CheckSupport() error {
+	if !c.Usable() {
+		return fmt.Errorf("%w (build %d)", ErrWindowsTooOld, c.Build)
+	}
+	return nil
+}
 
 // WindowsCapabilityFor answers what a build can do.
 //

@@ -81,6 +81,9 @@ func TestLoadRefusesAStateFileThatIsADirectory(t *testing.T) {
 // first with defaults would hand the user a blank box and throw away the
 // config that is sitting on the disk.
 func TestLoadRefusesAnUnreadableStateFile(t *testing.T) {
+	if !permChecksEnforced {
+		t.Skip("this case requires Unix permission bits")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("running as root, which can read a mode 0200 file")
 	}
@@ -118,6 +121,9 @@ func TestLoadRefusesAnUnreadableStateFile(t *testing.T) {
 // directory looks acceptable and then nothing inside it can be stat'ed. The
 // requirement is that this is an error rather than a first run.
 func TestLoadReportsAStateFileItCannotExamine(t *testing.T) {
+	if !permChecksEnforced {
+		t.Skip("this case requires Unix permission bits")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("running as root, which can search a directory with no execute bit")
 	}
@@ -152,6 +158,9 @@ func TestLoadReportsAStateFileItCannotExamine(t *testing.T) {
 // the write-side twin of the two Load cases above. The directory was fine when
 // Load ran and its parent stopped being searchable afterwards.
 func TestSaveReportsADirectoryItCannotExamine(t *testing.T) {
+	if !permChecksEnforced {
+		t.Skip("this case requires Unix permission bits")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("running as root, which can search a directory with no execute bit")
 	}
@@ -319,6 +328,9 @@ func TestLoadReportsADirectoryItCannotExamine(t *testing.T) {
 // then cannot create it. That is the shape a real box hits when the installer
 // has not run or has run as the wrong user.
 func TestSaveReportsAFailedDirectoryCreation(t *testing.T) {
+	if !permChecksEnforced {
+		t.Skip("this case requires Unix permission bits")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("running as root, which can write into a directory with no write bit")
 	}

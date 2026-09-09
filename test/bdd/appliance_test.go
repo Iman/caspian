@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/netip"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/engine"
@@ -69,6 +70,13 @@ func (w *World) connect() error {
 	// rule or half default route makes that false.
 	// -----------------------------------------------------------------------
 	if !w.defs.skipRecovery {
+		// Release the previous modelled process's handle before its recovery.
+		if w.applier != nil {
+			if err := w.applier.Close(); err != nil {
+				return w.fail(err)
+			}
+			w.applier = nil
+		}
 		rep, err := netcfg.Recover(w.ctx, w.tracedNetRunner(), w.journalPath())
 		w.recovered = rep
 		if err != nil {
@@ -379,7 +387,11 @@ func (w *World) hotspotPaths() hotspot.Paths {
 	p.DnsmasqConf = filepath.Join(w.dir, "dnsmasq.conf")
 	p.HostapdPID = filepath.Join(w.dir, "hostapd.pid")
 	p.DnsmasqPID = filepath.Join(w.dir, "dnsmasq.pid")
+	// These files belong to the recorded Linux host, not the test host.
 	p.LeaseFile = filepath.Join(w.dir, "dnsmasq.leases")
+	if !strings.HasPrefix(p.LeaseFile, "/") {
+		p.LeaseFile = "/" + filepath.ToSlash(p.LeaseFile)
+	}
 	p.StateDir = w.dir
 	return p
 }

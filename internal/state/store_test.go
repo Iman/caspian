@@ -361,6 +361,9 @@ func TestWriteIsAtomic(t *testing.T) {
 }
 
 func TestWriteFailsCleanlyWhenTheDirectoryIsNotWritable(t *testing.T) {
+	if !permChecksEnforced {
+		t.Skip("this case requires Unix directory permission bits")
+	}
 	dir := tempStateDir(t)
 	st, err := Load(dir)
 	if err != nil {

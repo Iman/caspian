@@ -861,3 +861,11 @@ Then('the page says one line was skipped', async function () {
     'no line on the page reads ' + JSON.stringify(want) + '. The hints read: ' + JSON.stringify(texts)
   );
 });
+
+Given('Windows reports build {int}', async function (build) {
+ await this.control('windows-build', { build });
+});
+
+Then('the Windows update explanation is visible', async function () {
+ assert.ok((await this.text('body')).includes(this.msg('fault.windowstooold')));
+});

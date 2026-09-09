@@ -34,7 +34,8 @@ import (
 // Everything privileged here needs an elevated token; cmd/caspian refuses to
 // start the privileged role without one.
 type windowsRunner struct {
-	mu sync.Mutex
+	capability func() WindowsCapability
+	mu         sync.Mutex
 	// tuns holds the adapters this process created. A Wintun adapter is
 	// removed when the handle that created it is closed, so the handle is
 	// kept for the adapter's whole life and closed by "wintun delete".
@@ -46,6 +47,16 @@ func NewSystemRunner() Runner { return &windowsRunner{tuns: map[string]*wintun.A
 
 // SystemBackend is the backend for the machine this binary runs on.
 func SystemBackend() Backend { return BackendFor(PlatformWindows) }
+
+// CheckSupport runs before startup changes the network and at the DNS API
+// boundary. Inventory reads remain available on older Windows builds.
+func (w *windowsRunner) CheckSupport() error {
+	c := windowsCapability()
+	if w.capability != nil {
+		c = w.capability()
+	}
+	return c.CheckSupport()
+}
 
 func (w *windowsRunner) Run(_ context.Context, c Command) (Result, error) {
 	if err := ValidateCommandOn(PlatformWindows, c); err != nil {
@@ -67,7 +78,7 @@ func (w *windowsRunner) Run(_ context.Context, c Command) (Result, error) {
 	}
 	if err != nil {
 		res := Result{Stderr: err.Error(), ExitCode: 1}
-		return res, fmt.Errorf("netcfg: %s exited 1: %s", c.Path, err.Error())
+		return res, fmt.Errorf("netcfg: %s exited 1: %w", c.Path, err)
 	}
 	return Result{Stdout: out}, nil
 }
@@ -115,6 +126,9 @@ func (w *windowsRunner) ipHelper(args []string) (string, error) {
 		if len(args) != 3 || (args[1] != "set" && args[1] != "clear") {
 			return "", errors.New("iphlpapi dns: expected set|clear <tunnel>")
 		}
+		if err := w.CheckSupport(); err != nil {
+			return "", err
+		}
 		luid, err := luidForAlias(args[2])
 		if err != nil {
 			return "", err
@@ -122,15 +136,6 @@ func (w *windowsRunner) ipHelper(args []string) (string, error) {
 		guid, err := winipcfg.LUID(luid).GUID()
 		if err != nil {
 			return "", err
-		}
-		if c := windowsCapability(); !c.DNSPinning {
-			// Refused here rather than attempted, because the call below is
-			// the one this build does not have. Failing on the missing symbol
-			// would report a machine problem; failing here reports the fact,
-			// which is that this Windows is too old. The apply journal rolls
-			// the half-built plan back, so the box ends up off rather than
-			// running with DNS blocked and nothing answering it.
-			return "", fmt.Errorf("%w (build %d)", ErrWindowsTooOld, c.Build)
 		}
 		server := ""
 		if args[1] == "set" {

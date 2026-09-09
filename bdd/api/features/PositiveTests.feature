@@ -181,3 +181,21 @@ Feature: PositiveTests.feature
     Then response code should be 200
     And response body should be valid json
     And no entry name should appear in the response
+
+  @smoke @ready @api-windows-floor
+  Scenario Outline: a supported Windows build permits startup
+    Given I am signed in as the panel owner
+    And Windows reports build <build>
+    And I have a form token from "/"
+    When I POST to "/power" with the form token and
+      | name | value |
+      | on   | 1     |
+    Then response code should be 303
+    When I GET "/status.json"
+    Then response body path "running" should be the boolean true
+
+    Examples:
+      | build |
+      | 19041 |
+      | 19045 |
+      | 26100 |

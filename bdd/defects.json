@@ -19,6 +19,8 @@
   ],
 
   "web": {
+    "@windows-old": { "defect": "windows-support-reversed", "expect": "red" },
+    "@windows-floor": { "defect": "windows-support-reversed", "expect": "red" },
     "@country-recovery": { "defect": "advanced-save-ignored", "expect": "red" },
     "@language-responsive": { "defect": "language-overflow", "expect": "red" },
     "@language-persistence": { "defect": "language-choice-ignored", "expect": "red" },
@@ -46,6 +48,8 @@
   },
 
   "api": {
+    "@api-windows-old": { "defect": "windows-support-reversed", "expect": "red" },
+    "@api-windows-floor": { "defect": "windows-support-reversed", "expect": "red" },
     "@api-language-default": { "defect": "always-persian", "expect": "red" },
     "@api-language-choice": { "defect": "language-choice-ignored", "expect": "red" },
     "@api-login-ok": { "defect": "every-password-rejected", "expect": "red" },

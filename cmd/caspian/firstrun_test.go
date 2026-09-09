@@ -182,15 +182,12 @@ func TestAnEmptyFileIsRefusedRatherThanSettingAnEmptyPassword(t *testing.T) {
 
 // TestAnUnreadableFileIsReportedAndDoesNotStopThePanel.
 func TestAnUnreadableFileIsReportedAndDoesNotStopThePanel(t *testing.T) {
-	if os.Geteuid() == 0 {
-		t.Skip("root can read a file with no permission bits, so this case cannot be built here")
-	}
 	store, dir := newStore(t)
-	path := writeSeed(t, dir, installerPassword)
-	if err := os.Chmod(path, 0o000); err != nil {
-		t.Fatalf("chmod: %v", err)
+	// A directory cannot be read as a password file on Windows or Unix.
+	path := filepath.Join(dir, "unreadable-password")
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
 	}
-	t.Cleanup(func() { _ = os.Chmod(path, 0o600) })
 
 	err := consumeFirstRunPassword(store, path, testLogger(&strings.Builder{}))
 	if err == nil {

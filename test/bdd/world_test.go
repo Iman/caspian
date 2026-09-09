@@ -648,6 +648,9 @@ func interfaceOfKnob(knob string) (string, bool) {
 }
 
 func (w *World) close() {
+	if w.applier != nil {
+		_ = w.applier.Close()
+	}
 	if w.eng != nil {
 		_ = w.eng.Stop()
 	}

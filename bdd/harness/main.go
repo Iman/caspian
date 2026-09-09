@@ -77,6 +77,7 @@ import (
 
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/link"
+	"caspianbyoc.org/caspian/internal/netcfg"
 	"caspianbyoc.org/caspian/internal/panel"
 	"caspianbyoc.org/caspian/internal/state"
 )
@@ -364,6 +365,32 @@ func (h *harness) control(w http.ResponseWriter, r *http.Request) {
 		}
 		writeJSON(w, http.StatusOK, out)
 
+	case "/__control/windows-build":
+		var body struct {
+			Build *uint32 `json:"build"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Build == nil {
+			writeJSON(w, 400, map[string]string{"error": "a Windows build is required"})
+			return
+		}
+		h.mu.RLock()
+		app := h.cur
+		h.mu.RUnlock()
+		fault := panel.FaultNone
+		// Only the platform result is simulated; the HTTP form and rendering are real.
+		if err := netcfg.WindowsCapabilityFor(*body.Build).CheckSupport(); err != nil {
+			fault = panel.FaultWindowsTooOld
+		}
+		if app.defect.windowsSupportReversed {
+			if fault == panel.FaultNone {
+				fault = panel.FaultWindowsTooOld
+			} else {
+				fault = panel.FaultNone
+			}
+		}
+		app.priv.FailStartWith(fault)
+		writeJSON(w, 200, map[string]bool{"ok": true})
+
 	case "/__control/state":
 		var body controlState
 		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
@@ -491,28 +518,29 @@ func writeJSON(w http.ResponseWriter, code int, body any) {
 // ---------------------------------------------------------------------------
 
 type defect struct {
-	anyPasswordAccepted   bool
-	everyPasswordRejected bool
-	alwaysEnglish         bool
-	alwaysPersian         bool
-	languageOverflow      bool
-	languageChoiceIgnored bool
-	heroGroundOverridden  bool
-	cutStateFlattened     bool
-	quietZonePaintedDark  bool
-	powerLabelFrozen      bool
-	cutRoleRemoved        bool
-	cutStateFrozen        bool
-	helpPageBroken        bool
-	noInterfacesReported  bool
-	skipLinkRemoved       bool
-	labelsUnhooked        bool
-	deviceCountGated      bool
-	statusJSONFieldLost   bool
-	advancedSaveIgnored   bool
-	csrfCheckDisabled     bool
-	sessionGateOpen       bool
-	secretsEchoed         bool
+	windowsSupportReversed bool
+	anyPasswordAccepted    bool
+	everyPasswordRejected  bool
+	alwaysEnglish          bool
+	alwaysPersian          bool
+	languageOverflow       bool
+	languageChoiceIgnored  bool
+	heroGroundOverridden   bool
+	cutStateFlattened      bool
+	quietZonePaintedDark   bool
+	powerLabelFrozen       bool
+	cutRoleRemoved         bool
+	cutStateFrozen         bool
+	helpPageBroken         bool
+	noInterfacesReported   bool
+	skipLinkRemoved        bool
+	labelsUnhooked         bool
+	deviceCountGated       bool
+	statusJSONFieldLost    bool
+	advancedSaveIgnored    bool
+	csrfCheckDisabled      bool
+	sessionGateOpen        bool
+	secretsEchoed          bool
 
 	// The entry list of a config that holds several entries.
 	//
@@ -534,7 +562,8 @@ type defect struct {
 // defectsByName is the registry. bdd/mutation.sh names one of these per
 // scenario tag, and the empty name is the healthy appliance.
 var defectsByName = map[string]defect{
-	"": {},
+	"":                         {},
+	"windows-support-reversed": {windowsSupportReversed: true},
 
 	"any-password-accepted":   {anyPasswordAccepted: true},
 	"every-password-rejected": {everyPasswordRejected: true},
@@ -937,6 +966,7 @@ func (noCloseReader) Close() error { return nil }
 // visible in one place rather than scattered through JavaScript string
 // literals.
 var exportedKeys = []panel.Key{
+	panel.MsgFaultWindowsTooOld,
 	panel.MsgCountryMissing, panel.MsgCountryAdvice,
 	panel.MsgAppName,
 	panel.MsgSkipToMain,

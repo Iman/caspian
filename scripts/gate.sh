@@ -151,7 +151,7 @@ step "gofmt"
 # gofmt -l lists files whose formatting differs. Anything listed is a failure.
 # -s is not used: it rewrites correct code into shorter code and that is a
 # review opinion, not a formatting fact.
-unformatted=$(gofmt -l . 2>/dev/null || true)
+unformatted=$(git ls-files -co --exclude-standard -z -- '*.go' | xargs -0 gofmt -l)
 if [ -n "$unformatted" ]; then
     echo "these files are not gofmt clean:"
     echo "$unformatted" | sed 's/^/  /'
@@ -180,12 +180,16 @@ fi
 # The output is kept so the coverage floors below are computed from THIS run
 # rather than from a stored number.
 
-step "go test -count=1 -race -cover ./..."
+# The exhaustive option matrix exceeded Go's default ten-minute package
+# timeout under the Windows race detector. Keep every case and allow it to finish.
+test_timeout=10m
+if [ "$goos" = "windows" ]; then test_timeout=30m; fi
+step "go test -count=1 -race -cover -timeout=$test_timeout ./..."
 test_output=$(mktemp)
 trap 'rm -f "$test_output"' EXIT
 
 test_status=0
-go test -count=1 -race -cover ./... 2>&1 | tee "$test_output" || test_status=$?
+go test -count=1 -race -cover -timeout="$test_timeout" ./... 2>&1 | tee "$test_output" || test_status=$?
 if [ "$test_status" -ne 0 ]; then
     problem "go test"
 fi

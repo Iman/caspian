@@ -4,6 +4,7 @@
 package privsvc
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"testing"
@@ -76,5 +77,62 @@ func TestTheOldWindowsRefusalIsDistinctFromAnUnsupportedPlatform(t *testing.T) {
 	}
 	if faultOf(netcfg.ErrWindowsTooOld) == faultOf(netcfg.ErrUnsupportedPlatform) {
 		t.Error("the two refusals produce the same fault")
+	}
+}
+
+type supportCheckedRunner struct {
+	netcfg.Runner
+	build uint32
+}
+
+func (r supportCheckedRunner) CheckSupport() error {
+	return netcfg.WindowsCapabilityFor(r.build).CheckSupport()
+}
+
+func TestWindowsSupportIsCheckedBeforeStartupChanges(t *testing.T) {
+	for _, build := range []uint32{14393, 18363, 19040, 19041, 19045, 26100} {
+		t.Run(fmt.Sprint(build), func(t *testing.T) {
+			w := newWorld(t)
+			w.svc.cfg.Runner = supportCheckedRunner{w.svc.cfg.Runner, build}
+			err := w.svc.Start(context.Background(), startRequest(t))
+			if build < 19041 {
+				if !errors.Is(err, netcfg.ErrWindowsTooOld) || faultOf(err) != panel.FaultWindowsTooOld {
+					t.Fatalf("start = %v", err)
+				}
+				if changes := w.mutatingCommands(); len(changes) != 0 {
+					t.Fatalf("refused startup changed network: %v", changes)
+				}
+				if w.svc.isRunning() {
+					t.Fatal("refused startup is running")
+				}
+			} else {
+				if err != nil {
+					t.Fatal(err)
+				}
+				if len(w.mutatingCommands()) == 0 || !w.svc.isRunning() {
+					t.Fatal("supported startup did not run")
+				}
+				if err := w.svc.Stop(context.Background()); err != nil {
+					t.Fatal(err)
+				}
+			}
+		})
+	}
+}
+
+func TestOldWindowsRefusalCrossesTheServiceTransport(t *testing.T) {
+	w := newWorld(t)
+	w.svc.cfg.Runner = supportCheckedRunner{w.svc.cfg.Runner, 18363}
+	endpoint := serving(t, w, ListenConfig{ServiceAccount: currentAccount(t)})
+	client := NewClient(endpoint)
+	ctx := context.Background()
+	if err := client.Start(ctx, startRequest(t)); panel.FaultOf(err) != panel.FaultWindowsTooOld {
+		t.Fatalf("transport lost the Windows refusal: %v", err)
+	}
+	if changes := w.mutatingCommands(); len(changes) != 0 {
+		t.Fatalf("refusal changed network: %v", changes)
+	}
+	if _, err := client.Detect(ctx); err != nil {
+		t.Fatalf("diagnostics after refusal: %v", err)
 	}
 }

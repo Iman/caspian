@@ -285,3 +285,7 @@ Then('no entry name should appear in the response', async function () {
     );
   }
 });
+
+Given('Windows reports build {int}', async function (build) {
+ await this.control('windows-build', { build });
+});

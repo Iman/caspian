@@ -40,6 +40,12 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	s.opMu.Lock()
 	defer s.opMu.Unlock()
 
+	if checker, ok := s.cfg.Runner.(interface{ CheckSupport() error }); ok {
+		if err := checker.CheckSupport(); err != nil {
+			return fail("platform", faultOf(err), err)
+		}
+	}
+
 	fp := s.requestFingerprint(req)
 
 	if s.isRunning() {

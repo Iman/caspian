@@ -54,7 +54,7 @@ internal/hotspot       ^TestRenderHostapdGolden$|^TestRenderDnsmasqGolden$|^Test
 internal/xcfg          ^TestGoldenFilesAreAcceptedByTheEngine$
 
 # The firewall the box installs.
-internal/netcfg        ^TestGolden_RulesetCaptured$
+internal/netcfg        ^TestGolden_RulesetCaptured$|^TestWindowsSupportAtTheDNSFloor$
 
 # The panel: the polled document and the route table. TestGolden_RenderedPages
 # is deliberately NOT here; it renders eighteen pages and belongs in the gate.
@@ -62,7 +62,7 @@ internal/panel         ^TestGolden_StatusJSON$|^TestGolden_RouteInventory$
 
 # The privileged service's start ordering, which is where a fail-open would
 # live if one existed.
-internal/privsvc       ^TestStartAppliesThingsInTheRequiredOrder$|^TestAFailedStartLeavesNothingApplied$
+internal/privsvc       ^TestStartAppliesThingsInTheRequiredOrder$|^TestAFailedStartLeavesNothingApplied$|^TestWindowsSupportIsCheckedBeforeStartupChanges$
 
 # Real traffic through a real xray-core server: one row per protocol the parser
 # accepts, driven from a pasted share link. The passing direction is well under a

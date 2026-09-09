@@ -56,7 +56,7 @@ func TestApply_CutIsNotSkippedAsTheFirewallStep(t *testing.T) {
 
 	k := capturedKernel(t)
 	k.Reads = pi5Captured().runner(t)
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -139,7 +139,7 @@ func TestTeardown_AFailedRestoreIsNotMistakenForNothingToDo(t *testing.T) {
 	r.SetError("ip address add 10.0.0.222/24 dev wlan0",
 		errors.New("Cannot find device \"wlan0\""))
 	path := tmpJournal(t)
-	a, _ := NewApplier(r, path)
+	a, _ := newTestApplier(t, r, path)
 
 	restore := Step{
 		Op:   OpAddr,
@@ -180,7 +180,7 @@ func TestAssertFirewallLoaded(t *testing.T) {
 	// Loaded, by the plan's own step.
 	k := capturedKernel(t)
 	k.Reads = pi5Captured().runner(t)
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
