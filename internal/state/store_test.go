@@ -43,10 +43,11 @@ func fullState(t *testing.T) State {
 	return State{
 		Version: CurrentVersion,
 		Proxy: ProxyConfig{
-			Raw:     Secret(fakeProxyLink),
-			Scheme:  fakeProxyScheme,
-			Label:   fakeProxyLabel,
-			AddedAt: time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
+			Raw:      Secret(fakeProxyLink),
+			Scheme:   fakeProxyScheme,
+			Label:    fakeProxyLabel,
+			Selected: 2,
+			AddedAt:  time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
 		},
 		Hotspot: HotspotConfig{
 			SSID:       fakeSSID,

@@ -139,6 +139,15 @@ type pageData struct {
 	HasConfig       bool
 	ConfigName      string
 	ConfigSummary   LTR
+	// ConfigEntries is the list the person chooses from when the pasted text
+	// holds more than one usable entry; empty otherwise, so the page draws no
+	// list for a single link. ConfigDroppedLine is the sentence about lines
+	// that were in the text and are not in the list, or empty when none were.
+	// ConfigEntryReset says the stored selection pointed past the end of the
+	// list and the box is on the first entry instead.
+	ConfigEntries     []ConfigEntry
+	ConfigDroppedLine string
+	ConfigEntryReset  bool
 
 	// ---- what was detected ----
 	DetectedLine string
@@ -416,6 +425,22 @@ func (d *pageData) fillTiles(st SystemStatus, fault Fault, now func() time.Time)
 	d.Tiles = []Tile{status, devices, config, uptime}
 }
 
+// ConfigEntry is one row of the entry list: a position to post back, a label
+// naming that position, the provider's name for it when there is one, and the
+// same protocol-and-host summary the config line shows for the chosen entry.
+//
+// Name is provider text. It is capped and stripped of control characters by
+// internal/link before it gets here, and it is typed LTR so the template
+// isolates it from the surrounding Persian; it must never reach a log line, an
+// event or the status document, which is why none of those read this struct.
+type ConfigEntry struct {
+	Index    int
+	Label    string
+	Name     LTR
+	Summary  LTR
+	Selected bool
+}
+
 // fillConfig writes what the page says about the stored config.
 //
 // The raw text is read from state here and used for exactly one thing: parsing
@@ -427,7 +452,8 @@ func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 	}
 	d.ConfigName = proxy.Label
 
-	l, err := link.Parse(proxy.Raw.Reveal())
+	raw := proxy.Raw.Reveal()
+	list, err := link.ParseAll(raw)
 	if err != nil {
 		// A stored config that no longer parses is a real state: it can happen
 		// after an engine upgrade drops a transport. Saying so is better than
@@ -438,8 +464,55 @@ func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 		d.ConfigSummary = ""
 		return
 	}
+	d.ConfigDroppedLine = droppedLine(d.Lang, list.Dropped)
+
+	l, clamped, err := link.Select(raw, proxy.Selected)
+	if err != nil {
+		// The chosen entry is one this box refuses. The others are still
+		// listed so the person can pick another; nothing is chosen for them.
+		if !d.HasProblem {
+			d.setProblem(ParseProblem(err))
+		}
+		d.ConfigSummary = ""
+		d.fillEntries(list, -1)
+		return
+	}
+	d.ConfigEntryReset = clamped
 	d.ConfigSummary = LTR(fmt.Sprintf("%s %s", l.Protocol, l.Address))
+	d.fillEntries(list, l.Index)
 	d.fillConfigFacts(l)
+}
+
+// fillEntries draws the list only when there is a choice to make. A single
+// usable entry gets no radio, because a list of one is a question with one
+// answer.
+func (d *pageData) fillEntries(list *link.List, selected int) {
+	if len(list.Entries) < 2 {
+		return
+	}
+	for _, e := range list.Entries {
+		d.ConfigEntries = append(d.ConfigEntries, ConfigEntry{
+			Index:    e.Index,
+			Label:    T(d.Lang, MsgConfigEntryNumber, e.Index+1),
+			Name:     LTR(e.Tag),
+			Summary:  LTR(fmt.Sprintf("%s %s", e.Protocol, e.Address)),
+			Selected: e.Index == selected,
+		})
+	}
+}
+
+// droppedLine is the sentence for n lines that were in the text and are not
+// in the list, or empty for none. One and many are separate keys because the
+// two languages inflect them differently.
+func droppedLine(lang Lang, n int) string {
+	switch {
+	case n <= 0:
+		return ""
+	case n == 1:
+		return T(lang, MsgConfigDroppedOne)
+	default:
+		return T(lang, MsgConfigDroppedMany, n)
+	}
 }
 
 func (d *pageData) fillConfigFacts(l *link.Link) {
@@ -479,7 +552,7 @@ func (d *pageData) fillConfigFacts(l *link.Link) {
 	if l.Count > 1 {
 		d.ConfigFacts = append(d.ConfigFacts, Fact{
 			Label: T(lang, MsgAdvConfigCount),
-			Words: T(lang, MsgAdvConfigCount, l.Count),
+			Words: T(lang, MsgAdvConfigCount, l.Count, l.Index+1),
 		})
 	}
 }

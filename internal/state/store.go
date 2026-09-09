@@ -208,7 +208,33 @@ func (s *Store) SetProxyConfig(raw, scheme, label string) error {
 		st.Proxy.Raw = Secret(raw)
 		st.Proxy.Scheme = scheme
 		st.Proxy.Label = label
+		// A new paste is a new list. Whatever entry was chosen in the old one
+		// has no meaning in this one, so the choice goes back to the first.
+		st.Proxy.Selected = 0
 		st.Proxy.AddedAt = time.Now().UTC()
+		return nil
+	})
+}
+
+// SelectProxyEntry records which entry of the stored config the box should use,
+// counting from zero, and touches nothing else: the config itself, its scheme,
+// its label and its timestamp all stay as they were.
+//
+// It refuses a negative index, which is not an entry, and it refuses to record
+// a selection when no config is stored, because there is nothing to select
+// from. It does NOT check the upper bound: the store does not parse the config
+// (that is internal/link's job) so it cannot know how long the list is. An index
+// past the end is tolerated by internal/link.Select, which falls back to the
+// first entry and says so.
+func (s *Store) SelectProxyEntry(i int) error {
+	return s.Update(func(st *State) error {
+		if i < 0 {
+			return errors.New("state: the proxy entry to use cannot be negative")
+		}
+		if !st.Proxy.IsConfigured() {
+			return errors.New("state: no proxy config is stored, so there is no entry to select")
+		}
+		st.Proxy.Selected = i
 		return nil
 	})
 }

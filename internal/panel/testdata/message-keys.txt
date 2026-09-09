@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 379 keys
+## fa: 390 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -87,6 +87,12 @@
   advanced.subnet.hint
   app.name
   config.add
+  config.entries.dropped.many
+  config.entries.dropped.one
+  config.entries.heading
+  config.entries.number
+  config.entries.reset
+  config.entries.submit
   config.heading
   config.name.label
   config.none
@@ -113,6 +119,9 @@
   error.saveadvanced.headline
   error.saveconfig.headline
   error.savehotspot.headline
+  error.saveselect.headline
+  error.selectentry.advice
+  error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
@@ -285,6 +294,8 @@
   notice.configreconnected
   notice.configsaved
   notice.cut
+  notice.entryreconnected
+  notice.entryselected
   notice.hotspotrenamed
   notice.hotspotsaved
   notice.off
@@ -386,7 +397,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 379 keys
+## en: 390 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -468,6 +479,12 @@
   advanced.subnet.hint
   app.name
   config.add
+  config.entries.dropped.many
+  config.entries.dropped.one
+  config.entries.heading
+  config.entries.number
+  config.entries.reset
+  config.entries.submit
   config.heading
   config.name.label
   config.none
@@ -494,6 +511,9 @@
   error.saveadvanced.headline
   error.saveconfig.headline
   error.savehotspot.headline
+  error.saveselect.headline
+  error.selectentry.advice
+  error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
@@ -666,6 +686,8 @@
   notice.configreconnected
   notice.configsaved
   notice.cut
+  notice.entryreconnected
+  notice.entryselected
   notice.hotspotrenamed
   notice.hotspotsaved
   notice.off

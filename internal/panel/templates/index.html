@@ -198,6 +198,25 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
     {{if .ConfigName}}<span class="config-name">{{.ConfigName}}</span>{{end}}
     <bdi dir="ltr" class="mono muted">{{.ConfigSummary}}</bdi>
   </p>
+  {{if .ConfigEntryReset}}<p class="hint">{{.T "config.entries.reset"}}</p>{{end}}
+  {{if .ConfigDroppedLine}}<p class="hint">{{.ConfigDroppedLine}}</p>{{end}}
+  {{if .ConfigEntries}}
+  <form method="post" action="/select" class="stack entries">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <fieldset>
+      <legend>{{.T "config.entries.heading"}}</legend>
+      {{range .ConfigEntries}}
+      <label>
+        <input type="radio" name="entry" value="{{.Index}}"{{if .Selected}} checked{{end}}>
+        <span>{{.Label}}</span>
+        {{if .Name}}<bdi dir="ltr" class="mono">{{.Name}}</bdi>{{end}}
+        <bdi dir="ltr" class="mono muted">{{.Summary}}</bdi>
+      </label>
+      {{end}}
+    </fieldset>
+    <button type="submit" class="go">{{.T "config.entries.submit"}}</button>
+  </form>
+  {{end}}
   {{else}}
   <p>{{.T "config.none"}}</p>
   {{end}}

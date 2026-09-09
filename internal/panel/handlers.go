@@ -369,7 +369,12 @@ func (p *Panel) recoverNow(ctx context.Context, st state.State) Problem {
 // which is deliberate. A recovery that took a different path to the same state
 // would be a second implementation of starting, and the two would drift.
 func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Context, StartRequest) error) Problem {
-	l, err := link.Parse(st.Proxy.Raw.Reveal())
+	// The chosen entry, not the first: Selected is an index into the list
+	// internal/link reads out of Raw. A selection the list no longer has falls
+	// back to the first entry (the page says so); an entry this box refuses is
+	// an error, because starting on a neighbour would connect through a server
+	// the person did not choose.
+	l, _, err := link.Select(st.Proxy.Raw.Reveal(), st.Proxy.Selected)
 	if err != nil {
 		p.log.Warn("stored config no longer parses", "config_fingerprint", st.Proxy.Fingerprint())
 		return ParseProblem(err)
@@ -496,9 +501,18 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 		p.events.add(EventConfigAdded, FaultNone)
 	}
 
-	// If the tunnel is up it is still using the old config, so it is replaced
-	// rather than left running. Doing nothing here would leave the panel saying
-	// one thing and the box doing another.
+	p.afterConfigChange(w, r, sess, MsgNoticeConfigSaved, MsgNoticeConfigReconn)
+}
+
+// afterConfigChange finishes a request that changed which outbound the box
+// should use, whether by a new paste or by choosing another entry of the
+// stored one.
+//
+// If the tunnel is up it is still using the old outbound, so it is replaced
+// rather than left running. Doing nothing here would leave the panel saying
+// one thing and the box doing another. saved is the notice for a box that is
+// off; reconnected for one that was on and came back on the new outbound.
+func (p *Panel) afterConfigChange(w http.ResponseWriter, r *http.Request, sess *session, saved, reconnected Key) {
 	status, fault := p.status(r)
 	if fault == FaultNone && status.Engine.Phase == engine.PhaseRunning {
 		ctx, cancel := p.privCtx(r)
@@ -513,12 +527,77 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 			p.home(w, r)
 			return
 		}
-		sess.setFlash(Problem{}, MsgNoticeConfigReconn)
+		sess.setFlash(Problem{}, reconnected)
 		p.home(w, r)
 		return
 	}
-	sess.setFlash(Problem{}, MsgNoticeConfigSaved)
+	sess.setFlash(Problem{}, saved)
 	p.home(w, r)
+}
+
+// ---------------------------------------------------------------------------
+// Choosing an entry of a config that holds several
+// ---------------------------------------------------------------------------
+
+// handleSelect records which entry of the stored config the box should use.
+//
+// The engine still receives exactly one outbound; this only decides which. The
+// "entry" field is a position in the list internal/link reads out of the stored
+// text, counting from zero, and it is accepted only when that position is in
+// the list right now: not a number, negative, past the end, or the slot of an
+// entry this box refuses are all answered with the same sentence and change
+// nothing. Nothing about the entry is logged except its position, because the
+// entry's name is provider text.
+func (p *Panel) handleSelect(w http.ResponseWriter, r *http.Request) {
+	sess := sessionFrom(r)
+	proxy := p.store.Proxy()
+	if !proxy.IsConfigured() {
+		sess.setFlash(Problem{Headline: MsgNoConfigYet, Advice: MsgNoConfigYetAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	badEntry := Problem{Headline: MsgSelectBadEntry, Advice: MsgSelectBadEntryAdvice}
+
+	// Atoi, not a lenient parse: " 1 ", "1.5" and "0x1" are not positions.
+	i, err := strconv.Atoi(r.PostFormValue("entry"))
+	if err != nil || i < 0 {
+		sess.setFlash(badEntry, "")
+		p.home(w, r)
+		return
+	}
+	list, err := link.ParseAll(proxy.Raw.Reveal())
+	if err != nil {
+		sess.setFlash(ParseProblem(err), "")
+		p.home(w, r)
+		return
+	}
+	listed := false
+	for _, e := range list.Entries {
+		if e.Index == i {
+			listed = true
+			break
+		}
+	}
+	if !listed {
+		sess.setFlash(badEntry, "")
+		p.home(w, r)
+		return
+	}
+	if i == proxy.Selected {
+		// The same entry again is not a change, so the tunnel is left alone.
+		sess.setFlash(Problem{}, MsgNoticeEntrySelected)
+		p.home(w, r)
+		return
+	}
+	if err := p.store.SelectProxyEntry(i); err != nil {
+		p.log.Error("saving the entry selection failed", "error", err.Error())
+		sess.setFlash(Problem{Headline: MsgSaveSelectFailed, Advice: MsgSaveFailedAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	p.log.Info("config entry selected", "entry", i, "config_fingerprint", proxy.Fingerprint())
+	p.events.add(EventConfigChanged, FaultNone)
+	p.afterConfigChange(w, r, sess, MsgNoticeEntrySelected, MsgNoticeEntryReconn)
 }
 
 // ---------------------------------------------------------------------------

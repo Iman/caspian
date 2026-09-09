@@ -21,7 +21,6 @@ import (
 	"regexp"
 	"strings"
 
-	share "caspianbyoc.org/caspian/third_party/libxray-share"
 	"github.com/xtls/xray-core/infra/conf"
 )
 
@@ -65,9 +64,12 @@ type Link struct {
 	Address string `json:"address"`
 	Port    uint16 `json:"port"`
 
-	// Tag is the display name taken from the link's #fragment. It may be
-	// empty and it is arbitrary user-supplied text, so anything that renders
-	// it must escape it.
+	// Tag is the display name taken from the link's #fragment, or the Clash
+	// name. It may be empty and it is arbitrary PROVIDER text, held here
+	// exactly as it arrived: not capped, not filtered. Anything that renders
+	// it must escape it; Redacted quotes it with %q for that reason. The
+	// panel does not render this field at all; it renders Entry.Tag, which is
+	// the cleaned form (see list.go, cleanTag).
 	Tag string `json:"tag"`
 
 	// Network is the transport, in the engine's vocabulary rather than the
@@ -92,14 +94,20 @@ type Link struct {
 	// Reality is populated only when Security is reality.
 	Reality Reality `json:"reality"`
 
-	// Count is how many usable links were found in the pasted text. This Link
-	// describes the first; the rest were discarded, and the panel needs to be
-	// able to say so. It counts what the parser accepted, not what was pasted:
+	// Count is how many outbounds the parser accepted from the pasted text,
+	// and Index is which of them this Link describes, counting from zero.
+	// Parse always describes entry zero; Select describes the one asked for.
+	//
+	// Count counts what the parser accepted, not what was pasted:
 	// parsePlainShareLines drops a line it cannot read and says nothing
 	// (third_party/libxray-share/parse_share.go:102-103 for a line url.Parse
 	// rejects, :107-109 for a line whose outbound cannot be built), so a paste
-	// of five lines of which two are malformed reports three.
+	// of five lines of which two are malformed reports three. List.Dropped in
+	// list.go is where those two are counted; this field does not see them.
+	// Nor does it see an accepted outbound that this package's own checks
+	// refuse, so Count can exceed the length of ParseAll's list.
 	Count int `json:"count"`
+	Index int `json:"index"`
 
 	// outbound holds the credential material. It is unexported so that
 	// encoding/json cannot reach it, and it is a pointer so that the fmt
@@ -128,39 +136,16 @@ var supportedSchemes = map[string]bool{
 // Parse reads one share link, several separated by newlines, or a base64
 // subscription blob, and returns a description of the first link found.
 //
+// It is Select with index zero, and TestParseIsSelectOfEntryZero holds them to
+// the same output. It exists as a name because "the first entry" is what every
+// caller wanted before a person could choose one, and those callers are
+// unchanged.
+//
 // The returned Link is safe to render and to log. The credential material
 // stays inside it and only leaves through XrayConfig.
 func Parse(raw string) (*Link, error) {
-	text := strings.TrimSpace(raw)
-	if text == "" {
-		return nil, ErrEmpty
-	}
-	if err := checkScheme(text); err != nil {
-		return nil, err
-	}
-	if err := checkTransport(text); err != nil {
-		return nil, err
-	}
-
-	// The vendored parser's errors quote the user's input, so its error value
-	// is dropped rather than wrapped. See the comment in errors.go.
-	cfg, err := share.ConvertShareLinksToXrayJson(text)
-	if err != nil {
-		return nil, ErrNoLink
-	}
-	if cfg == nil || len(cfg.OutboundConfigs) == 0 {
-		return nil, ErrNoLink
-	}
-
-	ob := cfg.OutboundConfigs[0]
-	name := clearSendThrough(&ob)
-	ob.Tag = OutboundTag
-
-	l := &Link{Tag: name, Count: len(cfg.OutboundConfigs), outbound: &ob}
-	if err := l.fill(); err != nil {
-		return nil, err
-	}
-	return l, nil
+	l, _, err := Select(raw, 0)
+	return l, err
 }
 
 // checkScheme rejects a URI-shaped input whose scheme is not one of the
@@ -637,8 +622,11 @@ func (l *Link) Redacted() string {
 			present(l.Reality.HasMldsa65Verify))
 	}
 	fmt.Fprintf(&b, ", name %q", l.Tag)
-	if l.Count > 1 {
+	switch {
+	case l.Count > 1 && l.Index == 0:
 		fmt.Fprintf(&b, " (first of %d links found)", l.Count)
+	case l.Count > 1:
+		fmt.Fprintf(&b, " (entry %d of %d links found)", l.Index+1, l.Count)
 	}
 	return b.String()
 }

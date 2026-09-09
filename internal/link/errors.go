@@ -19,8 +19,8 @@ import "errors"
 //   - third_party/libxray-share/parse_share.go:169 formats "unsupported
 //     shadowsocks link password: %s" with the DECODED userinfo, and :290 does
 //     the same for socks. Today these do not reach a caller, because
-//     parsePlainShareLines drops every per-line error at parse_share.go:104-106
-//     and reports only "no valid outbound found". That is a property of the
+//     parsePlainShareLines drops every per-line error at parse_share.go:102-103
+//     and :107-109 and reports only "no valid outbound found". That is a property of the
 //     vendored code as it stands, not a promise, and it is one edit away from
 //     changing.
 //   - what does reach a caller from the parser is a base64 or YAML error that

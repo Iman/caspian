@@ -141,6 +141,22 @@ type ProxyConfig struct {
 	// Label is the user's own name for this config. Not secret.
 	Label string `json:"label,omitempty"`
 
+	// Selected is which entry of Raw the box uses, counting from zero, when
+	// Raw holds more than one (a subscription list, a Clash profile). It is an
+	// index into the list internal/link reads out of Raw, and it is written
+	// only by SelectProxyEntry; SetProxyConfig resets it, because a new paste
+	// is a new list and an index into the old one means nothing in it.
+	//
+	// Zero is both the default and the meaning every file written before this
+	// field existed had: the first entry was the only one anything could use.
+	// So a file without the key reads correctly with no migration, and the
+	// schema version was not raised for it. That is safe here in a way it is
+	// not for the policy fields, because the wrong reading of an absent
+	// selection is a different server in the same list, not client traffic
+	// leaving the box unprotected. An index past the end of the list is
+	// tolerated on read and corrected on screen; see internal/link.Select.
+	Selected int `json:"selected"`
+
 	AddedAt time.Time `json:"added_at,omitzero"`
 }
 
@@ -313,6 +329,9 @@ func (s State) Redacted() string {
 		// A hash prefix, not the config: enough to tell two configs apart in a
 		// log without disclosing either.
 		fmt.Fprintf(&b, " proxy.fingerprint=%s", fp)
+		// Which entry of a list the box is on. A position, not a name: the
+		// entry's display name is provider text and does not belong in a log.
+		fmt.Fprintf(&b, " proxy.selected=%d", s.Proxy.Selected)
 	}
 	fmt.Fprintf(&b, " proxy.raw=%s", redacted)
 

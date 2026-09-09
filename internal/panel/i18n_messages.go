@@ -94,6 +94,14 @@ var messagesFA = map[Key]string{
 	"config.name.label":  "یک نام برای آن، تا بدانید کدام است (اختیاری)",
 	"config.submit":      "افزودن این کانفیگ",
 
+	// The entry list, when the pasted text holds more than one entry.
+	"config.entries.heading":      "این کانفیگ چند مورد دارد. انتخاب کنید کاسپین از کدام استفاده کند.",
+	"config.entries.number":       "مورد %d",
+	"config.entries.submit":       "از این مورد استفاده کن",
+	"config.entries.dropped.one":  "یک خط از متن خوانده نشد و کنار گذاشته شد.",
+	"config.entries.dropped.many": "%d خط از متن خوانده نشد و کنار گذاشته شد.",
+	"config.entries.reset":        "موردی که انتخاب شده بود دیگر در فهرست نیست، بنابراین کاسپین از مورد اول استفاده می‌کند.",
+
 	// What was detected.
 	"detected.line":     "اینترنت: %s. هات‌اسپات: %s.",
 	"detected.notfound": "پیدا نشد",
@@ -159,7 +167,7 @@ var messagesFA = map[Key]string{
 	"advanced.reality.publickey":  "کلید عمومی REALITY",
 	"advanced.reality.shortid":    "شناسه کوتاه REALITY",
 	"advanced.reality.pqv":        "کلید تأیید پساکوانتومی",
-	"advanced.config.count":       "کاسپین %d لینک پیدا کرد و از اولی استفاده می‌کند",
+	"advanced.config.count":       "کاسپین %d مورد پیدا کرد و از مورد %d استفاده می‌کند.",
 	"advanced.present":            "هست",
 	"advanced.absent":             "نیست",
 	"advanced.notset":             "تنظیم نشده",
@@ -393,6 +401,8 @@ var messagesFA = map[Key]string{
 	"notice.on":                "کاسپین روشن است. با گوشی یا لپ‌تاپ به شبکه وای‌فای پایین وصل شوید.",
 	"notice.configsaved":       "کانفیگ شما ذخیره شد. برای استفاده از آن کاسپین را روشن کنید.",
 	"notice.configreconnected": "کانفیگ شما ذخیره شد و کاسپین با آن دوباره وصل شد.",
+	"notice.entryselected":     "انتخاب شما ذخیره شد. برای استفاده از آن کاسپین را روشن کنید.",
+	"notice.entryreconnected":  "انتخاب شما ذخیره شد و کاسپین با آن دوباره وصل شد.",
 	"notice.hotspotsaved":      "نام و رمز وای‌فای ذخیره شد.",
 	"notice.hotspotrenamed":    "نام وای‌فای عوض شد. دستگاه‌های شما باید با نام و رمز تازه دوباره به آن وصل شوند.",
 	"notice.advancedsaved":     "ذخیره شد. برای اینکه تغییر اثر کند، کاسپین را خاموش و دوباره روشن کنید.",
@@ -446,6 +456,9 @@ var messagesFA = map[Key]string{
 
 	// Storage.
 	"error.saveconfig.headline":   "کاسپین نتوانست آن کانفیگ را ذخیره کند.",
+	"error.saveselect.headline":   "کاسپین نتوانست انتخاب شما را ذخیره کند.",
+	"error.selectentry.headline":  "آن مورد در فهرست نیست.",
+	"error.selectentry.advice":    "صفحه را دوباره بارگذاری کنید و یکی از موردهای فهرست را انتخاب کنید.",
 	"error.savehotspot.headline":  "کاسپین نتوانست نام و رمز هات‌اسپات را ذخیره کند.",
 	"error.saveadvanced.headline": "کاسپین نتوانست آن تنظیمات را ذخیره کند.",
 	"error.save.advice":           "دستگاه نتوانست روی حافظه خودش بنویسد. دستگاه را دوباره راه‌اندازی کنید و بعد یک بار دیگر امتحان کنید.",
@@ -521,6 +534,14 @@ var messagesEN = map[Key]string{
 	"config.name.label":  "A name for it, so you know which one it is (optional)",
 	"config.submit":      "Add this config",
 
+	// The entry list, when the pasted text holds more than one entry.
+	"config.entries.heading":      "This config holds several entries. Choose the one Caspian should use.",
+	"config.entries.number":       "Entry %d",
+	"config.entries.submit":       "Use this entry",
+	"config.entries.dropped.one":  "One line could not be read and was skipped.",
+	"config.entries.dropped.many": "%d lines could not be read and were skipped.",
+	"config.entries.reset":        "The entry that was chosen is no longer in the list, so Caspian is using the first one.",
+
 	// What was detected.
 	"detected.line":     "Internet: %s. Hotspot: %s.",
 	"detected.notfound": "not found",
@@ -586,7 +607,7 @@ var messagesEN = map[Key]string{
 	"advanced.reality.publickey":  "REALITY public key",
 	"advanced.reality.shortid":    "REALITY short id",
 	"advanced.reality.pqv":        "Post-quantum verify key",
-	"advanced.config.count":       "Caspian found %d links and uses the first",
+	"advanced.config.count":       "Caspian found %d entries and is using entry %d.",
 	"advanced.present":            "present",
 	"advanced.absent":             "missing",
 	"advanced.notset":             "not set",
@@ -820,6 +841,8 @@ var messagesEN = map[Key]string{
 	"notice.on":                "Caspian is on. Join the WiFi network below with your phone or laptop.",
 	"notice.configsaved":       "Your config was saved. Switch Caspian on to use it.",
 	"notice.configreconnected": "Your config was saved and Caspian reconnected with it.",
+	"notice.entryselected":     "Your choice was saved. Switch Caspian on to use it.",
+	"notice.entryreconnected":  "Your choice was saved and Caspian reconnected with it.",
 	"notice.hotspotsaved":      "The hotspot name and password were saved.",
 	"notice.hotspotrenamed":    "The hotspot was renamed. Your devices will have to join it again with the new name and password.",
 	"notice.advancedsaved":     "Saved. Switch Caspian off and on again to apply the change.",
@@ -873,6 +896,9 @@ var messagesEN = map[Key]string{
 
 	// Storage.
 	"error.saveconfig.headline":   "Caspian could not save that config.",
+	"error.saveselect.headline":   "Caspian could not save your choice.",
+	"error.selectentry.headline":  "That entry is not in the list.",
+	"error.selectentry.advice":    "Reload the page and choose one of the entries it shows.",
 	"error.savehotspot.headline":  "Caspian could not save the hotspot name and password.",
 	"error.saveadvanced.headline": "Caspian could not save those settings.",
 	"error.save.advice":           "The box could not write to its own storage. Restart the box, then try again.",

@@ -16,6 +16,7 @@ POST   /power               false    false    303         403
 POST   /cut                 false    false    303         403
 GET    /help                false    false    303         n/a
 POST   /config              false    false    303         403
+POST   /select              false    false    303         403
 POST   /hotspot             false    false    303         403
 POST   /advanced            false    false    303         403
 POST   /recover             false    false    303         403

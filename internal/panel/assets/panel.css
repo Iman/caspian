@@ -1105,6 +1105,11 @@ textarea::placeholder {
 
 .checkline input { inline-size: 20px; block-size: 20px; }
 
+.entries fieldset { border: 0; padding: 0; margin: 0; min-inline-size: 0; }
+.entries legend { padding: 0; margin-block-end: var(--s2); }
+.entries label { display: flex; flex-wrap: wrap; gap: var(--s2); align-items: baseline; margin-block-start: var(--s2); }
+.entries input[type="radio"] { margin: 0; }
+
 .hint {
   font-size: var(--fs-sm);
   color: var(--ink-quiet);
