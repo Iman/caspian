@@ -149,6 +149,19 @@ type pageData struct {
 	ConfigDroppedLine string
 	ConfigEntryReset  bool
 
+	// The subscription address and the refresh it allows. The address itself
+	// is NOT here in any form: it is a credential, and the isolation test
+	// walks this struct, so a field holding it would be a field the page
+	// could render. SubscriptionSet is the whole of what the page may say
+	// about it. RefreshLive is false while the tunnel is down, which is when
+	// the button is drawn disabled with RefreshDisabledWhy beside it.
+	SubscriptionSet    bool
+	RefreshLive        bool
+	RefreshDisabledWhy string
+	RefreshLine        string
+	RefreshUsedLine    string
+	RefreshExpiresLine string
+
 	// ---- what was detected ----
 	DetectedLine string
 
@@ -498,6 +511,70 @@ func (d *pageData) fillEntries(list *link.List, selected int) {
 			Summary:  LTR(fmt.Sprintf("%s %s", e.Protocol, e.Address)),
 			Selected: e.Index == selected,
 		})
+	}
+}
+
+// fillSubscription writes what the page says about the subscription address
+// and the last refresh.
+//
+// It runs after fillConfig because the number of entries in the refreshed
+// list is what fillConfig already parsed. It says nothing at all when no
+// address is stored, so a person who pastes and never subscribes sees the
+// config card they saw before.
+func (d *pageData) fillSubscription(proxy state.ProxyConfig, st SystemStatus, fault Fault, now time.Time) {
+	d.SubscriptionSet = proxy.SubscriptionURL.Reveal() != ""
+	if !d.SubscriptionSet {
+		return
+	}
+	d.RefreshLive = fault == FaultNone && st.Engine.Phase == engine.PhaseRunning
+	if !d.RefreshLive {
+		d.RefreshDisabledWhy = T(d.Lang, MsgConfigRefreshDisabled)
+	}
+	if proxy.RefreshedAt.IsZero() {
+		return
+	}
+	entries := len(d.ConfigEntries)
+	if entries == 0 {
+		// fillConfig draws no list for a single entry, and a config that no
+		// longer parses has none at all. One is the honest reading of both:
+		// the box is using one entry either way.
+		entries = 1
+	}
+	count := T(d.Lang, MsgRefreshEntriesOne)
+	if entries > 1 {
+		count = T(d.Lang, MsgRefreshEntriesMany, entries)
+	}
+	d.RefreshLine = T(d.Lang, MsgRefreshLine, ago(d.Lang, now.Sub(proxy.RefreshedAt)), count)
+
+	// The figures are the provider's own. Total zero is how a provider says
+	// there is no limit, and a limit of nothing is not worth a sentence.
+	if proxy.Quota.Total > 0 {
+		used := proxy.Quota.Upload + proxy.Quota.Download
+		d.RefreshUsedLine = T(d.Lang, MsgRefreshUsed,
+			isolateLTR(gigabytes(used)), isolateLTR(gigabytes(proxy.Quota.Total)))
+	}
+	if proxy.Quota.Expire > 0 {
+		// The figure is the instant the subscription stops working, so the
+		// last day it still covers is the day before that instant. A provider
+		// whose month ends at midnight on the first would otherwise be shown
+		// as expiring on a day the person cannot use.
+		when := time.Unix(proxy.Quota.Expire-1, 0).UTC().Format("2006-01-02")
+		d.RefreshExpiresLine = T(d.Lang, MsgRefreshExpires, isolateLTR(when))
+	}
+}
+
+// ago renders how long ago the refresh happened, in the largest unit that
+// still reads as a number the person can check against their own memory.
+func ago(lang Lang, d time.Duration) string {
+	switch {
+	case d < time.Minute:
+		return T(lang, MsgRefreshWhenJustNow)
+	case d < time.Hour:
+		return T(lang, MsgRefreshWhenMinutes, int(d.Minutes()))
+	case d < 24*time.Hour:
+		return T(lang, MsgRefreshWhenHours, int(d.Hours()))
+	default:
+		return T(lang, MsgRefreshWhenDays, int(d.Hours()/24))
 	}
 }
 

@@ -212,6 +212,11 @@ func (s *Store) SetProxyConfig(raw, scheme, label string) error {
 		// has no meaning in this one, so the choice goes back to the first.
 		st.Proxy.Selected = 0
 		st.Proxy.AddedAt = time.Now().UTC()
+		// The figures and the refresh time describe the config that was
+		// fetched, and this paste has just replaced it. The address stays: it
+		// is where the next refresh comes from, whatever is stored now.
+		st.Proxy.RefreshedAt = time.Time{}
+		st.Proxy.Quota = Quota{}
 		return nil
 	})
 }

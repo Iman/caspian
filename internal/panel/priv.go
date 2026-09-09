@@ -109,13 +109,25 @@ const (
 
 	// ActionRestore puts forwarded client traffic back.
 	ActionRestore Action = "restore"
+
+	// ActionRefresh fetches the subscription body from the stored address,
+	// through the running tunnel, and returns it for the panel to validate
+	// and store exactly as it would a paste.
+	//
+	// It is the one request Caspian makes for content, it happens only when
+	// the person presses the button, and it is refused before any socket
+	// opens unless the engine is running, because the request travels through
+	// the engine's own loopback SOCKS inbound and nothing else. The privileged
+	// side stores nothing between presses; the panel holds the address and
+	// sends it each time. Design section 5.7 as revised on 2026-09-09.
+	ActionRefresh Action = "refresh"
 )
 
 // Actions is every action the panel can ask for, in the order they appear
 // above. Nothing outside this list crosses the socket.
 var Actions = []Action{
 	ActionDetect, ActionStatus, ActionStart, ActionStop, ActionRecover, ActionEngineLog,
-	ActionCut, ActionRestore,
+	ActionCut, ActionRestore, ActionRefresh,
 }
 
 // Privileged is the panel's whole view of the privileged service.
@@ -143,6 +155,11 @@ type Privileged interface {
 	// request. It is the panel's way out of a state that would otherwise need
 	// a person with a terminal.
 	Recover(ctx context.Context, req StartRequest) error
+
+	// Refresh fetches the subscription body through the running tunnel. It
+	// changes nothing on the privileged side and stores nothing; the body
+	// comes back for the panel to validate and store as it would a paste.
+	Refresh(ctx context.Context, req RefreshRequest) (RefreshReply, error)
 }
 
 // ---------------------------------------------------------------------------
@@ -243,6 +260,37 @@ const (
 
 	// FaultCountryMissing asks for an explicit country when detection has none.
 	FaultCountryMissing Fault = "country-missing"
+
+	// The refresh faults. Each is the reason a subscription refresh stopped,
+	// and each is worded separately because each sends the person somewhere
+	// different: the address, the provider, or the tunnel. A refresh on a box
+	// that is not running is FaultNotRunning, which already exists. A
+	// provider that answered with an error status is not a fault at all: the
+	// status comes back on the reply, because a number is data and not a
+	// word from this closed set.
+
+	// FaultRefreshBadAddress means the stored address is not one this box
+	// will fetch from: not https, no name, an IP literal, or a user name in
+	// front of the host. The store refuses the same shapes on the way in, so
+	// reaching this means the check on the privileged side caught something
+	// the panel let through.
+	FaultRefreshBadAddress Fault = "refresh-bad-address"
+
+	// FaultRefreshNoAnswer means no complete answer came back: the name did
+	// not resolve through the tunnel, nothing answered, the connection
+	// dropped, the time ran out, or the provider redirected more than three
+	// times.
+	FaultRefreshNoAnswer Fault = "refresh-no-answer"
+
+	// FaultRefreshTooLarge means the body is bigger than the cap a pasted
+	// config is held to, so it cannot be a configuration this box would
+	// accept by paste either.
+	FaultRefreshTooLarge Fault = "refresh-too-large"
+
+	// FaultRefreshNotHTTPS means the provider redirected to a plain http
+	// address, which would carry the account token in the clear, and the
+	// redirect was refused before it was followed.
+	FaultRefreshNotHTTPS Fault = "refresh-not-https"
 
 	// FaultUnknown is for a failure the privileged side could not classify.
 	// It exists so that an unclassified failure is reported as unclassified
@@ -588,3 +636,58 @@ func (r StartRequest) String() string {
 
 // GoString covers %#v.
 func (r StartRequest) GoString() string { return r.String() }
+
+// RefreshRequest is the argument to ActionRefresh: the address to fetch the
+// subscription body from. It is sent on every press and held nowhere on the
+// privileged side.
+//
+// The address is a credential: providers put the account token in its path or
+// query. So the request redacts itself, and the privileged side never puts the
+// address, or the host name inside it, into an error or a log line.
+type RefreshRequest struct {
+	// URL must be https, must name a host rather than an IP literal, and must
+	// carry no user name. internal/state refuses the same shapes on the way
+	// in; the privileged side checks again rather than trusting that.
+	URL string
+}
+
+// String redacts the address, for the same reason StartRequest redacts the
+// config document: this is the value most likely to reach a log line at the
+// moment something goes wrong.
+func (r RefreshRequest) String() string {
+	return fmt.Sprintf("refresh url=[redacted %d bytes]", len(r.URL))
+}
+
+// GoString covers %#v.
+func (r RefreshRequest) GoString() string { return r.String() }
+
+// RefreshReply is what ActionRefresh returns.
+//
+// Status is the provider's HTTP status. Body is present only for a 2xx
+// answer, and only then does the panel go on to parse it; for any other
+// status the privileged side drops the body, so nothing a provider sends as
+// an error page ever crosses the socket. Headers carries the four headers the
+// panel reads and no others, keyed in lower case:
+//
+//	subscription-userinfo     usage figures, upload=..;download=..;total=..;expire=..
+//	profile-title             a name for the config, possibly base64: prefixed
+//	content-disposition       a file name, used as the name when there is no title
+//	profile-update-interval   the provider's suggested refresh period, which
+//	                          this box records nowhere and never acts on
+//
+// The body is the fetched configuration, so this struct redacts itself.
+type RefreshReply struct {
+	Status  int
+	Body    []byte
+	Headers map[string]string
+}
+
+// String redacts the body. The header names are fixed by the allow list, so
+// listing them discloses nothing; the values can carry a provider's name for
+// the account, so they are counted rather than printed.
+func (r RefreshReply) String() string {
+	return fmt.Sprintf("refresh status=%d body=[redacted %d bytes] headers=%d", r.Status, len(r.Body), len(r.Headers))
+}
+
+// GoString covers %#v.
+func (r RefreshReply) GoString() string { return r.String() }

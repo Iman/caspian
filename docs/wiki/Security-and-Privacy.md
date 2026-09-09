@@ -147,7 +147,7 @@ file", "the hotspot password reaches the access point and nothing else". Tests:
 `TestNoCredentialReachesTheAdvancedView`,
 `TestTheServerAddressNeverAppearsInADiagnosticLine`.
 
-### The panel asks the internet for nothing
+### The panel asks the internet for nothing on its own
 
 Every stylesheet, script and icon the browser loads is compiled into the binary
 with `go:embed`. See [`internal/panel/assets.go`](https://github.com/Iman/caspian/blob/main/internal/panel/assets.go). There is no web font at all:
@@ -164,6 +164,14 @@ page for an absolute URL. `setSecurityHeaders` sends `default-src 'none'` with
 every listed source set to `'self'`, so a browser refuses one that got past the
 tests. No outbound HTTP client exists anywhere in `internal/panel` outside its
 own tests.
+
+The one request Caspian makes for content is the subscription refresh, and the
+person presses it. It runs in the privileged half rather than the panel, it is
+refused before any socket opens unless the engine is running, and it is dialled
+through the engine's own loopback SOCKS inbound with the host name handed to
+the proxy rather than resolved here, so neither the bytes nor the name lookup
+reach the person's ISP. There is no timer, no refresh at boot and no refresh
+when the tunnel comes up.
 
 The generated configuration also names no Google resolver anywhere, and uses no
 `geoip:` or `geosite:` rule, because either would reintroduce a download to a

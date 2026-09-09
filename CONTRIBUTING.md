@@ -67,5 +67,7 @@ Do not add attribution trailers for tools or assistants.
 
 A feature with no test. A test that cannot fail. A claim in prose with nothing
 checking it. A change that weakens an existing guard to make something pass.
-Anything that adds a fetch from the internet to the panel, which is guaranteed
-to fetch nothing and has tests saying so.
+Anything that adds a fetch from the internet the person did not press, or a
+fetch that leaves the box outside the tunnel. The panel fetches nothing on its
+own and has tests saying so; the one refresh a person can press goes through
+the tunnel and is refused when the tunnel is down.

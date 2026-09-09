@@ -308,6 +308,7 @@
   
   
   
+  
 
   <details class="disclose" >
     <summary>Replace the config</summary>
@@ -320,6 +321,11 @@
       <p class="hint">Caspian never shows this back to you and never writes it to a log.</p>
       <label for="label">A name for it, so you know which one it is (optional)</label>
       <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <label for="subscription_url">Subscription address from your provider (optional)</label>
+      <input id="subscription_url" name="subscription_url" type="text" dir="ltr"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             autocomplete="off" inputmode="url">
+      <p class="hint">An https address. Caspian fetches it only when you press the button, and only through the tunnel.</p>
       <button type="submit" class="go">Add this config</button>
     </form>
   </details>
@@ -421,7 +427,7 @@
       <span>Developed by Iman Samizadeh</span>
       <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">GitHub project</a>
     </div>
-    <span>This panel comes from this box itself. It fetches nothing from the internet.</span>
+    <span>This panel comes from this box itself. It fetches nothing from the internet on its own.</span>
   </footer>
 </div>
 <script src="/assets/panel.js" defer></script>

@@ -220,6 +220,17 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
   {{else}}
   <p>{{.T "config.none"}}</p>
   {{end}}
+  {{if .SubscriptionSet}}
+  <p class="hint">{{.T "config.subscription.set"}}</p>
+  {{if .RefreshLine}}<p class="hint">{{.RefreshLine}}</p>{{end}}
+  {{if .RefreshUsedLine}}<p class="hint">{{.RefreshUsedLine}}</p>{{end}}
+  {{if .RefreshExpiresLine}}<p class="hint">{{.RefreshExpiresLine}}</p>{{end}}
+  <form method="post" action="/refresh" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <button type="submit" id="refresh-button" class="go"{{if not .RefreshLive}} disabled{{end}}>{{.T "config.refresh.button"}}</button>
+  </form>
+  {{if .RefreshDisabledWhy}}<p class="hint">{{.RefreshDisabledWhy}}</p>{{end}}
+  {{end}}
 
   <details class="disclose" {{if .SetupIncomplete}}open{{end}}>
     <summary>{{if .HasConfig}}{{.T "config.replace"}}{{else}}{{.T "config.add"}}{{end}}</summary>
@@ -232,6 +243,11 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
       <p class="hint">{{.T "config.paste.hint"}}</p>
       <label for="label">{{.T "config.name.label"}}</label>
       <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <label for="subscription_url">{{.T "config.subscription.label"}}</label>
+      <input id="subscription_url" name="subscription_url" type="text" dir="ltr"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             autocomplete="off" inputmode="url">
+      <p class="hint">{{.T "config.subscription.hint"}}</p>
       <button type="submit" class="go">{{.T "config.submit"}}</button>
     </form>
   </details>

@@ -48,6 +48,10 @@ func fullState(t *testing.T) State {
 			Label:    fakeProxyLabel,
 			Selected: 2,
 			AddedAt:  time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
+
+			SubscriptionURL: Secret(fakeSubscriptionURL),
+			RefreshedAt:     time.Date(2026, 9, 9, 10, 30, 0, 0, time.UTC),
+			Quota:           Quota{Upload: 1, Download: 2, Total: 3, Expire: 4},
 		},
 		Hotspot: HotspotConfig{
 			SSID:       fakeSSID,

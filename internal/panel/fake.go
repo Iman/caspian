@@ -50,6 +50,13 @@ type FakePrivileged struct {
 	cuts   int
 	cutErr error
 
+	// refreshes records every RefreshRequest received, so a test can assert
+	// the address reached this boundary and reached nothing else. refreshReply
+	// and refreshErr are the scripted answer.
+	refreshes    []RefreshRequest
+	refreshReply RefreshReply
+	refreshErr   error
+
 	now func() time.Time
 }
 
@@ -242,6 +249,51 @@ func (f *FakePrivileged) Cuts() int {
 	f.mu.Lock()
 	defer f.mu.Unlock()
 	return f.cuts
+}
+
+// Refresh models the real one's two gates and then answers from the script:
+// refused unless the engine is running, refused for an address the real side
+// refuses, and otherwise the scripted reply or fault. It fetches nothing.
+func (f *FakePrivileged) Refresh(ctx context.Context, req RefreshRequest) (RefreshReply, error) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if err := ctx.Err(); err != nil {
+		return RefreshReply{}, err
+	}
+	f.refreshes = append(f.refreshes, req)
+	if f.refreshErr != nil {
+		return RefreshReply{}, f.refreshErr
+	}
+	if f.engine.Phase != engine.PhaseRunning {
+		return RefreshReply{}, &FaultError{Fault: FaultNotRunning}
+	}
+	return f.refreshReply, nil
+}
+
+// SetRefreshReply scripts what Refresh answers while the engine is running.
+func (f *FakePrivileged) SetRefreshReply(r RefreshReply) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	f.refreshReply = r
+	f.refreshErr = nil
+}
+
+// FailRefreshWith makes Refresh fail with a fault. Pass FaultNone to stop.
+func (f *FakePrivileged) FailRefreshWith(fault Fault) {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	if fault == FaultNone {
+		f.refreshErr = nil
+		return
+	}
+	f.refreshErr = faultErr(fault)
+}
+
+// Refreshes returns a copy of every RefreshRequest received.
+func (f *FakePrivileged) Refreshes() []RefreshRequest {
+	f.mu.Lock()
+	defer f.mu.Unlock()
+	return append([]RefreshRequest(nil), f.refreshes...)
 }
 
 func (f *FakePrivileged) EngineLog(ctx context.Context) (EngineLog, error) {

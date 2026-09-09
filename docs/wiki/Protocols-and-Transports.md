@@ -40,8 +40,9 @@ WebSocket is refused by the engine at paste time rather than failing later.
 `security=` has to be lowercase here even though the engine itself does not
 care, and an uppercase `TLS` is reported back to you as `none`. A `plugin=`
 parameter on an `ss://` link is ignored without saying so. And a subscription
-URL is refused because the panel fetches nothing from the internet, which is a
-deliberate property rather than a missing feature.
+URL pasted into the config box is refused, because that box takes configs: the
+address goes in the subscription field beside it, and Caspian fetches it only
+when you press the button, through the tunnel.
 
 The full picture, including which of these have carried real bytes and which
 have been proven end to end on hardware with an exit address captured, is under

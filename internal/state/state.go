@@ -37,7 +37,15 @@ import (
 // the blocking value explicit. A v1 file therefore still loads; only a v2 file
 // read by a v1 build is refused, which is ErrFutureVersion telling the user to
 // update rather than a silent field drop.
-const CurrentVersion = 2
+//
+// Raised from 2 to 3 on 2026-09-09 by the addition of Proxy.SubscriptionURL,
+// RefreshedAt and Quota. A v2 file has none of the keys and decodes them zero,
+// which is the correct reading (no address, never refreshed), so the migration
+// changes no field. The version is raised anyway, for the other direction: the
+// address is a credential the person typed, and a v2 build reading a v3 file
+// would drop it on its next Save without a word. ErrFutureVersion turns that
+// into "install a newer release".
+const CurrentVersion = 3
 
 // DefaultDir is where the appliance keeps its state. Callers may override it;
 // nothing in this package assumes it.
@@ -158,6 +166,26 @@ type ProxyConfig struct {
 	Selected int `json:"selected"`
 
 	AddedAt time.Time `json:"added_at,omitzero"`
+
+	// SubscriptionURL is the address a refresh is fetched from, or empty when
+	// none is set. It is a credential: providers put the account token in the
+	// path or the query, so it is a Secret and Redacted says only whether one
+	// is set. The rules it has to meet are in subscription.go.
+	//
+	// The JSON key is spelled subscriptionUrl, unlike its snake-case
+	// neighbours, because that is the name the 2026-09-09 subscription
+	// refresh brief fixed for it. Renaming it is a file every client reads
+	// differently, so it stays.
+	SubscriptionURL Secret `json:"subscriptionUrl"`
+
+	// RefreshedAt is when Raw was last replaced by a refresh, or zero when it
+	// was pasted. A paste clears it, because the figures below describe the
+	// config that was fetched and not the one that replaced it.
+	RefreshedAt time.Time `json:"refreshed_at,omitzero"`
+
+	// Quota is what the provider reported at that refresh. Zero when the
+	// provider sent nothing, and cleared by a paste for the reason above.
+	Quota Quota `json:"quota"`
 }
 
 // Fingerprint identifies a stored config in diagnostics without revealing any
@@ -334,6 +362,12 @@ func (s State) Redacted() string {
 		fmt.Fprintf(&b, " proxy.selected=%d", s.Proxy.Selected)
 	}
 	fmt.Fprintf(&b, " proxy.raw=%s", redacted)
+	// Whether an address is set and when it was last used, never the address:
+	// it carries the account token.
+	fmt.Fprintf(&b, " proxy.subscription_set=%t", s.Proxy.HasSubscription())
+	if !s.Proxy.RefreshedAt.IsZero() {
+		fmt.Fprintf(&b, " proxy.refreshed_at=%s", formatTime(s.Proxy.RefreshedAt))
+	}
 
 	fmt.Fprintf(&b, " hotspot.ssid=%q", s.Hotspot.SSID)
 	fmt.Fprintf(&b, " hotspot.passphrase=%s", redacted)

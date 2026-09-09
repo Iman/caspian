@@ -4,6 +4,7 @@ package state
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -499,6 +500,65 @@ func TestDescribeHashOnAnUnreadableValue(t *testing.T) {
 	}
 	if got := describeHash(""); got != "unreadable" {
 		t.Errorf("describeHash of an empty hash = %q, want \"unreadable\"", got)
+	}
+}
+
+// --- the subscription address -----------------------------------------------
+
+// TestTheSubscriptionAddressNeverRenders extends TestNothingRendersASecret to
+// the address a refresh is fetched from.
+//
+// The address is a credential: providers put the account token in its path or
+// query, and whoever holds it can pull the account's configuration. So it is
+// held as a Secret, and every rendering of the state that is safe to log says
+// only whether one is set. The parts checked below are the host and the token
+// separately, because a renderer that truncated rather than redacted would
+// still disclose the half that matters.
+func TestTheSubscriptionAddressNeverRenders(t *testing.T) {
+	st := fullState(t)
+	if st.Proxy.SubscriptionURL.Reveal() != fakeSubscriptionURL {
+		t.Fatal("fullState does not carry the subscription address, so this test would check nothing")
+	}
+
+	renderings := map[string]string{
+		"State.Redacted()":       st.Redacted(),
+		"State.String()":         st.String(),
+		"fmt %v on State":        fmt.Sprintf("%v", st),
+		"fmt %+v on State":       fmt.Sprintf("%+v", st),
+		"fmt %#v on State":       fmt.Sprintf("%#v", st),
+		"fmt %v on ProxyConfig":  fmt.Sprintf("%v", st.Proxy),
+		"fmt %+v on ProxyConfig": fmt.Sprintf("%+v", st.Proxy),
+		"fmt %#v on ProxyConfig": fmt.Sprintf("%#v", st.Proxy),
+		"fmt %v on the Secret":   fmt.Sprintf("%v", st.Proxy.SubscriptionURL),
+		"fmt %s on the Secret":   fmt.Sprintf("%s", st.Proxy.SubscriptionURL),
+		"fmt %q on the Secret":   fmt.Sprintf("%q", st.Proxy.SubscriptionURL),
+		"errors.New wrapping":    fmt.Errorf("some failure: %v", st).Error(),
+	}
+	for what, rendered := range renderings {
+		for _, part := range []string{fakeSubscriptionURL, "sub.example.com", "fake-token-not-real"} {
+			if strings.Contains(rendered, part) {
+				t.Errorf("%s leaked the subscription address (%q)", what, part)
+			}
+		}
+	}
+
+	// The redaction still says the one thing diagnostics need: whether an
+	// address is set, and when it was last used.
+	r := st.Redacted()
+	if !strings.Contains(r, "proxy.subscription_set=true") {
+		t.Errorf("the redacted rendering does not say an address is set:\n%s", r)
+	}
+	if !strings.Contains(r, "proxy.refreshed_at=2026-09-09T10:30:00Z") {
+		t.Errorf("the redacted rendering does not carry the refresh time:\n%s", r)
+	}
+
+	// And an empty box says so rather than saying nothing.
+	empty := defaultState()
+	if r := empty.Redacted(); !strings.Contains(r, "proxy.subscription_set=false") {
+		t.Errorf("the redacted rendering of an empty box does not say no address is set:\n%s", r)
+	}
+	if r := empty.Redacted(); strings.Contains(r, "proxy.refreshed_at") {
+		t.Errorf("the redacted rendering of an empty box reports a refresh time:\n%s", r)
 	}
 }
 

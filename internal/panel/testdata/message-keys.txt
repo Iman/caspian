@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 390 keys
+## en: 434 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -99,8 +99,13 @@
   config.paste.hint
   config.paste.label
   config.placeholder
+  config.refresh.button
+  config.refresh.disabled
   config.replace
   config.submit
+  config.subscription.hint
+  config.subscription.label
+  config.subscription.set
   connections.apply
   connections.heading
   connections.hint
@@ -120,14 +125,17 @@
   error.saveconfig.headline
   error.savehotspot.headline
   error.saveselect.headline
+  error.savesubscription.headline
   error.selectentry.advice
   error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
+  event.configrefreshed
   event.connected
   event.disconnected
   event.hotspotnamed
+  event.refreshfailed
   event.signedin
   event.startfailed
   event.switchedoff
@@ -301,7 +309,10 @@
   notice.off
   notice.on
   notice.recovered
+  notice.refreshed
+  notice.refreshreconnected
   notice.restored
+  notice.subscriptionsaved
   password.confirm
   password.current
   password.heading
@@ -345,8 +356,41 @@
   problem.parse.scheme.advice
   problem.parse.transport.advice
   problem.parse.uuid.advice
+  problem.refresh.badaddress.advice
+  problem.refresh.badaddress.headline
+  problem.refresh.badstatus.advice
+  problem.refresh.badstatus.headline
+  problem.refresh.noanswer.advice
+  problem.refresh.noanswer.headline
+  problem.refresh.notconfig.advice
+  problem.refresh.notconfig.headline
+  problem.refresh.nothttps.advice
+  problem.refresh.nothttps.headline
+  problem.refresh.notrunning.headline
+  problem.refresh.nourl.advice
+  problem.refresh.nourl.headline
+  problem.refresh.other.advice
+  problem.refresh.other.headline
+  problem.refresh.toolarge.advice
+  problem.refresh.toolarge.headline
   problem.server.advice
   problem.server.headline
+  problem.subscription.advice
+  problem.subscription.ipliteral.headline
+  problem.subscription.malformed.headline
+  problem.subscription.nohost.headline
+  problem.subscription.nothttps.headline
+  problem.subscription.toolong.headline
+  problem.subscription.userinfo.headline
+  refresh.entries.many
+  refresh.entries.one
+  refresh.expires
+  refresh.line
+  refresh.used
+  refresh.when.days
+  refresh.when.hours
+  refresh.when.justnow
+  refresh.when.minutes
   setup.confirm
   setup.done.advice
   setup.done.headline
@@ -397,7 +441,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 390 keys
+## fa: 434 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -491,8 +535,13 @@
   config.paste.hint
   config.paste.label
   config.placeholder
+  config.refresh.button
+  config.refresh.disabled
   config.replace
   config.submit
+  config.subscription.hint
+  config.subscription.label
+  config.subscription.set
   connections.apply
   connections.heading
   connections.hint
@@ -512,14 +561,17 @@
   error.saveconfig.headline
   error.savehotspot.headline
   error.saveselect.headline
+  error.savesubscription.headline
   error.selectentry.advice
   error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
+  event.configrefreshed
   event.connected
   event.disconnected
   event.hotspotnamed
+  event.refreshfailed
   event.signedin
   event.startfailed
   event.switchedoff
@@ -693,7 +745,10 @@
   notice.off
   notice.on
   notice.recovered
+  notice.refreshed
+  notice.refreshreconnected
   notice.restored
+  notice.subscriptionsaved
   password.confirm
   password.current
   password.heading
@@ -737,8 +792,41 @@
   problem.parse.scheme.advice
   problem.parse.transport.advice
   problem.parse.uuid.advice
+  problem.refresh.badaddress.advice
+  problem.refresh.badaddress.headline
+  problem.refresh.badstatus.advice
+  problem.refresh.badstatus.headline
+  problem.refresh.noanswer.advice
+  problem.refresh.noanswer.headline
+  problem.refresh.notconfig.advice
+  problem.refresh.notconfig.headline
+  problem.refresh.nothttps.advice
+  problem.refresh.nothttps.headline
+  problem.refresh.notrunning.headline
+  problem.refresh.nourl.advice
+  problem.refresh.nourl.headline
+  problem.refresh.other.advice
+  problem.refresh.other.headline
+  problem.refresh.toolarge.advice
+  problem.refresh.toolarge.headline
   problem.server.advice
   problem.server.headline
+  problem.subscription.advice
+  problem.subscription.ipliteral.headline
+  problem.subscription.malformed.headline
+  problem.subscription.nohost.headline
+  problem.subscription.nothttps.headline
+  problem.subscription.toolong.headline
+  problem.subscription.userinfo.headline
+  refresh.entries.many
+  refresh.entries.one
+  refresh.expires
+  refresh.line
+  refresh.used
+  refresh.when.days
+  refresh.when.hours
+  refresh.when.justnow
+  refresh.when.minutes
   setup.confirm
   setup.done.advice
   setup.done.headline

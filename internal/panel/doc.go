@@ -19,7 +19,7 @@
 //
 // # The four properties this package exists to hold
 //
-// It fetches nothing. No CDN, no web font, no remote script or stylesheet, no
+// It fetches nothing on its own. No CDN, no web font, no remote script or stylesheet, no
 // favicon fetch. Every byte the browser loads is compiled in with go:embed. The
 // privacy reason is that a remote asset tells a third party the address of
 // everyone who opens the panel; the stronger reason is that the panel has to

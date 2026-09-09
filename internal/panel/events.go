@@ -53,6 +53,8 @@ const (
 	EventStartFailed     EventKind = "start-failed"
 	EventConfigAdded     EventKind = "config-added"
 	EventConfigChanged   EventKind = "config-changed"
+	EventConfigRefreshed EventKind = "config-refreshed"
+	EventRefreshFailed   EventKind = "refresh-failed"
 	EventHotspotNamed    EventKind = "hotspot-named"
 	EventAdvancedSaved   EventKind = "advanced-saved"
 	EventTrafficCut      EventKind = "traffic-cut"
@@ -66,6 +68,7 @@ const (
 var eventKinds = []EventKind{
 	EventSignedIn, EventSwitchedOn, EventSwitchedOff, EventConnected,
 	EventDisconnected, EventStartFailed, EventConfigAdded, EventConfigChanged,
+	EventConfigRefreshed, EventRefreshFailed,
 	EventHotspotNamed, EventAdvancedSaved, EventTrafficCut, EventTrafficRestored, EventRecovered,
 	EventWrongPassword,
 }
@@ -89,6 +92,10 @@ func (k EventKind) Key() Key {
 		return MsgEventConfigAdded
 	case EventConfigChanged:
 		return MsgEventConfigChanged
+	case EventConfigRefreshed:
+		return MsgEventConfigRefreshed
+	case EventRefreshFailed:
+		return MsgEventRefreshFailed
 	case EventHotspotNamed:
 		return MsgEventHotspotNamed
 	case EventAdvancedSaved:

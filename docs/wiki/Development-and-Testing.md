@@ -86,7 +86,7 @@ request is checked against what this machine detected for itself. A refusal is a
 fault code from a closed set, never a sentence, and never a value the caller
 sent.
 
-**The box asks the internet for nothing.** No telemetry, no phone-home, no crash
+**The box asks the internet for nothing you did not ask it to.** No telemetry, no phone-home, no crash
 upload, no web font, no geo data file, and no Google resolver in any default.
 
 <div dir="ltr" align="left">

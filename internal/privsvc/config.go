@@ -5,6 +5,7 @@ package privsvc
 
 import (
 	"context"
+	"crypto/x509"
 	"errors"
 	"log/slog"
 	"net/netip"
@@ -163,6 +164,17 @@ type Config struct {
 	// and a full detection runs five commands, so re-running it per poll would
 	// spend the box's CPU on a picture that does not change that fast.
 	DetectTTL time.Duration
+
+	// RefreshRootCAs is the certificate pool a subscription refresh verifies
+	// the provider against. nil means the system roots, which is the only
+	// setting cmd/caspian uses.
+	//
+	// It exists for the tests in refresh_test.go, which stand up a provider
+	// with a self-signed certificate behind a SOCKS relay, and it is the
+	// narrowest seam that lets them: a transport override would bypass the
+	// SOCKS routing that those tests exist to observe. It never turns
+	// verification off; there is no field for that and there will not be.
+	RefreshRootCAs *x509.CertPool
 }
 
 // DefaultDetectTTL is how long Status reuses the last detection.

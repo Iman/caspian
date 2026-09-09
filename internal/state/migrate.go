@@ -26,6 +26,7 @@ import "fmt"
 var migrations = map[int]func(*State) error{
 	0: migrateV0ToV1,
 	1: migrateV1ToV2,
+	2: migrateV2ToV3,
 }
 
 // ErrFutureVersion is the sentinel behind the refusal of a newer file, so a
@@ -115,5 +116,19 @@ func migrateV1ToV2(st *State) error {
 		st.Advanced.ClientIPv6 = ClientIPv6Block
 	}
 	st.Version = 2
+	return nil
+}
+
+// migrateV2ToV3 marks the file as one that may carry a subscription address.
+//
+// It edits no field. v3 added Proxy.SubscriptionURL, RefreshedAt and Quota,
+// and a v2 file decodes all three at their zero values, which is exactly what
+// they mean: no address, never refreshed, nothing reported. The version moves
+// for the reverse direction only. The address is a credential the person
+// typed, and a v2 build reading a v3 file would drop it on its next Save
+// without a word; raising the version makes that build refuse the file with
+// ErrFutureVersion instead. See the note on CurrentVersion.
+func migrateV2ToV3(st *State) error {
+	st.Version = 3
 	return nil
 }

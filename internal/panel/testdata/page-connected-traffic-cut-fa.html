@@ -326,6 +326,7 @@
   
   
   
+  
 
   <details class="disclose" >
     <summary>جایگزین کردن کانفیگ</summary>
@@ -338,6 +339,11 @@
       <p class="hint">کاسپین این متن را هرگز به شما پس نشان نمی‌دهد و در هیچ گزارشی نمی‌نویسد.</p>
       <label for="label">یک نام برای آن، تا بدانید کدام است (اختیاری)</label>
       <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <label for="subscription_url">نشانی اشتراک از ارائه‌دهنده شما (اختیاری)</label>
+      <input id="subscription_url" name="subscription_url" type="text" dir="ltr"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             autocomplete="off" inputmode="url">
+      <p class="hint">یک نشانی https. کاسپین فقط وقتی دکمه را بزنید و فقط از درون تونل آن را می‌گیرد.</p>
       <button type="submit" class="go">افزودن این کانفیگ</button>
     </form>
   </details>
@@ -439,7 +445,7 @@
       <span>توسعه‌دهنده: ایمان سمیع زاده</span>
       <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">پروژه در GitHub</a>
     </div>
-    <span>این صفحه از خود همین دستگاه می‌آید و چیزی از اینترنت نمی‌گیرد.</span>
+    <span>این صفحه از خود همین دستگاه می‌آید و به خودی خود چیزی از اینترنت نمی‌گیرد.</span>
   </footer>
 </div>
 <script src="/assets/panel.js" defer></script>
