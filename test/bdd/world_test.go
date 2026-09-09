@@ -252,6 +252,17 @@ type defects struct {
 	skipFirewallOnUplinkChange  bool // move the routes when the uplink moves and leave the block behind
 	collideTheHotspotSubnet     bool // override the hotspot subnet onto the network the box is on
 
+	// Entry defects: a pasted text holding several entries, and the box
+	// starting on the wrong one or handling a bad choice the wrong way. Each
+	// is injected in entries_test.go, at the seam where the appliance reads
+	// the chosen entry out of the stored text.
+	ignoreTheSelection           bool // start on entry one whatever the person chose
+	startOnTheLastEntry          bool // start on the last entry instead of the first
+	acceptAnyIndex               bool // record a choice without checking it is in the list
+	strandOnAStaleSelection      bool // refuse to start when the stored choice is past the end
+	slideToANeighbourWhenRefused bool // start on entry one when the chosen entry is one this box refuses
+	restartWithoutStopping       bool // start the new entry over the running engine, which keeps the old one
+
 	// Artifact defects: the text an assertion reads is damaged the way a
 	// regression in the generator would damage it.
 	ruleset   func(string) string
@@ -480,6 +491,16 @@ type World struct {
 
 	// What the user did.
 	pasted string
+
+	// entryClamped says the stored choice of entry pointed past the end of
+	// the list and the appliance started on the first entry instead.
+	entryClamped bool
+	// selectErr is the refusal the last attempt to choose an entry produced,
+	// or nil when the choice was accepted. selectedBefore is the choice that
+	// was in force before that attempt, so a refused one can be shown to have
+	// changed nothing.
+	selectErr      error
+	selectedBefore int
 
 	// What the run produced. Every field here is written by the appliance and
 	// read by the Then steps.

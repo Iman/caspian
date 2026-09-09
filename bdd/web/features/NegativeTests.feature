@@ -50,6 +50,29 @@ Feature: NegativeTests.feature
     And the control bar is painted the coral from the palette
 
   # -------------------------------------------------------------------------
+  # A config that holds several entries: what is NOT drawn, and what is said
+  # -------------------------------------------------------------------------
+
+  # A list of one is a question with one answer, so no list is drawn for it.
+  @ready @entries-single
+  Scenario: a config with one entry draws no list to choose from
+    Given I am signed in
+    And the stored config holds one entry
+    When I open the dashboard
+    Then no entry list is drawn
+
+  # A line the parser could not read is dropped without a word by the vendored
+  # parser. The page says so, because "I pasted four and see three" is exactly
+  # the moment the person needs to be told.
+  @ready @entries-dropped-line
+  Scenario: a line that could not be read is reported on the dashboard
+    Given I am signed in
+    And the stored config holds three entries and a broken line
+    When I open the dashboard
+    Then the page says one line was skipped
+    And the entry list is visible with 3 rows
+
+  # -------------------------------------------------------------------------
   # A KNOWN OPEN DEFECT, PINNED HERE RATHER THAN DESCRIBED SOMEWHERE
   # -------------------------------------------------------------------------
 

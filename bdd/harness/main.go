@@ -69,12 +69,14 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
 
 	"caspianbyoc.org/caspian/internal/engine"
+	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/panel"
 	"caspianbyoc.org/caspian/internal/state"
 )
@@ -170,7 +172,34 @@ func (h *harness) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	h.mu.RLock()
 	app := h.cur
 	h.mu.RUnlock()
-	faulty{inner: app.panel, d: app.defect}.ServeHTTP(w, r)
+	faulty{inner: app.panel, d: app.defect, store: app.store}.ServeHTTP(w, r)
+}
+
+// setConfig replaces the stored config with a pasted text of the scenario's
+// choosing, which is how a scenario gets a list of several entries in front
+// of the panel, and optionally records which entry is chosen. It writes the
+// store the way POST /config and POST /select do (SetProxyConfig resets the
+// choice; SelectProxyEntry records one) and touches nothing else.
+//
+// The text is read far enough to know the store would hold something usable
+// and to learn its protocol, through internal/link exactly as the panel's own
+// paste handler does. A text with no usable entry is refused with a 400, so a
+// scenario built on a broken fixture fails at the Given and not three steps
+// later inside an assertion about a radio button.
+func (a *appliance) setConfig(raw string, selected *int) error {
+	l, _, err := link.Select(raw, 0)
+	if err != nil {
+		return fmt.Errorf("the config holds no usable entry: %w", err)
+	}
+	if err := a.store.SetProxyConfig(raw, l.Protocol, "Home"); err != nil {
+		return fmt.Errorf("SetProxyConfig: %w", err)
+	}
+	if selected != nil {
+		if err := a.store.SelectProxyEntry(*selected); err != nil {
+			return fmt.Errorf("SelectProxyEntry: %w", err)
+		}
+	}
+	return nil
 }
 
 // countryAware models the service's country refusal; service tests cover the real planner.
@@ -347,6 +376,30 @@ func (h *harness) control(w http.ResponseWriter, r *http.Request) {
 		}
 		writeJSON(w, http.StatusOK, map[string]any{"ok": true})
 
+	case "/__control/config":
+		// The stored config, replaced with a text of the scenario's choosing.
+		// reset seeds a single link; a scenario about a pasted LIST needs a
+		// text holding several, and the only honest way to get one in front
+		// of the panel is to store it the way a paste would. "selected" is
+		// optional and records a chosen entry through the store, for the
+		// scenarios about a choice the list check never saw.
+		var body struct {
+			Config   string `json:"config"`
+			Selected *int   `json:"selected"`
+		}
+		if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]any{"error": err.Error()})
+			return
+		}
+		h.mu.RLock()
+		app := h.cur
+		h.mu.RUnlock()
+		if err := app.setConfig(body.Config, body.Selected); err != nil {
+			writeJSON(w, http.StatusBadRequest, map[string]any{"error": err.Error()})
+			return
+		}
+		writeJSON(w, http.StatusOK, map[string]any{"ok": true})
+
 	default:
 		writeJSON(w, http.StatusNotFound, map[string]any{"error": "no such control"})
 	}
@@ -460,6 +513,22 @@ type defect struct {
 	csrfCheckDisabled     bool
 	sessionGateOpen       bool
 	secretsEchoed         bool
+
+	// The entry list of a config that holds several entries.
+	//
+	// selectIgnored is applied at the REQUEST seam and not by wrapping the
+	// store, and the reason is worth stating: panel.Config.Store is the
+	// concrete *state.Store (internal/panel/panel.go, Config), so there is no
+	// interface between the panel and the store for this command to stand in
+	// front of without editing internal/. What can be expressed from here is
+	// the same shape advanced-save-ignored takes: the post is accepted,
+	// answered with the redirect a good one gets, and nothing is written.
+	selectIgnored          bool
+	selectAnyEntryAccepted bool
+	entryListAlwaysDrawn   bool
+	entryNameEchoed        bool
+	entryNameNotIsolated   bool
+	droppedLineSilenced    bool
 }
 
 // defectsByName is the registry. bdd/mutation.sh names one of these per
@@ -506,6 +575,24 @@ var defectsByName = map[string]defect{
 	"csrf-check-disabled":    {csrfCheckDisabled: true},
 	"session-gate-open":      {sessionGateOpen: true},
 	"secrets-echoed":         {secretsEchoed: true},
+
+	// A choice of entry that is accepted and not recorded, so the next page
+	// shows the first entry chosen and no notice. See the note on the field.
+	"select-ignored": {selectIgnored: true},
+	// A position that is not in the list ("abc", "-1", "3") is recorded as
+	// entry two instead of being refused.
+	"select-any-entry-accepted": {selectAnyEntryAccepted: true},
+	// The list is drawn for a config of one entry, which is a question with
+	// one answer.
+	"entry-list-always-drawn": {entryListAlwaysDrawn: true},
+	// The polled status document carries the chosen entry's provider name.
+	"entry-name-echoed": {entryNameEchoed: true},
+	// The provider's name is rendered bare instead of inside an isolated
+	// element, so right-to-left text in it can reorder what is around it and
+	// a Persian page turns it around.
+	"entry-name-not-isolated": {entryNameNotIsolated: true},
+	// The sentence about a line that could not be read is left off the page.
+	"dropped-line-silenced": {droppedLineSilenced: true},
 }
 
 // gatedDeviceCount is the device-count-gated defect: a privileged service that
@@ -534,6 +621,10 @@ func (g gatedDeviceCount) Status(ctx context.Context) (panel.SystemStatus, error
 type faulty struct {
 	inner http.Handler
 	d     defect
+	// store is read by the one defect that needs to know what the panel
+	// knows (entryNameEchoed puts the CHOSEN entry's name into the status
+	// document, and the name is in the store). It is never written here.
+	store *state.Store
 }
 
 func (f faulty) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -548,6 +639,12 @@ func (f faulty) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// Accepted, redirected, and nothing written. This is the shape of a
 		// save that reports success and loses the setting.
 		http.Redirect(w, r, "/?advanced=1", http.StatusSeeOther)
+		return
+	}
+	if f.d.selectIgnored && r.Method == http.MethodPost && r.URL.Path == "/select" {
+		// Accepted, redirected, and nothing written. Same shape as the
+		// advanced save above: a choice that reports success and is lost.
+		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
 	if f.d.csrfCheckDisabled && r.Method == http.MethodPost {
@@ -609,7 +706,8 @@ func (d defect) needsBodyRewrite() bool {
 	return d.languageOverflow || d.heroGroundOverridden || d.cutStateFlattened || d.quietZonePaintedDark ||
 		d.powerLabelFrozen || d.cutRoleRemoved || d.cutStateFrozen ||
 		d.skipLinkRemoved || d.labelsUnhooked ||
-		d.statusJSONFieldLost || d.secretsEchoed
+		d.statusJSONFieldLost || d.secretsEchoed ||
+		d.entryListAlwaysDrawn || d.entryNameEchoed || d.entryNameNotIsolated || d.droppedLineSilenced
 }
 
 func (f faulty) mutateRequest(r *http.Request) {
@@ -628,14 +726,32 @@ func (f faulty) mutateRequest(r *http.Request) {
 		q.Del("lang")
 		r.URL.RawQuery = q.Encode()
 	}
+	if f.d.selectAnyEntryAccepted && r.Method == http.MethodPost && r.URL.Path == "/select" {
+		// Whatever was posted as the entry, entry two reaches the panel. A
+		// scenario that posts "abc" and expects a refusal sees a choice
+		// recorded instead.
+		rewriteForm(r, func(form url.Values) { form.Set("entry", "1") })
+		return
+	}
 	if !f.d.anyPasswordAccepted && !f.d.everyPasswordRejected {
 		return
 	}
 	if r.Method != http.MethodPost || r.URL.Path != "/login" {
 		return
 	}
-	// The body is read, rewritten and put back, so the panel's own form parsing
-	// runs on it exactly as it would on a real submission.
+	rewriteForm(r, func(form url.Values) {
+		if f.d.anyPasswordAccepted {
+			form.Set("password", PanelPassword)
+		} else {
+			form.Set("password", PanelPassword+"-not")
+		}
+	})
+}
+
+// rewriteForm reads a form body, lets edit change it and puts it back, so the
+// panel's own form parsing runs on it exactly as it would on a real
+// submission.
+func rewriteForm(r *http.Request, edit func(url.Values)) {
 	var buf bytes.Buffer
 	if _, err := buf.ReadFrom(r.Body); err != nil {
 		return
@@ -645,11 +761,7 @@ func (f faulty) mutateRequest(r *http.Request) {
 	if err != nil {
 		return
 	}
-	if f.d.anyPasswordAccepted {
-		form.Set("password", PanelPassword)
-	} else {
-		form.Set("password", PanelPassword+"-not")
-	}
+	edit(form)
 	encoded := form.Encode()
 	r.Body = noCloseReader{strings.NewReader(encoded)}
 	r.ContentLength = int64(len(encoded))
@@ -681,8 +793,33 @@ func (f faulty) mutateHTML(s string) string {
 		// for anything. This is the version of the fault that survives review.
 		s = strings.ReplaceAll(s, `<label for="`, `<label data-for="`)
 	}
+	if f.d.entryListAlwaysDrawn && !strings.Contains(s, `name="entry"`) {
+		// A list of one, drawn anyway. The markup is the template's own
+		// (internal/panel/templates/index.html, the entries form) so that a
+		// scenario reading the real list reads this one the same way.
+		s = strings.Replace(s, "</main>", `<form method="post" action="/select" class="stack entries">`+
+			`<fieldset><legend>`+panel.T(panel.LangEN, panel.MsgConfigEntriesHeading)+`</legend>`+
+			`<label><input type="radio" name="entry" value="0" checked><span>`+
+			panel.T(panel.LangEN, panel.MsgConfigEntryNumber, 1)+`</span></label></fieldset></form></main>`, 1)
+	}
+	if f.d.entryNameNotIsolated {
+		// The provider's name, bare. The template isolates it in a bdi so
+		// that right-to-left text in it cannot reorder the summary beside it;
+		// a span with the same class looks identical in English.
+		s = entryNameBdiRE.ReplaceAllString(s, `<span class="mono">$1</span>`)
+	}
+	if f.d.droppedLineSilenced {
+		for _, lang := range panel.Langs {
+			s = strings.ReplaceAll(s, `<p class="hint">`+panel.T(lang, panel.MsgConfigDroppedOne)+`</p>`, "")
+		}
+	}
 	return s
 }
+
+// entryNameBdiRE matches the isolated element the entry list renders a
+// provider's name in, and nothing else: the config summary beside it has the
+// class "mono muted" and is left alone.
+var entryNameBdiRE = regexp.MustCompile(`<bdi dir="ltr" class="mono">([^<]*)</bdi>`)
 
 func (f faulty) mutateCSS(s string) string {
 	if f.d.languageOverflow {
@@ -712,7 +849,36 @@ func (f faulty) mutateJSON(s string) string {
 		s = strings.TrimSuffix(strings.TrimSpace(s), "}") +
 			`,"debugPanelPassword":"` + PanelPassword + `"}`
 	}
+	if f.d.entryNameEchoed && f.store != nil {
+		// The chosen entry's provider name, in the polled document. Provider
+		// text is never meant to reach status.json (internal/panel/view.go,
+		// ConfigEntry), and this is the shape of the leak: a field added so
+		// the script could show which entry is in use.
+		if name, ok := chosenEntryName(f.store); ok {
+			quoted, _ := json.Marshal(name)
+			s = strings.TrimSuffix(strings.TrimSpace(s), "}") + `,"entryName":` + string(quoted) + `}`
+		}
+	}
 	return s
+}
+
+// chosenEntryName reads the provider's name of the chosen entry out of the
+// store, for the entry-name-echoed defect.
+func chosenEntryName(store *state.Store) (string, bool) {
+	p := store.Proxy()
+	if !p.IsConfigured() {
+		return "", false
+	}
+	list, err := link.ParseAll(p.Raw.Reveal())
+	if err != nil {
+		return "", false
+	}
+	for _, e := range list.Entries {
+		if e.Index == p.Selected {
+			return e.Tag, e.Tag != ""
+		}
+	}
+	return "", false
 }
 
 // replaceSpanText replaces the text inside <span id="<id>"> ... </span>.
@@ -794,4 +960,8 @@ var exportedKeys = []panel.Key{
 	panel.MsgWifiQRCaption,
 	panel.MsgBadForm,
 	panel.MsgAdvBadInternet,
+	panel.MsgConfigEntriesHeading,
+	panel.MsgConfigDroppedOne,
+	panel.MsgSelectBadEntry,
+	panel.MsgNoticeEntrySelected,
 }

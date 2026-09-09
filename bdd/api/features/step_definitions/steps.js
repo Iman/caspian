@@ -17,6 +17,26 @@
 
 const assert = require('node:assert/strict');
 const { Given, When, Then } = require('@cucumber/cucumber');
+const { ENTRY_NAMES, threeEntries, oneEntry } = require('../support/entries');
+
+// entryRadio matches one radio of the entry list, as
+// internal/panel/templates/index.html renders it: the value is the entry's
+// position and the trailing group says whether it is the chosen one. It is
+// the same expression internal/panel/select_test.go reads the page with.
+const entryRadio = /<input type="radio" name="entry" value="(\d+)"( checked)?>/g;
+
+function entriesOn(body) {
+  const listed = [];
+  let checked = -1;
+  for (const m of body.matchAll(entryRadio)) {
+    const i = Number(m[1]);
+    listed.push(i);
+    if (m[2]) {
+      checked = i;
+    }
+  }
+  return { listed, checked };
+}
 
 // ---------------------------------------------------------------------------
 // Given: the request, and the state of the appliance
@@ -53,6 +73,14 @@ Given('client traffic has been cut', async function () {
   await this.setState({ cut: true });
 });
 
+Given('the stored config holds three entries', async function () {
+  await this.setConfig(threeEntries());
+});
+
+Given('the stored config holds one entry', async function () {
+  await this.setConfig(oneEntry());
+});
+
 // ---------------------------------------------------------------------------
 // When: the request
 // ---------------------------------------------------------------------------
@@ -67,6 +95,16 @@ When('I POST to {string} with no form token', async function (path) {
 
 When('I POST to {string} with the form token and', async function (path, table) {
   const fields = { csrf: this.csrf };
+  for (const row of table.hashes()) {
+    fields[row.name] = row.value;
+  }
+  await this.postForm(path, fields);
+});
+
+When('I POST to {string} with a wrong form token and', async function (path, table) {
+  // A token that is not the session's. The session is real and signed in; only
+  // the token is wrong, which is the case a cross-site page produces.
+  const fields = { csrf: 'not-the-token' };
   for (const row of table.hashes()) {
     fields[row.name] = row.value;
   }
@@ -198,4 +236,52 @@ Then('no credential should appear anywhere in the response', async function () {
 
 Given('the test appliance has not been set up', async function () {
   await this.control('unconfigured', {});
+});
+
+// ---------------------------------------------------------------------------
+// Then: the entry list of a config that holds several entries
+// ---------------------------------------------------------------------------
+
+Then('the page lists {int} entries with entry {int} checked', async function (count, checked) {
+  const got = entriesOn(this.responseBody);
+  assert.equal(
+    got.listed.length, count,
+    'the page lists the entries ' + JSON.stringify(got.listed) + ', want ' + count + ' of them'
+  );
+  for (let i = 0; i < count; i += 1) {
+    assert.equal(got.listed[i], i, 'the entries are listed as ' + JSON.stringify(got.listed) + ', out of order');
+  }
+  assert.equal(got.checked, checked, 'the entry drawn as chosen');
+});
+
+Then('the page lists no entries', async function () {
+  const got = entriesOn(this.responseBody);
+  assert.deepEqual(
+    got.listed, [],
+    'a list of ' + JSON.stringify(got.listed) + ' was drawn for a config of one entry, which is a ' +
+      'question with one answer'
+  );
+});
+
+Then('the page renders the entry name {string} inside an isolated element', async function (name) {
+  // The name is provider text and can hold right-to-left script and
+  // bidirectional formatting characters. Rendered bare it can reorder what is
+  // beside it; the template isolates it in a bdi with an explicit direction,
+  // and that is the markup asserted here rather than the name alone.
+  const needle = '<bdi dir="ltr" class="mono">' + name + '</bdi>';
+  assert.ok(
+    this.responseBody.includes(needle),
+    'the page does not carry ' + JSON.stringify(needle) +
+      (this.responseBody.includes(name) ? ' (the name is on the page, but not isolated)' : ' (the name is not on the page at all)')
+  );
+});
+
+Then('no entry name should appear in the response', async function () {
+  for (const name of ENTRY_NAMES) {
+    assert.ok(
+      !this.responseBody.includes(name),
+      'the response carries the provider name ' + JSON.stringify(name) +
+        '. Provider text belongs on the page, isolated, and nowhere else.'
+    );
+  }
 });

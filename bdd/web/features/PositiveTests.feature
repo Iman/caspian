@@ -198,6 +198,40 @@ Feature: PositiveTests.feature
     When I open the dashboard with the advanced section showing
     Then every control that takes a value has a label
 
+  # -------------------------------------------------------------------------
+  # A config that holds several entries
+  #
+  # A provider's subscription reaches the box as one text holding several
+  # links. The page draws one radio per entry and the person chooses. The
+  # provider's name on each row is the one piece of text on the page the
+  # provider wrote, so it is drawn inside an isolated element with its own
+  # direction, and the Persian scenario is what checks that isolation holds
+  # when the page around it reads the other way.
+  # -------------------------------------------------------------------------
+
+  @ready @entries-choose
+  Scenario: the person chooses which entry of a pasted list the box uses
+    Given I am signed in
+    And the stored config holds three entries
+    When I open the dashboard
+    Then the entry list is visible with 3 rows
+    And entry 1 is chosen
+    When I choose entry 2 and use it
+    Then the dashboard is showing
+    And entry 2 is chosen
+    And the name of entry 2 is "beta" and is drawn isolated
+    And the page says the choice was saved
+
+  @ready @entries-persian
+  Scenario: in Persian the entry list is present and the names still read left to right
+    Given I am signed in
+    And the stored config holds three entries
+    When I open "/" in "fa"
+    Then the page is drawn in Persian
+    And the page reads right to left
+    And the entry list is visible with 3 rows
+    And every entry name reads left to right
+
   @ready @country-recovery
   Scenario: a missing Wi-Fi country can be selected and survives a panel restart
     Given I am signed in

@@ -205,6 +205,17 @@ class CaspianApiWorld extends World {
   async setState(state) {
     await this.control('state', state);
   }
+
+  // setConfig replaces the stored config with a text of the scenario's
+  // choosing, optionally with a chosen entry recorded. See /__control/config
+  // in bdd/harness/main.go.
+  async setConfig(config, selected) {
+    const body = { config };
+    if (selected !== undefined) {
+      body.selected = selected;
+    }
+    await this.control('config', body);
+  }
 }
 
 setWorldConstructor(CaspianApiWorld);

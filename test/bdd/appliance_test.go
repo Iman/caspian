@@ -12,7 +12,6 @@ import (
 
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/hotspot"
-	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/netcfg"
 	"caspianbyoc.org/caspian/internal/panel"
 	"caspianbyoc.org/caspian/internal/state"
@@ -95,19 +94,39 @@ func (w *World) connect() error {
 	//    this succeeds: a box that reconfigured its firewall and then said "I
 	//    could not read that link" has changed the network for nothing.
 	// -----------------------------------------------------------------------
-	l, err := link.Parse(w.pasted)
+	//
+	//    The entry read is the one the person chose, not the first: a pasted
+	//    text can hold several (a subscription, a Clash profile) and the
+	//    choice lives in the state store. This mirrors internal/panel's
+	//    bringUp, which calls link.Select with the stored index
+	//    (internal/panel/handlers.go, bringUp). See readPastedEntry in
+	//    entries_test.go for the two things it does with a choice that is
+	//    past the end of the list or names an entry this box refuses.
+	// -----------------------------------------------------------------------
+	l, clamped, err := w.readPastedEntry()
 	if err != nil {
 		return w.classify(panel.StageParse, w.fail(err))
 	}
 	w.lnk = l
+	w.entryClamped = clamped
 	w.note("config accepted: %s", l.Redacted())
 
 	// -----------------------------------------------------------------------
 	// 2. Persist it. internal/state is the only writer of configuration, and
 	//    it holds the credential at 0600 inside a 0700 directory.
+	//
+	//    Only when this text is new. On the appliance the text is stored by
+	//    the paste (POST /config) and pressing the switch reads what is
+	//    stored; storing it again on every press would go through
+	//    state.SetProxyConfig, which resets the chosen entry to the first
+	//    because a new paste is a new list, and pressing the switch is not a
+	//    new paste. A text that differs from the stored one IS a new paste
+	//    and is stored, choice reset and all.
 	// -----------------------------------------------------------------------
-	if err := w.store.SetProxyConfig(w.pasted, l.Protocol, l.Tag); err != nil {
-		return w.classify(panel.StageNone, w.fail(err))
+	if p := w.store.Proxy(); !p.IsConfigured() || p.Raw.Reveal() != w.pasted {
+		if err := w.store.SetProxyConfig(w.pasted, l.Protocol, l.Tag); err != nil {
+			return w.classify(panel.StageNone, w.fail(err))
+		}
 	}
 	if err := w.store.SetHotspot(hotspotSSID, fakeHotspotPassphrase); err != nil {
 		return w.classify(panel.StageNone, w.fail(err))

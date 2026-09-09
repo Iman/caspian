@@ -38,7 +38,11 @@
     "@help": { "defect": "help-page-broken", "expect": "red" },
     "@skip-link": { "defect": "skip-link-removed", "expect": "red" },
     "@labels": { "defect": "labels-unhooked", "expect": "red" },
-    "@device-count": { "defect": "device-count-gated", "expect": "green" }
+    "@device-count": { "defect": "device-count-gated", "expect": "green" },
+    "@entries-choose": { "defect": "select-ignored", "expect": "red" },
+    "@entries-persian": { "defect": "entry-name-not-isolated", "expect": "red" },
+    "@entries-single": { "defect": "entry-list-always-drawn", "expect": "red" },
+    "@entries-dropped-line": { "defect": "dropped-line-silenced", "expect": "red" }
   },
 
   "api": {
@@ -54,6 +58,13 @@
     "@api-advanced-bad": { "defect": "advanced-save-ignored", "expect": "red" },
     "@api-unauthenticated": { "defect": "session-gate-open", "expect": "red" },
     "@api-csrf": { "defect": "csrf-check-disabled", "expect": "red" },
-    "@api-secrets": { "defect": "secrets-echoed", "expect": "red" }
+    "@api-secrets": { "defect": "secrets-echoed", "expect": "red" },
+    "@api-entries-listed": { "defect": "entry-name-not-isolated", "expect": "red" },
+    "@api-entries-select": { "defect": "select-ignored", "expect": "red" },
+    "@api-entries-status": { "defect": "entry-name-echoed", "expect": "red" },
+    "@api-select-unauthenticated": { "defect": "csrf-check-disabled", "expect": "red" },
+    "@api-select-csrf": { "defect": "csrf-check-disabled", "expect": "red" },
+    "@api-select-bad-entry": { "defect": "select-any-entry-accepted", "expect": "red" },
+    "@api-single-entry": { "defect": "entry-list-always-drawn", "expect": "red" }
   }
 }

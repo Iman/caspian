@@ -22,6 +22,7 @@ const assert = require('node:assert/strict');
 const zlib = require('node:zlib');
 const { Given, When, Then } = require('@cucumber/cucumber');
 const { By, until, Key } = require('selenium-webdriver');
+const { threeEntries, oneEntry, threeEntriesAndABrokenLine } = require('../support/entries');
 
 // The palette roles the feature files name, and the custom property each one
 // resolves to. The words are the ones the stylesheet's own comments use for
@@ -99,6 +100,18 @@ Given('client traffic has been cut', async function () {
 
 Given('the hotspot reports {int} joined device(s)', async function (n) {
   await this.setState({ devices: n });
+});
+
+Given('the stored config holds three entries', async function () {
+  await this.setConfig(threeEntries());
+});
+
+Given('the stored config holds one entry', async function () {
+  await this.setConfig(oneEntry());
+});
+
+Given('the stored config holds three entries and a broken line', async function () {
+  await this.setConfig(threeEntriesAndABrokenLine());
 });
 
 // ---------------------------------------------------------------------------
@@ -736,4 +749,115 @@ Then('the saved Wi-Fi country is {string}', async function (country) {
 
 When('the panel restarts from saved state', async function () {
   await this.control('restart', {});
+});
+
+// ---------------------------------------------------------------------------
+// The entry list of a config that holds several entries
+//
+// "Entry N" in these steps is the number the page shows the person, counting
+// from one. The radio value underneath counts from zero, as POST /select does.
+// ---------------------------------------------------------------------------
+
+const ENTRY_RADIOS = '.entries input[type="radio"][name="entry"]';
+
+Then('the entry list is visible with {int} rows', async function (count) {
+  const list = await this.find('.entries');
+  assert.ok(await list.isDisplayed(), 'the entry list is on the page and not displayed');
+  const radios = await this.driver.findElements(By.css(ENTRY_RADIOS));
+  assert.equal(radios.length, count, 'the number of entries drawn');
+  for (const radio of radios) {
+    assert.ok(await radio.isDisplayed(), 'an entry radio is on the page and not displayed');
+  }
+  const heading = await this.text('.entries legend');
+  assert.equal(heading, this.msg('config.entries.heading'), 'the heading over the list');
+});
+
+Then('no entry list is drawn', async function () {
+  const radios = await this.driver.findElements(By.css('input[name="entry"]'));
+  assert.equal(
+    radios.length, 0,
+    radios.length + ' entry radio(s) drawn for a config of one entry, which is a question with one answer'
+  );
+  assert.ok(!(await this.present('.entries')), 'the entry list form is on the page');
+});
+
+Then('entry {int} is chosen', async function (n) {
+  const chosen = await this.driver.findElements(By.css(ENTRY_RADIOS + ':checked'));
+  assert.equal(chosen.length, 1, chosen.length + ' entries are drawn as chosen, want exactly one');
+  assert.equal(await chosen[0].getAttribute('value'), String(n - 1), 'the value of the chosen radio');
+});
+
+When('I choose entry {int} and use it', async function (n) {
+  await this.click(ENTRY_RADIOS + '[value="' + (n - 1) + '"]');
+  await this.clickAndWaitForPageUpdate('.entries button[type="submit"]');
+});
+
+// isolatedName reads the provider's name of one entry and how the browser
+// laid it out: an isolated element with its own direction, whatever the page's.
+async function isolatedName(world, radioValue) {
+  // The row carries two isolated elements: the provider's name (class
+  // "mono") and the protocol-and-host summary (class "mono muted"). Only the
+  // first is provider text, and it is the one this reads.
+  const label = await world.find('.entries label:has(input[value="' + radioValue + '"])');
+  const names = await label.findElements(By.css('bdi.mono:not(.muted)'));
+  assert.equal(names.length, 1, names.length + ' isolated name elements in the row for entry value ' + radioValue);
+  const el = names[0];
+  return {
+    text: (await el.getText()).trim(),
+    direction: await el.getCssValue('direction'),
+    bidi: await el.getCssValue('unicode-bidi'),
+  };
+}
+
+Then('the name of entry {int} is {string} and is drawn isolated', async function (n, name) {
+  const got = await isolatedName(this, n - 1);
+  assert.equal(got.text, name, 'the provider name on the row');
+  assert.equal(got.direction, 'ltr', 'the computed direction of the name');
+  assert.ok(
+    got.bidi === 'isolate' || got.bidi === 'isolate-override' || got.bidi === 'plaintext',
+    'the name is laid out with unicode-bidi ' + JSON.stringify(got.bidi) + ', which does not isolate it ' +
+      'from the text beside it'
+  );
+});
+
+Then('every entry name reads left to right', async function () {
+  // The page is right to left here (the scenario checked), and the names
+  // must not be. They are provider text in whatever script the provider
+  // used; a host name and a protocol beside them are Latin and read left to
+  // right, and the two must not be turned around by the page's direction.
+  const page = await this.css('body', 'direction');
+  assert.equal(page, 'rtl', 'this step is only meaningful on a right-to-left page');
+  const radios = await this.driver.findElements(By.css(ENTRY_RADIOS));
+  assert.ok(radios.length > 0, 'no entries on the page, so there is no name to check');
+  for (const radio of radios) {
+    const value = await radio.getAttribute('value');
+    const got = await isolatedName(this, value);
+    assert.equal(got.direction, 'ltr', 'the computed direction of the name on the row for entry value ' + value);
+  }
+});
+
+Then('the page says the choice was saved', async function () {
+  // Not ".notice": the layout puts a hidden #action-feedback paragraph of that
+  // class at the top of main for the script to write into, and it matches
+  // first and reads empty. The notice a person can see is the one that is not
+  // hidden (internal/panel/templates/base.html, index.html).
+  const notice = await this.text('.notice:not([hidden])');
+  const want = this.msg('notice.entryselected');
+  assert.ok(
+    notice.includes(want),
+    'the notice reads ' + JSON.stringify(notice) + ', want ' + JSON.stringify(want)
+  );
+});
+
+Then('the page says one line was skipped', async function () {
+  const hints = await this.driver.findElements(By.css('.hint'));
+  const want = this.msg('config.entries.dropped.one');
+  const texts = [];
+  for (const hint of hints) {
+    texts.push((await hint.getText()).trim());
+  }
+  assert.ok(
+    texts.includes(want),
+    'no line on the page reads ' + JSON.stringify(want) + '. The hints read: ' + JSON.stringify(texts)
+  );
 });

@@ -84,3 +84,59 @@ Feature: NegativeTests.feature
     When I GET "/"
     Then response code should be 200
     And response body should carry the message "adv.badinternet.headline"
+
+  # -------------------------------------------------------------------------
+  # Choosing an entry of a config that holds several
+  #
+  # POST /select is gated like every other form (no session goes to the door,
+  # a wrong token is refused), and a position that is not in the list right
+  # now is answered with a sentence and changes nothing.
+  # -------------------------------------------------------------------------
+
+  @smoke @ready @api-select-unauthenticated
+  Scenario: choosing an entry with no session is sent to the sign-in page
+    Given the stored config holds three entries
+    When I POST to "/select" with no form token
+    Then response code should be 303
+    And response header "Location" should be "/login"
+
+  @ready @api-select-csrf
+  Scenario: choosing an entry with a wrong form token is refused and changes nothing
+    Given I am signed in as the panel owner
+    And the stored config holds three entries
+    When I POST to "/select" with a wrong form token and
+      | name  | value |
+      | entry | 1     |
+    Then response code should be 403
+    And response body should carry the message "problem.badform.headline"
+    When I GET "/"
+    Then response code should be 200
+    And the page lists 3 entries with entry 0 checked
+
+  @ready @api-select-bad-entry
+  Scenario Outline: a position that is not in the list is refused and changes nothing
+    Given I am signed in as the panel owner
+    And the stored config holds three entries
+    And I have a form token from "/"
+    When I POST to "/select" with the form token and
+      | name  | value   |
+      | entry | <entry> |
+    Then response code should be 303
+    When I GET "/"
+    Then response code should be 200
+    And response body should carry the message "error.selectentry.headline"
+    And the page lists 3 entries with entry 0 checked
+
+    Examples:
+      | entry |
+      | abc   |
+      | -1    |
+      | 3     |
+
+  @ready @api-single-entry
+  Scenario: a config with one entry draws no list to choose from
+    Given I am signed in as the panel owner
+    And the stored config holds one entry
+    When I GET "/"
+    Then response code should be 200
+    And the page lists no entries

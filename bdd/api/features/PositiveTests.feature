@@ -130,3 +130,54 @@ Feature: PositiveTests.feature
     And response body should contain "value=\"eth0\" selected"
     And response body should contain "value=\"6\" selected"
     And response body should contain "name=\"panel_on_lan\" value=\"1\" checked"
+
+  # -------------------------------------------------------------------------
+  # A config that holds several entries
+  #
+  # A provider's subscription reaches the box as one text holding several
+  # links. The engine still receives exactly one outbound; POST /select decides
+  # which. The position is counted from zero, as the radio values are.
+  # -------------------------------------------------------------------------
+
+  @ready @api-entries-listed
+  Scenario: the dashboard lists every entry of a pasted list with the first chosen
+    Given I am signed in as the panel owner
+    And the stored config holds three entries
+    When I GET "/"
+    Then response code should be 200
+    And the page lists 3 entries with entry 0 checked
+    And the page renders the entry name "alpha" inside an isolated element
+    And the page renders the entry name "beta" inside an isolated element
+    And the page renders the entry name "gamma" inside an isolated element
+
+  @ready @api-entries-select
+  Scenario: choosing an entry is recorded and drawn as chosen on the next page
+    Given I am signed in as the panel owner
+    And the stored config holds three entries
+    And I have a form token from "/"
+    When I POST to "/select" with the form token and
+      | name  | value |
+      | entry | 1     |
+    Then response code should be 303
+    And response header "Location" should be "/"
+    When I GET "/"
+    Then response code should be 200
+    And the page lists 3 entries with entry 1 checked
+    And response body should carry the message "notice.entryselected"
+
+  # The provider's name is the one piece of text on the page the provider
+  # wrote. It is rendered on the page, isolated, and it must not reach the
+  # document a script polls every few seconds.
+  @ready @api-entries-status
+  Scenario: the status document carries no entry name after a choice
+    Given I am signed in as the panel owner
+    And the stored config holds three entries
+    And I have a form token from "/"
+    When I POST to "/select" with the form token and
+      | name  | value |
+      | entry | 1     |
+    Then response code should be 303
+    When I GET "/status.json"
+    Then response code should be 200
+    And response body should be valid json
+    And no entry name should appear in the response
