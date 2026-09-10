@@ -73,6 +73,21 @@ Caspian آن پروژه‌های دیگر را توزیع نمی‌کند و م�
 پیش از فعال‌سازی، [تنظیم SNI و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) را بخوانید.
 
 
+## قدردانی از ایده‌های SNI
+
+Caspian از نویسندگان و مشارکت‌کنندگان پروژه‌های زیر برای ایده‌ها و مقایسه‌های پیاده‌سازی که به توسعهٔ SNI کمک کردند، قدردانی می‌کند.
+کد و فایل اجرایی این پروژه‌ها همراه Caspian عرضه نمی‌شود.
+
+- [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof): مقایسهٔ هدایت اتصال SNI در Go.
+- [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust): مقایسهٔ پیاده‌سازی و قابلیت‌های SNI در Rust.
+- [bol-van/zapret](https://github.com/bol-van/zapret): روش‌های عبور از DPI و تشخیص.
+- [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI): روش‌های عبور از DPI.
+- [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android): ایده‌های یکپارچه‌سازی SNI در Android.
+
+کد اقتباس‌شده مجوز و اعلان‌های بالادستی را حفظ می‌کند.
+قدردانی از ایده‌ها به معنای اجازهٔ کپی کد یا تأیید Caspian نیست.
+نسخه‌ها، مجوزها و نوع استفاده در [منابع شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) آمده است.
+
 <!-- Caspian guide navigation -->
 
 راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/blob/feature/sni/README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).

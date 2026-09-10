@@ -25,9 +25,10 @@ The installer contains the unmodified driver and DLL, complete license bundle, a
 See [WinDivert distribution details](../third_party/windivert/README.md).
 Windows ARM64 does not include WinDivert and cannot use this SNI feature.
 
-## Research references
+## Ideas and acknowledgements
 
-These projects were studied but their code and executables are not bundled:
+Caspian also credits the authors and contributors of these projects for ideas and implementation comparisons that informed its SNI work.
+Their code and executables are not bundled.
 
 | Project | Reviewed revision | License and use |
 | --- | --- | --- |

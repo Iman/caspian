@@ -87,6 +87,21 @@ from its own licence file, and the compatibility reasoning.
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
 [Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
 
+## SNI idea acknowledgements
+
+Caspian also credits the authors and contributors of these projects for ideas and implementation comparisons that informed its SNI work.
+Their code and executables are not bundled.
+
+- [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof): Go SNI forwarding comparison.
+- [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust): Rust SNI implementation and feature comparison.
+- [bol-van/zapret](https://github.com/bol-van/zapret): DPI circumvention strategies and diagnostics.
+- [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI): DPI circumvention strategies.
+- [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android): Android SNI integration ideas.
+
+Adapted code retains its upstream license and notices.
+Idea acknowledgements do not grant permission to copy code or imply endorsement.
+See [third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits) for reviewed versions, licenses, and the scope of use.
+
 <!-- Caspian guide navigation -->
 
 Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
