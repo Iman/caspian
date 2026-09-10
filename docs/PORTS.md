@@ -99,7 +99,7 @@ UNVERIFIED until run with root on a Mac, in this order (script:
 The system SOCKS setting is deliberately described as interim. It does not
 cover applications that ignore macOS proxy settings, UDP in general, or all
 system DNS. Full host tunnelling, including DNS with no physical-uplink
-fallback, is Option 1 in `docs/PORTS.md` and is not claimed by this port.
+fallback, is not provided by this port.
 
 Exercising it on this Mac needs an Ethernet uplink (a cable in one of the USB
 Ethernet adapters), `sudo`, and `bash packaging/darwin/install-darwin.sh`.

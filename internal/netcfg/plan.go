@@ -56,9 +56,8 @@ const (
 	// as well as its clients. The pinned host route to the server is not
 	// optional under this strategy: without it the engine's own connection
 	// matches 0.0.0.0/1 and loops through the tunnel it is trying to build.
-	// TODO(docs/PORTS.md "Option 1"): graduate this into the supported macOS
-	// full-system mode only after host DNS, UDP, IPv6 and fail-closed behaviour
-	// have live-machine coverage.
+	// This is not a supported macOS full-system mode: host DNS, UDP, IPv6
+	// and fail-closed behaviour still need live-machine validation.
 	StrategySplitDefault
 )
 

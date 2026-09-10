@@ -37,7 +37,6 @@ These projects were studied but their code and executables are not bundled:
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | No top-level app license found; ideas only |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | Declares MIT; GPL template provenance needs clarification; no code copied |
 
-See the [source review](THIRD-PARTY.md) for findings and proposed follow-up work.
 
 ## Other distributed components
 

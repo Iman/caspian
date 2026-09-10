@@ -50,7 +50,7 @@ Windows ARM64 نمی‌تواند از جعل SNI استفاده کند؛ تقس
 ## منابع
 
 منبع اصلی کد و ایده [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است.
-[مجوزهای شخص ثالث](THIRD-PARTY.fa.md) و [بررسی منبع](THIRD-PARTY.fa.md) را ببینید.
+[مجوزهای شخص ثالث](THIRD-PARTY.fa.md) را ببینید.
 
 ## عبور از DPI، جعل SNI و امنیت
 

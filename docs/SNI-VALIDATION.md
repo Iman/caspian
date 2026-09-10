@@ -60,7 +60,7 @@ These flags were not used for the production installer.
 - Measure baseline and spoofed connections on the intended network, including real proxy delivery, DNS, reconnects and sustained traffic.
 - Recheck NuGet vulnerability data: restore/build succeeded from cached dependencies, but the audit endpoint was unavailable (NU1900). The installed .NET SDK was a preview build.
 
-See [SNI setup and limitations](SNI.md), [source research](THIRD-PARTY.md), and [third-party licenses](THIRD-PARTY.md).
+See [SNI setup and limitations](SNI.md), and [third-party licenses](THIRD-PARTY.md).
 
 ## Independent split settings
 

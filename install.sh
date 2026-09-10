@@ -1979,7 +1979,7 @@ SNI SPOOFING ATTRIBUTION
       bol-van/zapret (MIT)
       Floxu1/UAC-SNI-Spoofer-Android (no top-level app license found)
       therealaleph/sni-spoofing-rust (declares MIT; derived-code terms unverified)
-    See docs/THIRD-PARTY.md and docs/THIRD-PARTY.md for scope and versions.
+    See docs/THIRD-PARTY.md for source credits, scope, and versions.
 CASPIAN_LICENSE_EOF
 }
 

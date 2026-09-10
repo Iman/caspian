@@ -15,7 +15,6 @@ The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-
 - [SNI spoofing setup and limitations](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
 - [Third-party source versions and licenses](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
 - [Windows local build and installer](https://github.com/Iman/caspian/blob/feature/sni/docs/WINDOWS-BUILD.md)
-- [SNI source review and future candidates](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)
 - [Primary SNI reference](https://github.com/patterniha/SNI-Spoofing)
 
 - [Validation evidence and remaining hardware checks](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)

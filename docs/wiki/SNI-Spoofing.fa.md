@@ -50,7 +50,7 @@ Windows ARM64 نمی‌تواند از جعل SNI استفاده کند؛ تقس
 ## منابع
 
 منبع اصلی کد و ایده [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است.
-[مجوزهای شخص ثالث](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.fa.md) و [بررسی منبع](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.fa.md) را ببینید.
+[مجوزهای شخص ثالث](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.fa.md) را ببینید.
 
 ## عبور از DPI، جعل SNI و امنیت
 
@@ -98,4 +98,4 @@ Caspian آن پروژه‌های دیگر را توزیع نمی‌کند و م�
 فیلدهای وضعیت `spoof_sni`، `tcp_split` و `tls_record_split` هستند.
 این نسخه طرح وضعیت 5 را می‌نویسد؛ ارتقای فایل نسخهٔ 4 نام جعلی را حفظ و هر دو تقسیم را خاموش می‌کند.
 
-منابع انگلیسی: [راهنما](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [بررسی منبع](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md) · [اعتبارسنجی](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md) · [مجوزها](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+منابع انگلیسی: [راهنما](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [اعتبارسنجی](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md) · [مجوزها](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).

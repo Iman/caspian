@@ -101,8 +101,7 @@ UNVERIFIED تا وقتی با root روی یک مک اجرا شود، به ای�
 
 تنظیم SOCKS سیستم عمداً «موقت» نامیده شده است. برنامه‌هایی که تنظیمات پروکسی
 macOS را نادیده می‌گیرند، UDP به‌طور کلی، و همهٔ DNS سیستم را پوشش نمی‌دهد.
-تونل کامل میزبان، شامل DNS بدون fallback روی uplink فیزیکی، Option 1 در
-<span dir="ltr">`docs/PORTS.md`</span> است و این پورت هنوز چنین ادعایی ندارد.
+این پورت تونل کامل میزبان، شامل DNS بدون fallback روی uplink فیزیکی، را فراهم نمی‌کند.
 
 اجرای آن روی این مک یک uplink اترنت می‌خواهد (یک کابل در یکی از آداپتورهای
 USB Ethernet)، <span dir="ltr">`sudo`</span>، و <span dir="ltr">`bash packaging/darwin/install-darwin.sh`</span>.

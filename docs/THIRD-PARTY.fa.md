@@ -37,7 +37,6 @@ Windows ARM64 شامل WinDivert نیست و نمی‌تواند از این ق�
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | مجوز سطح برنامه یافت نشد؛ فقط ایده |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | MIT اعلام شده، اما منشأ قالب GPL نیاز به روشن‌سازی دارد؛ کدی کپی نشده است |
 
-برای یافته‌ها و کارهای پیشنهادی، [بررسی منبع](THIRD-PARTY.fa.md) را ببینید.
 
 ## دیگر اجزای توزیع‌شده
 

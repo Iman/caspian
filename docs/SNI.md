@@ -73,7 +73,7 @@ Linux and macOS builds also need live packet tests on their target systems.
 ## Credits
 
 The primary source and idea are [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing), licensed under GPL-3.0.
-See [third-party credits](THIRD-PARTY.md) and the [source review](THIRD-PARTY.md).
+See [third-party credits](THIRD-PARTY.md).
 
 ## DPI bypass, SNI spoofing, and security
 

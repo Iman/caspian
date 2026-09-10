@@ -82,3 +82,8 @@ bdd/web/se-metadata.json
 # If you add a rule here, run: git status --porcelain --ignored
 # and read what it excludes, rather than trusting the pattern to mean what you
 # meant.
+
+# Research and deferred-work notes remain local.
+**/*[Rr][Ee][Ss][Ee][Aa][Rr][Cc][Hh]*.md
+**/*[Tt][Oo][Dd][Oo]*.md
+**/*[Bb][Aa][Cc][Kk][Ll][Oo][Gg]*.md
