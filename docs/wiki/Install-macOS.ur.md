@@ -1,53 +1,35 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# macOS پر تنصیب
+<a id="install-on-macos"></a>
+# macOS پر انسٹال کریں۔
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
 
-</div>
+[کنکشن ڈایاگرامس، کیبل فرسٹ سیٹ اپ، سروس دوبارہ شروع ہونے اور عام غلطیوں کے لیے، ہوم یوزر ٹربل شوٹنگ گائیڈ پڑھیں۔](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
-[کنکشن کے خاکے، پہلے کیبل لگانے کے قدم، سروسز دوبارہ چلانا اور عام خطائیں گھریلو صارفین کی رہنمائی میں پڑھیں۔](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-
-پروسیسر اور ریم: Caspian کے لیے کم از کم ریم، پروسیسر کے کور کی تعداد اور رفتار ابھی پیمائش سے طے نہیں ہوئی۔ وسائل کا استعمال ٹریفک کے حجم، پراکسی پروٹوکول اور بیک وقت رابطوں کی تعداد پر منحصر ہے۔ کم از کم تقاضے شائع کرنے سے پہلے، فارغ حالت اور بوجھ کے دوران وسائل کا استعمال ناپنا ضروری ہے۔
-
-macOS 13 یا جدید اور منتظم اکاؤنٹ درکار ہیں۔ اندرونی Wi-Fi کو ہاٹ اسپاٹ بنانے کے لیے Ethernet سے انٹرنیٹ فراہم کریں۔
-
-1. سرکاری ریلیز صفحے سے اپنے پروسیسر کا DMG منتخب کریں: Apple Silicon کے لیے <span dir="ltr">`arm64`</span>، Intel کے لیے <span dir="ltr">`amd64`</span>۔
-2. فائل کھولیں اور <span dir="ltr">`Caspian.app`</span> کو Applications میں منتقل کریں۔ اسی فولڈر کی ایپ کھولیں۔
-3. اگر Apple کی تصدیق نہ کر سکنے کا انتباہ آئے تو Done منتخب کریں۔ فائل کا ماخذ جانچنے کے بعد System Settings میں Privacy & Security کھولیں اور Caspian کے پاس Open Anyway منتخب کریں۔
-4. منتظم کے پاس ورڈ سے تنصیب کی اجازت دیں۔ پہلی تنصیب میں دکھایا گیا پینل پاس ورڈ محفوظ کریں۔
-5. Caspian is ready کا انتظار کریں، پھر Open panel کھول کر Wi-Fi اور پراکسی کی ترتیبات درج کریں۔
-
-اگر ایپ کی منظوری کے بعد بھی پس منظر کی فائل <span dir="ltr">`caspian`</span> بند ہو تو اس پر قرنطینہ کی صفت باقی ہو سکتی ہے۔ درج ذیل حکم صرف غیر تصدیق شدہ ڈویلپر یا Apple کی توثیق نہ ہونے کے انتباہ کے لیے ہے، وہ بھی ماخذ اور چیک سم جانچنے کے بعد۔
-
-اگر انتباہ Trojan کا نام لے یا نقصان دہ سافٹ ویئر بتائے تو تنصیب روک دیں اور یہ حکم نہ چلائیں۔ انتباہ کا اصل متن، شناخت کا نام، ریلیز نمبر اور ڈاؤن لوڈ لنک رپورٹ کریں۔
-
-<div dir="ltr" align="left">
-
-```bash
-sudo xattr -d com.apple.quarantine /usr/local/bin/caspian
-```
-
-</div>
-
-پھر Advanced options میں Restart services منتخب کریں۔ یہ حکم صرف اسی فائل کی قرنطینہ صفت ہٹاتا ہے؛ نہ اسکین کرتا ہے، نہ دستخط کرتا ہے۔ <span dir="ltr">`No such xattr`</span> کا مطلب ہے کہ صفت موجود نہیں۔ خرابی جاری رہے تو دوسرے حفاظتی ضابطے ہٹانے کے بجائے رپورٹ کریں۔
-
-Mac، پینل اور Wi-Fi کے پاس ورڈ الگ ہیں۔ پینل کا پاس ورڈ بھول جائیں تو Caspian Control میں Reset password استعمال کریں؛ منتظم کی اجازت ضروری ہے۔
-
-[انگریزی میں تفصیل](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later)
+CPU اور RAM: Caspian میں ابھی تک کم از کم RAM، CPU کور کاؤنٹ، یا گھڑی کی رفتار کی پیمائش نہیں ہے۔ وسائل کا استعمال ٹریفک کے حجم، پراکسی پروٹوکول، اور بیک وقت کنکشنز پر منحصر ہے۔ کم از کم تقاضوں کو شائع کرنے سے پہلے بیکار اور لوڈ بینچ مارکس کی ضرورت ہے۔
 
 [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
-<div dir="ltr" align="left">
+[تنصیب کے مراحل پڑھیں](https://github.com/Iman/caspian/wiki/Installation.ur#macos-13-or-later)
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+انسٹالیشن گائیڈ میں اس پلیٹ فارم کے لیے ضروری شرائط، ڈاؤن لوڈ کے انتخاب اور دستیاب ریکوری کے اقدامات شامل ہیں۔
 
-</div>
 
-</div>
+
+
 
 <!-- Caspian guide navigation -->
 
-Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
+</div>
+
+
+<!-- English-source-sha256: 01992554bf720b4b1f39e9ae3d3b2c275af9000bb708d1261dfb1f03d9d60ea3 -->

@@ -1,42 +1,33 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
+
+</div>
+
+<a id="translations"></a>
 # Çeviriler
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
 
-</div>
+[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
-Başlangıç, kurulum ve sorun giderme için kısa Türkçe kılavuzlar bulunur. Mimari, protokoller, güvenlik ve geliştirme ayrıntıları aşağıdaki İngilizce bağlantılardadır. Bu sayfalar tüm teknik ayrıntıların tam çevirisi değildir. Henüz bağımsız bir Türkçe dil incelemesinden geçmemiştir.
+İngilizce, yedi wiki dilinin tamamının kaynak sürümüdür. İngilizce içerik değiştiğinde her dil sürümünü güncelleyin.
 
-- [Başlangıç](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
-- [Kurulum](https://github.com/Iman/caspian/wiki/Installation.tr)
-- [Linux ve Raspberry Pi kurulumu](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
-- [macOS kurulumu](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
-- [Windows kurulumu](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
-- [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+Güncelleme için ilgili sayfaları mevcut tüm dillerde değiştirin. Komutları, yolları, test adlarını, ölçümleri ve uyarıları tutarlı tutun. Çözülmemiş çeviri farklılıklarını gizlemek yerine kaydedin.
 
-## İngilizce ayrıntılar
-
-- [Protokoller](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
-- [Mimari](https://github.com/Iman/caspian/wiki/Architecture)
-- [Panel ve yapılandırma](https://github.com/Iman/caspian/wiki/Panel-and-Configuration)
-- [Güvenlik ve gizlilik](https://github.com/Iman/caspian/wiki/Security-and-Privacy)
-- [Geliştirme ve test](https://github.com/Iman/caspian/wiki/Development-and-Testing)
-- [Sürümler ve bakım](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance)
-- [Lisans ve kaynaklar](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
-- [Belge haritası](https://github.com/Iman/caspian/wiki/Documentation-Map)
+Tüm wiki konularının İngilizce, Farsça, Rusça, Basitleştirilmiş Çince, Arapça, Türkçe ve Urduca versiyonları vardır. Çeviriler, uyarılar ve yukarı akış kredileri de dahil olmak üzere İngilizce kılavuz içeriğini kapsar. Otomatik kontroller sayfa kapsamını, kod örneklerini ve bağlantıları karşılaştırır. Güncellenen çevirilerin hâlâ bağımsız, anadili İngilizce olan kişilerce incelenmesi gerekiyor.
 
 <div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
 </div>
 
-<!-- SNI upstream credits -->
 
-SNI yanıltmanın temel kodu ve fikri [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) projesinden gelir (GPL-3.0); Windows x64 sürümü WinDivert kullanır (LGPL-3.0).
-[Üçüncü taraf lisansları, kaynaklar ve teşekkürler](../THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
-Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

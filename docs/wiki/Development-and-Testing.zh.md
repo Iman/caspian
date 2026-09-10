@@ -1,92 +1,106 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
+
+</div>
+
+<a id="development-and-testing"></a>
 # 开发与测试
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh)
 
-</div>
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
-
-> 本指南从现有 README 迁移而来。测量结果保留原有日期；此次文档迁移不代表重新运行了测试。
+> 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
+<a id="running-it"></a>
 ## 运行它
 
-构建二进制，然后把它交给安装脚本。这条路不需要任何发布版，而且安装脚本既接受它做真装，
-也接受它做试运行：
+构建二进制文件并将其交给安装程序。该路径不需要释放，并且
+安装程序将其用于实际安装和试运行：
 
-    go build -o /tmp/caspian-linux-arm64 ./cmd/caspian
-    sha256sum /tmp/caspian-linux-arm64 | sed 's|/tmp/||' > /tmp/SHA256SUMS
+去构建-o /tmp/caspian-linux-arm64 ./cmd/caspian
+sha256sum /tmp/caspian-linux-arm64 | sha256sum /tmp/caspian-linux-arm64 | sed 's|/tmp/||' > /tmp/SHA256SUMS
 
-    env CASPIAN_LOCAL_BINARY=/tmp/caspian-linux-arm64 \
-        CASPIAN_LOCAL_CHECKSUMS=/tmp/SHA256SUMS \
-        bash install.sh --dry-run --yes
+env CASPIAN_LOCAL_BINARY=/tmp/caspian-linux-arm64 \
+CASPIAN_LOCAL_CHECKSUMS=/tmp/SHA256SUMS \
+bash install.sh --dry-run --yes
 
-去掉 `--dry-run` 就是真装。不带 `CASPIAN_LOCAL_CHECKSUMS` 时，安装脚本会用这样的措辞
-警告您，它正在安装一个未经验证的二进制。[`docs/INSTALL.md`](https://github.com/Iman/caspian/blob/main/docs/INSTALL.md) 是完整的操作手册。它包含一个
-假的 `uname` 装置，可以在一台根本装不上的机器上把各种拒绝走一遍。
+删除`--dry-run`即可真正安装。没有 `CASPIAN_LOCAL_CHECKSUMS` 的
+换句话说，安装程序警告它正在安装未经验证的二进制文件。
+[`docs/INSTALL.md`](https://github.com/Iman/caspian/blob/main/docs/INSTALL.md) 是完整的操作手册。它包括一个假 `uname` 安全带，用于
+在无法安装的机器上行走拒绝。
 
-这个二进制有四个子命令：
+该二进制文件有四个子命令：
 
-    caspian serve --privileged     root: routes, firewall, access point, engine
-    caspian serve --panel          the caspian user: the web panel, nothing privileged
-    caspian check                  report what this box looks like; changes nothing
-    caspian version
+caspian服务--特权根：路由、防火墙、接入点、引擎
+caspianserve --panel caspian 用户：Web 面板，没有任何特权
+Caspian检查报告这个盒子是什么样子；没有改变任何东西
+Caspian版本
 
-刻意没有任何一个子命令能应用配置或者拨动那个开关。CLI 自己就是这么说的：「After the
-installer has run, everything a person does happens in the panel.」
+故意没有应用配置或驱动交换机的子命令。
+CLI 本身是这样说的：“安装程序运行后，一个人所做的一切
+发生在面板中。”
 
-[`uninstall.sh`](https://github.com/Iman/caspian/blob/main/uninstall.sh) 会移除 systemd 单元、二进制和目录，并回放网络日志，好让盒子回到被发现时
-的样子。在依赖它之前，先读下面的缺陷 D5。
+[`uninstall.sh`](https://github.com/Iman/caspian/blob/main/uninstall.sh) 删除单元、二进制文件和目录并重播
+网络日志，因此盒子保持被发现时的样子。在依赖它之前，请先阅读 [缺陷D5](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)。
 
-## 这个项目给自己定的规矩
+<a id="the-rules-this-project-holds-itself-to"></a>
+## 该项目遵守的规则
 
-这些不是愿景。每一条都有一个机制，而且机制被点了名。
+这些都不是愿望。每一种都有一种机制，并且该机制被命名。
 
-**没有从真实流量里抓到出口 IP，就不叫可以用。** [`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md) 第 6 节。
-连上不等于结果。当没有抓到出口 IP 时，硬件测试装置给出的评级是 UNPROVEN 而不是 PASS，
-并且以 1 退出。
+**如果没有从真实流量中捕获的退出 IP，任何东西都不能称为工作。**
+[`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)，第 6 节。连接不是结果。硬件
+当未捕获任何退出 IP 并且退出 1 时，线束等级为 UNPROVEN，而不是 PASS。
 
-**一个自信的错句子比没有句子更糟。** 一个被告知某件事已经处理好的读者，会得出结论说
-这里没什么需要检查的。所以一次纠正留下的是一个测试，而不是一句更好的话。
-`TestNothingInTheApplianceWatchesTheUplink` 之所以存在，是因为曾经有两份文档声称盒子会
-盯着自己的上行链路，并在它变动时重新加载防火墙。
+**自信的错误句子比没有句子更糟糕。**被告知的读者
+某些事情处理正确就得出结论，没有什么需要检查的。所以一个
+修正留下的是测试而不是更好的句子。
+`TestNothingInTheApplianceWatchesTheUplink` 存在，因为两个文档一次
+声称该盒子会监视其上行链路并在移动时重新加载防火墙。
 
-**一个进程被启动了，不等于它起作用了。** 热点接口在任何东西绑定到它之前，会先从内核
-回读一遍；接入点在服务报告自己正在运行之前，也会先回读一遍。这两次回读都是在一次被实测到
-的事件之后加上的，那次事件里每一条命令都返回了成功。
+**已启动的进程并不能证明它有效。** 热点接口是
+在任何东西绑定到内核之前从内核读回，并且访问点是
+在服务报告自身运行之前回读。添加了两个读回
+在一次测量事件之后，每个命令都返回成功。
 
-**每一个场景都被看着失败过。** `TestEveryScenarioCanFail` 会往每一项行为里注入一个点了名
-的缺陷，并要求它变红。一个没有人见它失败过的测试，是一盏接在什么都没有上的绿灯。
+**每个场景都被观察到失败。** `TestEveryScenarioCanFail` 注入
+将每个行为命名为缺陷，并要求其变为红色。无人能及的测试
+所见失败是绿灯没有连接。
 
-**一份测试数据的来源写在它的文件名里。** `capture-pi5-` 是目标机器上一条真实命令的字节
-输出，`scenario-` 是一台没有人实测过的机器，`golden-` 是本项目自己的输出。一个读
-`capture-pi5-` 文件的测试，做出的是关于目标机器的主张。一个读 `scenario-` 文件的测试则
-不是。
+**夹具的出处位于其文件名中。** `capture-pi5-` 是字节
+目标上真实命令的输出，`scenario-` 是一台无人拥有的机器
+测得，`golden-`是该项目自己的输出。测试阅读a
+`capture-pi5-` 文件对目标做出了声明。读取 `scenario-` 的测试
+文件没有。
 
-**一份凭据一旦进了提交就是永久的。** `test/goldenscan` 会对每一份提交进来的测试数据扫描
-已登记的哨兵值和各种凭据形态，而且它检查文件名，不只是文件内容。它已经被看着抓住了它认识的
-每一类被人故意种进去的秘密。
+**提交中的凭证是永久的。** `test/goldenscan` 扫描每个
+注册哨兵和凭证形状的承诺固定装置，并且它
+检查文件名和文件体。有人看到它捕捉了一个种植的
+它知道的每个类别的秘密。
 
-**覆盖率下限是一把棘轮。** [`scripts/gate.sh`](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) 里的每一个数字，都是某个包在引入它的那次工作
-之后实际测出来的值，不是谁希望达到的目标。没有对应行的包就是没有被设下限，而没有行的意思是
-「还没有商定下限」，不是「这个包有覆盖」。
+**覆盖楼层是一个棘轮。** [`scripts/gate.sh`](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) 中的每个数字是什么
+在引入它的工作之后测量的包，而不是目标某人
+希望。没有行的包不是门控的，没有行意味着
+“尚未达成一致”而不是“涵盖此一揽子计划”。
 
-**特权侧不相信调用方送来的任何东西。** 每个请求的每个字段都会和这台机器自己探测到的结果
-核对。一次拒绝是一个来自封闭集合的故障码，绝不是一句话，也绝不是调用方送来的某个值。
+**特权方不信任调用者发送的任何内容。**每个字段
+请求会根据该机器自身检测到的内容进行检查。拒绝是一个
+来自闭集的错误代码，从来不是一个句子，也从来不是调用者的值
+已发送。
 
-**盒子不向互联网要任何东西。** 没有遥测，不回传，不上传崩溃报告，没有网络字体，没有地理
-数据文件，任何默认配置里也没有 Google 的解析器。
+**该盒子会向互联网询问您未要求的任何信息。** 没有遥测，没有回拨，没有崩溃
+上传，没有网络字体，没有地理数据文件，并且在任何默认情况下都没有 Google 解析器。
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
-
-[Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+[Architecture](https://github.com/Iman/caspian/wiki/Architecture.zh) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
 
 <!-- Caspian guide navigation -->
 
-Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->

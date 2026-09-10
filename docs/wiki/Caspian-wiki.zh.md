@@ -1,21 +1,23 @@
-# Caspian Wiki
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr)
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
 
 </div>
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
+<a id="caspian-wiki"></a>
+# Caspian维基
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
-</div>
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
+
+
 
 <!-- Caspian guide navigation -->
 
-Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 6199b4f6140802a9f6e3795a8d8b61e3cefc182b8b1bf2e80decc18bdde986f7 -->

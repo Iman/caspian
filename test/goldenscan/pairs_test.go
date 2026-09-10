@@ -108,6 +108,19 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 		var missing []string
 		for tok := range want {
 			if !strings.Contains(faText, tok) {
+				// Wiki editions link to the translated destination. The source
+				// anchor is retained there so the same section stays reachable.
+				const wiki = "https://github.com/Iman/caspian/wiki/"
+				if strings.HasPrefix(tok, wiki) {
+					page, anchor, hasAnchor := strings.Cut(tok, "#")
+					translated := page + ".fa"
+					if hasAnchor {
+						translated += "#" + anchor
+					}
+					if strings.Contains(faText, translated) {
+						continue
+					}
+				}
 				missing = append(missing, tok)
 			}
 		}
@@ -246,6 +259,20 @@ func TestEveryPublishedDocumentOffersTheSameFourLanguages(t *testing.T) {
 			return nil
 		}
 		text := string(body)
+		if strings.HasPrefix(filepath.ToSlash(english), "docs/wiki/") {
+			page := strings.TrimSuffix(filepath.Base(english), ".md")
+			for _, suffix := range []string{"", ".fa", ".ru", ".zh", ".ar", ".tr", ".ur"} {
+				url := "https://github.com/Iman/caspian/wiki/" + page + suffix + ")"
+				if !strings.Contains(text, url) {
+					t.Errorf("%s lacks its wiki language link %s", rel, url)
+				}
+				if _, err := os.Stat(filepath.Join(filepath.Dir(path), page+suffix+".md")); err != nil {
+					t.Errorf("%s links to a missing wiki edition: %s%s.md", rel, page, suffix)
+				}
+			}
+			checked++
+			return nil
+		}
 
 		// Persian and English are held to full parity, so on a page like
 		// SECURITY.md those two entries point at SECURITY.fa.md and at the page

@@ -1,36 +1,31 @@
-# Windows kurulumu
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
 
 </div>
 
-[Bağlantı şemaları, önce kabloyu bağlama adımları, hizmetleri yeniden başlatma ve yaygın hatalar için ev kullanıcısı sorun giderme kılavuzunu okuyun.](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+<a id="install-on-windows"></a>
+# Windows'a yükleyin
 
-İşlemci ve RAM: Caspian için gereken en düşük RAM miktarı, işlemci çekirdek sayısı ve saat hızı henüz ölçümlerle belirlenmedi. Kaynak kullanımı trafik miktarına, vekil sunucu protokolüne ve eşzamanlı bağlantı sayısına bağlıdır. Asgari gereksinimleri yayımlamadan önce boşta ve yük altında ölçüm yapılması gerekir.
 
-x64 veya ARM64 üzerinde Windows 10 sürüm 2004 (yapı 19041) ve sonrası ya da Windows 11, yönetici hesabı ve Mobile Hotspot destekleyen Wi-Fi adaptörü gerekir.
 
-1. Resmî sürüm sayfasından Windows kurulum dosyasını indirin: Intel ve AMD için x64, ARM işlemciler için ARM64. Türü bilmiyorsanız Settings, System, About altında System type satırına bakın.
-2. Kurulum dosyasını çalıştırın. Unknown publisher uyarısını geçmeden önce dosyanın kaynağını kontrol edin. Yönetici izni verin.
-3. Panel parolasını seçip saklayın. Kurulumu tamamlayın ve Caspian Control uygulamasını açın.
-4. Start all seçeneğini kullanın. Ready durumunu bekleyin, sonra Open panel ile giriş yapın.
-5. Wi-Fi adını, en az sekiz karakterlik parolayı ve proxy yapılandırmasını girin. Eski cihazlarla uyumluluk için 2.4 GHz seçin.
-6. Panelden Caspian'ı başlatın. Durum yeşile dönünce bir cihazı ağa bağlayıp web sitesi açın.
+[Bağlantı şemaları, ilk kablo kurulumu, hizmetin yeniden başlatılması ve yaygın hatalar için ev kullanıcısı sorun giderme kılavuzunu okuyun.](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
 
-Ready, iki arka plan hizmetinin yanıt verdiğini belirtir; tünelin bağlı olduğunu doğrulamaz. Web paneli erişim noktasının ve tünelin durumunu gösterir. Erişim noktasını durdurmak veya yeniden başlatmak cihazların bağlantısını keser.
+CPU ve RAM: Caspian'ın henüz ölçülen minimum RAM'i, CPU çekirdek sayısı veya saat hızı yok. Kaynak kullanımı trafik hacmine, proxy protokolüne ve eşzamanlı bağlantılara bağlıdır. Minimum gereksinimlerin yayınlanabilmesi için boşta kalma ve yük kıyaslamalarına ihtiyaç vardır.
 
-[İngilizce ayrıntılar](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11)
+[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr)
+[Kurulum adımlarını okuyun](https://github.com/Iman/caspian/wiki/Installation.tr#windows-10-and-11).
 
-<div dir="ltr" align="left">
+Kurulum kılavuzu bu platform için ön koşulları, indirme seçeneklerini ve mevcut kurtarma adımlarını içerir.
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
+
+
 
 <!-- Caspian guide navigation -->
 
-Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: ce8f5bbd9e232bd7873bf3d42a21b833c23b873ecf2ac122e40a832f387b6905 -->

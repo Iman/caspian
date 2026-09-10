@@ -1,10 +1,12 @@
-# Page template
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) | [اردو](https://github.com/Iman/caspian/wiki/Page-Template.ur)
 
 </div>
+
+# Page template
+
+
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -26,11 +28,7 @@ TODO: Add numbered steps, exact commands, and checks.
 
 TODO: Record errors, recovery steps, test results, dates, and known limits.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- Caspian guide navigation -->
 

@@ -1,47 +1,27 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
+<a id="caspian-wiki"></a>
 # Caspian ویکی
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr)
 
-</div>
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
-اردو میں آغاز، تنصیب اور مسائل کے حل کی مختصر رہنمائی دستیاب ہے۔ ساخت، پروٹوکول، سکیورٹی اور ترقی کی تفصیلی دستاویزات کے انگریزی روابط نیچے ہیں۔ یہ تمام تکنیکی تفصیلات کا مکمل ترجمہ نہیں ہے۔ کسی دوسرے اردو بولنے والے نے ابھی اس کا جائزہ نہیں لیا۔
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
-- [شروع کریں](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
-- [تنصیب](https://github.com/Iman/caspian/wiki/Installation.ur)
-- [Linux اور Raspberry Pi پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
-- [macOS پر تنصیب](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
-- [Windows پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
-- [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-- [تراجم](https://github.com/Iman/caspian/wiki/Translations.ur)
 
-## انگریزی میں تفصیل
-
-- [پروٹوکول](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
-- [ساخت](https://github.com/Iman/caspian/wiki/Architecture)
-- [پینل اور ترتیبات](https://github.com/Iman/caspian/wiki/Panel-and-Configuration)
-- [سکیورٹی اور رازداری](https://github.com/Iman/caspian/wiki/Security-and-Privacy)
-- [ترقی اور آزمائش](https://github.com/Iman/caspian/wiki/Development-and-Testing)
-- [ریلیز اور دیکھ بھال](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance)
-- [لائسنس اور ماخذ](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
-- [دستاویزات کا نقشہ](https://github.com/Iman/caspian/wiki/Documentation-Map)
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
-
-<!-- SNI upstream credits -->
-
-SNI کی جعل سازی کے بنیادی کوڈ اور خیال کا ماخذ [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) ہے (GPL-3.0)؛ Windows x64 میں WinDivert استعمال ہوتا ہے (LGPL-3.0)۔
-[دیگر منصوبوں کے لائسنس، ماخذ اور اعتراف](../THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
-Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
+</div>
+
+
+<!-- English-source-sha256: 6199b4f6140802a9f6e3795a8d8b61e3cefc182b8b1bf2e80decc18bdde986f7 -->

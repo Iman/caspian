@@ -1,119 +1,114 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# توسعه و آزمون
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
+
+<div dir="rtl" align="right">
+
+<a id="development-and-testing"></a>
+# توسعه و آزمایش
+
+
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-> این راهنما از README موجود منتقل شده است. تاریخ اندازه‌گیری‌ها همان تاریخ اصلی است؛ این جابه‌جایی گزارش اجرای تازهٔ آزمون‌ها نیست.
+> این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
-## اجرای آن
+<a id="running-it"></a>
+## اجرا کردنش
 
-فایل اجرایی را بسازید و به نصب‌کننده بدهید. این راه به هیچ انتشاری نیاز ندارد، و
-نصب‌کننده آن را هم برای نصب واقعی و هم برای اجرای آزمایشی می‌پذیرد:
+باینری را بسازید و به نصاب تحویل دهید. این مسیر نیازی به رهاسازی ندارد و
+نصب کننده آن را برای نصب واقعی و همچنین اجرای خشک می گیرد:
 
-<div dir="ltr" align="left">
+برو build -o /tmp/caspian-linux-arm64 ./cmd/caspian
+sha256sum /tmp/caspian-linux-arm64 | sed 's|/tmp/||' > /tmp/SHA256SUMS
 
-    go build -o /tmp/caspian-linux-arm64 ./cmd/caspian
-    sha256sum /tmp/caspian-linux-arm64 | sed 's|/tmp/||' > /tmp/SHA256SUMS
+env CASPIAN_LOCAL_BINARY=/tmp/caspian-linux-arm64 \
+CASPIAN_LOCAL_CHECKSUMS=/tmp/SHA256SUMS \
+bash install.sh --dry-run --yes
 
-    env CASPIAN_LOCAL_BINARY=/tmp/caspian-linux-arm64 \
-        CASPIAN_LOCAL_CHECKSUMS=/tmp/SHA256SUMS \
-        bash install.sh --dry-run --yes
+`--dry-run` را برای نصب واقعی رها کنید. بدون `CASPIAN_LOCAL_CHECKSUMS`
+نصب کننده به این کلمات هشدار می دهد که در حال نصب یک باینری تایید نشده است.
+[`docs/INSTALL.md`](https://github.com/Iman/caspian/blob/main/docs/INSTALL.md) یک runbook کامل است. این شامل یک مهار ساختگی `uname` برای
+راه رفتن امتناع بر روی دستگاهی که قابل نصب نیست.
+
+باینری چهار دستور فرعی دارد:
+
+caspian serve -- root privileged: routes, firewall, access point, engine
+caspian serve --panel the caspian user: پنل وب، هیچ چیز ممتازی ندارد
+گزارش چک کاسپین که این کادر به چه شکل است. چیزی را تغییر نمی دهد
+نسخه کاسپین
+
+عمداً هیچ دستور فرعی وجود ندارد که پیکربندی را اعمال کند یا سوئیچ را هدایت کند.
+خود CLI می‌گوید: «بعد از اجرای نصب‌کننده، هر کاری که شخص انجام می‌دهد
+در پانل اتفاق می افتد."
+
+[`uninstall.sh`](https://github.com/Iman/caspian/blob/main/uninstall.sh) واحدها، باینری و دایرکتوری ها را حذف می کند و دوباره پخش می کند.
+مجله شبکه بنابراین جعبه همانطور که پیدا شد باقی می ماند. قبل از اینکه به آن اعتماد کنید، [نقص D5](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) را بخوانید.
+
+<a id="the-rules-this-project-holds-itself-to"></a>
+## قوانینی که این پروژه به آن پایبند است
+
+اینها آرزو نیست. هر کدام مکانیسمی دارند و مکانیسم نامگذاری شده است.
+
+**هیچ چیزی کار بدون IP خروجی گرفته شده از ترافیک واقعی نامیده نمی شود.**
+[`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش 6. اتصال یک نتیجه نیست. سخت افزار
+هنگامی که IP خروجی ضبط نشده است، درجه های مهار UNPROVEN، نه PASS، و از 1 خارج می شود.
+
+**جمله اشتباه مطمئن بدتر از بی جمله است.** خواننده ای که گفته می شود
+چیزی که به درستی مدیریت می شود نتیجه می گیرد که چیزی برای بررسی وجود ندارد. بنابراین یک
+تصحیح به جای یک جمله بهتر، یک آزمون را پشت سر می گذارد.
+`TestNothingInTheApplianceWatchesTheUplink` وجود دارد زیرا دو سند یک بار
+ادعا کرد که جعبه بالا لینک خود را تماشا می کند و هنگام حرکت فایروال را دوباره بارگذاری می کند.
+
+**فرآیند شروع شده دلیلی بر کارکرد آن نیست.** رابط نقطه اتصال است
+قبل از اینکه چیزی به هسته متصل شود، از هسته بازخوانی کنید، و نقطه دسترسی است
+قبل از اجرای خود سرویس گزارش دهد. هر دو بازخوانی اضافه شد
+پس از یک رویداد اندازه گیری شده که در آن هر فرمان موفقیت آمیز بود.
+
+**هر سناریو شکست خورده است.** `TestEveryScenarioCanFail` یک
+نقص در هر رفتار نامگذاری شده است و نیاز به قرمز شدن آن دارد. تستی که هیچکس ندارد
+دیده می شود شکست یک چراغ سبز سیمی به هیچ است.
+
+**منشا یک فیکسچر در نام فایل آن است.** `capture-pi5-` بایت است
+خروجی یک فرمان واقعی روی هدف، `scenario-` ماشینی است که هیچ کس ندارد
+اندازه گیری شد و `golden-` خروجی خود این پروژه است. یک تست خواندن الف
+فایل `capture-pi5-` ادعایی در مورد هدف دارد. تست خواندن `scenario-`
+فایل ندارد.
+
+**اعتبار در یک commit دائمی است.**
+
+`test/goldenscan`
+
+هر جارو می کند
+ثابت متعهد برای نگهبانان ثبت نام شده و برای اشکال اعتبار، و آن
+نام فایل ها و همچنین بدنه فایل ها را بررسی می کند. در حال شکار یک کاشته تماشا شده است
+راز هر طبقه ای که می داند
+
+**طبقات پوشش یک جغجغه هستند.** هر عدد در [`scripts/gate.sh`](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) همان چیزی است که
+بسته ای که بعد از کاری که آن را معرفی کرده اندازه گیری می شود، نه یک فرد هدف
+امیدوار شد. بسته‌ای که ردیفی ندارد دروازه‌بندی نمی‌شود و نبود ردیف به این معنی است
+"هنوز طبقه ای توافق نشده است" به جای "این بسته پوشش داده شده است".
+
+**طرف ممتاز به هیچ چیزی که تماس گیرنده ارسال می کند اعتماد ندارد.** هر فیلد از هر
+درخواست با آنچه این دستگاه برای خود شناسایی کرده بررسی می شود. امتناع یک است
+کد خطا از یک مجموعه بسته، هرگز یک جمله، و هرگز یک مقدار تماس گیرنده
+فرستاده شد.
+
+**جعبه از اینترنت چیزی نمی خواهد که شما از آن نخواسته اید.** بدون تله متری، بدون تلفن خانه، بدون خرابی
+آپلود، بدون فونت وب، بدون فایل داده های جغرافیایی، و بدون حل کننده گوگل در هر پیش فرض.
 
 
-</div>
 
-<span dir="ltr">`--dry-run`</span> را بردارید تا نصبِ واقعی انجام شود. بدون <span dir="ltr">`CASPIAN_LOCAL_CHECKSUMS`</span>،
-نصب‌کننده با همین واژه‌ها هشدار می‌دهد که دارد یک فایل اجراییِ وارسی‌نشده را نصب
-می‌کند. [<span dir="ltr">`docs/INSTALL.md`</span>](https://github.com/Iman/caspian/blob/main/docs/INSTALL.md) دستورکار کامل است. یک بسترِ <span dir="ltr">`uname`</span> قلابی هم دارد تا
-بشود ردکردن‌ها را روی دستگاهی که نصب روی آن ممکن نیست مرور کرد.
-
-فایل اجرایی چهار زیرفرمان دارد:
-
-<div dir="ltr" align="left">
-
-    caspian serve --privileged     root: routes, firewall, access point, engine
-    caspian serve --panel          the caspian user: the web panel, nothing privileged
-    caspian check                  report what this box looks like; changes nothing
-    caspian version
-
-
-</div>
-
-عمداً هیچ زیرفرمانی نیست که کانفیگی را اعمال کند یا کلید را بزند. خودِ CLI این را
-می‌گوید: "After the installer has run, everything a person does happens in the
-panel." یعنی: بعد از اجرای نصب‌کننده، هر کاری که آدم می‌کند در پنل انجام می‌شود.
-
-[<span dir="ltr">`uninstall.sh`</span>](https://github.com/Iman/caspian/blob/main/uninstall.sh) یونیت‌ها، فایل اجرایی و پوشه‌ها را حذف می‌کند و دفترچهٔ شبکه را
-بازپخش می‌کند تا دستگاه همان‌طور که پیدا شده رها شود. پیش از آنکه به آن تکیه
-کنید، نقصِ D5 در پایین را بخوانید.
-
-## قاعده‌هایی که این پروژه خودش را به آن‌ها پایبند می‌داند
-
-این‌ها آرزو نیستند. هر کدام سازوکاری دارند، و آن سازوکار نام برده شده است.
-
-**بدون گرفتنِ آدرسِ خروجی از ترافیکِ واقعی، هیچ چیز «کار می‌کند» نامیده
-نمی‌شود.** [<span dir="ltr">`docs/2026-08-29-design.md`</span>](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش 6. یک اتصال، نتیجه نیست. بسترِ
-سخت‌افزاری وقتی هیچ آدرسِ خروجی‌ای گرفته نشده باشد نمرهٔ UNPROVEN می‌دهد، نه
-PASS، و با کد 1 بیرون می‌آید.
-
-**یک جملهٔ غلطِ مطمئن از هیچ جمله‌ای بدتر است.** خواننده‌ای که به او گفته‌اند
-چیزی درست رسیدگی شده، نتیجه می‌گیرد چیزی برای وارسی نیست. پس هر اصلاح، یک آزمون
-از خودش به جا می‌گذارد، نه یک جملهٔ بهتر. <span dir="ltr">`TestNothingInTheApplianceWatchesTheUplink`</span>
-به این دلیل وجود دارد که دو سند زمانی ادعا می‌کردند دستگاه رابطِ اینترنتش را
-می‌پاید و وقتی جابه‌جا شود فایروال را دوباره بار می‌کند.
-
-**یک فرایندِ شروع‌شده، شاهدِ کار کردنش نیست.** رابطِ هات‌اسپات پیش از آنکه چیزی
-به آن بایند شود از هسته بازخوانی می‌شود، و نقطهٔ دسترسی پیش از آنکه سرویس خودش
-را «در حال کار» گزارش کند بازخوانی می‌شود. هر دو بازخوانی بعد از یک رویدادِ
-اندازه‌گیری‌شده اضافه شدند که در آن هر فرمانی موفقیت برگردانده بود.
-
-**هر سناریو دیده شده که شکست بخورد.** <span dir="ltr">`TestEveryScenarioCanFail`</span> یک نقصِ نام‌دار
-را به هر رفتار تزریق می‌کند و لازم می‌داند که قرمز شود. آزمونی که هیچ‌کس شکستش را
-ندیده، چراغِ سبزی است که به هیچ چیز وصل نیست.
-
-**تبارِ هر فیکسچر در نامِ فایلش است.** <span dir="ltr">`capture-pi5-`</span> خروجیِ بایتیِ یک فرمانِ
-واقعی روی دستگاهِ هدف است، <span dir="ltr">`scenario-`</span> دستگاهی است که هیچ‌کس اندازه‌اش نگرفته، و
-<span dir="ltr">`golden-`</span> خروجیِ خودِ این پروژه است. آزمونی که فایلِ <span dir="ltr">`capture-pi5-`</span> می‌خواند
-دربارهٔ دستگاهِ هدف ادعا می‌کند. آزمونی که فایلِ <span dir="ltr">`scenario-`</span> می‌خواند چنین ادعایی
-نمی‌کند.
-
-**یک راز در یک کامیت، همیشگی است.** <span dir="ltr">`test/goldenscan`</span> هر فیکسچرِ کامیت‌شده را
-برای نشانه‌های ثبت‌شده و برای شکل‌های رازها جارو می‌کند، و نامِ فایل‌ها را هم مثل
-بدنهٔ فایل‌ها بررسی می‌کند. دیده شده که رازِ کاشته‌شده را از هر کلاسی که می‌شناسد
-گرفته است.
-
-**کف‌های پوشش فقط بالا می‌روند.** هر عددی در [<span dir="ltr">`scripts/gate.sh`</span>](https://github.com/Iman/caspian/blob/main/scripts/gate.sh) همان چیزی است که
-یک بسته پس از کاری که آن را وارد کرد اندازه‌گیری شد، نه هدفی که کسی آرزویش را
-داشت. بسته‌ای که سطری ندارد دروازه‌بندی نشده، و نبودِ سطر یعنی «هنوز کفی توافق
-نشده»، نه «این بسته پوشش دارد».
-
-**سمتِ ممتاز به هیچ چیزی که فراخواننده می‌فرستد اعتماد نمی‌کند.** هر فیلدِ هر
-درخواست در برابرِ آنچه این دستگاه خودش تشخیص داده بررسی می‌شود. ردکردن یک کدِ خطا
-از یک مجموعهٔ بسته است، هرگز یک جمله نیست، و هرگز مقداری که فراخواننده فرستاده
-نیست.
-
-**دستگاه از اینترنت چیزی نمی‌خواهد.** نه داده‌ای می‌فرستد، نه به خانه زنگ
-می‌زند، نه گزارشِ خرابی بالا می‌فرستد، نه فونتِ وب می‌گیرد، نه فایلِ دادهٔ
-جغرافیایی، و نه هیچ resolver گوگلی در هیچ پیش‌فرضی.
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-[Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
+[Architecture](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->

@@ -1,48 +1,51 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# معماری و جریان داده
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh)
+[English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) | [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
 
 </div>
 
+<div dir="rtl" align="right">
+
+<a id="architecture-and-data-flow"></a>
+# معماری و جریان داده ها
+
+
+
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-> این راهنما از README موجود منتقل شده است. تاریخ اندازه‌گیری‌ها همان تاریخ اصلی است؛ این جابه‌جایی گزارش اجرای تازهٔ آزمون‌ها نیست.
+> این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
+<a id="architecture"></a>
 ## معماری
 
-### دو فرایند، یک فایل اجرایی
+<a id="two-processes-one-binary"></a>
+### دو فرآیند، یکی باینری
 
-یک فایل اجرایی در دو نقش اجرا می‌شود، و زیرفرمان تعیین می‌کند کدام نقش. این
-جدایی برای این هست که ایرادی در بخشی که ورودی کاربر را تجزیه می‌کند و HTTP سرو
-می‌کند، ایرادی در بخشی که root را در دست دارد نباشد. [<span dir="ltr">`docs/LAYOUT.md`</span>](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md)، بخش
-«Two processes, one binary»، بیانِ قطعیِ آن است.
-
-<div dir="ltr" align="left">
+یک باینری در دو نقش اجرا می شود که توسط دستور فرعی انتخاب می شوند. شکاف وجود دارد به طوری که الف
+خطا در بخشی که ورودی کاربر را تجزیه و تحلیل می کند و HTTP را ارائه می دهد یک نقص در قسمت نیست
+بخشی که ریشه دارد [`docs/LAYOUT.md`](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md)، "دو فرآیند، یک باینری" است
+بیانیه ثابت آن
 
 ```mermaid
 flowchart LR
-    subgraph device["دستگاهی که به هات‌اسپات وصل شده"]
-        BR["مرورگر<br/>پورت 8088 روی آدرس هات‌اسپات"]
+    subgraph device["A device joined to the hotspot"]
+        BR["Browser<br/>port 8088 on the hotspot address"]
     end
 
-    subgraph panelproc["caspian serve --panel، با حساب caspian اجرا می‌شود"]
-        PANEL["internal/panel<br/>مسیرها، نشست‌ها، متن‌ها، رندر"]
-        STATE["internal/state<br/>تنها نویسندهٔ state.json"]
-        LINK1["internal/link<br/>تجزیهٔ لینکِ پیست‌شده"]
-        ENG1["internal/engine<br/>فقط Validate، هیچ سوکتی باز نمی‌کند"]
+    subgraph panelproc["caspian serve --panel, runs as the caspian account"]
+        PANEL["internal/panel<br/>routes, sessions, wording, rendering"]
+        STATE["internal/state<br/>the only writer of state.json"]
+        LINK1["internal/link<br/>parse the pasted share link"]
+        ENG1["internal/engine<br/>Validate only, opens no socket"]
     end
 
-    subgraph privproc["caspian serve --privileged، با root اجرا می‌شود"]
+    subgraph privproc["caspian serve --privileged, runs as root"]
         SVC["internal/privsvc<br/>Service.Start, Stop, Cut, Restore, Recover"]
-        XCFG["internal/xcfg<br/>ساختنِ سندِ نرم‌افزار اتصال"]
-        NETCFG["internal/netcfg<br/>مسیرها، nftables، دفترچهٔ برچیدن"]
-        HOT["internal/hotspot<br/>hostapd و dnsmasq"]
-        ENG2["internal/engine<br/>xray-core، در همین فرایند"]
+        XCFG["internal/xcfg<br/>compose the engine document"]
+        NETCFG["internal/netcfg<br/>routes, nftables, the teardown journal"]
+        HOT["internal/hotspot<br/>hostapd and dnsmasq"]
+        ENG2["internal/engine<br/>xray-core, in this process"]
     end
 
     BR --> PANEL
@@ -56,71 +59,61 @@ flowchart LR
     SVC --> ENG2
 ```
 
-</div>
+[`cmd/caspian/main.go`](https://github.com/Iman/caspian/blob/main/cmd/caspian/main.go) دو نقش را در متن استفاده خود چاپ می کند:
 
-[<span dir="ltr">`cmd/caspian/main.go`</span>](https://github.com/Iman/caspian/blob/main/cmd/caspian/main.go) این دو نقش را در متن راهنمای خودش چاپ می‌کند:
+caspian serve -- root privileged: routes, firewall, access point, engine
+caspian serve --panel the caspian user: پنل وب، هیچ چیز ممتازی ندارد
 
-<div dir="ltr" align="left">
+<a id="the-socket-and-why-the-vocabulary-is-closed"></a>
+### سوکت، و چرا واژگان بسته است
 
-    caspian serve --privileged     root: routes, firewall, access point, engine
-    caspian serve --panel          the caspian user: the web panel, nothing privileged
+[`internal/panel/priv.go`](https://github.com/Iman/caspian/blob/main/internal/panel/priv.go) قاعده ای را بیان می کند که کل تقسیم برای آن وجود دارد: "الف
+کمک کننده ممتازی که یک مسیر و لیست آرگومان را از مشتری خود می گیرد، نیست
+یک مرز؛ این راهی برای اجرای هر چیزی به عنوان روت است." نقطه ویرگول مال آنهاست. را
+جمله دقیقاً نقل شده است، زیرا نقل یک قاعده، قاعده نیست.
 
+بنابراین پانل نمی تواند "اجرای این" را بیان کند. فقط می تواند یکی از هشت عمل را نام برد،
+و طرف ممتاز تصمیم می گیرد که منظور هر کدام چیست. `panel.Actions` این است
+مجموعه بسته شد، و اگر یک روش وجود داشته باشد، `TestActionVocabularyMatchesTheInterface` با شکست مواجه می شود
+بدون نام در لیست به رابط اضافه شده است.
 
-</div>
-
-### سوکت، و اینکه چرا واژگانش بسته است
-
-[<span dir="ltr">`internal/panel/priv.go`</span>](https://github.com/Iman/caspian/blob/main/internal/panel/priv.go) قاعده‌ای را که کل این جدایی برای آن هست می‌نویسد:
-"A privileged helper that takes a path and an argument list from its client is
-not a boundary; it is a way to run anything as root." یعنی: کمک‌کارِ ممتازی که
-یک مسیر و یک فهرست آرگومان را از کلاینتش می‌گیرد، مرز نیست؛ راهی است برای اجرای
-هر چیزی با دسترسی root. نقطه‌ویرگول از خودشان است. جمله عیناً نقل شده، چون
-بازگفتِ یک قاعده، خودِ قاعده نیست.
-
-پس پنل اصلاً نمی‌تواند «این را اجرا کن» را بیان کند. فقط می‌تواند یکی از هشت
-کنش را نام ببرد، و سمت ممتاز تصمیم می‌گیرد هر کدام چه معنایی دارد.
-<span dir="ltr">`panel.Actions`</span> همان مجموعهٔ بسته است، و
-<span dir="ltr">`TestActionVocabularyMatchesTheInterface`</span> اگر متدی به رابط اضافه شود بی‌آنکه
-نامی در آن فهرست بیاید، شکست می‌خورد.
-
-| کنش | سمت ممتاز چه می‌کند | دستگاه را تغییر می‌دهد |
+| اقدام | کاری که طرف ممتاز انجام می دهد | دستگاه را عوض می کند |
 |---|---|---|
-| <span dir="ltr">`detect`</span> | گزارش رابط‌ها، محدودیت‌های رادیو، و زیرشبکهٔ انتخاب‌شده | نه |
-| <span dir="ltr">`status`</span> | گزارش فازِ نرم‌افزار اتصال، هات‌اسپات، و اینکه ترافیک قطع است یا نه | نه |
-| <span dir="ltr">`start`</span> | بالا آوردن تونل و هات‌اسپات | بله |
-| <span dir="ltr">`stop`</span> | پایین آوردن آن دو و بازپخش دفترچهٔ برچیدن | بله |
-| <span dir="ltr">`recover`</span> | توقف، بازپخش دفترچه، بعد شروع دوباره از همان درخواست | بله |
-| <span dir="ltr">`engine-log`</span> | برگرداندن خط‌های اخیرِ نرم‌افزار اتصال، از پیش پاک‌سازی‌شده | نه |
-| <span dir="ltr">`cut`</span> | قطع ترافیکِ عبوریِ دستگاه‌ها و روشن ماندن باقی چیزها | بله |
-| <span dir="ltr">`restore`</span> | برگرداندن ترافیک عبوریِ دستگاه‌ها | بله |
+| `detect` | رابط ها، محدودیت های رادیو و زیرشبکه انتخابی را گزارش کنید | نه |
+| `status` | فاز موتور، هات اسپات و قطع شدن ترافیک را گزارش دهید | نه |
+| `start` | تونل و هات اسپات را بالا بیاورید | بله |
+| `stop` | آنها را پایین بیاورید و ژورنال پارگی را دوباره پخش کنید | بله |
+| `recover` | توقف کنید، ژورنال را دوباره پخش کنید، سپس دوباره از همان درخواست شروع کنید | بله |
+| `engine-log` | خطوط اخیر موتور را که قبلاً ویرایش شده است برگردانید | نه |
+| `cut` | ترافیک ارسال‌شده مشتری را رها کنید و بقیه موارد را در حال اجرا بگذارید | بله |
+| `restore` | ترافیک ارسال شده مشتری را برگردانید | بله |
 
-یک درخواست، یک پاسخ، یک اتصال. هر پیام یک طولِ 4 بایتیِ big-endian است و بعد
-همان تعداد بایت JSON. طول، پیش از آنکه چیزی تخصیص یا تجزیه شود، در برابر
-<span dir="ltr">`maxFrameBytes`</span> بررسی می‌شود، پس پیامی که بیش از اندازه بزرگ باشد فقط چهار بایت
-و یک ردکردن خرج برمی‌دارد. فیلدهای ناشناختهٔ JSON نادیده گرفته نمی‌شوند، بلکه رد
-می‌شوند. <span dir="ltr">`protocolVersion`</span> در هر درخواست بررسی می‌شود. پس پنلی از یک انتشار که
-با سرویس ممتازِ انتشاری دیگر حرف بزند، یک ردکردنِ نام‌دار می‌گیرد، نه فیلدی که
-بی‌سروصدا به مقدار صفرش رمزگشایی شده باشد.
+یک درخواست، یک پاسخ، یک اتصال. یک پیام یک 4 بایتی بزرگ است
+طول و به دنبال آن تعداد زیادی بایت JSON. طول در برابر بررسی می شود
+`maxFrameBytes` قبل از تخصیص یا تجزیه هر چیزی، بنابراین یک پیام بزرگ
+هزینه چهار بایت و یک رد. فیلدهای JSON ناشناخته رد می شوند
+نادیده گرفته شده است. `protocolVersion` در هر درخواست بررسی می شود. بنابراین یک پانل از یک
+رهایی از صحبت کردن با یک سرویس ممتاز از طرف دیگر، یک امتناع نامی دریافت می کند،
+به جای یک فیلد که در سکوت به عنوان مقدار صفر آن رمزگشایی می شود.
 
-در مسیرِ شکست هیچ چیز جز یک واژه برنمی‌گردد: یک <span dir="ltr">`panel.Fault`</span> از یک مجموعهٔ
-بسته، یا یک <span dir="ltr">`privsvc.Refusal`</span> از مجموعهٔ بستهٔ دوم. متنِ خطای خودِ نرم‌افزار
-اتصال کلیدِ کاربر را در خودش دارد، پس در سمت ممتاز ثبت و بعد دور ریخته می‌شود.
-در پاسخ هیچ فیلدی نیست که بتواند در آن سفر کند.
+هیچ چیز در مسیر شکست به عقب بر نمی گردد به جز یک کلمه: `panel.Fault` از
+یک مجموعه بسته، یا یک `privsvc.Refusal` از مجموعه بسته دوم. مال موتوره
+متن خطا مطالب کلیدی کاربر را جاسازی می کند، بنابراین در ممتاز وارد می شود
+طرف و افتاد. هیچ فیلدی در مورد پاسخی که می تواند در آن سفر کند وجود ندارد.
 
-### هر بسته مالکِ چیست
-
-<div dir="ltr" align="left">
+<a id="who-owns-which-package"></a>
+### چه کسی صاحب کدام بسته است
 
 ```mermaid
 flowchart TB
-    LINK["internal/link<br/>لینک اشتراک‌گذاری می‌آید، یک outbound بیرون می‌رود.<br/>در هیچ فیلد صادرشده‌ای کلیدی حمل نمی‌کند"]
-    XCFG["internal/xcfg<br/>هر چه دورِ outbound است:<br/>ورودی TUN، SOCKS، DNS محلی، مسیریابی"]
-    ENGINE["internal/engine<br/>xray-core را شروع و متوقف می‌کند.<br/>هر خط را در ورود پاک‌سازی می‌کند"]
-    NETCFG["internal/netcfg<br/>دستگاه را نقشه می‌کشد، مجموعه‌قواعد را می‌سازد،<br/>وارونهٔ هر تغییر را در دفترچه می‌نویسد"]
-    HOTSPOT["internal/hotspot<br/>hostapd و dnsmasq را می‌سازد و سرپرستی می‌کند.<br/>هیچ رابطی را تشخیص نمی‌دهد، از رادیو چیزی نمی‌پرسد"]
-    STATE["internal/state<br/>state.json، اتمی، 0600"]
-    PANEL["internal/panel<br/>رابط وب و واژگانِ خطا"]
-    PRIVSVC["internal/privsvc<br/>ترتیبِ گام‌ها، و بازخوانی‌ها"]
+    LINK["internal/link<br/>share link in, one outbound out.<br/>Carries no credential in an exported field"]
+    XCFG["internal/xcfg<br/>everything around the outbound:<br/>TUN inbound, SOCKS, local DNS, routing"]
+    ENGINE["internal/engine<br/>starts and stops xray-core.<br/>Redacts every line on the way in"]
+    NETCFG["internal/netcfg<br/>plans the machine, generates the ruleset,<br/>journals the inverse of every change"]
+    HOTSPOT["internal/hotspot<br/>renders and supervises hostapd and dnsmasq.<br/>Detects no interface, queries no radio"]
+    STATE["internal/state<br/>state.json, atomically, 0600"]
+    PANEL["internal/panel<br/>the web interface and the fault vocabulary"]
+    PRIVSVC["internal/privsvc<br/>the order of the steps, and the readbacks"]
 
     PANEL --> LINK
     PANEL --> STATE
@@ -133,252 +126,230 @@ flowchart TB
     XCFG --> ENGINE
 ```
 
-</div>
+`internal/privsvc` `StartRequest.ConfigJSON` را با `internal/link` دوباره تجزیه می کند
+به جای اعتماد به پنل که این کار را انجام داده است. اینترنت رو هم چک میکنه
+رابط در برابر مسیر پیش فرض خود این دستگاه، رابط نقطه اتصال
+در برابر خروجی `iw list` خود این دستگاه و کانال در برابر آنچه که
+رادیو به عنوان قابل استفاده گزارش شد.
 
-<span dir="ltr">`internal/privsvc`</span> به‌جای اعتماد به اینکه پنل این کار را کرده،
-<span dir="ltr">`StartRequest.ConfigJSON`</span> را دوباره با <span dir="ltr">`internal/link`</span> تجزیه می‌کند. همچنین رابط
-اینترنت را در برابر مسیرِ پیش‌فرضِ خودِ این دستگاه، رابط هات‌اسپات را در برابر
-خروجیِ <span dir="ltr">`iw list`</span> خودِ این دستگاه، و کانال را در برابر آنچه رادیو قابل‌استفاده
-اعلام کرده بررسی می‌کند.
+<a id="where-state-lives-and-who-writes-it"></a>
+### ایالت کجا زندگی می کند و چه کسی آن را می نویسد
 
-### وضعیت کجا می‌ماند، و چه کسی آن را می‌نویسد
-
-دو نویسنده، دو فایل، هیچ فایل مشترکی. هیچ‌کدام از دو فرایند فایلِ آن یکی را
-نمی‌نویسد، پس نه قفلی لازم است و نه به‌روزرسانیِ گم‌شده‌ای هست که باید از آن
-محافظت شود. [<span dir="ltr">`docs/LAYOUT.md`</span>](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md)، بخش «Who writes what»، این تصمیم و پیش‌نویسِ
-قبلی‌ای را که وارونه کرد ثبت کرده است.
-
-<div dir="ltr" align="left">
+دو نویسنده، دو فایل، بدون فایل مشترک. هیچ یک از فرآیندهای دیگر را نمی نویسد، بنابراین
+هیچ قفل و به روز رسانی گم شده ای برای محافظت وجود ندارد. [`docs/LAYOUT.md`](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md)، "چه کسی
+می نویسد چه»، تصمیم را ثبت می کند و پیش نویس قبلی آن را معکوس می کند.
 
 ```mermaid
 flowchart TB
-    subgraph panelowns["فقط caspian serve --panel می‌نویسد"]
-        SJ["/var/lib/caspian/state.json<br/>0600 caspian. کانفیگ پیست‌شده<br/>و رمز هات‌اسپات را نگه می‌دارد"]
+    subgraph panelowns["Written only by caspian serve --panel"]
+        SJ["/var/lib/caspian/state.json<br/>0600 caspian. Holds the pasted config<br/>and the hotspot passphrase"]
     end
 
-    subgraph privowns["فقط caspian serve --privileged می‌نویسد"]
-        JN["/var/lib/caspian/netcfg.journal<br/>0600 root. وارونهٔ هر تغییر،<br/>نوشته‌شده پیش از خودِ تغییر"]
-        HC["/run/caspian/hostapd.conf<br/>0600 root، tmpfs، در هر شروع بازنویسی می‌شود"]
-        DC["/run/caspian/dnsmasq.conf<br/>0600 root، tmpfs، در هر شروع بازنویسی می‌شود"]
+    subgraph privowns["Written only by caspian serve --privileged"]
+        JN["/var/lib/caspian/netcfg.journal<br/>0600 root. The inverse of every change,<br/>written before the change"]
+        HC["/run/caspian/hostapd.conf<br/>0600 root, tmpfs, rewritten every start"]
+        DC["/run/caspian/dnsmasq.conf<br/>0600 root, tmpfs, rewritten every start"]
     end
 
-    subgraph nofile["در حافظه نگه داشته می‌شود و در هیچ فایلی نوشته نمی‌شود"]
-        CUT["قطع ترافیک"]
-        EVT["فهرست رویدادهای پنل"]
-        RING["حلقهٔ گزارشِ نرم‌افزار اتصال"]
+    subgraph nofile["Held in memory and written to no file"]
+        CUT["the cut"]
+        EVT["the panel's event list"]
+        RING["the engine log ring"]
     end
 ```
 
-</div>
+طرف ممتاز اصلاً هیچ پرونده ایالتی را نمی خواند. هر چیزی که نیاز دارد وارد می شود
+درخواست شروع `TestPrivsvcReadsNoStateFile` منبع خود بسته را اسکن می کند
+و اگر یک مورد را بخواند، شکست می خورد، که نظر ارائه نمی کرد.
 
-سمت ممتاز اصلاً هیچ فایل وضعیتی نمی‌خواند. هر چه لازم دارد در درخواستِ شروع
-می‌آید. <span dir="ltr">`TestPrivsvcReadsNoStateFile`</span> کدِ خودِ آن بسته را پویش می‌کند و اگر روزی
-فایلی بخواند شکست می‌خورد. یک کامنت چنین چیزی فراهم نمی‌کرد.
+جدول کامل مسیرها، حالت‌ها و مالکان در [`docs/LAYOUT.md`](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md) است. پورت ها هستند
+در آنجا نیز ثابت شد: 53 برای DNS مشتری در هات اسپات، 5354 در Loopback برای
+شنونده DNS موتور، 8088 برای پنل، 10808 در Loopback برای
+تشخیص SOCKS ورودی.
 
-جدول کاملِ مسیرها، دسترسی‌ها و مالک‌ها در [<span dir="ltr">`docs/LAYOUT.md`</span>](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md) است. پورت‌ها هم
-همان‌جا تثبیت شده‌اند: 53 برای DNS دستگاه‌ها روی هات‌اسپات، 5354 روی loopback
-برای شنوندهٔ DNS نرم‌افزار اتصال، 8088 برای پنل، و 10808 روی loopback برای
-ورودیِ SOCKS برای عیب‌یابی و پروکسی موقت سیستم در macOS.
+<a id="how-data-flows"></a>
+## نحوه جریان داده ها
 
-## داده چگونه جریان می‌یابد
+<a id="a-pasted-share-link-becomes-a-running-tunnel"></a>
+### پیوند اشتراک گذاری چسبانده شده به یک تونل در حال اجرا تبدیل می شود
 
-### یک لینکِ پیست‌شده به تونلی در حال کار تبدیل می‌شود
-
-<span dir="ltr">`startNow`</span> در [<span dir="ltr">`internal/panel/handlers.go`</span>](https://github.com/Iman/caspian/blob/main/internal/panel/handlers.go) ترتیب را مستند می‌کند، و همین ترتیب
-است که سه شکستِ کانفیگ را از هم جدا می‌کند. تا وقتی حالت 1 و حالت 2 هر دو با
-موفقیت پشت سر گذاشته نشوند، به هیچ چیزِ روی دستگاه دست زده نمی‌شود.
-
-<div dir="ltr" align="left">
+`startNow` در [`internal/panel/handlers.go`](https://github.com/Iman/caspian/blob/main/internal/panel/handlers.go) سفارش را مستند می کند و سفارش
+چه چیزی سه شکست پیکربندی را از هم جدا می کند. هیچ چیز روی دستگاه لمس نمی شود
+تا حالت 1 و حالت 2 هر دو بگذرند.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    participant U as کسی که پای پنل است
+    participant U as The person at the panel
     participant PA as internal/panel
     participant LK as internal/link
     participant EN as internal/engine
-    participant PS as internal/privsvc، با root
+    participant PS as internal/privsvc, root
     participant NC as internal/netcfg
     participant HS as internal/hotspot
 
     U->>PA: POST /power, on=1
-    PA->>LK: link.Parse روی متنِ ذخیره‌شده
-    Note over LK: حالت 1. تجزیه نشد.<br/>کاربر باید متن را درست کند.
-    LK-->>PA: یک Link که در هیچ فیلد صادرشده‌ای کلیدی ندارد
+    PA->>LK: link.Parse of the stored text
+    Note over LK: State 1. It did not parse.<br/>The user has to fix the text.
+    LK-->>PA: a Link that holds no credential in any exported field
     PA->>LK: Link.XrayConfig
-    LK-->>PA: یک outbound با تگ proxy، بدون nullها
+    LK-->>PA: one outbound, tagged proxy, nulls removed
     PA->>EN: engine.Validate
-    Note over EN: حالت 2. خوانده شد، و همان‌طور که هست<br/>قابل استفاده نیست. هیچ سوکتی باز نمی‌شود.
-    PA->>PS: StartRequest روی priv.sock
-    PS->>PS: کفِ ساعت، تجزیهٔ دوباره، اعتبارسنجی در برابر همین دستگاه
-    PS->>NC: Detect، بعد PlanNetwork
-    PS->>PS: xcfg.Build، بعد دوباره engine.Validate
-    PS->>NC: اعمال PreEngineSteps. فایروال اول است.
+    Note over EN: State 2. Read, and unusable as written.<br/>No socket opens. Nothing is dialled.
+    PA->>PS: StartRequest over priv.sock
+    PS->>PS: clock floor, re-parse, validate against this machine
+    PS->>NC: Detect, then PlanNetwork
+    PS->>PS: xcfg.Build, then engine.Validate again
+    PS->>NC: Apply PreEngineSteps. The firewall is first.
     PS->>NC: AssertHotspotInterfaceReleased
-    PS->>EN: Engine.Start. دستگاهِ تونل اینجا پیدا می‌شود.
-    PS->>NC: اعمال PostEngineSteps. هر گام به تونل یا listener موتور نیاز دارد.
-    PS->>HS: Supervisor.Start، اول hostapd و بعد dnsmasq
+    PS->>EN: Engine.Start. The tunnel device appears here.
+    PS->>NC: Apply PostEngineSteps. Each needs the tunnel or engine listener.
+    PS->>HS: Supervisor.Start: hostapd, then dnsmasq
     PS->>NC: AssertHotspotIsAccessPoint
-    PS->>PS: آزمودنِ سرور
-    Note over PS: حالت 3. لینک سالم بود و سرور جواب نداد.<br/>بازگردانی‌ای در کار نیست: دستگاه کاملاً<br/>پیکربندی‌شده است و جلوی ترافیک را گرفته.
-    PS-->>PA: nil، یا یک panel.Fault
+    PS->>PS: probe the server
+    Note over PS: State 3. The link was fine and the<br/>server did not answer. No rollback:<br/>the box is fully configured and blocking.
+    PS-->>PA: nil, or one panel.Fault
 ```
 
-</div>
+سه جزئیات در آن دنباله تحمل بار هستند.
 
-سه نکته در آن توالی تعیین‌کننده‌اند.
+سند موتور دو بار به دلایل مختلف تنظیم می شود. `internal/link`
+خروجی را تولید می کند و هیچ چیز دیگری. `internal/xcfg` همه چیز را تولید می کند
+اطراف آن: ورودی TUN که ترافیک مشتری به آن می رسد، حلقه بک SOCKS
+ورودی توسط عیب‌یابی و پروکسی موقت سیستم macOS، DNS محلی استفاده می‌شود
+شنونده، خط مشی حل کننده و قوانین مسیریابی.
+هیچ کدام از آن چیزی که تماس گیرنده فرستاده گرفته نمی شود.
 
-سندِ نرم‌افزار اتصال دو بار و به دو دلیل ساخته می‌شود. <span dir="ltr">`internal/link`</span> فقط
-outbound را می‌سازد و نه چیز دیگری. <span dir="ltr">`internal/xcfg`</span> هر چه دور آن است را
-می‌سازد: ورودیِ TUN که ترافیک دستگاه‌ها از آن می‌آید، ورودیِ SOCKS روی loopback
-برای عیب‌یابی و پروکسی موقت سیستم در macOS، شنوندهٔ محلیِ DNS، سیاستِ resolver،
-و قواعد مسیریابی. هیچ‌کدام از این‌ها از چیزی
-که فراخواننده فرستاده گرفته نمی‌شود.
+شروعی که تا حدی با شکست مواجه شود، کاملاً لغو می شود. مجله قبلا
+معکوس هر تغییری را نگه می دارد که قبل از رسیدن تغییر به دیسک نوشته شده است
+هسته شروعی که با شکست مواجه می شود، دستگاه را همانگونه که پیدا شده است، رها می کند.
 
-شروعی که در میانهٔ راه شکست بخورد، کاملاً برگردانده می‌شود. دفترچه از پیش
-وارونهٔ هر تغییر را دارد، و پیش از آنکه تغییر به هسته برسد روی دیسک نوشته شده
-است. شروعی که شکست بخورد، دستگاه را همان‌طور که پیدایش کرده رها می‌کند.
+سروری که جواب نمی دهد یک جعبه نیمه کاربردی نیست. هر تغییری موفقیت آمیز بود،
+فایروال فعال است و ترافیک مشتری ارسال شده مسدود شده است زیرا
+تونل چیزی حمل نمی کند بنابراین عیب گزارش می شود و چیزی پاره نمی شود.
 
-سروری که جواب نمی‌دهد به معنی دستگاهی نیمه‌پیکربندی‌شده نیست. هر تغییری موفق
-بوده، فایروال برقرار است، و ترافیک عبوریِ دستگاه‌ها بسته است چون تونل چیزی حمل
-نمی‌کند. پس خطا گزارش می‌شود و هیچ چیز برچیده نمی‌شود.
-
-### مسیرِ شبکه‌ایِ یک بستهٔ دستگاه‌ها
-
-<div dir="ltr" align="left">
+<a id="the-network-path-of-a-client-packet"></a>
+### مسیر شبکه بسته مشتری
 
 ```mermaid
 flowchart TB
-    DEV["دستگاهِ وصل‌شده<br/>آدرس از dnsmasq"] --> IF["رابط هات‌اسپات"]
-    IF --> PRE["زنجیرهٔ nft با نام prerouting، از نوع nat<br/>DNS روی پورت 53 اینجا بازهدایت می‌شود"]
-    PRE --> ROUTE{"تصمیم مسیریابی<br/>ip rule از زیرشبکهٔ هات‌اسپات<br/>lookup table 8410"}
-    ROUTE -->|"مسیر تونل حاضر است"| TOTUN["oif دستگاهِ تونل است<br/>مسیر پیش‌فرض در table 8410"]
-    ROUTE -->|"مسیر تونل برداشته شده"| TOUP["oif رابط اینترنت است"]
-    TOTUN --> FW1["زنجیرهٔ nft با نام forward، سیاست drop"]
-    TOUP --> FW2["زنجیرهٔ nft با نام forward، سیاست drop"]
-    FW1 -->|"iifname hotspot oifname tunnel<br/>ip saddr زیرشبکهٔ هات‌اسپات، accept"| POST["زنجیرهٔ nft با نام postrouting<br/>عمداً خالی، بدون masquerade"]
-    FW2 -->|"iifname hotspot oifname uplink، drop<br/>قاعدهٔ مسدودکنندهٔ نشت، اولین قاعدهٔ زنجیره"| DROP["دور ریخته شد"]
-    POST --> TUN["دستگاهِ تونل<br/>یک netstack در فضای کاربر، داخل نرم‌افزار اتصال"]
-    TUN --> OB["outbound با تگ proxy"]
-    OB --> UP["رابط اینترنت<br/>یک مسیرِ میزبانِ سنجاق‌شده به سرور"]
-    UP --> SRV["سرور شما"]
+    DEV["A joined device<br/>address from dnsmasq"] --> IF["The hotspot interface"]
+    IF --> PRE["nft chain prerouting, type nat<br/>DNS on port 53 is redirected here"]
+    PRE --> ROUTE{"Routing decision<br/>ip rule from the hotspot subnet<br/>lookup table 8410"}
+    ROUTE -->|"tunnel route present"| TOTUN["oif is the tunnel device<br/>default route in table 8410"]
+    ROUTE -->|"tunnel route withdrawn"| TOUP["oif is the uplink"]
+    TOTUN --> FW1["nft chain forward, policy drop"]
+    TOUP --> FW2["nft chain forward, policy drop"]
+    FW1 -->|"iifname hotspot oifname tunnel<br/>ip saddr the hotspot subnet, accept"| POST["nft chain postrouting<br/>deliberately empty, no masquerade"]
+    FW2 -->|"iifname hotspot oifname uplink, drop<br/>the leak block, first rule in the chain"| DROP["dropped"]
+    POST --> TUN["The tunnel device<br/>a userspace netstack in the engine"]
+    TUN --> OB["the outbound tagged proxy"]
+    OB --> UP["The uplink<br/>a pinned host route to the server"]
+    UP --> SRV["Your server"]
 ```
 
-</div>
+بلوک نشت فقط هات اسپات و لینک بالا را نام می برد. نمی تواند کار را متوقف کند
+هنگامی که تونل می رود، زیرا در آن اشاره ای به تونل نمی شود. هر قانون که
+اجازه می دهد که ترافیک مشتری تونل را نامگذاری کند، بنابراین این قوانین مطابقت ندارند و
+سیاست همه چیز را رها می کند.
 
-قاعدهٔ مسدودکنندهٔ نشت فقط نامِ هات‌اسپات و رابط اینترنت را می‌برد. وقتی تونل
-برود نمی‌تواند از کار بیفتد، چون اصلاً نامی از تونل نبرده است. هر قاعده‌ای که به
-ترافیک دستگاه‌ها اجازه می‌دهد نامِ تونل را می‌برد، پس آن قواعد دیگر منطبق
-نمی‌شوند و سیاستِ زنجیره همه چیز را drop می‌کند.
+هر رابط با نام و هرگز با فهرست مطابقت داده می شود. یک شاخص زمانی حل می شود که
+مجموعه قوانین بارگذاری می شود، بنابراین مجموعه قوانینی که تونل را بر اساس شاخص نامگذاری می کند، نمی تواند در حالی که بارگذاری شود
+تونل خراب است، دقیقاً زمانی که باید راه اندازی شود.
 
-هر رابط با نام تطبیق داده می‌شود و هرگز با شماره. شماره هنگام بارگذاریِ
-مجموعه‌قواعد حل می‌شود، پس مجموعه‌قواعدی که تونل را با شماره نام ببرد وقتی تونل
-پایین است بارگذاری نمی‌شود، و دقیقاً همان وقت است که باید برقرار باشد.
+زنجیره postrouting عمدا خالی است. بالماسکه به سمت بالا لینک است
+خط واحدی که دستگاه را بی سر و صدا به یک روتر معمولی تبدیل می کند.
 
-زنجیرهٔ postrouting عمداً خالی است. یک masquerade به سمتِ رابط اینترنت همان یک
-خطی است که این دستگاه را بی‌سروصدا به یک روتر معمولی تبدیل می‌کند.
-
-### ناپدید شدن تونل با آن مسیر چه می‌کند
-
-<div dir="ltr" align="left">
+<a id="what-the-tunnel-disappearing-does-to-that-path"></a>
+### ناپدید شدن تونل با آن مسیر چه می کند
 
 ```mermaid
 flowchart TB
-    GONE["تونل دیگر ترافیک حمل نمی‌کند"] --> Q{"آیا دستگاهِ تونل هنوز وجود دارد؟"}
-    Q -->|"دستگاه حذف شده"| WD["هسته هر مسیری را که از آن می‌گذشت برمی‌دارد"]
-    WD --> FB["ترافیک دستگاه‌ها به جدول اصلی برمی‌گردد<br/>و به سمت رابط اینترنت می‌رود"]
-    FB --> LB["قاعدهٔ مسدودکنندهٔ نشت منطبق می‌شود:<br/>iifname hotspot oifname uplink، drop"]
-    Q -->|"دستگاه هست ولی چیزی به آن سرویس نمی‌دهد"| ENTER["ترافیک وارد دستگاهِ تونل می‌شود"]
-    ENTER --> NOWHERE["هیچ چیز آن را نمی‌خواند. جلوتر نمی‌رود."]
-    LB --> SAFE["هیچ ترافیکی از دستگاه‌ها بیرون نمی‌رود"]
+    GONE["The tunnel stops carrying traffic"] --> Q{"Does the device still exist?"}
+    Q -->|"device removed"| WD["The kernel withdraws every route through it"]
+    WD --> FB["Client traffic falls back to the main table<br/>and heads for the uplink"]
+    FB --> LB["The leak block matches: iifname hotspot oifname uplink, drop"]
+    Q -->|"device persists with nothing servicing it"| ENTER["Traffic enters the tunnel device"]
+    ENTER --> NOWHERE["Nothing reads it. It goes no further."]
+    LB --> SAFE["No client traffic leaves"]
     NOWHERE --> SAFE
 ```
 
-</div>
+کدام شاخه اتفاق می افتد تسویه حساب نمی شود. [`internal/netcfg/testdata/PROVENANCE.md`](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md)
+مشاهده ای از هدف را در 30/08/2026 ثبت می کند: `xray0` در
+لیست دستگاه های NetworkManager با خاموش بودن سرویس، به عنوان
+`connected (externally)`. هیچ چیز در اینجا مشخص نکرد که چرا، و موتور نیست
+کد این پروژه هیچ یک از شاخه ها نشت نمی کند و هیچ کدام به دانستن کدام یک بستگی ندارد
+یکی اتفاق می افتد به همین دلیل است که بلوک فقط برای نامگذاری هات اسپات و the نوشته شده است
+آپلینک
 
-اینکه کدام شاخه رخ می‌دهد روشن نشده است.
-[<span dir="ltr">`internal/netcfg/testdata/PROVENANCE.md`</span>](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) مشاهده‌ای از دستگاهِ هدف در تاریخ
-2026-08-30 را ثبت کرده: در حالی که سرویس خاموش بود، <span dir="ltr">`xray0`</span> در فهرست دستگاه‌های
-NetworkManager با وضعیت <span dir="ltr">`connected (externally)`</span> حاضر بود. هیچ چیز اینجا دلیلش
-را روشن نکرد، و نرم‌افزار اتصال کدِ این پروژه نیست. هیچ‌کدام از دو شاخه نشت
-نمی‌دهد، و هیچ‌کدام به دانستنِ اینکه کدام رخ می‌دهد وابسته نیست. به همین دلیل آن
-قاعده طوری نوشته شد که فقط نامِ هات‌اسپات و رابط اینترنت را ببرد.
+<a id="the-dns-path-which-is-not-the-traffic-path"></a>
+### مسیر DNS که مسیر ترافیک نیست
 
-### مسیرِ DNS، که مسیرِ ترافیک نیست
-
-این همان جایی است که مردم اشتباه می‌کنند. پرسشِ DNS یک دستگاه فقط اجازه داده
-نمی‌شود. گرفته می‌شود.
-
-<div dir="ltr" align="left">
+این قسمتی است که مردم اشتباه می کنند. سؤال DNS یک مشتری صرفاً نیست
+مجاز است. گرفته می شود.
 
 ```mermaid
 flowchart TB
-    ASK["دستگاهِ وصل‌شده از هر resolver ای که به آن گفته‌اند،<br/>یا یکی که در خودش کدگذاری شده، روی پورت 53 می‌پرسد"]
-    ASK --> RD["nft prerouting روی هات‌اسپات:<br/>udp dport 53 و tcp dport 53 به :53 بازهدایت می‌شوند<br/>آدرس مقصد به همین دستگاه بازنویسی می‌شود"]
-    RD --> DM["dnsmasq، بایندشده به رابط هات‌اسپات<br/>/run/caspian/dnsmasq.conf"]
-    DM -->|"تنها upstream مجازش یک آدرس loopback است"| LD["شنوندهٔ DNS نرم‌افزار اتصال<br/>127.0.0.1:5354، تگِ ورودی local-dns-in"]
-    LD --> R1["قاعدهٔ ruleTagLocalDNS<br/>inboundTag local-dns-in، outbound dns-out"]
-    R1 --> APP["اپلیکیشنِ DNS نرم‌افزار اتصال<br/>resolverها از internal/xcfg/resolvers.go"]
-    APP --> R2["قاعدهٔ ruleTagResolvers<br/>inboundTag resolver-in، outbound proxy.<br/>بالای قاعدهٔ آدرس‌های خصوصی"]
-    R2 --> OB["outbound با تگ proxy"]
-    OB --> EXIT["زنجیرهٔ resolver، از سر دیگرِ تونل"]
+    ASK["A joined device asks whatever resolver it was told to use,<br/>or one hardcoded into it, on port 53"]
+    ASK --> RD["nft prerouting on the hotspot:<br/>udp dport 53 and tcp dport 53 redirect to :53<br/>The destination address is rewritten to this box"]
+    RD --> DM["dnsmasq, bound to the hotspot interface<br/>/run/caspian/dnsmasq.conf"]
+    DM -->|"its only permitted upstream is a loopback address"| LD["the engine's DNS listener<br/>127.0.0.1:5354, inbound tag local-dns-in"]
+    LD --> R1["rule ruleTagLocalDNS<br/>inboundTag local-dns-in, outbound dns-out"]
+    R1 --> APP["the engine's DNS app<br/>resolvers from internal/xcfg/resolvers.go"]
+    APP --> R2["rule ruleTagResolvers<br/>inboundTag resolver-in, outbound proxy.<br/>Above the private-address rule"]
+    R2 --> OB["the outbound tagged proxy"]
+    OB --> EXIT["the resolver chain, reached from the far end of the tunnel"]
 ```
 
-</div>
+چهار خاصیت از آن زنجیره، هر کدام با چیزی که آن را نگه می دارد.
 
-چهار ویژگیِ آن زنجیره، و برای هر کدام چیزی که نگهش می‌دارد.
+تغییر مسیر، مقصد را بازنویسی می‌کند، بنابراین دستگاهی با یک حل‌کننده کدگذاری شده است
+در اینجا به جای اینکه اجازه داده شود به کسی که به آن گفته شده است برسد، پاسخ داده می شود
+استفاده کنید. سناریو: "یک مشتری نمی تواند به حل کننده ای که خودش انتخاب کرده است برسد".
 
-بازهدایت، مقصد را بازنویسی می‌کند، پس دستگاهی که resolver در خودش کدگذاری شده،
-همین‌جا جواب می‌گیرد و اجازه ندارد بیرون برود تا به آنکه به آن گفته‌اند برسد.
-سناریو: "a client cannot reach a resolver of its own choosing".
+پیشنهاد DHCP یک بار این کادر را نامگذاری می کند و هیچ حل کننده دیگری وجود ندارد. که ارزش خودش را دارد
+این سناریو به این دلیل است که اشتباه گرفتن آن نامرئی است: تغییر مسیر باعث بازنویسی مجدد می شود
+به هر حال بسته ها، بنابراین هیچ چیز روی سیم اشتباه به نظر نمی رسد. سناریو: "جعبه
+خود را به عنوان حل کننده عرضه می کند و هرگز از دیگری نام نمی برد».
 
-پیشنهادِ DHCP فقط همین دستگاه را نام می‌برد و هیچ resolver دیگری را. این سناریوی
-خودش را می‌ارزد، چون غلط بودنش نامرئی است: بازهدایت به‌هرحال بسته‌ها را بازنویسی
-می‌کند، پس هیچ چیز روی سیم غلط به نظر نمی‌رسد. سناریو: "the box offers itself as
-the resolver and never names another".
+`internal/hotspot` هرگونه dnsmasq بالادستی را که آدرس حلقه بک نباشد، رد می کند.
+یک هدف غیرحلقه‌ای، درخواستی است که جعبه را خارج از تونل می‌گذارد
+هر نامی که هر مشتری می خواهد شنونده موتور اونجا جواب میده
+و `TestLocalDNSDefaultMatchesTheHotspotUpstream` در صورت جابجایی دو پورت از کار می افتد.
+[`docs/LAYOUT.md`](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md) جفتی که بی سر و صدا می شکند را فراخوانی می کند: اگر این دو
+رانش، هر دستگاه متصل شده در حالی که هات اسپات و تونل هر دو حل نمی شوند
+سالم به نظر برسند
 
-<span dir="ltr">`internal/hotspot`</span> هر upstream ای برای dnsmasq که آدرس loopback نباشد را رد
-می‌کند. مقصدی که loopback نباشد یعنی پرسشی که بیرون از تونل از دستگاه خارج
-می‌شود، آن هم برای هر نامی که هر دستگاهی می‌پرسد. آنچه آنجا جواب می‌دهد شنوندهٔ
-نرم‌افزار اتصال است، و <span dir="ltr">`TestLocalDNSDefaultMatchesTheHotspotUpstream`</span> اگر آن دو
-پورت از هم فاصله بگیرند شکست می‌خورد. [<span dir="ltr">`docs/LAYOUT.md`</span>](https://github.com/Iman/caspian/blob/main/docs/LAYOUT.md) همین جفت را جفتی می‌نامد
-که بی‌سروصدا خراب می‌شود: اگر آن دو از هم فاصله بگیرند، هر دستگاهِ وصل‌شده از
-ترجمهٔ نام می‌افتد، در حالی که هات‌اسپات و تونل هر دو سالم به نظر می‌رسند.
+قاعده‌ای که درخواست‌های خود حل‌کننده را به داخل تونل ارسال می‌کند، بالاتر از آن قرار دارد
+قانونی که آدرس های خصوصی را مستقیما ارسال می کند. بنابراین یک حل کننده در یک آدرس خصوصی است
+هنوز از طریق تونل به جای شبکه محلی رسیده است.
+`TestLocalDNSQueriesCannotFallOutToTheUplink` و `TestPrivateRangesRouteDirect`
+دو نیمه را نگه دارید
 
-قاعده‌ای که پرسش‌های خودِ resolver را به داخل تونل می‌فرستد، بالای قاعده‌ای است
-که آدرس‌های خصوصی را مستقیم می‌فرستد. پس به resolver ای که روی آدرس خصوصی است هم
-از راه تونل می‌رسند، نه از راه شبکهٔ محلی.
-<span dir="ltr">`TestLocalDNSQueriesCannotFallOutToTheUplink`</span> و <span dir="ltr">`TestPrivateRangesRouteDirect`</span>
-دو نیمهٔ آن را نگه می‌دارند.
+خود زنجیره حل‌کننده سه اپراتور در سه حوزه قضایی است: Quad9
+سرویس فیلتر شده، نوع Cloudflare FAMILY و CleanBrowsing Security.
+[`internal/xcfg/resolvers.go`](https://github.com/Iman/caspian/blob/main/internal/xcfg/resolvers.go) چرایی هر کدام و تقریباً یکسان را ثبت می کند
+آدرس همان اپراتور عمدا نیست. هیچ Google Resolver ظاهر نمی شود
+در هر پیش‌فرض، و `TestNoGoogleAnywhereInGeneratedConfigs` هر کدام را اسکن می‌کند
+سند تولید شده برای یک
 
-خودِ زنجیرهٔ resolver سه اپراتور در سه حوزهٔ قضایی است: سرویس فیلترشدهٔ Quad9،
-گونهٔ FAMILY از Cloudflare، و CleanBrowsing Security.
-[<span dir="ltr">`internal/xcfg/resolvers.go`</span>](https://github.com/Iman/caspian/blob/main/internal/xcfg/resolvers.go) ثبت کرده هر کدام چرا انتخاب شده، و عمداً کدام آدرسِ
-تقریباً یکسانِ همان اپراتور نیست. هیچ resolver گوگلی در هیچ پیش‌فرضی نمی‌آید، و
-<span dir="ltr">`TestNoGoogleAnywhereInGeneratedConfigs`</span> هر سندِ تولیدشده را برای یافتن یکی از
-آن‌ها پویش می‌کند.
-
-به پورت‌های دیگر رسیدگی می‌شود، و به یکی از آن‌ها نمی‌شود رسیدگی کرد:
-
-<div dir="ltr" align="left">
+سایر پورت ها مدیریت می شوند و یکی از آنها نمی تواند:
 
 ```mermaid
 flowchart LR
-    DOT["DNS روی TLS<br/>tcp 853"] --> REJ["رد با tcp reset،<br/>تا دستگاه به پورت 53 عقب بنشیند"]
-    DOQ["DNS روی QUIC<br/>udp 853"] --> DRP["drop"]
-    DOH["DNS روی HTTPS<br/>پورت 443"] --> CAR["مثل هر HTTPS دیگری از تونل حمل می‌شود.<br/>نشت نیست. برای هیچ چیزِ اینجا دیدنی نیست."]
+    DOT["DNS over TLS<br/>tcp 853"] --> REJ["reject with tcp reset,<br/>so the device falls back to port 53"]
+    DOQ["DNS over QUIC<br/>udp 853"] --> DRP["drop"]
+    DOH["DNS over HTTPS<br/>port 443"] --> CAR["carried through the tunnel like any HTTPS.<br/>Not a leak. Not visible to anything here."]
 ```
 
-</div>
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 07a2e0584db74a162eb7938428d733054b00788748889213f96e0e0679d0f650 -->

@@ -1,255 +1,319 @@
-# 协议与传输
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh)
+[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
+<a id="protocols-and-transports"></a>
+# 协议和传输
 
-> 本指南从现有 README 迁移而来。测量结果保留原有日期；此次文档迁移不代表重新运行了测试。
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
+
+> 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
-## 您可以粘贴什么，什么会被拒绝
+<a id="what-you-can-paste-and-what-it-will-refuse"></a>
+## 你可以粘贴什么，它会拒绝什么
 
-配置由您自己带来。下面这些是盒子接受的内容，取自真正负责接受的那段代码，而不是一份
-愿望清单。每一行都是对着 `internal/link` 和固定版本的引擎实测出来的。
+你把配置带来。这是盒子接受的内容，取自代码
+接受而不是从愿望清单中选择。每一行都根据
+`internal/link` 和固定发动机。
 
-| | 可以用 | 会被拒绝 |
+|  | 它有效 | 被拒绝了 |
 |---|---|---|
-| 分享链接 | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://`（第 1 版） |
-| 粘贴的文档 | Clash 和 Clash.Meta 的 YAML、原始的 xray JSON、每行一条的链接列表、base64 订阅数据块 | 订阅 URL、被 base64 包起来的 Clash 文档、JSON 数组、首行是注释的文本 |
-| 传输方式 | `raw`（也写作 `tcp`）、`ws`、`grpc`、`httpupgrade`、`xhttp`（也写作 `splithttp`）、`kcp` 和 `mkcp` | `h2`、`h3`、`http`、`quic`、`gun` |
-| 安全层 | `none`、`tls`、`reality` | `xtls`（旧的那种）、`allowInsecure` |
-| VLESS 的 flow | `xtls-rprx-vision`、`xtls-rprx-vision-udp443`，或者不填 | 其他任何取值 |
+| 分享链接 | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://`（版本 1） |
+| 粘贴文档 | Clash 和 Clash.Meta YAML、原始 xray JSON、每行一个链接列表、base64 订阅 blob | 订阅 URL、base64 包装的 Clash 文档、JSON 数组、第一行是注释的文本 |
+| 交通 | `raw`（也写为 `tcp`）、`ws`、`grpc`、`httpupgrade`、`xhttp`（也写为 `splithttp`）、`kcp` 和`mkcp` | `h2`、`h3`、`http`、`quic`、`gun` |
+| 安全 | `none`、`tls`、`reality` | `xtls`（传统类型）、`allowInsecure` |
+| VLESS流量 | `xtls-rprx-vision`、`xtls-rprx-vision-udp443` 或无 | 所有其他值 |
 
-`h2` 和 `h3` 在那个「会被拒绝」的列里是**传输的名字**。HTTP/2 和 HTTP/3 本身是被承载
-的：`type=xhttp` 配上 `security=tls`，由 TLS 的 ALPN 决定是哪一个。见
-[HTTP/2 与 HTTP/3 是被承载的，只是换了个名字](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-与-http3-是被承载的只是换了个名字)。
+该拒绝列中的 `h2` 和 `h3` 是传输名称。 HTTP/2 和 HTTP/3
+本身携带：`type=xhttp` 和 `security=tls`，以及 TLS ALPN
+决定哪个。参见【HTTP/2和HTTP/3都承载了，在不同的下
+名称](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name)。
 
-有六件事经常让人意外，所以写在正文里而不是脚注里：
+有六件事让人们感到惊讶，所以它们在这里而不是在脚注中：
 
-只有第一条链接会被使用。粘贴四十个服务器，配置好的是一个；面板会告诉您它找到了
-几条。`ss://` 和 `socks://` 需要用户信息的 base64 形式，纯 `method:password@host`
-的写法会被拒绝。REALITY 只在 `raw`、`xhttp` 和 `grpc` 上可用，所以把它和 WebSocket
-搭在一起，会在粘贴的那一刻就被引擎拒绝，而不是等到后面才失败。这里的 `security=`
-必须小写，尽管引擎本身并不在意，大写的 `TLS` 会被报告成 `none`。`ss://` 链接上的
-`plugin=` 参数会被忽略，而且不会告诉您。订阅 URL 会被拒绝，因为面板不从互联网上取
-任何东西，这是刻意的性质，不是缺失的功能。
+仅使用第一个链接。粘贴四十台服务器并配置一台；的
+面板会告诉您找到了多少个。 `ss://`和`socks://`需要base64形式
+他们的用户信息，简单的 `method:password@host` 拼写是
+拒绝了。 REALITY 仅适用于 `raw`、`xhttp` 和 `grpc`，因此将其与
+WebSocket 在粘贴时被引擎拒绝，而不是稍后失败。
+`security=` 在这里必须是小写，即使引擎本身不是
+注意，大写的 `TLS` 将返回给您 `none`。 `plugin=`
+`ss://` 链路上的参数将被忽略，无需说明。以及订阅
+粘贴到配置框中的 URL 被拒绝，因为该框采用配置：
+地址放在它旁边的订阅字段中，Caspian 只获取它
+当你按下按钮时，穿过隧道。
 
-完整的情况，包括其中哪些真正搬运过字节、哪些在硬件上端到端证明过并抓到了出口地址，
-在[协议与传输](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#协议与传输)一节。这是三种不同的主张，本项目不允许它们混为一谈。
+完整的图片，包括其中哪些携带了真实字节以及哪些
+已被证明在硬件上端到端地捕获了退出地址，正在
+[协议和传输](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)。这是三个不同的
+声明和这个项目不会让它们变得模糊。
 
-## 协议与传输
+<a id="protocols-and-transports-1"></a>
+## 协议和传输
 
-一条分享链接携带三样彼此独立的东西，把它们分开看会有帮助：代理协议、承载它的传输，
-以及包在那个传输外面的加密层。一条走 WebSocket 加 TLS 的 VLESS 链接，和一条走纯 TCP
-加 REALITY 的 VLESS 链接，是同一个协议用两条不同的路线到达同一类服务器。它们失败的
-方式不一样。
+共享链接包含三个独立的内容，它有助于将它们分开：
+代理协议、承载它的传输以及封装的加密层
+围绕该交通工具。使用 TLS 的 WebSocket 上的 VLESS 链接和 VLESS 链接
+通过普通 TCP 与 REALITY 是相同的协议，达到相同的类型
+服务器通过两条不同的路线。他们以不同的方式失败。
 
-代理协议就是上面列出的那七种。VLESS 是本文大多数例子用的那个，因为 REALITY 就是为它
-造的。这台设备里没有任何东西是专门为它写的。解析器产出一份描述，`internal/xcfg` 围绕
-它组装出一份引擎配置文档，盒子的其余部分并不知道自己在载的是哪个协议。
+代理协议是上面列出的七种方案。 VLESS 是最常见的一种
+本文档的示例使用它，因为 REALITY 就是为此而构建的。什么都没有
+在设备中是特定于它的。解析器产生一个描述，
+`internal/xcfg` 围绕它编写了一个引擎文档，以及盒子的其余部分
+不知道它承载的是哪个协议。
 
-传输方式来自 xray-core，在内置的解析器里点了名：
+传输来自 xray-core，并在供应商的解析器中命名：
 
-- `tcp`，也写作 `raw`
-- `ws`，即 WebSocket
+- `tcp`，也写作`raw`
+- `ws`，用于 WebSocket
 - `httpupgrade`
-- `xhttp`，也就是从前叫 SplitHTTP 的那个协议。两种拼法都能解析
+- `xhttp`，该协议以前称为 SplitHTTP。两种拼写都解析
 - `grpc`
-- `kcp` 和 `mkcp`，即 mKCP
+- `kcp` 和 `mkcp`，用于 mKCP
 
-`h2`、`http`、`h3` 和 `quic` 不在那份名单里。本项目固定的这个引擎版本把它们删掉了，
-所以一条要求其中之一的链接会被拒绝而不是被承载，`internal/link` 里的
-`TestRemovedTransportsAreRefusedWithASentence` 把这条拒绝钉住。
+`h2`、`http`、`h3` 和 `quic` 不在该列表中。此引脚的引擎版本
+删除了它们，因此请求链接的链接会被拒绝而不是进行，并且
+`internal/link` 中的 `TestRemovedTransportsAreRefusedWithASentence` 认为
+拒绝到位。
 
-这条拒绝读起来有多清楚，取决于是从哪条路进来的。一份 Clash 文档点名其中之一，会得到
-一句关于该传输的说明。同一个传输若出现在分享链接的 `type=` 参数里，得到的却是那句
-笼统的「nothing in the pasted text was a proxy link this box understands」，它没说错，
-但没什么用。`TestRemovedTransportInAURIIsReportedLessWell` 把这个差别钉住，好让它是一个
-已知的缺口，而不是一个意外。
+拒绝读起来的好坏取决于进入的路线。一份命名为“拒绝”的 Clash 文档
+得到一个关于交通的句子。 `type=` 参数中的相同传输
+在共享链接上，通用的“粘贴文本中没有任何内容是代理”
+链接此框理解”，这是正确的但没有帮助。
+`TestRemovedTransportInAURIIsReportedLessWell` 引脚不同，所以它是
+已知的差距而不是惊喜。
 
-### HTTP/2 与 HTTP/3 是被承载的，只是换了个名字
+<a id="http2-and-http3-are-carried-under-a-different-name"></a>
+### HTTP/2 和 HTTP/3 以不同的名称进行承载
 
-`type=h2` 或 `type=quic` 被拒绝，并不意味着盒子说不了它们。意思是拼写换了地方。XHTTP 把这
-两者都取代了，而且它是从 TLS 的 ALPN 而不是从传输的名字来选择自己的 HTTP 版本的：
+被拒绝 `type=h2` 或 `type=quic` 并不意味着盒子不能说出它们。
+这意味着拼写发生了变化。 XHTTP 取代了两者，它选择它的 HTTP
+来自 TLS ALPN 而不是来自传输名称的版本：
 
-| 您想要什么 | 该怎么写 |
+| 你想要什么 | 写什么 |
 |---|---|
-| HTTP/3，也就是 QUIC | `type=xhttp`，加上 `security=tls`、`alpn=h3` 和 `mode=stream-one` |
-| HTTP/2 | `type=xhttp`，加上 `security=tls`，以及任何不正好是 `h3` 的 ALPN |
-| QUIC，不走 XHTTP | 一条 `hysteria2://` 链接，它底下就是 QUIC，并且需要 `alpn=h3` |
+| HTTP/3，即 QUIC | `type=xhttp` 与 `security=tls`、`alpn=h3` 和 `mode=stream-one` |
+| HTTP/2 | `type=xhttp` 与 `security=tls` 以及任何不完全是 `h3` 的 ALPN |
+| QUIC，无 XHTTP | `hysteria2://` 链接，底层是 QUIC，需要 `alpn=h3` |
 
-这些键会原封不动地到达引擎：`internal/xcfg` 把 outbound 当作不透明的 JSON 携带，从不解码
-它，所以 `alpn`、`mode`、`xmux` 以及 QUIC 调优的那一块，会和您粘贴时一模一样地送达。
+钥匙完好无损地到达发动机：`internal/xcfg` 将出站作为
+不透明的 JSON 并且从不对其进行解码，因此 `alpn`、`mode`、`xmux` 和 QUIC 调整
+块到达时与粘贴时完全相同。
 
-有四个细节决定您拿到的是 h3，还是不声不响地拿到了别的东西：
+四个细节决定你是得到h3还是默默得到别的东西：
 
-`alpn` 必须正好是一个值，而且那个值必须是 `h3`。写成 `alpn=h3,h2` 会让您拿到 HTTP/2，而且
-没有任何警告，因为引擎把任何其他长度的列表都当成是在要第 2 版。只要 REALITY 在场，它就会
-强制 HTTP/2，所以 REALITY 和 h3 是互斥的，把它们搭在一起得到的是 h2 而不是一个错误。`mode`
-必须显式设置，因为默认值解析成 `packet-up`，而不是引擎点名作为 QUIC 替代品的 `stream-one`
-那种形态。还有，用于上传下载分离的 `downloadSettings`，和 `mode: stream-one` 一起使用会被
-拒绝；那种组合需要 `stream-up`。
+`alpn` 必须恰好是一个值，并且该值必须是 `h3`。写作
+`alpn=h3,h2` 为您提供 HTTP/2 且没有任何警告，因为引擎需要一个列表
+任何其他长度作为版本 2 的请求。REALITY 每当
+它存在，所以 REALITY 和 h3 是互斥的，将它们配对得到
+你是h2而不是错误。必须显式设置 `mode`，因为
+默认解析为 `packet-up` 而不是 `stream-one` 形状引擎
+名称作为 QUIC 的替代品。和 `downloadSettings`，用于分割上传和
+下载，与`mode: stream-one`一起被拒绝；该组合需要
+`stream-up`。
 
-有一处词汇上的冲突值得明说，因为它读起来像自相矛盾：`type=h3` 会被拒绝，而 `alpn=h3` 是
-必需的。它们是两个不同的字段。前者点名的是一个已经不存在的传输；后者点名的是在 TLS 内部
-协商出来的协议。
+词汇上的一个冲突值得直白地说明，因为它读起来就像
+矛盾：`type=h3` 被拒绝，`alpn=h3` 为必填项。他们是
+不同的领域。第一个命名了一种不再存在的传输；第二个
+命名 TLS 内部协商的协议。
 
-这些配置盒子是接受并且校验的。它们还没有从这里对着一台在线的服务器驱动过，所以请把表里
-那些行当作引擎的能力，而不是当作本项目看着它工作过的东西。
+这些配置被盒子接受并验证。他们还没有
+从这里开始针对实时服务器进行驱动，因此将该行视为引擎的行
+能力，而不是这个项目所观察到的工作。
 
-安全层是 `reality`、`tls` 或 `none`。
+安全层为`reality`、`tls`或`none`。
 
-并非每种组合都同样有用。REALITY 通常和纯 TCP 搭配，因为它的整套办法就是借用一个真实
-网站的 TLS 握手，所以再包一层 TLS 就把这件事的意义抵消了。WebSocket、HTTPUpgrade 和
-XHTTP 的存在，是为了在检查连接的东西看来像普通的网页流量，所以它们通常和 TLS 搭配，
-理由和一个普通网站用 TLS 是一样的。`security=none` 的 WebSocket 是唯一一种值得多想
-一下的形态。它在线路上是明文，只有当别的东西已经提供了加密时它才说得通，比如在服务器
-前面有一个 CDN 在终结 TLS。
+并非每种组合都同样有用。 REALITY 通常与普通配对
+TCP，因为它的整个方法是借用真实站点的TLS握手，所以
+将其包装在另一个 TLS 层中就违背了这一点。 WebSocket、HTTPUpgrade 和
+XHTTP 的存在看起来就像普通的 Web 流量一样，用于检查
+连接，并且它们通常与 TLS 配对，原因与普通连接相同
+网站是。带有 `security=none` 的 WebSocket 是一种需要三思而后行的形状
+关于。它是线路上的明文，只有当有其他内容时才有意义
+已经提供了加密，例如 CDN 在前面终止 TLS
+服务器。
 
-### 三种不同的主张，分开来说
+<a id="three-different-claims-kept-apart"></a>
+### 三种不同的主张，分开
 
-下面这个区分是本文最重要的东西。先读列标题，再读每一行。
+下面的区别是本文档中最重要的内容。阅读
+列标题位于行之前。
 
-| 主张 | 它依据什么 | 它值多少 |
+| 索赔 | 它依靠什么 | 它的价值是什么 |
 |---|---|---|
-| 解析器接受它 | `internal/link`，以及一份提交在仓库里的黄金引擎配置文档 | 文档是稳定的。什么都没有拨号 |
-| 它搬运了字节 | `test/tunnel`，一个跑在环回地址上的真实 xray-core 服务端 | 流量确实穿过了这个协议。没有出口 IP，没有这台设备，没有互联网 |
-| 它被端到端证明过 | `test/hardware`，一台连在热点上的真手机 | 真实流量离开了盒子，出口地址被抓到并点了名 |
+| 解析器接受它 | `internal/link`，以及承诺的黄金引擎文档 | 文档稳定。没有拨打任何电话 |
+| 它携带字节 | `test/tunnel`，一个真正的环回xray核心服务器 | 流量通过协议移动。没有退出IP、没有设备、没有互联网 |
+| 端到端已被证明 | `test/hardware`，热点上的真实手机 | 真实流量离开盒子，出口地址被捕获并命名 |
 
-### 什么真的通过一个真实服务端搬运过字节
+<a id="what-has-carried-bytes-through-a-real-server"></a>
+### 什么通过真实服务器携带字节
 
-由 `test/tunnel` 提供。解析器接受的每一种协议，都被端到端驱动去打一个真实的 xray-core
-实例，该实例由本模块自己的依赖构建，并通过 `internal/engine` 用的同一个加载器加载。
-客户端这一侧就是产品路径本身，没有改动：先 `link.Parse`，然后 `xcfg.Build`，然后
-`engine.Engine.Start`。没有任何配置是手写的。
+由 `test/tunnel` 添加。解析器接受的每个方案都是端到端驱动的
+针对真实的 xray-core 实例，根据该模块自身的依赖项构建，并且
+通过 `internal/engine` 使用的相同加载器加载。客户端是
+产品路径，未修改：`link.Parse`，然后 `xcfg.Build`，然后
+`engine.Engine.Start`。没有配置是手写的。
 
-| 协议 | 传输 | 安全层 | 能送出一个 HTTP 请求 |
+| 协议 | 运输 | 安全 | 携带HTTP请求 |
 |---|---|---|---|
-| VLESS | tcp (raw) | none | 是 |
-| VMess | tcp (raw) | none | 是 |
-| Shadowsocks，aes-256-gcm | tcp (raw) | none | 是 |
-| SOCKS | tcp (raw) | none | 是 |
-| Trojan | tcp (raw) | TLS，按摘要固定 | 是 |
-| Hysteria2，以及 `hy2` 别名 | QUIC | TLS，按摘要固定 | 是 |
+| VLESS | TCP（原始） | 无 | 是的 |
+| 虚拟梅斯 | TCP（原始） | 无 | 是的 |
+| Shadowsocks，aes-256-gcm | TCP（原始） | 无 | 是的 |
+| 袜子 | TCP（原始） | 无 | 是的 |
+| Trojan | TCP（原始） | TLS，由摘要固定 | 是的 |
+| Hysteria2 和 `hy2` 别名 | 奎克 | TLS，由摘要固定 | 是的 |
 
-有四道控制措施能拦下一个绕过了隧道的请求，而且这四道都是真的在跑，不是在文字里断言。
-客户端从不被告知源站在哪里，它拿到的是一个 `.invalid` 名字和一个诱饵的端口。那个名字
-是解析不出来的，如果机器上有解析器居然应答了它，测试套件会大声说出来。源站检查的是
-请求被寄往哪里，而不只是它到了。诱饵会数自己被打中了几次，一个走隧道的请求必须一次
-都不加上去。`TestEveryCarriageProofCanFail` 和
-`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` 才是让这些控制措施成为证据
-而不是意图的东西。
+四个控件阻止跳过隧道通过的请求，并且所有四个控件
+运行而不是在散文中断言。客户永远不会被告知在哪里
+来源是，并被赋予 `.invalid` 名称和诱饵端口。名称
+无法解析，如果机器上有解析器，套件会大声说出来
+无论如何都会回答它。来源不仅检查请求的处理地点
+它到达了。诱饵计算自己的点击次数，隧道请求必须添加
+没有。 `TestEveryCarriageProofCanFail` 和
+`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` 是什么让这些
+控制证据而不是意图。
 
-每一行都要读得窄一点。除 Hysteria2 外，每一行都跑在裸 TCP 上。没有一行驱动 REALITY，
-因为它的服务端需要一个真实的握手目标。Shadowsocks 只有 aes-256-gcm，因为 2022 系列的
-加密套件走的是另一条代码路径。每一行送的都是一个 TCP 请求，UDP associate 是关的。
-一切都在环回地址上，所以没有抓到出口 IP，也不可能抓到。
+仔细阅读每一行。除 Hysteria2 之外的每一行都通过原始 TCP 运行。无行驱动器
+REALITY，其服务器端需要一个真正的握手目标。 Shadowsocks 是
+仅限 aes-256-gcm，因为 2022 密码采用不同的代码路径。每一行
+携带 TCP 请求，UDP 关联关闭。一切都在环回，所以
+没有捕获任何退出 IP，也不能捕获任何退出 IP。
 
-`TestEveryProtocolTheParserAcceptsIsDrivenEndToEnd` 会从 `internal/link` 的源码里读出
-那份被接受的协议名单，所以不可能加进第八种协议却不在这里加上一行。
+`TestEveryProtocolTheParserAcceptsIsDrivenEndToEnd` 读取已接受的方案
+列出了 `internal/link` 的源，因此无法添加第八个方案
+这里没有争论。
 
-### 什么在硬件上真的被证明过
+<a id="what-has-actually-been-proven-on-hardware"></a>
+### 硬件上已经实际证明了什么
 
-下面这张表是真实流量走过、并且抓到了出口 IP 的那些。它不是解析器接受什么，也不是环回
-测试套件搬运了什么。
+下表是捕获出口 IP 时所经过的实际流量。它
+不是解析器接受的内容，也不是环回套件携带的内容。
 
-| 协议 | 传输 | 安全层 | 端到端证明过 |
+| 协议 | 运输 | 安全 | 经过验证的端到端 |
 |---|---|---|---|
-| VLESS | tcp (raw) | REALITY | 是，在三台不同的服务器上 |
-| VLESS | ws (WebSocket) | none，外加 VLESS Encryption | 是 |
-| VLESS | ws (WebSocket) | TLS | 是，经由一个 CDN |
-| VLESS | httpupgrade | TLS | 是，经由一个 CDN |
-| VLESS | xhttp | TLS | 是 |
-| VMess、Trojan、Shadowsocks、SOCKS、Hysteria2 | 任意 | 任意 | 否 |
+| VLESS | TCP（原始） | REALITY | 是的，在三个独立的服务器上 |
+| VLESS | ws（WebSocket） | 无，加上 VLESS 加密 | 是的 |
+| VLESS | ws（WebSocket） | 传输层安全协议 | 是的，通过 CDN |
+| VLESS | http升级 | 传输层安全协议 | 是的，通过 CDN |
+| VLESS | xhttp | 传输层安全协议 | 是的 |
+| VMess、Trojan、Shadowsocks、袜子、Hysteria2 | 任何 | 任何 | 不 |
 
-上面每一项，都是靠在一台连着热点的真手机上驱动一个真浏览器来证明的。出口地址由两个
-彼此独立的来源抓到，并和配置里点名的那台服务器对上。用了三台不同的服务器，每一台
-返回的地址都不同，所以一次重复的或缓存的读数不会被误当成隧道在工作。
+每一个都通过在连接到网络的真实手机上驱动真实的浏览器来证明。
+热点。退出地址是从两个独立的来源捕获并匹配的
+到服务器的配置名称。使用了三个不同的服务器
+每个返回不同的地址，因此不能重复或缓存读取
+被误认为是工作隧道。
 
-一行没有被证明，不等于说它是坏的。它说的是还没有人看着一个数据包从远端出来，这是另一
-回事，而且这是本项目唯一当作证据的东西。每一种传输产出的引擎配置文档**确实**被钉成了
-黄金文件，所以组装方式一变就会显示成一处差异。那证明的是文档是稳定的，对这个传输能不能
-连上则什么都没说。
+未经证实的行并不意味着它已被破坏。这是一个主张
+没有人看过从远端发出的数据包，这是另一回事
+这是该项目唯一将其视为证据的东西。引擎记录每个
+运输产生的信息被固定为黄金文件，因此改变一个人的方式
+组成显示为差异。这证明该文件是稳定的并且什么也没说
+关于交通是否连接。
 
-### 为什么传输安全层为空的那一行仍然是加密的
+<a id="why-a-row-with-no-transport-security-is-still-encrypted"></a>
+### 为什么没有传输安全的行仍然被加密
 
-上表里的 `security` 一列说的是**包在传输外面**的那一层，那里的 `none` 并不意味着
-「没有加密」。它意味着没有 TLS 也没有 REALITY。这一点值得说准确，因为反着理解会让人
-惊慌，而理解得太宽松则更糟。
+上面的 `security` 列是关于包裹在传输周围的层，并且
+`none` 并不意味着“不加密”。这意味着没有 TLS，也没有 REALITY。那
+值得精确说明，因为以其他方式阅读会令人震惊
+读得太慷慨会更糟。
 
-VLESS 本身不携带加密。它是一个无状态协议，指望下面那一层提供机密性，通常是 REALITY
-或 TLS。一条走 WebSocket、`security=none` 且再没有别的东西的 VLESS 链接，**确实**会在
-线路上是明文，出口地址会被证明，同时路径上的任何东西都能读到每一个数据包。
+VLESS 本身不进行加密。这是一个无状态协议，期望
+下面的层提供机密性，通常是 REALITY 或
+TLS。通过 WebSocket 与 `security=none` 进行 VLESS 链接，仅此而已
+线路上的明文，并且每个数据包的退出地址都会被证明
+路径上的任何东西都可以读取。
 
-让那一行安全的东西是 VLESS Encryption，它由链接的 `encryption=` 参数携带。那是一个
-混合密钥交换，用 ML-KEM-768 提供抗量子能力，并与 X25519 结合，作用在 VLESS 这一层本身
-而不是它下面。所以流量是加密的，而且加密它的东西被设计成：面对一个今天把流量录下来、
-以后再拿到量子计算机的攻击者，仍然保持安全。一条同时带着 `encryption=none` 和
-`security=none` 的链接两样都没有，而那正是应该拒绝的组合。
+使该行安全的是链接中携带的 VLESS 加密
+`encryption=`参数。它是一种混合密钥交换，ML-KEM-768 用于
+后量子电阻与 X25519 相结合，应用于 VLESS 层本身
+而不是在它下面。所以流量是加密的，加密方式是
+旨在防止今天记录它的攻击者的安全的东西
+后来有了量子计算机。带有 `encryption=none` AND 的链接
+`security=none` 两者都没有，那就是拒绝的组合。
 
-这**不是** Noise 协议框架（noiseprotocol.org）。这台设备里、内置的分享链接解析器里、
-以及引擎里，都没有任何东西实现了 Noise。「noise」这个词出现在 xray-core 的配置里，指的
-是另一件不相干的事，即用随机字节填充流量以改变它在线路上的形状，那是混淆而不是握手。
-给这一行提供机密性的东西是 VLESS Encryption，名字很重要，因为这两者提供的保证并不相同。
+这不是噪声协议框架 (noiseprotocol.org)。这里面什么都没有
+设备、供应商的共享链接解析器或引擎中实现了噪声。
+“噪音”这个词出现在 xray-core 的配置中，表示一些不相关的东西，
+用随机字节填充流量以改变其在线上的形状，即
+混淆而不是握手。赋予这一行它的东西
+机密性是 VLESS 加密，名称很重要，因为两者
+提供不同的保证。
 
-这是在 2026-08-30 **实测**出来的，不是假定的。这个包并不逐字段重建 outbound。它把
-解析器产出的东西重新序列化一遍，协议设置作为一个不透明的数据块搭车通过。这就是那个参数
-能存活下来的原因。这也是为什么如果它哪天不再存活，什么都不会坏掉：不会缺任何字段，不会
-有类型改变，也不会有别的测试注意到，而与此同时隧道正明文承载着用户的流量，所有检查却
-依然全绿。`internal/link` 里的 `TestVLESSEncryptionSurvivesIntoTheEngineDocument` 就是
-那道守卫，而且在被保留下来之前，有人亲眼看着它对着恰恰是这种静默降级失败过。
+2026 年 8 月 30 日测量而非假设。该软件包不会重建
+逐个字段出站。它重新序列化解析器生成的内容，并且
+协议设置作为一个不透明的斑点运行。这就是为什么参数
+幸存下来。这也是为什么如果它停止生存，任何东西都不会损坏：没有领域
+会丢失，类型不会改变，其他测试也不会注意到，而
+隧道清晰地承载着用户的流量，每张支票仍然是绿色的。
+`internal/link` 中的 `TestVLESSEncryptionSurvivesIntoTheEngineDocument` 是
+守卫，并且人们看到它在之前的无声降级中失败了
+它被保留了。
 
-### 一个对不上的证书名，以及客户端一侧的修法
+<a id="a-certificate-name-that-did-not-match-and-the-client-side-fix"></a>
+### 证书名称不匹配，以及客户端修复
 
-有一个结果值得记下来，因为它是这台设备正确地拒绝掩饰过去的一种故障。有两份配置指向
-服务器自己的地址，却携带着它前面那个 CDN 的 TLS 名字。引擎报告：
+有一个结果值得记录，因为这是该设备正确的故障
+拒绝用纸覆盖。两个配置指向服务器自己的地址
+同时在其前面携带 CDN 的 TLS 名称。引擎报告：
 
-    transport/internet/httpupgrade: failed to dial request ...
-      tls: failed to verify certificate: x509: certificate is valid for
+传输/互联网/httpupgrade：无法拨打请求...
+tls：无法验证证书：x509：证书的有效期为
       <the apex>, not <the cdn subdomain>
 
-那确实是一个和所请求的名字对不上的证书，拒绝它正是您想要的行为。接受它则意味着隧道
-可以被任何持有任何证书的东西终结掉。
+该证书与所要求的姓名确实不符，并且
+拒绝是你想要的行为。接受它意味着隧道可以
+被持有任何证书的任何事物终止。
 
-原因和修法都在客户端一侧，服务器不需要任何改动。一条分享链接携带两个名字，人们以为它们
-必须相同，其实不必：
+原因和修复都在客户端，并且没有更改服务器
+需要。共享链接带有两个人们认为必须匹配的名称
+不是：
 
-- `sni` 是 TLS 用来校验证书的那个名字
-- `host` 是服务器据以路由请求的那个名字，一个 HTTP 头
+sni 名称 TLS 验证证书所依据的
+host 服务器路由请求的名称，HTTP 标头
 
-那些失败的链接在**两个**里都填了 CDN 的名字。经由 CDN 时这样是行的，因为 CDN 持有该
-名字的证书。直接指向源站时就不行了，因为源站只持有主域名的证书。把 `sni` 设成证书实际
-携带的那个名字，并让 `host` 保持服务器据以路由的那个名字：
+失败的链接在两者中都带有 CDN 的名称。通过有效的 CDN，
+因为 CDN 拥有它的证书。直指原点吧
+不能，因为起源仅持有顶点的证书。将 `sni` 设置为
+证书实际携带的名称，并将 `host` 保留为证书的名称
+服务器路由：
 
-    sni=example.com          host=cdn.example.com
+sni=example.com 主机=cdn.example.com
 
-2026-08-30 **实测**。两条此前带着上面那个证书错误失败的链接，在做了这一处改动之后都
-连上了。出口地址由两个彼此独立的来源抓到，并和它们各自的服务器对上，同一次运行里 DNS
-泄漏检查和失败即断开检查也都通过了。
+测量日期：2026 年 8 月 30 日。由于证书错误而失败的两个链接
+在那一项更改之后，上面两者都连接了。退出地址捕获自
+两个独立的来源并匹配到他们自己的服务器，并且 DNS 泄漏和
+在同一运行中通过了失败关闭检查。
 
-所以，如果某个传输只在直接指向源站时才失败，先拿 `sni` 和源站证书的主题备用名称比一比，
-再去怀疑传输。`openssl s_client -connect <address>:443 -servername <name>` 会打印出
-服务器实际出示的是什么。
+因此，如果传输仅在直接指向原点时失败，请比较 `sni`
+在您怀疑之前对照原始证书的主体备用名称
+运输。 `openssl s_client -connect <address>:443 -servername <name>`
+打印服务器实际呈现的内容。
 
-### 面板接受粘贴的链接，不接受图片
+<a id="the-panel-takes-a-pasted-link-and-not-an-image"></a>
+### 该面板采用粘贴的链接而不是图像
 
-拖入二维码图片这件事在设计文档 5.2 节里有描述，但**没有实现**。`internal/panel/qr`
-只是一个编码器，`internal/panel` 里没有任何 handler 读取 multipart 上传。面板确实会
-生成一个二维码，那是给手机扫来加入热点用的。[`internal/panel/view.go`](https://github.com/Iman/caspian/blob/main/internal/panel/view.go) 用 `qr.Encode` 和
-`qr.WiFiJoin` 生成它，所以既不涉及图像库，也不涉及任何远程服务。
+设计第 5.2 节中描述了删除 QR 图像，并且**不是
+已实施**。 `internal/panel/qr`只是一个编码器，没有处理程序
+`internal/panel` 读取分段上传。面板生成的二维码是
+手机扫描以加入热点的那个。 [`internal/panel/view.go`](https://github.com/Iman/caspian/blob/main/internal/panel/view.go) 构建它
+使用 `qr.Encode` 和 `qr.WiFiJoin`，因此没有图像库，也没有远程服务
+参与。
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
-
-[English: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [فارسی: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-و-http3-حمل-میشوند-با-نامی-دیگر) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#پروتکلها-و-ترابریها) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-и-http3-переносятся-просто-под-другим-именем) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#протоколы-и-транспорты) | [中文: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-与-http3-是被承载的只是换了个名字) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#协议与传输)
+[英语：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [状态：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [编码：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [中文：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
 
 <!-- Caspian guide navigation -->
 
-Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->

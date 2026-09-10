@@ -1,10 +1,12 @@
-# Install on macOS
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
 
 </div>
+
+# Install on macOS
+
+
 
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
@@ -16,17 +18,9 @@ CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed
 
 The installation guide contains the prerequisites, download choices, and available recovery steps for this platform.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-macos-13-یا-جدیدتر) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-или-новее) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#macos-13-或更高版本)
-
-</div>
 
 <!-- Caspian guide navigation -->
 

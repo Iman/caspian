@@ -1,23 +1,28 @@
-# Ev kullanıcıları için sorun giderme
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
 
-Önce yönlendiriciden Caspian çalıştıran bilgisayara Ethernet kablosu bağlayın. Erişim noktası için bilgisayarın dahili Wi-Fi adaptörünü veya Linux'ta uyumlu bir USB Wi-Fi adaptörünü kullanın. Böylece internet girişi ve erişim noktası ayrı adaptörlerde çalışır. Bu, önerilen başlangıç düzenidir; ölçülmüş bir hız garantisi değildir.
+<a id="troubleshooting-for-home-users"></a>
+# Ev kullanıcıları için sorun giderme
 
+
+
+Yönlendiricinizden Caspian çalıştıran bilgisayara Ethernet ile başlayın. Erişim noktası için bu bilgisayarın yerleşik Wi-Fi'sini veya Linux'ta uyumlu bir USB Wi-Fi adaptörünü kullanın. Bu, internet bağlantısı ve sıcak nokta için ayrı adaptörler sağlar. Bu, ölçülen bir hız garantisi değil, önerilen başlangıç düzenlemesidir.
+
+<a id="wi-fi-country-is-not-set"></a>
 ## Wi-Fi ülkesi ayarlanmamış
 
-Otomatik algılama varsayılan olarak kalır. Caspian ülkeyi algılayabiliyorsa Country alanını boş bırakın. Wi-Fi country is not set hatasında Set Wi-Fi country bağlantısını açın. Gelişmiş ayarlarda bilgisayarın bulunduğu gerçek ülkenin iki harfli kodunu girin, kaydedin ve Caspian’ı yeniden açın. Seçim, hizmet yeniden başlatıldığında korunur. Otomatik algılamaya dönmek için alanı boşaltıp kaydedin. Caspian IR kodunu varsaymaz; panel dilinden veya proxy sunucusundan ülke seçmez.
+Otomatik algılama varsayılan olarak kalır. Caspian tespit edemediği sürece Ülke alanını boş bırakın. "Wi-Fi ülkesi ayarlanmadı" mesajını görüyorsanız Wi-Fi ülkesini Gelişmiş ayarlara ayarla seçeneğini izleyin. Bilgisayarın bulunduğu ülkenin iki harfli kodunu girin, kaydedin ve Caspian'ı tekrar açın. Kaydedilen seçim, hizmetin yeniden başlatılmasından sonra hayatta kalır. Otomatik algılamaya dönmek için alanı temizleyin ve kaydedin. Caspian IR'yi üstlenmez veya panel dilinden veya proxy sunucusundan bir ülke seçmez.
 
-Kurulu sürüm Country alanını gizliyorsa görünür alan issue #3 güncellemesinin parçasıdır. Caspian ve Linux sürümlerini, adaptör bağlantılarını ve güncel panelde ülke seçmenin sonucunu bildirin. Özel yapılandırma veya tam günlük göndermeyin. Elle çalıştırılan iw komutunun işe yaraması, uygulamanın sistem radyo ayarlarını değiştirmesi gerektiğini kanıtlamaz. Bu değişiklik otomatik iw reg set içermez.
+Yüklü sürümünüz Ülke alanını gizliyorsa bu kurtarma kontrolü, 3 numaralı sorun güncellemesinin bir parçasıdır. Caspian ve Linux sürümlerinizi, adaptör düzenlemenizi ve güncellenen panelde Ülke seçeneğinin yeterli olup olmadığını kaydedin. Özel yapılandırma veya tam günlükler göndermeyin. Manuel bir iw komutunun yardımcı olduğuna dair bir rapor, uygulamanın sistem radyo ayarlarını değiştirmesi gerektiğini kanıtlamaz. Otomatik iw reg seti bu değişikliğin bir parçası değildir.
 
 
-## Bağlantı düzenini seçin
+<a id="choose-your-connection"></a>
+## Bağlantınızı seçin
 
-Şemalarda [1] internet yönlendiricisini, [2] Caspian bilgisayarını, [3] telefonu veya başka bir cihazı gösterir. ETH, Ethernet kablosudur. USB Ethernet adaptörü bilgisayara internet getirir; USB Wi-Fi adaptörü kablosuz bağlantı sağlar. Görevleri farklıdır.
+Bu şemalarda, [1] internet yönlendiriciniz, [2] Caspian'ı çalıştıran bilgisayar ve [3] telefonunuz veya başka bir cihazdır. ETH Ethernet kablosu anlamına gelir. Bir USB Ethernet adaptörü interneti getirir; USB Wi-Fi adaptörü kablosuz bağlantı oluşturur. Farklı işler yapıyorlar.
 
 ```text
 A  [1] --ETH--> [2] --built-in Wi-Fi--> [3]
@@ -26,92 +31,97 @@ C  [1] --Wi-Fi A--> [2] --Wi-Fi B----> [3]
 D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 ```
 
-| Caspian'a gelen internet | Cihazlara sunulan erişim noktası | Linux / Raspberry Pi | macOS |
+| Caspian'a internet | Cihazlarınızın erişim noktası | Linux / Ahududu Pi | macOS |
 |---|---|---|---|
-| A. Ethernet | Dahili Wi-Fi | Sürücü erişim noktası oluşturabiliyorsa desteklenir | Desteklenen düzen |
-| B. Ethernet | Harici USB Wi-Fi | Erişim noktası (AP) destekleyen Linux sürücüsü gerekir | Caspian bunu erişim noktası olarak desteklemez |
-| C. Wi-Fi adaptörü A | Ayrı Wi-Fi adaptörü B | B adaptöründe AP desteği gerekir | Harici USB Wi-Fi erişim noktası desteklenmez |
-| D. Wi-Fi | Aynı Wi-Fi radyosu | Koşullu: sürücü istasyon ve AP rollerini birlikte desteklemelidir; kanal ortak olabilir | Dahili radyoda desteklenmez |
+| A. Ethernet | Dahili Wi-Fi | Sürücü bir erişim noktası oluşturabildiğinde desteklenir | Desteklenen düzenleme |
+| B. Ethernet | Harici USB Wi-Fi | Erişim noktası (AP) desteğine sahip bir Linux sürücüsü gerektirir | Caspian tarafından sıcak nokta olarak desteklenmiyor |
+| C. Wi-Fi adaptörü A | Ayrı Wi-Fi adaptörü B | B bağdaştırıcısında AP desteği gerektirir | Harici bir USB Wi-Fi erişim noktası desteklenmiyor |
+| D. Wi-Fi | Aynı Wi-Fi radyo | Koşullu: sürücünün bir istasyon ve AP'nin birlikte kullanılmasına izin vermesi gerekir; kanal paylaşılabilir | Dahili radyoda desteklenmiyor |
 
-Tablo, mevcut kodun planlayabildiği veya reddettiği düzenleri gösterir. Her adaptörün, işletim sistemi güncellemesinin veya dizüstünün çalıştığını doğrulamaz. Ev Wi-Fi ağına katılabilen bir adaptör, erişim noktası oluşturamayabilir. Linux USB düzenlerinin model testleri vardır; mevcut donanım kayıtları tüm USB adaptörlerini doğrulamaz. Mac'te belgelenen yol Ethernet ve dahili Wi-Fi'dır. USB Wi-Fi eklemek bu kısıtı kaldırmaz.
+Bunlar mevcut kodun planlayabileceği veya reddedebileceği düzenlemelerdir. Her bağdaştırıcıyı, işletim sistemi güncellemesini veya dizüstü bilgisayarı onaylamazlar. Ev ağınıza katılabilecek bir Wi-Fi bağdaştırıcısı yine de bir erişim noktası oluşturamayabilir. Linux USB düzenlemeleri modellenmiş testlere sahiptir; mevcut donanım kaydı her USB adaptörünün çalıştığını kanıtlamaz. MacOS'ta belgelenen yol için Ethernet'i ve yerleşik Wi-Fi'yi kullanın. USB Wi-Fi'yi takmak bu kısıtlamayı ortadan kaldırmaz.
 
-## Önce bağlantıyı kurun, sonra başlatın
+<a id="connect-first-then-start"></a>
+## Önce bağlanın, sonra başlayın
 
-1. İşlemleri Caspian çalıştıran bilgisayarda yapın. Yalnızca erişim noktasına bağlı bir telefon kullanırsanız, erişim noktası durunca telefonun bağlantısı kesilir.
+1. Yalnızca erişim noktasına bağlı bir telefonda değil, Caspian'ı çalıştıran bilgisayarda çalışın. Erişim noktasını durdurmak telefonun bağlantısını keser.
 
-2. Caspian kapalı kalsın. Kabloyu yönlendiricinin çalışan bir LAN portuna ve bilgisayara takın. Uygulamayı açmadan önce USB Ethernet veya desteklenen USB Wi-Fi adaptörünü bağlayın.
+2. Caspian'ı kapalı tutun. Ethernet kablosunu çalışan bir yönlendirici LAN bağlantı noktasına ve bilgisayara bağlayın. Uygulamayı açmadan önce herhangi bir USB Ethernet veya desteklenen USB Wi-Fi adaptörünü takın.
 
-3. Bilgisayarın ağ ayarlarında Ethernet'in bağlı olduğunu doğrulayın. Wi-Fi da bağlıysa, bir sitenin açılması kablodan internet geldiğini kanıtlamaz. Ev Wi-Fi ağından ayrılıp yeniden deneyin; Wi-Fi radyosu erişim noktası için kullanılabilir kalsın.
+3. Bilgisayarın Ağ ayarlarını kontrol edin: Ethernet bağlı olmalıdır. Wi-Fi da bağlıysa, çalışan bir web sitesi tek başına kablonun internet taşıdığını kanıtlamaz. Ev Wi-Fi ağıyla bağlantıyı kesin ve tekrar kontrol edin; Wi-Fi radyosunu erişim noktası için kullanılabilir durumda tutun.
 
-4. Caspian kapalıyken bu bağlantıda normalde açılan bir siteyi açın. Açılmıyorsa önce kabloyu, yönlendirici bağlantısını veya ağ oturum açma işlemini düzeltin. Caspian mevcut bir internet bağlantısına ihtiyaç duyar.
+4. Caspian hâlâ kapalıyken normalde bu bağlantıyla çalışan bir web sitesi açın. Başarısız olursa önce kabloyu, yönlendirici bağlantısını veya ağda oturum açmayı düzeltin. Caspian'ın mevcut bir internet bağlantısına ihtiyacı var.
 
-5. Caspian'ı ve web panelini açın. Panel hizmeti çalışıyorsa bilgisayarın kendisinde http://127.0.0.1:8088/ adresini kullanın. Telefonda bu adres Caspian bilgisayarını değil, telefonun kendisini gösterir.
+5. Caspian'ı ve web panelini açın. Panel hizmeti çalışıyorsa bilgisayarda http://127.0.0.1:8088/'yi kullanın. Bir telefondaki bu adres Caspian bilgisayarına değil, telefona atıfta bulunmaktadır.
 
-6. Panelde internet bağlantısı ve erişim noktası adaptörü seçimlerini kontrol edin. Otomatik seçimle başlayın. Yanlış bağlantı seçilirse internet için Ethernet'i, erişim noktası için istediğiniz Wi-Fi adaptörünü seçin. USB arayüz adları değişir; başka bir bilgisayarın arayüz adını kopyalamayın.
+6. Panelin internet bağlantısını ve hotspot adaptör seçeneklerini kontrol edin. Otomatik seçimle başlayın. Caspian yanlış bağlantıyı seçerse internet için Ethernet'i ve erişim noktası için amaçlanan Wi-Fi adaptörünü seçin. USB adaptörünün adı değişiklik gösterir; Başka birinin kılavuzundan arayüz adını kopyalamayın.
 
-7. Vekil sunucu yapılandırmasını, erişim noktası adını ve parolasını kaydedin. 5 GHz görmeyen cihazlar için 2.4 GHz ile başlayın. Bulunduğunuz ülkenin kodunu seçin; değiştirmek için bir nedeniniz yoksa kanal otomatik kalsın.
+7. Proxy yapılandırmanızı ve erişim noktası adınızı/şifrenizi kaydedin. 5 GHz'i göremeyen cihazlar için 2,4 GHz bandıyla başlayın. Gerçek ülke kodunuzu kullanın ve değiştirmek için bir nedeniniz olmadığı sürece kanalı otomatik olarak bırakın.
 
-8. Caspian'ı bir kez açın ve sonucu bekleyin. Caspian Control'deki Ready, hizmetlerin yanıt verdiğini gösterir. Tünel ve erişim noktası durumunu web panelinden kontrol edin. Önce bir telefonu yeni ağa bağlayıp bir site deneyin.
+8. Caspian'ı bir kez açın ve sonucu bekleyin. Caspian Control'ün Hazır demesi, hizmetlerinin yanıtı anlamına gelir; Tünel ve erişim noktası durumu için web panelini kontrol edin. Bir telefonda yeni Wi-Fi ağına katılın, ardından bir web sitesini test edin.
 
-## Kabloyu veya adaptörü değiştirdiyseniz
+<a id="if-you-changed-a-cable-or-adapter"></a>
+## Bir kabloyu veya adaptörü değiştirdiyseniz
 
-Caspian'ı durdurun, bağlantıyı değiştirin ve başlatmadan önce interneti yeniden kontrol edin. Tarayıcıyı veya kontrol penceresini kapatmak arka plan hizmetlerini mutlaka durdurmaz. Art arda tıklamak desteklenmeyen bir adaptörü düzeltmez.
+Caspian'ı durdurun, bağlantıyı değiştirin ve yeniden başlamadan önce yukarıdaki internet kontrolünü tekrarlayın. Tarayıcıyı veya kontrol penceresini kapatmak arka plan hizmetlerinin mutlaka durdurulması anlamına gelmez. Tekrarlanan tıklamalar desteklenmeyen bir bağdaştırıcıyı onarmaz.
 
-Mac'te Caspian Control'ü açın, Advanced options > Restart services seçeneğini kullanın. Sonucu bekleyin, paneli yeniden açın ve Caspian kapalıysa açın. Yeniden başlatma bağlı cihazları keser ve paneli kapatabilir. Kaydedilmiş vekil sunucu ve erişim noktası ayarları korunur.
+Mac'te Caspian Control'ü açın, Gelişmiş seçenekler'i seçin ve ardından Hizmetleri yeniden başlatın. Sonucu bekleyin, paneli tekrar açın ve kapalıysa Caspian'ı açın. Yeniden başlatma, bağlı cihazların kesintiye uğramasına ve panelin kapanmasına neden olabilir. Kaydedilmiş proxy ve sıcak nokta ayarlarını tutar.
 
-Standart systemd kurucusuyla kurulmuş Linux'ta aşağıdaki komut iki Caspian hizmetini yeniden başlatır. Komutu Caspian bilgisayarının yerel terminalinde veya erişim noktası durduğunda kesilmeyecek ayrı bir bağlantı üzerinden çalıştırın. Bu komut macOS, Windows veya systemd bulunmayan bir konteyner için değildir.
+Standart systemd yükleyicisiyle kurulan Linux'ta aşağıdaki komut her iki Caspian hizmetini de yeniden başlatır. Yerel bir terminal veya sıcak noktanın durdurulmasına dayanacak ayrı bir bağlantı kullanarak Caspian bilgisayarında çalıştırın. Bu, macOS, Windows veya systemd'siz bir kapsayıcı için bir komut değildir.
 
 ```bash
 sudo systemctl restart caspian.service caspian-panel.service
 ```
 
-Komut bitince paneli açın ve gerekirse Caspian'ı açın. Hizmet yine başarısız olursa hata metnini rapor için saklayın. Sürekli yeniden başlatmayın; hatayı gizlemek için yapılandırmayı silmeyin veya güvenlik duvarını kapatmayın. Panelde Advanced > Put it back and start again, kaydedilmiş ayarlarla ağı kurtarmayı dener. Bu, hizmetleri yeniden başlatmaktan farklıdır ve cihazların bağlantısı kesilebilir.
+Komut tamamlandıktan sonra paneli yeniden açın ve gerekirse Caspian'ı açın. Bir hizmet yine de başarısız olursa aşağıdaki rapor için hatayı saklayın. Tekrarlanan yeniden başlatmalardan kaçının; Hatanın ortadan kalkması için yapılandırmanızı silmeyin veya güvenlik duvarını devre dışı bırakmayın. Web panelinde Gelişmiş > Geri koy ve yeniden başlat seçeneği, kayıtlı ayarlarla ağı kurtarmayı dener; bu, hizmetleri yeniden başlatmaktan farklıdır ve cihazların bağlantısı kesilebilir.
 
+<a id="find-the-symptom"></a>
 ## Belirtiyi bulun
 
-| Gördüğünüz durum | Sonraki kontrol |
+| Ne görüyorsun | Sonraki kontrol edilecek şey |
 |---|---|
-| Caspian başlamadan önce de internet yok | Başka kablo veya yönlendirici LAN portu deneyin. İşletim sisteminde Ethernet bağlantısını doğrulayın. Gerekli ağ oturumunu Caspian kapalıyken açın. |
-| Tek Wi-Fi adaptörü zaten kullanılıyor | Linux'ta Ethernet veya AP destekleyen ayrı adaptör kullanın. Tek radyoda iki rol sürücü desteği gerektirir ve aynı kanalı paylaşabilir. macOS'ta Ethernet'ten dahili Wi-Fi'a bağlantı kullanın. |
-| Erişim noktası adaptörü yok veya görünmüyor | Wi-Fi'a bağlanabilmek AP desteğini kanıtlamaz. Linux'ta sürücüyü ve AP yeteneğini kontrol edin. Mac'te harici USB Wi-Fi, Caspian erişim noktası olamaz. |
-| Adaptör meşgul veya erişim noktası başlamıyor | Caspian'ı durdurun. İnternet adaptörünü kesmeden erişim noktası adaptörünü diğer ağından ayırın. Açtığınız başka erişim noktalarını durdurun. Caspian kapalıyken başka VPN çalışıp çalışmadığını kontrol edip yeniden deneyin. |
-| Telefon erişim noktasını görmüyor | Panelde çalıştığını doğrulayın. Bilgisayara yaklaşın, 2.4 GHz deneyin ve ülke ayarını kontrol edin. Sabitlenmiş kanal gelen Wi-Fi'ı izler; yalnızca erişim noktası kanalını değiştirmek bunu geçersiz kılamaz. |
-| Telefon ağı görüyor ama bağlanamıyor | Panel parolasını değil, erişim noktası parolasını kullanın. Ad veya parola değiştiyse eski kayıtlı ağı unutup yeniden bağlanın. Adres alınıyor aşamasında kalırsa Caspian'ı bir kez yeniden başlatın; tekrarlanırsa hatayı bildirin. |
-| Telefon bağlı ama sayfalar açılmıyor | Traffic cut durumunu kontrol edin; erişime izin vermek istiyorsanız trafiği sürdürün. Tünel hatasını, bilgisayarın tarih ve saatini kontrol edin. Okunabilen yapılandırmanın sunucusu erişilemez olabilir; sağlayıcıya sorun. Başka bağlantıyı test etmemek için telefonun mobil verisini geçici kapatın. |
-| Control Ready diyor ama web paneli kırmızı | Ready, hizmetlerin yanıtını doğrular. Panel tüneli ve erişim noktasını gösterir. Tekrar tekrar kurmak yerine hata metnini kaydedin. |
-| Durdurma veya yeniden başlatmadan sonra panel kayboldu | Hizmetler çalışınca Caspian bilgisayarında http://127.0.0.1:8088/ açın. Erişim noktası durunca telefonun panele giden yolu kaybolur. Yerel ağdan erişim varsayılan olarak kapalıdır. |
-| Uyku, bağlantı istasyonunu çıkarma veya ağ değişiminden sonra hata | Bilgisayarı uyandırın, kabloyu ve adaptörleri bağlayın, Caspian kapalıyken interneti doğrulayın ve yeniden başlatın. Diğer cihazlar erişim noktasına ihtiyaç duyarken bilgisayarı uyanık tutun. |
-| macOS uygulamayı engelliyor | Mac kurulum kılavuzunu izleyin. Doğrulanmamış geliştirici uyarısı ile belirli bir zararlı yazılım tespiti farklıdır. Truva atı veya başka zararlı yazılım adı veren uyarıyı aşmayın. |
+| Caspian'a başlamadan önce internet yok | Başka bir kablo veya yönlendirici LAN bağlantı noktasını deneyin. Ethernet'in işletim sistemine bağlandığını doğrulayın. Caspian kapalıyken herhangi bir ağ oturum açma işlemini tamamlayın. |
+| Tek Wi-Fi adaptörü zaten kullanımda | Linux'ta Ethernet veya ayrı bir AP özellikli adaptör kullanın. Tek radyolu Wi-Fi'dan Wi-Fi'ye sürücü desteği gerekir ve bir kanalı paylaşabilir. MacOS'ta yerleşik Wi-Fi için Ethernet'i kullanın. |
+| Erişim noktası özellikli adaptör / adaptör eksik | Wi-Fi'ye katılmak AP desteğinin kanıtı değildir. Linux'ta bağdaştırıcının Linux sürücüsünü ve AP özelliğini kontrol edin. Mac'te harici bir USB Wi-Fi adaptörü Caspian'ın erişim noktası olamaz. |
+| Bağdaştırıcı meşgul veya erişim noktası başlamıyor | Caspian'ı durdur. İnternet bağdaştırıcınızın bağlantısını kesmeden, amaçlanan erişim noktası bağdaştırıcısının diğer ağla olan bağlantısını kesin. Başlattığınız diğer etkin noktaları durdurun. Caspian kapalıyken rakip bir VPN olup olmadığını kontrol edin ve tekrar deneyin. |
+| Telefon etkin noktayı göremiyor | Web panelinin erişim noktasının çalıştığını söylediğini doğrulayın. Yaklaşın, 2,4 GHz'i deneyin ve ülke ayarını kontrol edin. Sabitlenmiş bir kanal gelen Wi-Fi'yi takip eder; etkin nokta kanalını değiştirmek tek başına onu geçersiz kılamaz. |
+| Telefon Wi-Fi'yi görüyor ancak katılamıyor | Panel şifresini değil, erişim noktası şifresini kullanın. Şifreyi yeniden adlandırdıktan veya değiştirdikten sonra, kayıtlı eski Wi-Fi girişini unutun ve tekrar katılın. Adres almaya devam ederse Caspian'ı bir kez yeniden başlatın ve tekrarlanırsa hatayı bildirin. |
+| Telefon katıldı ancak sayfalar açılmıyor | Trafiğe izin vermek istiyorsanız Trafik kes seçeneğini işaretleyin ve devam ettirin. Tünel hatasını okuyun. Bilgisayarın tarih ve saatini kontrol edin. Okunabilir bir yapılandırma, kullanılamayan bir sunucuya işaret edebilir; sağlayıcınıza hala çalışıp çalışmadığını sorun. Yanlış bağlantının test edilmesini önlemek için telefonun mobil verileri geçici olarak kapalıyken test yapın. |
+| Kontrolde Hazır, ancak web panelinde kırmızı | Hazır, arka plan hizmetlerinin yanıt verdiğini doğrular. Web paneli tüneli ve etkin noktayı bildirir. Tekrar tekrar yeniden yüklemek yerine tam mesajını kaydedin. |
+| Panel durdurulduktan veya yeniden başlatıldıktan sonra kayboldu | Hizmetler çalışmaya başladıktan sonra Caspian bilgisayarından http://127.0.0.1:8088/ adresinden yeniden bağlanın. Erişim noktası durduğunda telefon panele olan yolunu kaybeder. Yerel ağ erişimi varsayılan olarak kapalıdır. |
+| Uykudan sonra arıza, bağlantı istasyonunun fişinin çekilmesi veya ağlar arasında geçiş yapılması | Bilgisayarı uyandırın, kabloyu ve adaptörleri yeniden bağlayın, Caspian kapalıyken interneti doğrulayın ve yeniden başlatın. Diğer cihazlar erişim noktasına bağlıyken ana bilgisayarı uyanık tutun. |
+| macOS uygulamayı engelliyor | MacOS kurulum kılavuzunu takip edin. Doğrulanmamış geliştirici uyarısı ve adlandırılmış kötü amaçlı yazılım algılaması farklı işlemler gerektirir. Trojan veya başka bir kötü amaçlı yazılımın adını veren uyarıyı atlamayın. |
 
-## Yapılandırma biçimini kontrol edin
+<a id="check-the-configuration-format"></a>
+## Yapılandırma formatını kontrol edin
 
-Caspian; VLESS, VMess, Shadowsocks, SOCKS, Trojan ve Hysteria2 bağlantılarını, hy2 takma adı dahil kabul eder. Desteklenen Clash/Clash.Meta YAML, Xray JSON, bağlantı listeleri ve base64 abonelik içeriğini de kabul eder. Listede ilk bağlantı kullanılır; abonelik URL'si indirilmez. Sağlayıcıdan hesap parolası veya web sayfası bağlantısı yerine desteklenen yapılandırmanın kendisini isteyin.
+Caspian, hy2 takma adı da dahil olmak üzere VLESS, VMess, Shadowsocks, SOCKS, Trojan ve Hysteria2 bağlantılarını kabul eder. Ayrıca desteklenen Clash/Clash.Meta YAML, Xray JSON, bağlantı listeleri ve base64 abonelik içeriğini de kabul eder. Seçtiğiniz listenin hangi girişini kullanır. Yapılandırmanın yanına bir abonelik adresi kaydedilebilir ve tünel aracılığıyla düğmeye bastığınızda yenilenebilir. Sağlayıcınızdan hesap şifresini veya web sayfası bağlantısını değil, desteklenen gerçek yapılandırmayı isteyin.
 
-Desteklenen taşıma adları raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp ve kcp/mkcp'dir. Protokol, taşıma ve güvenlik ayarları uyumlu olmalıdır; her birleşim çalışmaz. TUIC, WireGuard, SSR, AnyTLS ve Hysteria v1 bağlantıları desteklenmez. Doğrulamayı geçmek için desteklenmeyen protokolün adını değiştirmeyin. Kısıtlar ve test kanıtları protokol kılavuzundadır.
+Desteklenen aktarım adları arasında raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp ve kcp/mkcp bulunur. Protokol, aktarım ve güvenlik ayarları uyumlu olmalıdır; her kombinasyon işe yaramaz. TUIC, WireGuard, SSR, AnyTLS ve Hysteria v1 bağlantıları desteklenmez. Desteklenmeyen bir protokolün doğrulamayı geçmesini sağlamak için yeniden adlandırmayın. Kısıtlamalar ve test kanıtları için protokol kılavuzuna bakın.
 
+<a id="ask-for-help-without-sharing-secrets"></a>
 ## Sırları paylaşmadan yardım isteyin
 
-Hata formunda Caspian sürümünü, işletim sistemi veya Linux dağıtımını ve sürümünü, Ethernet-to-Wi-Fi ya da Wi-Fi-to-Wi-Fi düzenini, her adaptörün dahili veya harici olduğunu, başlamadan önce internetin çalışıp çalışmadığını, tam hatayı ve denediğiniz adımları yazın. Biliyorsanız yonga seti veya sürücü adı yararlıdır; seri numarası eklemeyin.
+Hata raporu formunu kullanın ve bize şunları bildirin: Caspian sürümü, işletim sistemi/dağıtım ve sürüm, Ethernet-Wi-Fi veya Wi-Fi-to-Wi-Fi düzenlemesi, her adaptörün yerleşik mi yoksa harici mi olduğu, internetin başlamadan önce çalışıp çalışmadığı, tam hata ve daha önce denenmiş adımlar. Bağdaştırıcı yonga seti veya sürücü adını biliyorsanız faydalıdır; seri numarası eklemeyin.
 
-Vekil sunucu bağlantıları, abonelik içeriği, yapılandırma dosyaları, parolalar, anahtarlar, QR kodları, genel IP adresleri, ev Wi-Fi adları, MAC/BSSID, kişisel bilgisayar adları veya incelemediğiniz günlük ve ekran görüntülerini paylaşmayın. Kısa hatayı kopyalayıp tanımlayıcıları kaldırın. Destek için paneli internete açmayın veya yönlendiricide port yönlendirmeyin.
+Proxy bağlantıları, abonelik içerikleri, yapılandırma dosyaları, şifreler, anahtarlar, QR kodları, genel IP adresleri, ev Wi-Fi adları, MAC/BSSID adresleri, kişisel ana bilgisayar adları veya incelenmemiş günlükler/ekran görüntüleri göndermeyin. Kısa hatayı kopyalayın ve tanımlayıcıları kaldırın. Paneli internete maruz bırakmayın veya destek için bir yönlendirici bağlantı noktası iletmeyin.
 
-## Bilinen kısıtlar ve kanıtlar
+<a id="known-limitations-and-evidence"></a>
+## Bilinen sınırlamalar ve kanıtlar
 
-Hata kaydı güvenlik ve kurtarma eksiklerini belgeler. Bu adımlar onları kapatmaz. Örneğin, başka bir programın kaldırdığı güvenlik duvarı kurallarını geri getiren düzenli kontrol yoktur. Aynı anda başka ağ paylaşım aracı çalıştırmayın. Aşağıdaki topoloji testleri kontrollü girdilerle planlamayı ve retleri doğrular; donanımınızda yapılmış yeni bir test değildir.
+Kusur kaydı, güvenlik ve kurtarma boşluklarını kaydeder. Bu sorun giderme adımları bunları kapatmaz. Örneğin, başka bir program tarafından kaldırılan bir güvenlik duvarı kural kümesini geri yükleyen periyodik bir kontrol yoktur. Aynı anda başka bir ağ paylaşım aracını çalıştırmaktan kaçının. Aşağıdaki topoloji testleri, kontrollü girişlerle planlamayı ve reddetmeleri doğrular; bunlar donanımınız üzerinde yeni bir test değildir.
 
-- [Kurulum](https://github.com/Iman/caspian/wiki/Installation.tr)
-- [Protokol ayrıntıları (English)](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
+- [Installation](https://github.com/Iman/caspian/wiki/Installation.tr)
+- [Protokol ayrıntıları](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr)
 - [Sorun bildir](https://github.com/Iman/caspian/issues/new?template=bug_report.yml)
 - [Bilinen kusurlar](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md)
-- [Kod ve test kanıtları](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
+- [Kod ve test kanıtı](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: Ethernet / Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->

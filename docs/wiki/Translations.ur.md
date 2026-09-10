@@ -1,46 +1,37 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# تراجم
+<a id="translations"></a>
+# ترجمے
+
+
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
+
+انگریزی ساتوں ویکی زبانوں کا ماخذ ایڈیشن ہے۔ انگریزی مواد تبدیل ہونے پر ہر زبان کے ایڈیشن کو اپ ڈیٹ کریں۔
+
+اپ ڈیٹ کے لیے، ہر دستیاب زبان میں متعلقہ صفحات کو تبدیل کریں۔ کمانڈز، راستے، ٹیسٹ کے نام، پیمائش اور انتباہات کو مسلسل رکھیں۔ حل نہ ہونے والے ترجمے کے اختلافات کو چھپانے کے بجائے ریکارڈ کریں۔
+
+تمام ویکی موضوعات کے انگریزی، فارسی، روسی، آسان چینی، عربی، ترکی اور اردو میں ایڈیشن ہیں۔ ترجمہ انگریزی گائیڈ مواد کا احاطہ کرتا ہے، بشمول انتباہات اور اپ اسٹریم کریڈٹس۔ خودکار جانچیں صفحہ کی کوریج، کوڈ کی مثالوں اور لنکس کا موازنہ کرتی ہیں۔ اپ ڈیٹ شدہ تراجم کو اب بھی آزاد مقامی بولنے والے کے جائزے کی ضرورت ہے۔
 
 <div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
+[العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
 </div>
 
-اردو میں آغاز، تنصیب اور مسائل کے حل کی مختصر رہنمائی دستیاب ہے۔ ساخت، پروٹوکول، سکیورٹی اور ترقی کی تفصیلی دستاویزات کے انگریزی روابط نیچے ہیں۔ یہ تمام تکنیکی تفصیلات کا مکمل ترجمہ نہیں ہے۔ کسی دوسرے اردو بولنے والے نے ابھی اس کا جائزہ نہیں لیا۔
 
-- [شروع کریں](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
-- [تنصیب](https://github.com/Iman/caspian/wiki/Installation.ur)
-- [Linux اور Raspberry Pi پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
-- [macOS پر تنصیب](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
-- [Windows پر تنصیب](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
-- [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-
-## انگریزی میں تفصیل
-
-- [پروٹوکول](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
-- [ساخت](https://github.com/Iman/caspian/wiki/Architecture)
-- [پینل اور ترتیبات](https://github.com/Iman/caspian/wiki/Panel-and-Configuration)
-- [سکیورٹی اور رازداری](https://github.com/Iman/caspian/wiki/Security-and-Privacy)
-- [ترقی اور آزمائش](https://github.com/Iman/caspian/wiki/Development-and-Testing)
-- [ریلیز اور دیکھ بھال](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance)
-- [لائسنس اور ماخذ](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
-- [دستاویزات کا نقشہ](https://github.com/Iman/caspian/wiki/Documentation-Map)
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
-
-<!-- SNI upstream credits -->
-
-SNI کی جعل سازی کے بنیادی کوڈ اور خیال کا ماخذ [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) ہے (GPL-3.0)؛ Windows x64 میں WinDivert استعمال ہوتا ہے (LGPL-3.0)۔
-[دیگر منصوبوں کے لائسنس، ماخذ اور اعتراف](../THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
-Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
+</div>
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

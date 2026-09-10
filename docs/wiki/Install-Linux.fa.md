@@ -1,39 +1,37 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# نصب در Linux و Raspberry Pi
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
 
 </div>
 
-[شکل‌های اتصال، آماده‌سازی کابل پیش از شروع، راه‌اندازی دوبارهٔ سرویس‌ها و خطاهای رایج را در راهنمای عیب‌یابی کاربران خانگی بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+<div dir="rtl" align="right">
 
-پردازنده و رم: حداقل رم، تعداد هسته و سرعت پردازندهٔ موردنیاز کاسپین هنوز با اندازه‌گیری مشخص نشده است. مصرف منابع به حجم ترافیک، پروتکل پراکسی و تعداد اتصال‌های هم‌زمان بستگی دارد. برای اعلام حداقل نیازمندی‌ها، باید مصرف منابع در حالت بیکار و زیر بار اندازه‌گیری شود.
+<a id="install-on-linux-and-raspberry-pi"></a>
+# روی لینوکس و رزبری پای نصب کنید
 
-باینری‌های انتشار لینوکس برای معماری‌های <span dir="ltr">x86-64</span>، <span dir="ltr">ARM64</span> و <span dir="ltr">ARMv6/ARMv7</span> ساخته می‌شوند. سازگاری معماری به‌تنهایی نشان نمی‌دهد که کارایی کافی خواهد بود.
+
+
+[برای نمودارهای اتصال، راه اندازی اول کابل، راه اندازی مجدد سرویس و خطاهای رایج، راهنمای عیب یابی کاربر خانگی را بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+CPU و RAM: Caspian هنوز حداقل RAM، تعداد هسته CPU یا سرعت کلاک اندازه گیری شده ندارد. استفاده از منابع به حجم ترافیک، پروتکل پروکسی و اتصالات همزمان بستگی دارد. قبل از انتشار حداقل الزامات، معیارهای بیکاری و بار مورد نیاز است.
+
+باینری های انتشار لینوکس x86-64، ARM64 و ARMv6/ARMv7 را هدف قرار می دهند. سازگاری معماری به تنهایی عملکرد قابل استفاده را ایجاد نمی کند.
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-[مراحل نصب را بخوانید](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi).
+[مراحل نصب را بخوانید](https://github.com/Iman/caspian/wiki/Installation.fa#linux-and-raspberry-pi).
 
-راهنمای نصب شامل پیش‌نیازها، انتخاب فایل دانلود و مراحل بازیابی موجود برای این سیستم است.
+راهنمای نصب شامل پیش نیازها، انتخاب های دانلود و مراحل بازیابی موجود برای این پلتفرم است.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#linux-和-raspberry-pi)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 8d856e5813928dd087ec22a1269cf6dbcbc7e22dba5f91f4547711b4ee0aac81 -->

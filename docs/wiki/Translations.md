@@ -1,18 +1,20 @@
-# Translations
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
 
 </div>
 
+# Translations
+
+
+
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
-Wiki pages are available in English, Persian, Russian, and Simplified Chinese. The guides reuse the existing README translations. This move does not establish that every translation is complete.
+English is the source edition for all seven wiki languages. Update every language edition when the English content changes.
 
 For an update, change the corresponding pages in every available language. Keep commands, paths, test names, measurements, and warnings consistent. Record unresolved translation differences instead of hiding them.
 
-Arabic, Urdu, and Turkish have short guides for getting started, installation, and troubleshooting. Their home pages link to the detailed technical guides in English. These additions have not had independent native-speaker review. Keep each available translation current when changing its source; record missing coverage explicitly.
+All wiki topics have editions in English, Persian, Russian, Simplified Chinese, Arabic, Turkish, and Urdu. Translations cover the English guide content, including warnings and upstream credits. Automated checks compare page coverage, code examples, and links. The updated translations still need independent native-speaker review.
 
 <div dir="ltr" align="left">
 
@@ -20,11 +22,7 @@ Arabic, Urdu, and Turkish have short guides for getting started, installation, a
 
 </div>
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- Caspian guide navigation -->
 

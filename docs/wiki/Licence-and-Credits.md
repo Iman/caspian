@@ -1,10 +1,12 @@
-# Licence and credits
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
+
+# Licence and credits
+
+
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -57,7 +59,7 @@ one; they are credited because the work is theirs.
 | [.NET runtime and Windows Forms](https://github.com/dotnet/runtime) | MIT | The self-contained Windows helper and tray app runtime |
 | `System.ServiceProcess.ServiceController` | MIT | Windows service control from `CaspianControl.exe` |
 
-The Windows installation has one separate third-party DLL: `wintun.dll`.
+The Windows installation includes `wintun.dll`. The SNI build also includes WinDivert on Windows x64.
 Caspian distributes the official signed Wintun 0.14.1 binary without changes.
 Its license is in
 [`third_party/wintun/PREBUILT-BINARIES-LICENSE.txt`](https://github.com/Iman/caspian/blob/main/third_party/wintun/PREBUILT-BINARIES-LICENSE.txt) and is copied to
@@ -76,16 +78,12 @@ licences do not affect this one, but the appliance is nothing without them.
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) carries the full record: every module in the binary, the licence read
 from its own licence file, and the compatibility reasoning.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
-[Third-party licenses, source versions, and credits](../THIRD-PARTY.md).
+[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
 ## SNI idea acknowledgements
 
@@ -107,9 +105,3 @@ See [third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credi
 Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
 
 [WinDivert — Basil (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
-
-<div dir="ltr">
-
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
-
-</div>

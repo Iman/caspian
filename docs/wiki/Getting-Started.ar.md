@@ -1,44 +1,106 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# بدء الاستخدام
+<a id="getting-started"></a>
+# البدء
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
 
-</div>
+[للتعرف على مخططات الاتصال وإعداد الكابل أولاً وإعادة تشغيل الخدمة والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء وإصلاحها للمستخدم المنزلي.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
 
-[للرسوم التوضيحية وتوصيل الكابل قبل التشغيل وإعادة تشغيل الخدمات والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء للمستخدمين في المنزل.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
-يحوّل Caspian جهاز كمبيوتر إلى نقطة اتصال Wi-Fi تستخدم إعداد وكيل توفره أنت. تحتاج إلى اتصال إنترنت قائم وخادم وكيل يمكن الوصول إليه. لا يعيد الوكيل الاتصال أثناء انقطاع كامل للشبكة.
+> يأتي هذا الدليل من ملف README الموجود. تحتفظ قياساتها بتواريخها الأصلية. لا يُبلغ نقل التوثيق هذا عن تشغيل اختباري جديد.
+> [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
-1. اختر دليل التثبيت المناسب لنظامك.
-2. جهّز رابط الوكيل أو ملف إعداداته. لا تنشره في بلاغ عام.
-3. ثبّت Caspian واحتفظ بكلمة مرور لوحة التحكم.
-4. افتح اللوحة وأدخل اسم شبكة Wi-Fi وكلمة مرورها وإعداد الوكيل.
-5. شغّل Caspian من مفتاح اللوحة وانتظر الحالة الخضراء.
-6. صِل جهازًا بشبكة Wi-Fi الجديدة وافتح موقعًا لاختبار الاتصال.
+<a id="what-it-is-for"></a>
+## ما هو عليه
 
-كلمة مرور اللوحة تختلف عن كلمة مرور Wi-Fi. على macOS، تحتاج إلى إنترنت عبر Ethernet عندما تستخدم Wi-Fi المدمج كنقطة اتصال. على Linux، راجع متطلبات واجهتي الشبكة قبل التثبيت. تشغيل الشبكة على جهاز Raspberry Pi الذي اختُبر قد يفصل اتصاله السابق عبر Wi-Fi. وضع استخدام محول USB كنقطة اتصال لم يُختبر على عتاد حقيقي.
+الجمهور هو شخص تم إعطاؤه تكوينًا عمليًا من قبل شخص يثق به،
+ومن يريد أن تعمل الأجهزة الموجودة في الغرفة. لن يفتحوا محطة ،
+قراءة سجل، أو تحرير ملف. بعد التثبيت، يحدث كل إجراء في الملف
+لوحة. راجع [`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، الأقسام 5.1 و5.2.
 
-توفر لغة في الويكي لا يعني أن واجهة التطبيق تدعمها أو أن Caspian اختُبر في بلد معين.
+المحرك هو xray-core v26.4.15 (إصدار وحدة Go `v1.260327.1-0.20260415235634-c5edc122b70e`)، مرتبط بالثنائي بدلاً من
+تم تنزيله. محلل ارتباط المشاركة هو حزمة MIT `share` من XTLS/libXray،
+يتم بيعها في العلامة v26.3.27 تحت `third_party/libxray-share/` بترخيصها الخاص
+أبقى بجانبه.
 
-- [التثبيت على Linux وRaspberry Pi](https://github.com/Iman/caspian/wiki/Install-Linux.ar)
-- [التثبيت على macOS](https://github.com/Iman/caspian/wiki/Install-macOS.ar)
-- [التثبيت على Windows](https://github.com/Iman/caspian/wiki/Install-Windows.ar)
+يقبل `supportedSchemes` في [`internal/link/link.go`](https://github.com/Iman/caspian/blob/main/internal/link/link.go) سبعة مخططات: `vless`،
+بما في ذلك REALITY، بالإضافة إلى `vmess`، `trojan`، `ss`، `socks`، `hysteria2` و
+`hy2`. أي شيء آخر، بما في ذلك `tuic`، و`ssr`، و`wireguard`، و`anytls`، هو
+رفض بالاسم.
 
-[التفاصيل بالإنجليزية](https://github.com/Iman/caspian/wiki/Getting-Started)
+<a id="what-it-needs"></a>
+## ما يحتاجه
 
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
+يحتاج الاتصال إلى Windows 10 الإصدار 2004 (النسخة 19041) أو إصدار أحدث. على أقدم
+Windows، العودة إلى الإصدار 1607، يتم تثبيت Caspian وتفتح اللوحة وتقول
+ما لا يستطيع هذا الإصدار فعله. تتضمن الإصدارات الحالية Windows 10 الإصدار 2004 (النسخة 19041) أو الإصدارات الأحدث و
+Windows 11 على x64 وARM64، وmacOS 13 أو أحدث على Intel وApple Silicon، و
+Linux على x86_64 وARM64 وARMv7 وARMv6. أندرويد و iOS
+ليسوا مضيفين للبوابة؛ تنضم الهواتف والأجهزة اللوحية إلى شبكة Caspian Wi-Fi كعملاء.
 
-<div dir="ltr" align="left">
+يسجل [`internal/netcfg/testdata/PROVENANCE.md`](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) الجهاز الذي كان عليه
+تم تطويره وقياسه وفقًا لـ: Raspberry Pi 5 Model B Rev 1.0 وDebian 13
+(تريكسي)، النواة 6.18.34+rpt-rpi-2712 aarch64، nftables 1.1.3، iw 6.9،
+iproute2 6.15.0، brcmfmac على phy0، تم تقديم NetworkManager بواسطة netplan.
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[`install.sh`](https://github.com/Iman/caspian/blob/main/install.sh) يرفض، قبل أن يلمس الجهاز، أي شيء ليس من نظام Linux
+على x86_64، أو aarch64، أوarmv7l، أوarmv6l، مع الإصدار systemd 240 أو الأحدث، قم بتشغيله كجذر.
+كل رفض يذكر ما وجده.
 
-</div>
+تحتاج الواجهة الخلفية لنظامي Linux وRaspberry Pi إلى واجهتين للشبكة في إحدى هاتين الواجهتين
+الترتيبات أدناه. راجع [`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، القسم 4.7. الحالي
+تستخدم الواجهة الخلفية لنظام التشغيل macOS شبكة إيثرنت سلكية للاتصال بالإنترنت ومدمجة
+واي فاي لنقطة الاتصال. يستخدم Windows محول Wi-Fi يدعم الهاتف المحمول
+نقطة اتصال.
 
-</div>
+```mermaid
+flowchart LR
+    subgraph modea["Mode A, the measured one"]
+        A1["Ethernet<br/>brings the internet in"] --- A2["Built-in WiFi<br/>becomes the hotspot"]
+    end
+    subgraph modeb["Mode B, never run on real hardware"]
+        B1["Built-in WiFi<br/>brings the internet in"] --- B2["USB adapter reporting AP support<br/>becomes the hotspot"]
+    end
+```
+
+لم يتم تشغيل الوضع B مطلقًا. يسجل `PROVENANCE.md` أن الهدف قد تم تحديده بالضبط
+راديو واحد ولا يوجد جهاز USB متصل، لذلك يتم توصيل كل وضع B في الشجرة
+تأليف بدلا من التقاطها.
+
+**بالنسبة للأجهزة التي تم قياسها، فإن رفع نقطة الاتصال يكلف الصندوق نفسه
+WiFi.** يرفض برنامج التشغيل `brcmfmac` `iw phy phy0 interface add ap0 type __ap`
+مع `Input/output error (-5)`، على الرغم من أن `iw list` يعلن عن
+مزيج. لذلك يعود الجهاز إلى الاستيلاء على `wlan0`: فهو يطلق ملف
+واجهة من NetworkManager، تزيل العنوان الموجود على الشبكة المنزلية،
+ويعيد كتابته. كل من الرفض وتسلسل الاستحواذ الناجح
+تم قياسها وتسجيلها في `PROVENANCE.md`. اللوحة والسجل يقولان ما ذلك
+التكاليف قبل حدوثها. الاختبار: `TestTheTakeoverSaysWhatItCost`.
+
+يبقى إنشاء واجهة ثانية هو الخيار الأول، لأنه عندما يتم تشغيله
+لا يكلف المستخدم شيئا. يتم الوصول إلى الخيار الاحتياطي فقط بعد الاختيار الأول
+تمت محاكمتها ورفضها، وتم هدم الخطة الأولى بالكامل قبل
+يتم تطبيق الثاني.
+
+
+
+<!-- SNI upstream credits -->
+
+أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
+[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
-أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
+</div>
+
+
+<!-- English-source-sha256: 629d6e2b6255b16d3bc76228a7aec238747c2de1af4bc20e44050dafefa13075 -->

@@ -1,37 +1,43 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) | [اردو](https://github.com/Iman/caspian/wiki/Page-Template.ur)
+
+</div>
+
+<a id="page-template"></a>
 # 页面模板
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
 
-</div>
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
+状态：大纲。在发布完整指南之前替换每个占位符。
 
-状态：提纲。发布完整指南前，请填写所有占位内容。
+<a id="purpose"></a>
+## 目的
 
-## 用途
+TODO：说明任务和目标读者。
 
-TODO: 说明任务和目标读者。
+<a id="requirements"></a>
+## 要求
 
-## 前提条件
+TODO：命名版本、平台、权限和工具。
 
-TODO: 列出版本、平台、权限和工具。
+<a id="steps-and-expected-results"></a>
+## 步骤和预期结果
 
-## 步骤与预期结果
+TODO：添加编号步骤、精确命令和检查。
 
-TODO: 添加编号步骤、准确命令和检查方法。
+<a id="recovery-and-evidence"></a>
+## 恢复和证据
 
-## 恢复与证据
+TODO：记录错误、恢复步骤、测试结果、日期和已知限制。
 
-TODO: 记录错误、恢复步骤、测试结果、日期和已知限制。
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 96de2b0f6c166c14e5982c19975159622b6cd30bece0775255ca81c00f4f052b -->

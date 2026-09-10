@@ -1,30 +1,28 @@
-# Релизы и сопровождение
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh)
+[English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh) | [العربية](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.tr) | [اردو](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ur)
 
 </div>
 
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
+<a id="releases-and-maintenance"></a>
+# Релизы и обслуживание
 
-Проверка загрузок, обновление и доступные способы удаления описаны в руководстве по установке. Упаковка и автоматизация релизов находятся в репозитории.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh)
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
-</div>
+Используйте руководство по установке для проверки загрузки, обновлений и доступных процедур удаления. Автоматизация упаковки и выпуска остается в репозитории.
+
+
 
 - [release.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml)
 - [package.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/package.yml)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 36cbe0fa1e02678e9e8d334a063f75e3f54e9a1b4fcb51c50387376bbff0fd79 -->

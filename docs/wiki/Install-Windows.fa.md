@@ -1,37 +1,35 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# نصب در Windows
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
 
 </div>
 
-[شکل‌های اتصال، آماده‌سازی کابل پیش از شروع، راه‌اندازی دوبارهٔ سرویس‌ها و خطاهای رایج را در راهنمای عیب‌یابی کاربران خانگی بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+<div dir="rtl" align="right">
 
-پردازنده و رم: حداقل رم، تعداد هسته و سرعت پردازندهٔ موردنیاز کاسپین هنوز با اندازه‌گیری مشخص نشده است. مصرف منابع به حجم ترافیک، پروتکل پراکسی و تعداد اتصال‌های هم‌زمان بستگی دارد. برای اعلام حداقل نیازمندی‌ها، باید مصرف منابع در حالت بیکار و زیر بار اندازه‌گیری شود.
+<a id="install-on-windows"></a>
+# روی ویندوز نصب کنید
+
+
+
+[برای نمودارهای اتصال، راه اندازی اول کابل، راه اندازی مجدد سرویس و خطاهای رایج، راهنمای عیب یابی کاربر خانگی را بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+CPU و RAM: Caspian هنوز حداقل RAM، تعداد هسته CPU یا سرعت کلاک اندازه گیری شده ندارد. استفاده از منابع به حجم ترافیک، پروتکل پروکسی و اتصالات همزمان بستگی دارد. قبل از انتشار حداقل الزامات، معیارهای بیکاری و بار مورد نیاز است.
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-[مراحل نصب را بخوانید](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-windows-10-و-11).
+[مراحل نصب را بخوانید](https://github.com/Iman/caspian/wiki/Installation.fa#windows-10-and-11).
 
-راهنمای نصب شامل پیش‌نیازها، انتخاب فایل دانلود و مراحل بازیابی موجود برای این سیستم است.
+راهنمای نصب شامل پیش نیازها، انتخاب های دانلود و مراحل بازیابی موجود برای این پلتفرم است.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-windows-10-و-11) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#windows-10-и-11) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#windows-10-和-11)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: ce8f5bbd9e232bd7873bf3d42a21b833c23b873ecf2ac122e40a832f387b6905 -->

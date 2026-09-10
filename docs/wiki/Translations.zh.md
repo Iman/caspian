@@ -1,18 +1,21 @@
-# 翻译
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
 
 </div>
 
-[Caspian Wiki](https://github.com/Iman/caspian/wiki/Home.zh)
+<a id="translations"></a>
+# 翻译
 
-Wiki 页面提供英文、波斯文、俄文和简体中文版本。指南沿用现有 README 翻译。此次迁移并不能证明每种翻译都完整。
 
-更新时，请修改所有已有语言的对应页面。保持命令、路径、测试名称、测量结果和警告一致。记录尚未解决的翻译差异，不要隐藏它们。
 
-阿拉伯语、乌尔都语和土耳其语提供入门、安装和故障排查简明指南。各语言首页链接到详细的英文技术指南。这些新增翻译尚未经过独立的母语使用者审校。修改原文时，请更新已有译文，并注明尚未翻译的内容。
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
+
+英语是所有七种维基语言的源版本。当英文内容发生变化时更新各个语言版本。
+
+如需更新，请更改每种可用语言的相应页面。保持命令、路径、测试名称、测量和警告一致。记录未解决的翻译差异而不是隐藏它们。
+
+所有维基主题都有英语、波斯语、俄语、简体中文、阿拉伯语、土耳其语和乌尔都语版本。翻译涵盖英文指南内容，包括警告和上游制作人员名单。自动检查会比较页面覆盖率、代码示例和链接。更新后的翻译仍需要独立的母语人士审核。
 
 <div dir="ltr" align="left">
 
@@ -20,12 +23,11 @@ Wiki 页面提供英文、波斯文、俄文和简体中文版本。指南沿用
 
 </div>
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

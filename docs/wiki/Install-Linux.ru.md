@@ -1,35 +1,33 @@
-# Установка на Linux и Raspberry Pi
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
 
 </div>
 
-[Схемы подключения, подготовка кабеля до запуска, перезапуск служб и частые ошибки описаны в руководстве для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+<a id="install-on-linux-and-raspberry-pi"></a>
+# Установите на Linux и Raspberry Pi.
 
-Процессор и память: минимальный объём оперативной памяти, число ядер и тактовая частота для Caspian пока не определены измерениями. Потребление ресурсов зависит от объёма трафика, протокола прокси и числа одновременных соединений. Перед публикацией минимальных требований нужны замеры в простое и под нагрузкой.
 
-Готовые сборки для Linux рассчитаны на x86-64, ARM64 и ARMv6/ARMv7. Совместимость архитектуры сама по себе не подтверждает достаточную производительность.
 
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
+[Схемы подключения, настройку с подключением кабеля, перезапуск службы и распространенные ошибки см. в руководстве по устранению неполадок для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
-[Открыть инструкцию по установке](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi).
+Процессор и оперативная память: у компанииCaspian пока нет измеренного минимального объема оперативной памяти, количества ядер процессора или тактовой частоты. Использование ресурсов зависит от объема трафика, протокола прокси и одновременных подключений. Прежде чем публиковать минимальные требования, необходимы тесты на холостом ходу и под нагрузкой.
 
-В руководстве указаны требования, варианты загрузки и доступные действия для восстановления на этой платформе.
+Бинарные файлы выпуска Linux предназначены для x86-64, ARM64 и ARMv6/ARMv7. Совместимость архитектуры сама по себе не обеспечивает полезную производительность.
 
-<div dir="ltr" align="left">
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[Прочтите этапы установки](https://github.com/Iman/caspian/wiki/Installation.ru#linux-and-raspberry-pi).
 
-</div>
+Руководство по установке содержит необходимые условия, варианты загрузки и доступные шаги по восстановлению для этой платформы.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#linux-和-raspberry-pi)
 
-</div>
+
 
 <!-- Caspian guide navigation -->
 
-Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 8d856e5813928dd087ec22a1269cf6dbcbc7e22dba5f91f4547711b4ee0aac81 -->

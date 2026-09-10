@@ -1,104 +1,106 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# شروع کار
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
+[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
 
 </div>
 
-[شکل‌های اتصال، آماده‌سازی کابل پیش از شروع، راه‌اندازی دوبارهٔ سرویس‌ها و خطاهای رایج را در راهنمای عیب‌یابی کاربران خانگی بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+<div dir="rtl" align="right">
+
+<a id="getting-started"></a>
+# شروع کردن
+
+
+
+[برای نمودارهای اتصال، راه اندازی اول کابل، راه اندازی مجدد سرویس و خطاهای رایج، راهنمای عیب یابی کاربر خانگی را بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-> این راهنما از README موجود منتقل شده است. تاریخ اندازه‌گیری‌ها همان تاریخ اصلی است؛ این جابه‌جایی گزارش اجرای تازهٔ آزمون‌ها نیست.
+> این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
 
-## این برای چیست
+<a id="what-it-is-for"></a>
+## برای چیست
 
-مخاطب کسی است که یک کانفیگ سالم را از آدمی که به او اعتماد دارد گرفته و می‌خواهد
-دستگاه‌های داخل اتاق کار کنند. او ترمینال باز نمی‌کند، گزارش نمی‌خواند و فایلی
-را ویرایش نمی‌کند. بعد از نصب، هر کاری در پنل انجام می‌شود. ببینید
-[<span dir="ltr">`docs/2026-08-29-design.md`</span>](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش‌های 5.1 و 5.2.
+مخاطب کسی است که توسط شخصی که به او اعتماد دارد یک پیکربندی کار داده شده است.
+و چه کسی می خواهد دستگاه های موجود در اتاق کار کنند. آنها ترمینال را باز نمی کنند،
+یک گزارش را بخوانید یا یک فایل را ویرایش کنید. پس از نصب، هر عملی در قسمت انجام می شود
+پانل. به [`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش‌های 5.1 و 5.2 مراجعه کنید.
 
-نرم‌افزار اتصال، xray-core نسخهٔ v26.4.15 (Go module version <span dir="ltr">`v1.260327.1-0.20260415235634-c5edc122b70e`</span>) است که به‌جای دانلود شدن، داخل خودِ
-فایل اجرایی لینک شده است. تجزیه‌کنندهٔ لینک اشتراک‌گذاری، بستهٔ <span dir="ltr">`share`</span> با پروانهٔ
-MIT از XTLS/libXray است که در تگ v26.3.27 زیر <span dir="ltr">`third_party/libxray-share/`</span>
-همراه با پروانهٔ خودش نگهداری می‌شود.
+موتور xray-core v26.4.15 (نسخه ماژول Go نسخه `v1.260327.1-0.20260415235634-c5edc122b70e`) است، به جای اینکه به باینری متصل شود
+دانلود شده است. تجزیه کننده پیوند اشتراکی، بسته MIT `share` از XTLS/libXray است،
+عرضه شده در برچسب v26.3.27 تحت `third_party/libxray-share/` با مجوز خاص خود
+در کنار آن نگه داشته شد
 
-<span dir="ltr">`supportedSchemes`</span> در [<span dir="ltr">`internal/link/link.go`</span>](https://github.com/Iman/caspian/blob/main/internal/link/link.go) هفت اسکیم را می‌پذیرد: <span dir="ltr">`vless`</span> که
-REALITY را هم شامل می‌شود، به‌علاوهٔ <span dir="ltr">`vmess`</span>، <span dir="ltr">`trojan`</span>، <span dir="ltr">`ss`</span>، <span dir="ltr">`socks`</span>،
-<span dir="ltr">`hysteria2`</span> و <span dir="ltr">`hy2`</span>. هر چیز دیگری، از جمله <span dir="ltr">`tuic`</span>، <span dir="ltr">`ssr`</span>، <span dir="ltr">`wireguard`</span> و
-<span dir="ltr">`anytls`</span>، با نام رد می‌شود.
+`supportedSchemes` در [`internal/link/link.go`](https://github.com/Iman/caspian/blob/main/internal/link/link.go) هفت طرح را می پذیرد: `vless`،
+از جمله REALITY، به علاوه `vmess`، `trojan`، `ss`، `socks`، `hysteria2` و
+`hy2`. هر چیز دیگری، از جمله `tuic`، `ssr`، `wireguard` و `anytls`،
+با نام خودداری کرد
 
-## به چه نیاز دارد
+<a id="what-it-needs"></a>
+## آنچه نیاز دارد
 
-وصل شدن به Windows 10 نسخهٔ 2004 (بیلد 19041) یا جدیدتر نیاز دارد. روی ویندوزی
-قدیمی‌تر، تا نسخهٔ 1607، کاسپین نصب می‌شود و پنل باز می‌شود و می‌گوید آن نسخه چه کاری
-را نمی‌تواند انجام دهد. انتشارهای کنونی Windows 10 نسخهٔ 2004 (بیلد 19041) یا جدیدتر و Windows 11 روی x64 و ARM64، نسخهٔ macOS 13 یا جدیدتر روی Intel
-و Apple Silicon، و Linux روی x86_64، ARM64، ARMv7 و ARMv6 را در بر می‌گیرند.
-Android و iOS میزبان دروازه نیستند؛ تلفن و تبلت به‌عنوان دستگاه به وای‌فای
-Caspian وصل می‌شوند.
+اتصال به ویندوز 10 نسخه 2004 (بیلد 19041) یا جدیدتر نیاز دارد. روی یک بزرگتر
+ویندوز برگشت به ورژن 1607 کاسپین نصب میکنه و پنل باز میشه و میگه
+کاری که آن نسخه نمی تواند انجام دهد. نسخه های فعلی شامل ویندوز 10 نسخه 2004 (بیلد 19041) یا جدیدتر و
+ویندوز 11 در x64 و ARM64، macOS 13 یا جدیدتر در Intel و Apple Silicon و
+لینوکس در x86_64، ARM64، ARMv7 و ARMv6. اندروید و iOS
+میزبان دروازه نیستند. تلفن ها و تبلت ها به عنوان مشتری به وای فای کاسپین می پیوندند.
 
-[<span dir="ltr">`internal/netcfg/testdata/PROVENANCE.md`</span>](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) دستگاهی را که این پروژه روی آن توسعه و
-اندازه‌گیری شده ثبت کرده است: یک Raspberry Pi 5 Model B Rev 1.0، Debian 13
-(trixie)، هستهٔ 6.18.34+rpt-rpi-2712 aarch64، nftables 1.1.3، iw 6.9،
-iproute2 6.15.0، brcmfmac روی phy0، و NetworkManager که netplan آن را می‌سازد.
+[`internal/netcfg/testdata/PROVENANCE.md`](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) دستگاهی را که بوده است ثبت می کند
+توسعه یافته و اندازه گیری شده بر اساس: Raspberry Pi 5 Model B Rev 1.0, Debian 13
+(trixie)، هسته 6.18.34+rpt-rpi-2712 aarch64، nftables 1.1.3، iw 6.9،
+iproute2 6.15.0، brcmfmac در phy0، NetworkManager ارائه شده توسط netplan.
 
-[<span dir="ltr">`install.sh`</span>](https://github.com/Iman/caspian/blob/main/install.sh) پیش از آنکه به دستگاه دست بزند، هر چیزی را که لینوکس روی x86_64،
-aarch64، armv7l یا armv6l نباشد، با systemd نسخهٔ 240 یا بالاتر، و اجراشده با
-root، رد می‌کند. هر ردکردن می‌گوید چه دیده.
+[`install.sh`](https://github.com/Iman/caspian/blob/main/install.sh)، قبل از اینکه دستگاه را لمس کند، از هر چیزی که لینوکس نیست، امتناع می کند
+در x86_64، aarch64، armv7l یا armv6l، با systemd 240 یا جدیدتر، به صورت root اجرا شود.
+هر امتناع چیزی را که پیدا کرده نام می برد.
 
-بخش Linux و Raspberry Pi به دو رابط شبکه در یکی از چیدمان‌های زیر نیاز دارد.
-ببینید [<span dir="ltr">`docs/2026-08-29-design.md`</span>](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش 4.7. در بخش فعلی macOS، اینترنت از
-Ethernet سیمی می‌آید و وای‌فای داخلی هات‌اسپات می‌شود. Windows از رابط وای‌فایی
-استفاده می‌کند که Mobile Hotspot را پشتیبانی کند.
-
-<div dir="ltr" align="left">
+باطن لینوکس و رزبری پای به دو رابط شبکه در یکی از آنها نیاز دارد
+ترتیبات زیر [`docs/2026-08-29-design.md`](https://github.com/Iman/caspian/blob/main/docs/2026-08-29-design.md)، بخش 4.7 را ببینید. جریان
+باطن macOS از اترنت سیمی برای اتصال به اینترنت و داخلی استفاده می کند
+Wi-Fi برای هات اسپات. ویندوز از یک آداپتور Wi-Fi استفاده می کند که از موبایل پشتیبانی می کند
+هات اسپات.
 
 ```mermaid
 flowchart LR
-    subgraph modea["حالت A، همان که اندازه‌گیری شده"]
-        A1["اترنت<br/>اینترنت را می‌آورد"] --- A2["وای‌فای داخلی<br/>هات‌اسپات می‌شود"]
+    subgraph modea["Mode A, the measured one"]
+        A1["Ethernet<br/>brings the internet in"] --- A2["Built-in WiFi<br/>becomes the hotspot"]
     end
-    subgraph modeb["حالت B، هرگز روی سخت‌افزار واقعی اجرا نشده"]
-        B1["وای‌فای داخلی<br/>اینترنت را می‌آورد"] --- B2["آداپتور USB که پشتیبانی از AP را گزارش می‌کند<br/>هات‌اسپات می‌شود"]
+    subgraph modeb["Mode B, never run on real hardware"]
+        B1["Built-in WiFi<br/>brings the internet in"] --- B2["USB adapter reporting AP support<br/>becomes the hotspot"]
     end
 ```
 
-</div>
+حالت B هرگز اجرا نشده است. `PROVENANCE.md` ثبت می کند که هدف دقیقاً دارد
+یک رادیو و هیچ دستگاه USB متصل نشده است، بنابراین هر فیکسچر حالت B در درخت وجود دارد
+به جای ضبط
 
-حالت B هرگز اجرا نشده است. <span dir="ltr">`PROVENANCE.md`</span> ثبت کرده که دستگاهِ هدف دقیقاً یک
-رادیو دارد و هیچ دستگاه USB ای به آن وصل نیست، پس هر فیکسچرِ حالت B در این درخت
-نوشته شده است و از دستگاه گرفته نشده.
+**در سخت افزار اندازه گیری شده، بالا بردن نقطه اتصال هزینه جعبه را دارد
+WiFi.** درایور `brcmfmac` `iw phy phy0 interface add ap0 type __ap` را رد می کند
+با `Input/output error (-5)`، حتی اگر `iw list` تبلیغ می کند
+ترکیبی بنابراین دستگاه به تصاحب `wlan0` برمی گردد: آن را آزاد می کند
+رابط از NetworkManager، آدرسی را که در شبکه خانه نگه می‌دارد، حذف می‌کند،
+و آن را دوباره تایپ می کند. هر دو رد و توالی تصاحب موفق هستند
+اندازه گیری و در `PROVENANCE.md` ثبت شد. پانل و گزارش می گویند که چه
+هزینه های قبل از وقوع تست: `TestTheTakeoverSaysWhatItCost`.
 
-**روی سخت‌افزاری که اندازه‌گیری شده، بالا آوردنِ هات‌اسپات به قیمتِ از دست رفتنِ
-وای‌فایِ خودِ دستگاه تمام می‌شود.** درایور <span dir="ltr">`brcmfmac`</span> فرمانِ
-<span dir="ltr">`iw phy phy0 interface add ap0 type __ap`</span> را با <span dir="ltr">`Input/output error (-5)`</span> رد
-می‌کند، هرچند <span dir="ltr">`iw list`</span> آن ترکیب را تبلیغ می‌کند. پس دستگاه به تصاحبِ <span dir="ltr">`wlan0`</span>
-عقب می‌نشیند: رابط را از NetworkManager آزاد می‌کند، آدرسی را که روی شبکهٔ خانه
-دارد برمی‌دارد، و نوعش را عوض می‌کند. هم آن ردکردن و هم توالیِ موفقِ تصاحب
-اندازه‌گیری و در <span dir="ltr">`PROVENANCE.md`</span> ثبت شده‌اند. پنل و گزارش، پیش از آنکه این اتفاق
-بیفتد، می‌گویند هزینه‌اش چیست. آزمون: <span dir="ltr">`TestTheTakeoverSaysWhatItCost`</span>.
+ایجاد یک رابط دوم در انتخاب اول باقی می‌ماند، زیرا وقتی کار می‌کند
+هیچ هزینه ای برای کاربر ندارد بازگشت مجدد تنها پس از انتخاب اول حاصل می شود
+محاکمه شد و رد شد و طرح اول به طور کامل از بین رفت
+دوم اعمال می شود.
 
-ساختنِ یک رابطِ دوم همچنان انتخابِ اول است، چون وقتی کار کند برای کاربر هزینه‌ای
-ندارد. راهِ دوم فقط بعد از آنکه انتخابِ اول امتحان و رد شد سراغش می‌روند، و نقشهٔ
-اول کاملاً برچیده می‌شود پیش از آنکه نقشهٔ دوم اعمال شود.
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- SNI upstream credits -->
 
-منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
-[مجوزها، منابع و قدردانی از پروژه‌های دیگر](../THIRD-PARTY.md).
+اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
+[مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 629d6e2b6255b16d3bc76228a7aec238747c2de1af4bc20e44050dafefa13075 -->

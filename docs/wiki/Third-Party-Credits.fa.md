@@ -1,52 +1,66 @@
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [Русский](https://github.com/Iman/caspian/blob/feature/sni/README.ru.md) · [中文](https://github.com/Iman/caspian/blob/feature/sni/README.zh.md)
+<div dir="ltr">
 
-# کد و انتساب شخص ثالث
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
-نسخهٔ انگلیسی مرجع این سند است. آزمون‌ها برابری شناسه‌ها و پیوندها را بررسی می‌کنند.
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) کتابخانه‌های پیوندشده و فایل‌های توزیع Caspian را فهرست می‌کند.
-هر جزء بالادستی مجوز خود را حفظ می‌کند؛ شرایط AGPL کاسپین جایگزین آن‌ها نیست.
+</div>
 
+<div dir="rtl" align="right">
+
+<a id="third-party-code-and-credits"></a>
+# کد و اعتبار شخص ثالث
+
+[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) کتابخانه های مرتبط و فایل های توزیع کاسپین را فهرست می کند.
+هر جزء بالادستی مجوز خود را حفظ می کند.
+شرایط AGPL کاسپین جایگزین آن اطلاعیه های بالادستی نمی شود.
+
+<a id="sni-spoofing"></a>
 ## جعل SNI
 
-منبع اصلی کد و ایده **[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)** است.
-Caspian تغییر ثبت‌شدهٔ `13b78cf7e073f38d9cadcff542faf4a00b0a6de2` را بررسی کرده است.
-قالب ClientHello و الگوریتم دست‌دهی، مبنای `internal/snispoof` هستند.
-تغییرات Caspian شامل یکپارچه‌سازی Go، اعتبارسنجی، مالکیت اتصال، محدودیت منابع، بازگردانی وضعیت و آزمون‌ها است.
+کد و ایده اصلی از **[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)** آمده است.
+کاسپین بررسی commit `13b78cf7e073f38d9cadcff542faf4a00b0a6de2`.
+الگوریتم ClientHello و دست دادن به `internal/snispoof` اطلاع رسانی می کند.
+تغییرات کاسپین یکپارچه سازی Go، اعتبار سنجی، مالکیت اتصال، محدودیت منابع، بازگشت مجدد و آزمایشات را اضافه می کند.
 
-فایل‌های مشتق‌شده اعلان GPL-3.0-only را حفظ می‌کنند.
-[متن کامل GPL بالادستی](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) و [انتساب](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) در مخزن موجود است.
-بند ۱۳ GPLv3 ترکیب با کد AGPLv3 را مجاز می‌داند و هر بخش شرایط خود را حفظ می‌کند.
-توزیع‌کننده باید اعلان‌ها را حفظ کند، تغییرات را مشخص کند و منبع متناظر را طبق مجوزهای مربوط ارائه دهد.
-ذکر نام به معنای تأیید Caspian از سوی نویسندگان بالادستی نیست.
+فایل های منبع مشتق شده، یادداشت های GPL-3.0-only را حفظ می کنند.
+[مجوز GPL بالادست](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) و [انتساب](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) کامل در مخزن باقی می مانند.
+بخش 13 GPLv3 اجازه ترکیب با کد AGPLv3 را می دهد در حالی که هر قسمت شرایط خاص خود را حفظ می کند.
+توزیع کنندگان باید اعلامیه ها را حفظ کنند، تغییرات را علامت گذاری کنند، و منبع مربوطه را تحت مجوزهای مربوطه ارائه دهند.
+اعتبار به معنای تایید توسط نویسندگان بالادستی نیست.
 
-Windows x64 از **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** اثر Basil (basil00) و مشارکت‌کنندگان استفاده می‌کند.
-Caspian از میان مجوزهای دوگانه، LGPL-3.0 را انتخاب می‌کند.
-نصب‌کننده درایور و DLL بدون تغییر، مجموعهٔ کامل مجوزها، انتساب و آرشیو منبع v2.2.2 را دارد.
+Windows x64 از **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** توسط Basil (basil00) و مشارکت کنندگان استفاده می کند.
+کاسپین LGPL-3.0 را از لایسنس دوگانه خود انتخاب می کند.
+نصب کننده شامل درایور اصلاح نشده و DLL، بسته مجوز کامل، منبع، و آرشیو منبع نسخه 2.2.2 است.
 [جزئیات توزیع WinDivert](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md) را ببینید.
-Windows ARM64 شامل WinDivert نیست و نمی‌تواند از این قابلیت SNI استفاده کند.
+ویندوز ARM64 شامل WinDivert نیست و نمی تواند از این ویژگی SNI استفاده کند.
 
-## ایده‌ها و قدردانی
+<a id="ideas-and-acknowledgements"></a>
+## ایده ها و قدردانی ها
 
-Caspian از نویسندگان و مشارکت‌کنندگان پروژه‌های زیر برای ایده‌ها و مقایسه‌های پیاده‌سازی که به توسعهٔ SNI کمک کردند، قدردانی می‌کند.
-کد و فایل اجرایی این پروژه‌ها همراه Caspian عرضه نمی‌شود.
+کاسپین همچنین به نویسندگان و مشارکت‌کنندگان این پروژه‌ها برای ایده‌ها و مقایسه‌های اجرایی که به کار SNI آن کمک می‌کند، اعتبار می‌دهد.
+کد و فایل های اجرایی آن ها باندل نیستند.
 
-| پروژه | نسخهٔ بررسی‌شده | مجوز و کاربرد |
+| پروژه | بازنگری بررسی شد | مجوز و استفاده |
 | --- | --- | --- |
-| [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof) | `a0d68c6627e0898cf13176e322420743f69d894f` | فایل مجوز یافت نشد؛ فقط مقایسه |
-| [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI) | `f593a276f9ec753889f80208c6a7c5cf455df94a` | Apache-2.0؛ مرجع روش‌ها |
-| [bol-van/zapret](https://github.com/bol-van/zapret) | `87e058624c72863db53bdaf7fb6f16576dddb6ab` | MIT؛ مرجع روش‌ها و تشخیص |
-| [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | مجوز سطح برنامه یافت نشد؛ فقط ایده |
-| [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | MIT اعلام شده، اما منشأ قالب GPL نیاز به روشن‌سازی دارد؛ کدی کپی نشده است |
+| [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof) | `a0d68c6627e0898cf13176e322420743f69d894f` | هیچ فایل مجوزی یافت نشد. فقط مقایسه |
+| [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI) | `f593a276f9ec753889f80208c6a7c5cf455df94a` | Apache-2.0; مرجع استراتژی |
+| [bol-van/zapret](https://github.com/bol-van/zapret) | `87e058624c72863db53bdaf7fb6f16576dddb6ab` | MIT; استراتژی و مرجع تشخیصی |
+| [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | مجوز برنامه سطح بالا یافت نشد. فقط ایده ها |
+| [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | MIT را اعلام می کند. منشأ الگوی GPL نیاز به توضیح دارد. هیچ کدی کپی نشده |
 
 
-## دیگر اجزای توزیع‌شده
+<a id="other-distributed-components"></a>
+## سایر اجزای توزیع شده
 
-[تجزیه‌گر پیوند اشتراک](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) مجوز MIT خود را حفظ می‌کند.
-نصب‌کننده‌های Windows فایل‌های رسمی Wintun و ابزارهای کمکی مستقل .NET را نیز دارند.
-اعلان‌های آن‌ها در [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) باقی می‌ماند و کنار برنامه نصب می‌شود.
-رابط Go برای Wintun در Windows یک وابستگی زمان اجرا با مجوز MIT است.
-
+[تجزیه کننده پیوند اشتراک گذاری](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) مجوز MIT خود را حفظ می کند.
+نصب‌کننده‌های ویندوز همچنین حاوی باینری‌های رسمی Wintun و کمک‌کننده‌های دات‌نت مستقل هستند.
+اعلامیه های آنها تحت [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) باقی می ماند و در کنار برنامه نصب می شود.
+اتصال Go Wintun یک وابستگی زمان اجرا MIT به ویندوز است.
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->

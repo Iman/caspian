@@ -1,34 +1,32 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# انتشار و نگهداری
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh)
+[English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh) | [العربية](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.tr) | [اردو](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ur)
 
 </div>
+
+<div dir="rtl" align="right">
+
+<a id="releases-and-maintenance"></a>
+# انتشار و نگهداری
+
+
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-برای بررسی دانلود، به‌روزرسانی و روش‌های حذف موجود، راهنمای نصب را بخوانید. بسته‌بندی و خودکارسازی انتشار در مخزن قرار دارند.
+از راهنمای نصب برای تأیید دانلود، به‌روزرسانی‌ها و مراحل حذف موجود استفاده کنید. بسته بندی و اتوماسیون انتشار در مخزن باقی می ماند.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh)
-
-</div>
 
 - [release.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/release.yml)
 - [package.yml](https://github.com/Iman/caspian/blob/main/.github/workflows/package.yml)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 36cbe0fa1e02678e9e8d334a063f75e3f54e9a1b4fcb51c50387376bbff0fd79 -->

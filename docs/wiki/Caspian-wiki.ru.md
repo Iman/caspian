@@ -1,21 +1,23 @@
-# Вики Caspian
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr)
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
 
 </div>
 
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
+<a id="caspian-wiki"></a>
+# Caspian вики
 
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
-</div>
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
+
+
 
 <!-- Caspian guide navigation -->
 
-Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 6199b4f6140802a9f6e3795a8d8b61e3cefc182b8b1bf2e80decc18bdde986f7 -->

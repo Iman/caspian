@@ -1,33 +1,31 @@
-# Установка на macOS
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur)
 
 </div>
 
-[Схемы подключения, подготовка кабеля до запуска, перезапуск служб и частые ошибки описаны в руководстве для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+<a id="install-on-macos"></a>
+# Установить на macOS
 
-Процессор и память: минимальный объём оперативной памяти, число ядер и тактовая частота для Caspian пока не определены измерениями. Потребление ресурсов зависит от объёма трафика, протокола прокси и числа одновременных соединений. Перед публикацией минимальных требований нужны замеры в простое и под нагрузкой.
 
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru)
 
-[Открыть инструкцию по установке](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-или-новее).
+[Схемы подключения, настройку с подключением кабеля, перезапуск службы и распространенные ошибки см. в руководстве по устранению неполадок для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
-В руководстве указаны требования, варианты загрузки и доступные действия для восстановления на этой платформе.
+Процессор и оперативная память: у компанииCaspian пока нет измеренного минимального объема оперативной памяти, количества ядер процессора или тактовой частоты. Использование ресурсов зависит от объема трафика, протокола прокси и одновременных подключений. Прежде чем публиковать минимальные требования, необходимы тесты на холостом ходу и под нагрузкой.
 
-<div dir="ltr" align="left">
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+[Прочтите этапы установки](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-or-later).
 
-</div>
+Руководство по установке содержит необходимые условия, варианты загрузки и доступные шаги по восстановлению для этой платформы.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Installation#macos-13-or-later) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-macos-13-یا-جدیدتر) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#macos-13-или-новее) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#macos-13-或更高版本)
 
-</div>
+
 
 <!-- Caspian guide navigation -->
 
-Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 01992554bf720b4b1f39e9ae3d3b2c275af9000bb708d1261dfb1f03d9d60ea3 -->

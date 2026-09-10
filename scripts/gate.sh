@@ -68,6 +68,9 @@ if [ ! -f "$root/go.mod" ]; then
 fi
 cd "$root"
 
+# Keep every wiki edition aligned with the English source.
+python3 scripts/check-wiki.py
+
 # --- the coverage floors ----------------------------------------------------
 #
 # One row per gated package:

@@ -1,57 +1,37 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# التثبيت على Linux وRaspberry Pi
+<a id="install-on-linux-and-raspberry-pi"></a>
+# التثبيت على Linux و Raspberry Pi
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
 
-</div>
+[للتعرف على مخططات الاتصال وإعداد الكابل أولاً وإعادة تشغيل الخدمة والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء وإصلاحها للمستخدم المنزلي.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
 
-[للرسوم التوضيحية وتوصيل الكابل قبل التشغيل وإعادة تشغيل الخدمات والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء للمستخدمين في المنزل.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+وحدة المعالجة المركزية وذاكرة الوصول العشوائي: لا يوجد لدى Caspian حد أدنى مُقاس لذاكرة الوصول العشوائي أو عدد نواة وحدة المعالجة المركزية أو سرعة الساعة حتى الآن. يعتمد استخدام الموارد على حجم حركة المرور وبروتوكول الوكيل والاتصالات المتزامنة. هناك حاجة إلى معايير الخمول والتحميل قبل نشر الحد الأدنى من المتطلبات.
 
-المعالج والذاكرة: لم يُحدَّد بعد بالقياس الحد الأدنى للذاكرة أو عدد أنوية المعالج أو تردده اللازم لتشغيل Caspian. يعتمد استهلاك الموارد على حجم حركة البيانات وبروتوكول الوكيل وعدد الاتصالات المتزامنة. يلزم قياس الاستهلاك في وضع الخمول وتحت الحمل قبل نشر الحد الأدنى للمتطلبات.
+تستهدف ثنائيات إصدار Linux x86-64 وARM64 وARMv6/ARMv7. التوافق مع البنية وحده لا ينشئ أداءً قابلاً للاستخدام.
 
-تستهدف ملفات إصدار Linux التنفيذية معماريات <span dir="ltr">x86-64</span> و<span dir="ltr">ARM64</span> و<span dir="ltr">ARMv6/ARMv7</span>. توافق المعمارية وحده لا يثبت أن الأداء كافٍ للاستخدام.
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
-تحتاج إلى Linux مع systemd 240 أو أحدث وصلاحيات root. المعماريات المقبولة هي <span dir="ltr">`x86_64`</span> و<span dir="ltr">`aarch64`</span> و<span dir="ltr">`armv7l`</span> و<span dir="ltr">`armv6l`</span>. راجع ترتيب واجهتي الشبكة في دليل بدء الاستخدام الإنجليزي.
+[اقرأ خطوات التثبيت](https://github.com/Iman/caspian/wiki/Installation.ar#linux-and-raspberry-pi).
 
-اقرأ السكربت أولًا. هذا الأمر يعرضه ولا يثبّت البرنامج:
+يحتوي دليل التثبيت على المتطلبات الأساسية وخيارات التنزيل وخطوات الاسترداد المتاحة لهذا النظام الأساسي.
 
-<div dir="ltr" align="left">
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh | less
-```
 
-</div>
 
-بعد مراجعته، شغّل التثبيت:
-
-<div dir="ltr" align="left">
-
-```bash
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
-```
-
-</div>
-
-يختار المثبت الملف المناسب ويتحقق من مجموع التحقق المنشور. يتوقف إذا كان النظام غير مدعوم أو لم يتطابق المجموع. لإجراء تحديث، شغّل أمر التثبيت نفسه مجددًا؛ تبقى الإعدادات المحفوظة. يتضمن الدليل الإنجليزي خطوات التثبيت اليدوي والبناء من المصدر.
-
-[التفاصيل بالإنجليزية](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi)
-
-[بدء الاستخدام (English)](https://github.com/Iman/caspian/wiki/Getting-Started)
-
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
+</div>
+
+
+<!-- English-source-sha256: 8d856e5813928dd087ec22a1269cf6dbcbc7e22dba5f91f4547711b4ee0aac81 -->

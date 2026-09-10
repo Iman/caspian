@@ -1,40 +1,35 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# التثبيت على Windows
+<a id="install-on-windows"></a>
+# تثبيت على ويندوز
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr)
 
-</div>
+[للتعرف على مخططات الاتصال وإعداد الكابل أولاً وإعادة تشغيل الخدمة والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء وإصلاحها للمستخدم المنزلي.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
 
-[للرسوم التوضيحية وتوصيل الكابل قبل التشغيل وإعادة تشغيل الخدمات والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء للمستخدمين في المنزل.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+وحدة المعالجة المركزية وذاكرة الوصول العشوائي: لا يوجد لدى Caspian حد أدنى مُقاس لذاكرة الوصول العشوائي أو عدد نواة وحدة المعالجة المركزية أو سرعة الساعة حتى الآن. يعتمد استخدام الموارد على حجم حركة المرور وبروتوكول الوكيل والاتصالات المتزامنة. هناك حاجة إلى معايير الخمول والتحميل قبل نشر الحد الأدنى من المتطلبات.
 
-المعالج والذاكرة: لم يُحدَّد بعد بالقياس الحد الأدنى للذاكرة أو عدد أنوية المعالج أو تردده اللازم لتشغيل Caspian. يعتمد استهلاك الموارد على حجم حركة البيانات وبروتوكول الوكيل وعدد الاتصالات المتزامنة. يلزم قياس الاستهلاك في وضع الخمول وتحت الحمل قبل نشر الحد الأدنى للمتطلبات.
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
-تحتاج إلى Windows 10 إصدار 2004 (بناء 19041) أو أحدث، أو Windows 11، على x64 أو ARM64، وحساب مسؤول ومحول Wi-Fi يدعم Mobile Hotspot.
+[اقرأ خطوات التثبيت](https://github.com/Iman/caspian/wiki/Installation.ar#windows-10-and-11).
 
-1. نزّل مثبت Windows من صفحة الإصدارات الرسمية: x64 لمعالجات Intel وAMD، أو ARM64 للأجهزة ذات معالج ARM. تحقق من System type في Settings ثم System ثم About إذا لم تعرف النوع.
-2. شغّل المثبت وتحقق من مصدر الملف قبل تجاوز تحذير Unknown publisher. وافق على طلب صلاحيات المسؤول.
-3. اختر كلمة مرور للوحة واحتفظ بها، ثم أكمل التثبيت وافتح Caspian Control.
-4. اختر Start all وانتظر Ready، ثم اختر Open panel وسجّل الدخول.
-5. أدخل اسم Wi-Fi وكلمة مرور من ثمانية محارف على الأقل وإعداد الوكيل. اختر 2.4 GHz للتوافق مع الأجهزة القديمة.
-6. شغّل Caspian من اللوحة وانتظر الحالة الخضراء، ثم صِل جهازًا بالشبكة واختبر موقعًا.
+يحتوي دليل التثبيت على المتطلبات الأساسية وخيارات التنزيل وخطوات الاسترداد المتاحة لهذا النظام الأساسي.
 
-تعني Ready أن الخدمتين الخلفيتين تستجيبان؛ ولا تؤكد اتصال النفق. تعرض لوحة الويب حالة نقطة الاتصال والنفق. يفصل إيقاف نقطة الاتصال أو إعادة تشغيلها الأجهزة المتصلة.
 
-[التفاصيل بالإنجليزية](https://github.com/Iman/caspian/wiki/Installation#windows-10-and-11)
 
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar)
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-أدلة Caspian: [الإعداد والبروتوكولات](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI وتجاوز DPI: الإعداد والحدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
+</div>
+
+
+<!-- English-source-sha256: ce8f5bbd9e232bd7873bf3d42a21b833c23b873ecf2ac122e40a832f387b6905 -->

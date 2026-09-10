@@ -1,10 +1,12 @@
-# Install on Linux and Raspberry Pi
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
 
 </div>
+
+# Install on Linux and Raspberry Pi
+
+
 
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
@@ -18,17 +20,9 @@ Linux release binaries target x86-64, ARM64, and ARMv6/ARMv7. Architecture compa
 
 The installation guide contains the prerequisites, download choices, and available recovery steps for this platform.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa#نصب-در-linux-و-raspberry-pi) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru#linux-и-raspberry-pi) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh#linux-和-raspberry-pi)
-
-</div>
 
 <!-- Caspian guide navigation -->
 

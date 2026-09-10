@@ -1,41 +1,47 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# الگوی صفحه
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh)
+[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) | [اردو](https://github.com/Iman/caspian/wiki/Page-Template.ur)
 
 </div>
+
+<div dir="rtl" align="right">
+
+<a id="page-template"></a>
+# قالب صفحه
+
+
 
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-وضعیت: طرح اولیه. پیش از انتشار راهنمای کامل، هر جای‌نگهدار را تکمیل کنید.
+وضعیت: طرح کلی. قبل از انتشار راهنمای کامل، هر مکان‌نما را جایگزین کنید.
 
+<a id="purpose"></a>
 ## هدف
 
-TODO: کار و مخاطب را مشخص کنید.
+TODO: وظیفه و خواننده مورد نظر را بیان کنید.
 
-## پیش‌نیازها
+<a id="requirements"></a>
+## الزامات
 
-TODO: نسخه، سیستم، دسترسی‌ها و ابزارها را بنویسید.
+TODO: انتشار، پلتفرم، مجوزها و ابزارها را نام ببرید.
 
-## مراحل و نتیجه‌های مورد انتظار
+<a id="steps-and-expected-results"></a>
+## مراحل و نتایج مورد انتظار
 
-TODO: مراحل شماره‌دار، فرمان‌های دقیق و روش بررسی را اضافه کنید.
+TODO: مراحل شماره گذاری شده، دستورات دقیق و چک ها را اضافه کنید.
 
+<a id="recovery-and-evidence"></a>
 ## بازیابی و شواهد
 
-TODO: خطاها، روش بازیابی، نتایج آزمون، تاریخ‌ها و محدودیت‌ها را ثبت کنید.
+TODO: ثبت خطاها، مراحل بازیابی، نتایج آزمایش، تاریخ ها و محدودیت های شناخته شده.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 96de2b0f6c166c14e5982c19975159622b6cd30bece0775255ca81c00f4f052b -->

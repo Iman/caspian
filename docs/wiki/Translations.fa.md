@@ -1,20 +1,23 @@
-<div dir="rtl" align="right">
+<div dir="ltr">
 
-# ترجمه‌ها
-
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
 
 </div>
 
+<div dir="rtl" align="right">
+
+<a id="translations"></a>
+# ترجمه ها
+
+
+
 [ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-صفحه‌های ویکی به انگلیسی، فارسی، روسی و چینی ساده در دسترس‌اند. راهنماها از ترجمه‌های موجود README استفاده می‌کنند. این انتقال کامل بودن همهٔ ترجمه‌ها را اثبات نمی‌کند.
+انگلیسی نسخه منبع هر هفت زبان ویکی است. هنگامی که محتوای انگلیسی تغییر می کند، هر نسخه زبانی را به روز کنید.
 
-برای به‌روزرسانی، صفحه‌های متناظر را در همهٔ زبان‌های موجود تغییر دهید. فرمان‌ها، مسیرها، نام آزمون‌ها، اندازه‌گیری‌ها و هشدارها را هماهنگ نگه دارید. اختلاف‌های ترجمه را ثبت کنید و پنهان نکنید.
+برای به روز رسانی، صفحات مربوطه را در هر زبان موجود تغییر دهید. دستورات، مسیرها، نام‌های تست، اندازه‌گیری‌ها و هشدارها را ثابت نگه دارید. به جای پنهان کردن تفاوت های ترجمه حل نشده آنها را ثبت کنید.
 
-عربی، اردو و ترکی راهنماهای کوتاه شروع کار، نصب و عیب‌یابی دارند. صفحهٔ اصلی هر زبان به راهنماهای فنی مفصل انگلیسی پیوند می‌دهد. این ترجمه‌های تازه هنوز بازبینی مستقل گویشور بومی ندارند. هنگام تغییر متن مبدأ، ترجمه‌های موجود را به‌روز کنید و بخش‌های ترجمه‌نشده را مشخص کنید.
+همه موضوعات ویکی دارای نسخه هایی به زبان های انگلیسی، فارسی، روسی، چینی ساده شده، عربی، ترکی و اردو هستند. ترجمه‌ها محتوای راهنمای انگلیسی، از جمله هشدارها و اعتبارات بالادستی را پوشش می‌دهند. بررسی‌های خودکار پوشش صفحه، نمونه‌های کد و پیوندها را مقایسه می‌کنند. ترجمه‌های به‌روز شده هنوز نیاز به بررسی مستقل از زبان مادری دارند.
 
 <div dir="ltr" align="left">
 
@@ -22,14 +25,13 @@
 
 </div>
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
-
-</div>
 
 <!-- Caspian guide navigation -->
 
-راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa). [English](https://github.com/Iman/caspian/wiki/Home) · [SNI English](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
+</div>
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

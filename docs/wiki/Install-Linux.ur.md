@@ -1,57 +1,37 @@
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur)
+
+</div>
+
 <div dir="rtl" align="right">
 
-# Linux اور Raspberry Pi پر تنصیب
+<a id="install-on-linux-and-raspberry-pi"></a>
+# Linux اور Raspberry Pi پر انسٹال کریں۔
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr)
 
-</div>
+[کنکشن ڈایاگرامس، کیبل فرسٹ سیٹ اپ، سروس دوبارہ شروع ہونے اور عام غلطیوں کے لیے، ہوم یوزر ٹربل شوٹنگ گائیڈ پڑھیں۔](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
-[کنکشن کے خاکے، پہلے کیبل لگانے کے قدم، سروسز دوبارہ چلانا اور عام خطائیں گھریلو صارفین کی رہنمائی میں پڑھیں۔](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+CPU اور RAM: Caspian میں ابھی تک کم از کم RAM، CPU کور کاؤنٹ، یا گھڑی کی رفتار کی پیمائش نہیں ہے۔ وسائل کا استعمال ٹریفک کے حجم، پراکسی پروٹوکول، اور بیک وقت کنکشنز پر منحصر ہے۔ کم از کم تقاضوں کو شائع کرنے سے پہلے بیکار اور لوڈ بینچ مارکس کی ضرورت ہے۔
 
-پروسیسر اور ریم: Caspian کے لیے کم از کم ریم، پروسیسر کے کور کی تعداد اور رفتار ابھی پیمائش سے طے نہیں ہوئی۔ وسائل کا استعمال ٹریفک کے حجم، پراکسی پروٹوکول اور بیک وقت رابطوں کی تعداد پر منحصر ہے۔ کم از کم تقاضے شائع کرنے سے پہلے، فارغ حالت اور بوجھ کے دوران وسائل کا استعمال ناپنا ضروری ہے۔
-
-Linux کی ریلیز فائلیں <span dir="ltr">x86-64</span>، <span dir="ltr">ARM64</span> اور <span dir="ltr">ARMv6/ARMv7</span> کے لیے بنائی جاتی ہیں۔ صرف معماری کی مطابقت سے یہ ثابت نہیں ہوتا کہ کارکردگی استعمال کے لیے کافی ہوگی۔
-
-Linux، systemd 240 یا جدید، اور root اختیارات درکار ہیں۔ قبول شدہ ساختیں <span dir="ltr">`x86_64`</span>، <span dir="ltr">`aarch64`</span>، <span dir="ltr">`armv7l`</span> اور <span dir="ltr">`armv6l`</span> ہیں۔ دو نیٹ ورک انٹرفیس کی ترتیب انگریزی آغاز کی رہنمائی میں پڑھیں۔
-
-پہلے اسکرپٹ پڑھیں۔ یہ حکم اسے دکھاتا ہے، نصب نہیں کرتا:
-
-<div dir="ltr" align="left">
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh | less
-```
-
-</div>
-
-جائزے کے بعد تنصیب چلائیں:
-
-<div dir="ltr" align="left">
-
-```bash
-sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
-```
-
-</div>
-
-انسٹالر مناسب فائل منتخب کرتا ہے اور شائع شدہ چیک سم جانچتا ہے۔ غیر معاون نظام یا مختلف چیک سم پر رک جاتا ہے۔ اپ ڈیٹ کے لیے یہی تنصیب کا حکم دوبارہ چلائیں؛ محفوظ ترتیبات برقرار رہتی ہیں۔ دستی تنصیب اور سورس سے بلڈ کی تفصیل انگریزی رہنمائی میں ہے۔
-
-[انگریزی میں تفصیل](https://github.com/Iman/caspian/wiki/Installation#linux-and-raspberry-pi)
-
-[شروع کریں (English)](https://github.com/Iman/caspian/wiki/Getting-Started)
+لینکس ریلیز بائنریز کا ہدف x86-64، ARM64، اور ARMv6/ARMv7۔ صرف فن تعمیر کی مطابقت قابل استعمال کارکردگی کو قائم نہیں کرتی ہے۔
 
 [Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
-<div dir="ltr" align="left">
+[تنصیب کے مراحل پڑھیں](https://github.com/Iman/caspian/wiki/Installation.ur#linux-and-raspberry-pi)
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
+انسٹالیشن گائیڈ میں اس پلیٹ فارم کے لیے ضروری شرائط، ڈاؤن لوڈ کے انتخاب اور دستیاب ریکوری کے اقدامات شامل ہیں۔
 
-</div>
 
-</div>
+
+
 
 <!-- Caspian guide navigation -->
 
-Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
+</div>
+
+
+<!-- English-source-sha256: 8d856e5813928dd087ec22a1269cf6dbcbc7e22dba5f91f4547711b4ee0aac81 -->
