@@ -21,7 +21,30 @@ def literals(text):
 
 def check(root):
     errors = []
-    sources = sorted(p for p in root.glob("*.md") if p.stem.split(".")[-1] not in LANGUAGES)
+    sources = sorted(p for p in root.glob("*.md") if not p.name.startswith("_Sidebar") and p.stem.split(".")[-1] not in LANGUAGES)
+    # Preserve legacy sidebar files, but never let a translated variant become
+    # the global sidebar. Translation parity applies to Navigation.* instead.
+    sidebar = root / "_Sidebar.md"
+    if not sidebar.exists():
+        errors.append("_Sidebar.md: missing default English sidebar")
+    else:
+        shared = sidebar.read_text(encoding="utf-8")
+        if "\n# Caspian\n" not in shared:
+            errors.append("_Sidebar.md: default heading must be Caspian")
+        navigation = root / "Navigation.md"
+        if not navigation.exists():
+            errors.append("Navigation.md: missing English navigation")
+        else:
+            english_links = re.findall(r"^- .*", navigation.read_text(encoding="utf-8"), re.M)
+            if re.findall(r"^- .*", shared, re.M) != english_links:
+                errors.append("_Sidebar.md: topic links must match English navigation")
+        for language in LANGUAGES:
+            variant = root / f"_Sidebar.{language}.md"
+            if not variant.exists() or variant.read_text(encoding="utf-8") != shared:
+                errors.append(f"{variant.name}: must match the default English sidebar")
+        for name in re.findall(re.escape(BASE) + r"([A-Za-z_.-]+)", shared):
+            if not (root / (name + ".md")).exists():
+                errors.append(f"_Sidebar.md: wiki link has no page: {name}")
     for source in sources:
         english = source.read_text(encoding="utf-8")
         expected = literals(english)

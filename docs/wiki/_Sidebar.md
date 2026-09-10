@@ -1,10 +1,12 @@
+<!-- Keep all _Sidebar*.md files identical: GitHub can select any sidebar variant. Translated navigation is preserved in Navigation*.md. -->
+
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/_Sidebar) | [فارسی](https://github.com/Iman/caspian/wiki/_Sidebar.fa) | [Русский](https://github.com/Iman/caspian/wiki/_Sidebar.ru) | [中文](https://github.com/Iman/caspian/wiki/_Sidebar.zh) | [العربية](https://github.com/Iman/caspian/wiki/_Sidebar.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/_Sidebar.tr) | [اردو](https://github.com/Iman/caspian/wiki/_Sidebar.ur)
+[English](https://github.com/Iman/caspian/wiki/Navigation) | [فارسی](https://github.com/Iman/caspian/wiki/Navigation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Navigation.ru) | [中文](https://github.com/Iman/caspian/wiki/Navigation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Navigation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Navigation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Navigation.ur)
 
 </div>
 
-# Caspian guides
+# Caspian
 
 - [Architecture and data flow](https://github.com/Iman/caspian/wiki/Architecture)
 - [Development and testing](https://github.com/Iman/caspian/wiki/Development-and-Testing)

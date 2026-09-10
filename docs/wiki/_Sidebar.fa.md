@@ -1,34 +1,28 @@
+<!-- Keep all _Sidebar*.md files identical: GitHub can select any sidebar variant. Translated navigation is preserved in Navigation*.md. -->
+
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/_Sidebar) | [فارسی](https://github.com/Iman/caspian/wiki/_Sidebar.fa) | [Русский](https://github.com/Iman/caspian/wiki/_Sidebar.ru) | [中文](https://github.com/Iman/caspian/wiki/_Sidebar.zh) | [العربية](https://github.com/Iman/caspian/wiki/_Sidebar.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/_Sidebar.tr) | [اردو](https://github.com/Iman/caspian/wiki/_Sidebar.ur)
+[English](https://github.com/Iman/caspian/wiki/Navigation) | [فارسی](https://github.com/Iman/caspian/wiki/Navigation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Navigation.ru) | [中文](https://github.com/Iman/caspian/wiki/Navigation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Navigation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Navigation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Navigation.ur)
 
 </div>
 
-<div dir="rtl" align="right">
+# Caspian
 
-<a id="caspian-guides"></a>
-# راهنمایان خزر
-
-- [معماری و جریان داده ها](https://github.com/Iman/caspian/wiki/Architecture.fa)
-- [توسعه و آزمایش](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa)
-- [نقشه اسناد و مدارک](https://github.com/Iman/caspian/wiki/Documentation-Map.fa)
-- [شروع کردن](https://github.com/Iman/caspian/wiki/Getting-Started.fa)
-- [روی لینوکس و رزبری پای نصب کنید](https://github.com/Iman/caspian/wiki/Install-Linux.fa)
-- [روی macOS نصب کنید](https://github.com/Iman/caspian/wiki/Install-macOS.fa)
-- [روی ویندوز نصب کنید](https://github.com/Iman/caspian/wiki/Install-Windows.fa)
-- [Installation](https://github.com/Iman/caspian/wiki/Installation.fa)
-- [مجوز و اعتبار](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa)
-- [قالب صفحه](https://github.com/Iman/caspian/wiki/Page-Template.fa)
-- [پنل و پیکربندی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa)
-- [پروتکل ها و حمل و نقل](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa)
-- [انتشار و نگهداری](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa)
-- [امنیت و حریم خصوصی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa)
-- [جعل کاسپین SNI و تقسیم TLS برای دور زدن DPI](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
-- [کد و اعتبار شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
-- [Translations](https://github.com/Iman/caspian/wiki/Translations.fa)
-- [عیب یابی برای کاربران خانگی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-
-
-<!-- English-source-sha256: 44022af14620639ce2c670adb35ab04579f742842163e4f8fae2d7824ee7effc -->
+- [Architecture and data flow](https://github.com/Iman/caspian/wiki/Architecture)
+- [Development and testing](https://github.com/Iman/caspian/wiki/Development-and-Testing)
+- [Documentation map](https://github.com/Iman/caspian/wiki/Documentation-Map)
+- [Getting started](https://github.com/Iman/caspian/wiki/Getting-Started)
+- [Install on Linux and Raspberry Pi](https://github.com/Iman/caspian/wiki/Install-Linux)
+- [Install on macOS](https://github.com/Iman/caspian/wiki/Install-macOS)
+- [Install on Windows](https://github.com/Iman/caspian/wiki/Install-Windows)
+- [Installation](https://github.com/Iman/caspian/wiki/Installation)
+- [Licence and credits](https://github.com/Iman/caspian/wiki/Licence-and-Credits)
+- [Page template](https://github.com/Iman/caspian/wiki/Page-Template)
+- [Panel and configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration)
+- [Protocols and transports](https://github.com/Iman/caspian/wiki/Protocols-and-Transports)
+- [Releases and maintenance](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance)
+- [Security and privacy](https://github.com/Iman/caspian/wiki/Security-and-Privacy)
+- [Caspian SNI spoofing and TLS splitting for DPI circumvention](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
+- [Third-party code and credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
+- [Translations](https://github.com/Iman/caspian/wiki/Translations)
+- [Troubleshooting for home users](https://github.com/Iman/caspian/wiki/Troubleshooting)
