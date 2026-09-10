@@ -28,6 +28,7 @@ var migrations = map[int]func(*State) error{
 	1: migrateV1ToV2,
 	2: migrateV2ToV3,
 	3: migrateV3ToV4,
+	4: migrateV4ToV5,
 }
 
 // ErrFutureVersion is the sentinel behind the refusal of a newer file, so a
@@ -138,5 +139,13 @@ func migrateV2ToV3(st *State) error {
 func migrateV3ToV4(st *State) error {
 	st.Proxy.SpoofSNI = ""
 	st.Version = 4
+	return nil
+}
+
+// Existing SNI choices survive; splitting is opt-in.
+func migrateV4ToV5(st *State) error {
+	st.Proxy.TCPSplit = false
+	st.Proxy.TLSRecordSplit = false
+	st.Version = 5
 	return nil
 }

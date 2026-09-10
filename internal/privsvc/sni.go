@@ -20,14 +20,18 @@ type SNIForwarder interface {
 }
 
 // SNIStarter opens the optional packet forwarder for a resolved proxy endpoint.
-type SNIStarter func(netip.AddrPort, string, string) (SNIForwarder, error)
+type SNIStarter func(netip.AddrPort, string, snispoof.Options) (SNIForwarder, error)
 
-func validateSpoof(l *link.Link, name string) error {
+func validateSpoof(l *link.Link, name string, splitting ...bool) error {
+	split := false
+	for _, enabled := range splitting {
+		split = split || enabled
+	}
 	normalized, err := snispoof.NormalizeName(name)
 	if err != nil || name != normalized {
 		return fail("SNI spoofing", panel.FaultSNISpoofInvalid, snispoof.ErrName)
 	}
-	if name != "" && !snispoof.SupportsTransport(l.Protocol, l.Network) {
+	if ((name != "" || split) && !snispoof.SupportsTransport(l.Protocol, l.Network)) || (split && l.Security != link.SecurityTLS) {
 		return fail("SNI spoofing", panel.FaultSNISpoofUnsupported, snispoof.ErrUnsupported)
 	}
 	return nil
@@ -44,7 +48,7 @@ func (s *Service) spoofDocument(l *link.Link, req panel.StartRequest, plan *netc
 	if !remote.IsValid() {
 		return nil, fail("SNI spoofing", panel.FaultSNISpoofUnsupported, snispoof.ErrUnsupported)
 	}
-	f, err := s.cfg.StartSNI(netip.AddrPortFrom(remote, l.Port), plan.Uplink, req.SpoofSNI)
+	f, err := s.cfg.StartSNI(netip.AddrPortFrom(remote, l.Port), plan.Uplink, snispoof.Options{FakeSNI: req.SpoofSNI, TCPSplit: req.TCPSplit, TLSRecordSplit: req.TLSRecordSplit})
 	if errors.Is(err, snispoof.ErrUnsupported) {
 		return nil, fail("SNI spoofing", panel.FaultSNISpoofUnsupported, snispoof.ErrUnsupported)
 	}

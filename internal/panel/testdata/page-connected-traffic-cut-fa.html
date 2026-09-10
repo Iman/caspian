@@ -330,13 +330,16 @@
 
 
   <details class="disclose">
-    <summary>جعل SNI (اختیاری)</summary>
+    <summary>گزینه‌های عبور از DPI (اختیاری)</summary>
     <form method="post" action="/sni" class="stack">
       <input type="hidden" name="csrf" value="<redacted:csrf-token>">
       <label for="spoof_sni">نام جعلی سرور</label>
       <input id="spoof_sni" name="spoof_sni" type="text" value="" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
       <p class="hint">پیش از اتصال اصلی، یک پیام آغاز TLS با نام جعلی می‌فرستد. نام سرور در تنظیمات شما تغییر نمی‌کند. برای خاموش کردن، این کادر را خالی بگذارید. به اتصال TCP با IPv4 نیاز دارد.</p>
-      <button type="submit">ذخیرهٔ جعل SNI</button>
+      <label><input type="checkbox" name="tcp_split" > تقسیم TCP</label>
+      <label><input type="checkbox" name="tls_record_split" > تقسیم رکورد TLS</label>
+      <p class="hint">هر گزینه مستقل است؛ برای خاموش کردن جعل SNI، نام را خالی بگذارید. تقسیم فقط برای TLS روی TCP است و ممکن است با بعضی سرورها سازگار نباشد. پس از ذخیره، اتصال دوباره برقرار می‌شود.</p>
+      <button type="submit">ذخیرهٔ تنظیمات DPI</button>
     </form>
   </details>
 

@@ -90,3 +90,43 @@ func TestSNIFormSaveFailureLeavesTheRunningConfigUntouched(t *testing.T) {
 		t.Fatal("save failure hidden")
 	}
 }
+
+func TestDPIFormKeepsOptionsIndependentAndReconnects(t *testing.T) {
+	h := newHarness(t)
+	raw := entryLink("vless", entryHostA, "test")
+	h.readyWith(raw)
+	h.switchOn()
+	for mask := 0; mask < 8; mask++ {
+		form := url.Values{"csrf": {h.tokenOn("/")}}
+		if mask&1 != 0 {
+			form.Set("spoof_sni", "cover.example.invalid")
+		}
+		if mask&2 != 0 {
+			form.Set("tcp_split", "on")
+		}
+		if mask&4 != 0 {
+			form.Set("tls_record_split", "on")
+		}
+		res, _ := h.postForm("/sni", form)
+		if res.StatusCode != http.StatusSeeOther {
+			t.Fatal(res.StatusCode)
+		}
+		p := h.store.Proxy()
+		if p.TCPSplit != (mask&2 != 0) || p.TLSRecordSplit != (mask&4 != 0) || p.SpoofSNI.Reveal() != form.Get("spoof_sni") || p.Raw.Reveal() != raw {
+			t.Fatal("form lost independent options")
+		}
+		starts := h.priv.Starts()
+		last := starts[len(starts)-1]
+		if last.TCPSplit != p.TCPSplit || last.TLSRecordSplit != p.TLSRecordSplit {
+			t.Fatal("reconnect lost split settings")
+		}
+	}
+	before := h.store.Proxy()
+	starts := len(h.priv.Starts())
+	for _, field := range []string{"tcp_split", "tls_record_split"} {
+		h.postForm("/sni", url.Values{"csrf": {h.tokenOn("/")}, field: {"invalid"}})
+		if h.store.Proxy() != before || len(h.priv.Starts()) != starts {
+			t.Fatal("invalid flag changed configuration")
+		}
+	}
+}

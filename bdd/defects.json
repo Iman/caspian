@@ -19,6 +19,8 @@
   ],
 
   "web": {
+    "@dpi-save": { "defect": "sni-save-ignored", "expect": "red" },
+    "@dpi-invalid": { "defect": "sni-invalid-accepted", "expect": "red" },
     "@sni-save": { "defect": "sni-save-ignored", "expect": "red" },
     "@sni-invalid": { "defect": "sni-invalid-accepted", "expect": "red" },
     "@windows-old": { "defect": "windows-support-reversed", "expect": "red" },
@@ -50,6 +52,8 @@
   },
 
   "api": {
+    "@dpi-save": { "defect": "sni-save-ignored", "expect": "red" },
+    "@dpi-invalid": { "defect": "sni-invalid-accepted", "expect": "red" },
     "@sni-save": { "defect": "sni-save-ignored", "expect": "red" },
     "@sni-invalid": { "defect": "sni-invalid-accepted", "expect": "red" },
     "@api-windows-old": { "defect": "windows-support-reversed", "expect": "red" },

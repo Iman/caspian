@@ -2,6 +2,7 @@
 package privsvc
 
 import (
+	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/panel"
 	"caspianbyoc.org/caspian/internal/snispoof"
 	"context"
@@ -20,9 +21,9 @@ func TestSNIServicePreservesIdentityAndOwnsLifecycle(t *testing.T) {
 	req := startRequest(t)
 	req.SpoofSNI = "cover.example.invalid"
 	var forwards []*testSNIForwarder
-	w.svc.cfg.StartSNI = func(remote netip.AddrPort, iface, name string) (SNIForwarder, error) {
-		if !remote.Addr().Is4() || remote.Addr().IsLoopback() || remote.Port() != 443 || iface == "" || name != req.SpoofSNI {
-			t.Fatalf("wrong SNI start arguments %v %s %s", remote, iface, name)
+	w.svc.cfg.StartSNI = func(remote netip.AddrPort, iface string, options snispoof.Options) (SNIForwarder, error) {
+		if !remote.Addr().Is4() || remote.Addr().IsLoopback() || remote.Port() != 443 || iface == "" || options.FakeSNI != req.SpoofSNI {
+			t.Fatalf("wrong SNI start arguments %v %s %s", remote, iface, options.FakeSNI)
 		}
 		f := &testSNIForwarder{}
 		forwards = append(forwards, f)
@@ -64,7 +65,7 @@ func TestSNIServiceRollsBackFailures(t *testing.T) {
 			req := startRequest(t)
 			req.SpoofSNI = "cover.example.invalid"
 			f := &testSNIForwarder{}
-			w.svc.cfg.StartSNI = func(netip.AddrPort, string, string) (SNIForwarder, error) {
+			w.svc.cfg.StartSNI = func(netip.AddrPort, string, snispoof.Options) (SNIForwarder, error) {
 				if kind == "open" {
 					return nil, snispoof.ErrUnavailable
 				}
@@ -101,11 +102,21 @@ func TestSNIPreferenceCrossesTheServiceTransport(t *testing.T) {
 	w := newWorld(t)
 	req := startRequest(t)
 	req.SpoofSNI = "cover.example.invalid"
+	l, err := link.Parse("vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=tcp&sni=" + fakeSNI)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.ConfigJSON, err = l.XrayConfig()
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.TCPSplit = true
+	req.TLSRecordSplit = true
 	f := &testSNIForwarder{}
 	called := false
-	w.svc.cfg.StartSNI = func(_ netip.AddrPort, _ string, name string) (SNIForwarder, error) {
+	w.svc.cfg.StartSNI = func(_ netip.AddrPort, _ string, options snispoof.Options) (SNIForwarder, error) {
 		called = true
-		if name != req.SpoofSNI {
+		if options.FakeSNI != req.SpoofSNI || !options.TCPSplit || !options.TLSRecordSplit {
 			t.Error("wire lost spoof name")
 		}
 		return f, nil
@@ -130,9 +141,68 @@ func TestSNIUnsupportedBackendIsReportedAsUnsupported(t *testing.T) {
 	w := newWorld(t)
 	req := startRequest(t)
 	req.SpoofSNI = "cover.example.invalid"
-	w.svc.cfg.StartSNI = func(netip.AddrPort, string, string) (SNIForwarder, error) { return nil, snispoof.ErrUnsupported }
+	w.svc.cfg.StartSNI = func(netip.AddrPort, string, snispoof.Options) (SNIForwarder, error) {
+		return nil, snispoof.ErrUnsupported
+	}
 	err := w.svc.Start(context.Background(), req)
 	if faultOf(err) != panel.FaultSNISpoofUnsupported {
 		t.Fatalf("wrong fault: %v", err)
+	}
+}
+
+func TestSplitServiceRestartsForEachIndependentChoice(t *testing.T) {
+	w := newWorld(t)
+	req := startRequest(t)
+	l, err := link.Parse("vless://" + fakeUUID + "@" + fakeHost + ":443?security=tls&type=tcp&sni=" + fakeSNI)
+	if err != nil {
+		t.Fatal(err)
+	}
+	req.ConfigJSON, err = l.XrayConfig()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var forwards []*testSNIForwarder
+	var got snispoof.Options
+	w.svc.cfg.StartSNI = func(_ netip.AddrPort, _ string, o snispoof.Options) (SNIForwarder, error) {
+		got = o
+		f := &testSNIForwarder{}
+		forwards = append(forwards, f)
+		return f, nil
+	}
+	for _, o := range []snispoof.Options{{TCPSplit: true}, {TLSRecordSplit: true}, {TCPSplit: true, TLSRecordSplit: true}, {FakeSNI: "cover.example.invalid", TCPSplit: true, TLSRecordSplit: true}} {
+		req.SpoofSNI = o.FakeSNI
+		req.TCPSplit = o.TCPSplit
+		req.TLSRecordSplit = o.TLSRecordSplit
+		if err = w.svc.Start(context.Background(), req); err != nil {
+			t.Fatal(err)
+		}
+		if got != o {
+			t.Fatal("service lost settings")
+		}
+		if err = w.svc.Start(context.Background(), req); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if len(forwards) != 4 {
+		t.Fatal("split settings missing from request fingerprint")
+	}
+	if err = w.svc.Stop(context.Background()); err != nil {
+		t.Fatal(err)
+	}
+	for _, f := range forwards {
+		if f.closed != 1 {
+			t.Fatal("forwarder not closed exactly once")
+		}
+	}
+}
+func TestSplitServiceRejectsRealityBeforeMutation(t *testing.T) {
+	w := newWorld(t)
+	req := startRequest(t)
+	req.TCPSplit = true
+	if faultOf(w.svc.Start(context.Background(), req)) != panel.FaultSNISpoofUnsupported {
+		t.Fatal("accepted unvalidated REALITY splitting")
+	}
+	if len(w.mutatingCommands()) != 0 {
+		t.Fatal("mutated before validation")
 	}
 }

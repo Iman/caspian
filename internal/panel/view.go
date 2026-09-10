@@ -138,6 +138,8 @@ type pageData struct {
 	SetupIncomplete bool
 	HasConfig       bool
 	SpoofSNI        string
+	TCPSplit        bool
+	TLSRecordSplit  bool
 	ConfigName      string
 	ConfigSummary   LTR
 	// ConfigEntries is the list the person chooses from when the pasted text
@@ -462,6 +464,8 @@ type ConfigEntry struct {
 func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 	d.HasConfig = proxy.IsConfigured()
 	d.SpoofSNI = proxy.SpoofSNI.Reveal()
+	d.TCPSplit = proxy.TCPSplit
+	d.TLSRecordSplit = proxy.TLSRecordSplit
 	if !d.HasConfig {
 		return
 	}

@@ -17,6 +17,12 @@ func (p *Panel) handleSNI(w http.ResponseWriter, r *http.Request) {
 		p.home(w, r)
 		return
 	}
+	tcpSplit, tlsSplit := r.PostFormValue("tcp_split"), r.PostFormValue("tls_record_split")
+	if (tcpSplit != "" && tcpSplit != "on") || (tlsSplit != "" && tlsSplit != "on") {
+		sess.setFlash(Problem{Headline: MsgSNISpoofInvalid}, "")
+		p.home(w, r)
+		return
+	}
 	proxy := p.store.Proxy()
 	l, _, err := link.Select(proxy.Raw.Reveal(), proxy.Selected)
 	if err != nil {
@@ -24,12 +30,12 @@ func (p *Panel) handleSNI(w http.ResponseWriter, r *http.Request) {
 		p.home(w, r)
 		return
 	}
-	if name != "" && !snispoof.SupportsTransport(l.Protocol, l.Network) {
+	if ((name != "" || tcpSplit != "" || tlsSplit != "") && !snispoof.SupportsTransport(l.Protocol, l.Network)) || ((tcpSplit != "" || tlsSplit != "") && l.Security != link.SecurityTLS) {
 		sess.setFlash(StartProblem(FaultSNISpoofUnsupported), "")
 		p.home(w, r)
 		return
 	}
-	if err := p.store.SetSpoofSNI(name); err != nil {
+	if err := p.store.SetDPISettings(name, tcpSplit == "on", tlsSplit == "on"); err != nil {
 		sess.setFlash(Problem{Headline: MsgSaveConfigFailed, Advice: MsgSaveFailedAdvice}, "")
 		p.home(w, r)
 		return

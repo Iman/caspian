@@ -229,6 +229,8 @@ func (s *Store) SetProxyConfig(raw, scheme, label string) error {
 		// has no meaning in this one, so the choice goes back to the first.
 		st.Proxy.Selected = 0
 		st.Proxy.SpoofSNI = ""
+		st.Proxy.TCPSplit = false
+		st.Proxy.TLSRecordSplit = false
 		st.Proxy.AddedAt = time.Now().UTC()
 		// The figures and the refresh time describe the config that was
 		// fetched, and this paste has just replaced it. The address stays: it
@@ -308,7 +310,7 @@ func (s *Store) VerifyPanelPassword(plaintext string) (bool, error) {
 func (s State) validate() error {
 	name := s.Proxy.SpoofSNI.Reveal()
 	normalized, err := snispoof.NormalizeName(name)
-	if err != nil || normalized != name || (name != "" && !s.Proxy.IsConfigured()) {
+	if err != nil || normalized != name || ((name != "" || s.Proxy.TCPSplit || s.Proxy.TLSRecordSplit) && !s.Proxy.IsConfigured()) {
 		return errors.New("state: invalid SNI spoofing setting")
 	}
 

@@ -116,7 +116,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	if err := s.validateStatic(req); err != nil {
 		return err
 	}
-	if err := validateSpoof(l, req.SpoofSNI); err != nil {
+	if err := validateSpoof(l, req.SpoofSNI, req.TCPSplit, req.TLSRecordSplit); err != nil {
 		return err
 	}
 
@@ -276,7 +276,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	if err := s.assertHotspotInterfaceReleased(ctx, plan); err != nil {
 		return err
 	}
-	if req.SpoofSNI != "" {
+	if req.SpoofSNI != "" || req.TCPSplit || req.TLSRecordSplit {
 		doc, err = s.spoofDocument(l, req, plan, netOpts)
 		if err != nil {
 			return err
@@ -626,6 +626,16 @@ func (s *Service) requestFingerprint(req panel.StartRequest) string {
 	}
 	write(string(req.ConfigJSON))
 	write(req.SpoofSNI)
+	if req.TCPSplit {
+		write("tcp-split")
+	} else {
+		write("")
+	}
+	if req.TLSRecordSplit {
+		write("tls-record-split")
+	} else {
+		write("")
+	}
 	write(req.Hotspot.SSID)
 	write(req.Hotspot.Passphrase)
 	write(req.Hotspot.Interface)

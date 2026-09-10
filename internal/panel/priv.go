@@ -524,7 +524,9 @@ type EngineLog struct {
 // It carries two credentials, so it redacts itself; see String below.
 type StartRequest struct {
 	// SpoofSNI is separate from the real TLS name in ConfigJSON.
-	SpoofSNI string
+	SpoofSNI       string
+	TCPSplit       bool
+	TLSRecordSplit bool
 	// ConfigJSON is the engine config document. It is produced by
 	// internal/link from parsed structures and never by interpolating the text
 	// the user pasted (design section 6). It is a credential: it carries the

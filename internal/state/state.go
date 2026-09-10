@@ -45,8 +45,9 @@ import (
 // address is a credential the person typed, and a v2 build reading a v3 file
 // would drop it on its next Save without a word. ErrFutureVersion turns that
 // into "install a newer release".
-// Version 4 retains the optional spoof name. Older builds must not drop it.
-const CurrentVersion = 4
+// Version 4 retains the optional spoof name. Version 5 adds independent split
+// settings. Older builds must not silently drop these choices.
+const CurrentVersion = 5
 
 // DefaultDir is where the appliance keeps its state. Callers may override it;
 // nothing in this package assumes it.
@@ -137,7 +138,9 @@ type State struct {
 // ProxyConfig is the config the user pasted, plus what was detected from it.
 // Design sections 5.2 and 5.4.
 type ProxyConfig struct {
-	SpoofSNI Secret `json:"spoof_sni,omitempty"`
+	SpoofSNI       Secret `json:"spoof_sni,omitempty"`
+	TCPSplit       bool   `json:"tcp_split,omitempty"`
+	TLSRecordSplit bool   `json:"tls_record_split,omitempty"`
 	// Raw is the pasted share link, raw xray JSON, or subscription text,
 	// stored verbatim. It is untrusted input (design section 6) and it is a
 	// credential: it carries the UUID, the REALITY private material and the

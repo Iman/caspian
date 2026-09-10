@@ -398,8 +398,10 @@ func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Co
 	}
 
 	req := StartRequest{
-		SpoofSNI:   st.Proxy.SpoofSNI.Reveal(),
-		ConfigJSON: cfgJSON,
+		SpoofSNI:       st.Proxy.SpoofSNI.Reveal(),
+		TCPSplit:       st.Proxy.TCPSplit,
+		TLSRecordSplit: st.Proxy.TLSRecordSplit,
+		ConfigJSON:     cfgJSON,
 		Hotspot: HotspotSpec{
 			SSID:       st.Hotspot.SSID,
 			Passphrase: st.Hotspot.Passphrase.Reveal(),

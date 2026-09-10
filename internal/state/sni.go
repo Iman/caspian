@@ -22,3 +22,20 @@ func (s *Store) SetSpoofSNI(name string) error {
 		return nil
 	})
 }
+
+// SetDPISettings commits all independent choices atomically.
+func (s *Store) SetDPISettings(name string, tcpSplit, tlsRecordSplit bool) error {
+	name, err := snispoof.NormalizeName(name)
+	if err != nil {
+		return err
+	}
+	return s.Update(func(st *State) error {
+		if !st.Proxy.IsConfigured() {
+			return errors.New("state: no proxy configuration is stored")
+		}
+		st.Proxy.SpoofSNI = Secret(name)
+		st.Proxy.TCPSplit = tcpSplit
+		st.Proxy.TLSRecordSplit = tlsRecordSplit
+		return nil
+	})
+}

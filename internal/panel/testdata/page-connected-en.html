@@ -326,13 +326,16 @@
 
 
   <details class="disclose">
-    <summary>SNI spoofing (optional)</summary>
+    <summary>DPI circumvention (optional)</summary>
     <form method="post" action="/sni" class="stack">
       <input type="hidden" name="csrf" value="<redacted:csrf-token>">
       <label for="spoof_sni">Fake server name</label>
       <input id="spoof_sni" name="spoof_sni" type="text" value="" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
       <p class="hint">Send a fake TLS greeting before the real connection. The server name in your configuration stays unchanged. Leave this empty to turn spoofing off. Requires an IPv4 TCP connection.</p>
-      <button type="submit">Save SNI spoofing</button>
+      <label><input type="checkbox" name="tcp_split" > TCP split</label>
+      <label><input type="checkbox" name="tls_record_split" > TLS-record split</label>
+      <p class="hint">Each option is independent; leave the fake name blank to disable SNI spoofing. Splitting requires TLS over TCP and may not work with every server. Saving reconnects an active tunnel.</p>
+      <button type="submit">Save DPI settings</button>
     </form>
   </details>
 

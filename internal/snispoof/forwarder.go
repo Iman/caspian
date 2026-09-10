@@ -19,6 +19,7 @@ type Forwarder struct {
 	remote   netip.AddrPort
 	local    netip.Addr
 	name     string
+	options  Options
 	packets  packetIO
 	listener net.Listener
 	ctx      context.Context
@@ -34,8 +35,16 @@ type Forwarder struct {
 // Start opens a loopback-only forwarder. The caller owns Close, including on
 // startup rollback. Only IPv4 is supported by the reference packet algorithm.
 func Start(remote netip.AddrPort, iface, name string) (*Forwarder, error) {
-	name, err := NormalizeName(name)
-	if err != nil || name == "" {
+	normalized, err := NormalizeName(name)
+	if err != nil || normalized == "" {
+		return nil, ErrName
+	}
+	return StartWithOptions(remote, iface, Options{FakeSNI: name})
+}
+
+func StartWithOptions(remote netip.AddrPort, iface string, options Options) (*Forwarder, error) {
+	name, err := NormalizeName(options.FakeSNI)
+	if err != nil {
 		return nil, ErrName
 	}
 	if !remote.Addr().Is4() || remote.Port() == 0 {
@@ -48,27 +57,38 @@ func Start(remote netip.AddrPort, iface, name string) (*Forwarder, error) {
 	}
 	local := c.LocalAddr().(*net.UDPAddr).AddrPort().Addr().Unmap()
 	c.Close()
-	packets, err := openPackets(remote, iface)
+	var packets packetIO
+	if name != "" {
+		packets, err = openPackets(remote, iface)
+	}
 	if err != nil {
 		return nil, err
 	}
-	f, err := startWithPackets(remote, local, name, packets)
-	if err != nil {
+	options.FakeSNI = name
+	f, err := startWithOptions(remote, local, options, packets)
+	if err != nil && packets != nil {
 		packets.Close()
 	}
 	return f, err
 }
 
 func startWithPackets(remote netip.AddrPort, local netip.Addr, name string, packets packetIO) (*Forwarder, error) {
+	return startWithOptions(remote, local, Options{FakeSNI: name}, packets)
+}
+
+func startWithOptions(remote netip.AddrPort, local netip.Addr, options Options, packets packetIO) (*Forwarder, error) {
 	ln, err := net.Listen("tcp4", "127.0.0.1:0")
 	if err != nil {
 		return nil, ErrUnavailable
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	f := &Forwarder{remote: remote, local: local, name: name, packets: packets, listener: ln, ctx: ctx, cancel: cancel,
+	f := &Forwarder{remote: remote, local: local, name: options.FakeSNI, options: options, packets: packets, listener: ln, ctx: ctx, cancel: cancel,
 		flows: make(map[flowKey]*flow), clients: make(map[net.Conn]struct{}), limit: make(chan struct{}, maxConnections)}
-	f.wg.Add(2)
-	go f.capture()
+	f.wg.Add(1)
+	if packets != nil {
+		f.wg.Add(1)
+		go f.capture()
+	}
 	go f.accept()
 	return f, nil
 }
@@ -79,7 +99,9 @@ func (f *Forwarder) shutdown() {
 	f.once.Do(func() {
 		f.cancel()
 		f.listener.Close()
-		f.packets.Close()
+		if f.packets != nil {
+			f.packets.Close()
+		}
 		f.mu.Lock()
 		for client := range f.clients {
 			client.Close()
@@ -121,54 +143,22 @@ func (f *Forwarder) accept() {
 func (f *Forwarder) handle(client net.Conn) {
 	defer f.wg.Done()
 	defer func() { client.Close(); f.mu.Lock(); delete(f.clients, client); f.mu.Unlock(); <-f.limit }()
-	hello, err := clientHello(f.name)
-	if err != nil {
-		return
-	}
-	state := &flow{hello: hello, done: make(chan struct{})}
-	var key flowKey
-	defer func() {
-		state.mu.Lock()
-		state.finish(ErrConfirmation)
-		state.mu.Unlock()
-		f.mu.Lock()
-		delete(f.flows, key)
-		f.mu.Unlock()
-	}()
-	server, err := dialOwned(f.ctx, f.local, f.remote, func(local netip.AddrPort) error {
-		key = flowKey{local: local, remote: f.remote}
-		f.mu.Lock()
-		defer f.mu.Unlock()
-		if f.ctx.Err() != nil {
-			return f.ctx.Err()
-		}
-		f.flows[key] = state
-		return nil
-	})
+	server, err := f.connect()
 	if err != nil {
 		return
 	}
 	defer server.Close()
 	stopClose := context.AfterFunc(f.ctx, func() { server.Close() })
 	defer stopClose()
-	timer := time.NewTimer(2 * time.Second)
-	defer timer.Stop()
-	select {
-	case <-state.done:
-		state.mu.Lock()
-		err = state.err
-		state.mu.Unlock()
-		if err != nil {
+	if f.options.TCPSplit || f.options.TLSRecordSplit {
+		client.SetReadDeadline(time.Now().Add(5 * time.Second))
+		server.SetWriteDeadline(time.Now().Add(5 * time.Second))
+		if err := forwardHello(server, client, f.options); err != nil {
 			return
 		}
-	case <-timer.C:
-		return
-	case <-f.ctx.Done():
-		return
+		client.SetReadDeadline(time.Time{})
+		server.SetWriteDeadline(time.Time{})
 	}
-	f.mu.Lock()
-	delete(f.flows, key)
-	f.mu.Unlock()
 	// Both streams remain untouched until the packet-level confirmation.
 	done := make(chan struct{}, 2)
 	copyStream := func(dst, src net.Conn) {
@@ -256,4 +246,66 @@ func SupportsTransport(protocol, network string) bool {
 		return true
 	}
 	return false
+}
+
+func (f *Forwarder) connect() (net.Conn, error) {
+	if f.name == "" {
+		d := net.Dialer{Timeout: 5 * time.Second, LocalAddr: &net.TCPAddr{IP: net.IP(f.local.AsSlice())}}
+		return d.DialContext(f.ctx, "tcp4", f.remote.String())
+	}
+	hello, err := clientHello(f.name)
+	if err != nil {
+		return nil, ErrConfirmation
+	}
+	state := &flow{hello: hello, done: make(chan struct{})}
+	var key flowKey
+	defer func() {
+		state.mu.Lock()
+		state.finish(ErrConfirmation)
+		state.mu.Unlock()
+		f.mu.Lock()
+		delete(f.flows, key)
+		f.mu.Unlock()
+	}()
+	server, err := dialOwned(f.ctx, f.local, f.remote, func(local netip.AddrPort) error {
+		key = flowKey{local: local, remote: f.remote}
+		f.mu.Lock()
+		defer f.mu.Unlock()
+		if f.ctx.Err() != nil {
+			return f.ctx.Err()
+		}
+		f.flows[key] = state
+		return nil
+	})
+	if err != nil {
+		return nil, ErrConfirmation
+	}
+	ok := false
+	defer func() {
+		if !ok {
+			server.Close()
+		}
+	}()
+	stopClose := context.AfterFunc(f.ctx, func() { server.Close() })
+	defer stopClose()
+	timer := time.NewTimer(2 * time.Second)
+	defer timer.Stop()
+	select {
+	case <-state.done:
+		state.mu.Lock()
+		err = state.err
+		state.mu.Unlock()
+		if err != nil {
+			return nil, ErrConfirmation
+		}
+	case <-timer.C:
+		return nil, ErrConfirmation
+	case <-f.ctx.Done():
+		return nil, ErrConfirmation
+	}
+	f.mu.Lock()
+	delete(f.flows, key)
+	f.mu.Unlock()
+	ok = true
+	return server, nil
 }

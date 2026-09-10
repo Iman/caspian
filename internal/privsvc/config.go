@@ -211,8 +211,8 @@ func (c Config) check() error {
 
 func (c Config) withDefaults() Config {
 	if c.StartSNI == nil {
-		c.StartSNI = func(remote netip.AddrPort, iface, name string) (SNIForwarder, error) {
-			return snispoof.Start(remote, iface, name)
+		c.StartSNI = func(remote netip.AddrPort, iface string, options snispoof.Options) (SNIForwarder, error) {
+			return snispoof.StartWithOptions(remote, iface, options)
 		}
 	}
 	if c.Backend == nil {

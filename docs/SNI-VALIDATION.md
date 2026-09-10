@@ -61,3 +61,14 @@ These flags were not used for the production installer.
 - Recheck NuGet vulnerability data: restore/build succeeded from cached dependencies, but the audit endpoint was unavailable (NU1900). The installed .NET SDK was a preview build.
 
 See [SNI setup and limitations](SNI.md), [source research](THIRD-PARTY.md), and [third-party licenses](THIRD-PARTY.md).
+
+## Independent split settings
+
+TCP split, TLS-record split, and fake SNI are separately selectable.
+Local tests exercised all eight combinations with real TLS 1.2 and TLS 1.3 servers.
+The four fake-SNI combinations used the native Windows WinDivert backend.
+Each case verified the server-side TLS record count, unchanged upload/download payloads, and a specific certificate hostname rejection for the wrong real name.
+These checks validate TLS records and connection behavior; they do not prove TCP packet segmentation or ISP bypass on every network.
+Parser tests cover partial reads, greetings spanning records, malformed lengths, truncated input, and short or failed writes.
+State and panel tests cover independent persistence, migration, replacement, invalid input, and reconnects.
+REALITY splitting remains disabled; split-only mode needs no raw-packet backend.

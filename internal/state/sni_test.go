@@ -117,7 +117,64 @@ func TestV3MigrationPreservesConfigWithSpoofingOff(t *testing.T) {
 		t.Fatal(err)
 	}
 	after := s.Snapshot()
-	if after.Version != 4 || after.Proxy.Raw != before.Proxy.Raw || after.Proxy.Selected != before.Proxy.Selected || after.Proxy.SpoofSNI != "" {
+	if after.Version != CurrentVersion || after.Proxy.Raw != before.Proxy.Raw || after.Proxy.Selected != before.Proxy.Selected || after.Proxy.SpoofSNI != "" {
 		t.Fatal("migration changed config or enabled spoofing")
+	}
+}
+
+func TestDPISettingsRemainIndependentAcrossReloadAndReplacement(t *testing.T) {
+	dir := tempStateDir(t)
+	s, err := Load(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err = s.SetDPISettings("", true, false); err == nil {
+		t.Fatal("accepted splitting without config")
+	}
+	if err = s.SetProxyConfig(fakeProxyLink, fakeProxyScheme, fakeProxyLabel); err != nil {
+		t.Fatal(err)
+	}
+	for mask := 0; mask < 8; mask++ {
+		name := ""
+		if mask&1 != 0 {
+			name = "cover.example.invalid"
+		}
+		if err = s.SetDPISettings(name, mask&2 != 0, mask&4 != 0); err != nil {
+			t.Fatal(err)
+		}
+		again, err := Load(dir)
+		if err != nil {
+			t.Fatal(err)
+		}
+		got := again.Proxy()
+		if got.SpoofSNI.Reveal() != name || got.TCPSplit != (mask&2 != 0) || got.TLSRecordSplit != (mask&4 != 0) || got.Raw.Reveal() != fakeProxyLink {
+			t.Fatal("settings did not survive independently")
+		}
+	}
+	before := s.Snapshot()
+	if err = s.SetDPISettings("bad/name", false, false); err == nil || !reflect.DeepEqual(before, s.Snapshot()) {
+		t.Fatal("invalid settings changed state")
+	}
+	if err = s.SetProxyConfig(fakeProxyLink, fakeProxyScheme, "replacement"); err != nil {
+		t.Fatal(err)
+	}
+	if p := s.Proxy(); p.TCPSplit || p.TLSRecordSplit || !p.SpoofSNI.IsZero() {
+		t.Fatal("replacement retained DPI settings")
+	}
+}
+func TestV4MigrationPreservesFakeNameAndDisablesSplitting(t *testing.T) {
+	before := fullState(t)
+	before.Version = 4
+	raw, err := json.Marshal(before)
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, err := Load(writeStateFile(t, string(raw)))
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := s.Proxy()
+	if got.SpoofSNI != before.Proxy.SpoofSNI || got.Raw != before.Proxy.Raw || got.TCPSplit || got.TLSRecordSplit {
+		t.Fatal("migration lost SNI or enabled splitting")
 	}
 }

@@ -300,6 +300,9 @@ const (
 	MsgAdvConfigCount     Key = "advanced.config.count"
 	// The entry list in the config card, shown when the pasted text holds
 	// more than one entry.
+	MsgTCPSplit             Key = "sni.tcp_split"
+	MsgTLSRecordSplit       Key = "sni.tls_record_split"
+	MsgSplitHint            Key = "sni.split_hint"
 	MsgSNISpoofHeading      Key = "sni.heading"
 	MsgSNISpoofLabel        Key = "sni.label"
 	MsgSNISpoofHint         Key = "sni.hint"

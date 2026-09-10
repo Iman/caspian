@@ -25,3 +25,5 @@ The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-
 - [راهنمای فارسی](https://github.com/Iman/caspian/wiki/Home.fa)
 - [تنظیم SNI و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
 - [منابع و مجوزهای شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
+
+On feature/sni, optional TCP split and TLS-record split are independent of fake SNI; splitting currently requires ordinary TLS over supported IPv4 TCP transports, and REALITY splitting is disabled.

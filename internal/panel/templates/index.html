@@ -240,6 +240,9 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
       <label for="spoof_sni">{{.T "sni.label"}}</label>
       <input id="spoof_sni" name="spoof_sni" type="text" value="{{.SpoofSNI}}" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
       <p class="hint">{{.T "sni.hint"}}</p>
+      <label><input type="checkbox" name="tcp_split" {{if .TCPSplit}}checked{{end}}> {{.T "sni.tcp_split"}}</label>
+      <label><input type="checkbox" name="tls_record_split" {{if .TLSRecordSplit}}checked{{end}}> {{.T "sni.tls_record_split"}}</label>
+      <p class="hint">{{.T "sni.split_hint"}}</p>
       <button type="submit">{{.T "sni.save"}}</button>
     </form>
   </details>

@@ -43,12 +43,14 @@ func fullState(t *testing.T) State {
 	return State{
 		Version: CurrentVersion,
 		Proxy: ProxyConfig{
-			Raw:      Secret(fakeProxyLink),
-			Scheme:   fakeProxyScheme,
-			Label:    fakeProxyLabel,
-			Selected: 2,
-			SpoofSNI: Secret("cover.example.invalid"),
-			AddedAt:  time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
+			Raw:            Secret(fakeProxyLink),
+			Scheme:         fakeProxyScheme,
+			Label:          fakeProxyLabel,
+			Selected:       2,
+			SpoofSNI:       Secret("cover.example.invalid"),
+			TCPSplit:       true,
+			TLSRecordSplit: true,
+			AddedAt:        time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
 
 			SubscriptionURL: Secret(fakeSubscriptionURL),
 			RefreshedAt:     time.Date(2026, 9, 9, 10, 30, 0, 0, time.UTC),
