@@ -49,3 +49,5 @@
 <!-- Caspian guide navigation -->
 
 Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[Лицензии и благодарности](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru)

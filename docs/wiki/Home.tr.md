@@ -41,3 +41,5 @@ SNI yanıltmanın temel kodu ve fikri [patterniha/SNI-Spoofing](https://github.c
 <!-- Caspian guide navigation -->
 
 Caspian rehberleri: [kurulum ve protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [SNI spoofing ve DPI aşma: kurulum ve sınırlar (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[Lisanslar ve teşekkürler](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr)

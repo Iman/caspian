@@ -65,3 +65,5 @@ See [SNI setup, supported platforms, and limits](https://github.com/Iman/caspian
 <!-- Caspian guide navigation -->
 
 Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[Licences and credits](https://github.com/Iman/caspian/wiki/Licence-and-Credits)

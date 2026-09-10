@@ -45,3 +45,5 @@ SNI کی جعل سازی کے بنیادی کوڈ اور خیال کا ماخذ 
 <!-- Caspian guide navigation -->
 
 Caspian رہنما: [ترتیب اور پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [SNI spoofing اور DPI سے گزرنا: ترتیب اور حدود (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[لائسنس اور اعترافِ خدمات](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)

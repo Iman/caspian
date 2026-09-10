@@ -87,6 +87,32 @@ xray-core, а парсер share-ссылок принадлежит XTLS. Ни 
 Основной код и идея подмены SNI взяты из [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0); версия для Windows x64 использует WinDivert (LGPL-3.0).
 [Лицензии, источники и благодарности сторонним проектам](../THIRD-PARTY.md).
 
+## Благодарности за идеи SNI
+
+Основной код и идея SNI происходят из [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0-only).
+
+Caspian благодарит авторов и участников этих проектов за идеи и сравнение реализаций SNI. Их код и исполняемые файлы не входят в Caspian.
+
+- [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof): Сравнение реализации SNI на Go.
+- [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust): Сравнение реализации и возможностей SNI на Rust.
+- [bol-van/zapret](https://github.com/bol-van/zapret): Методы обхода DPI и диагностика.
+- [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI): Методы обхода DPI.
+- [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android): Идеи интеграции SNI в Android.
+
+Адаптированный код сохраняет лицензию GPL-3.0-only и исходные уведомления. Благодарность за идеи не даёт разрешения копировать код и не означает одобрения Caspian авторами.
+
+[WinDivert — Basil (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
+
+[Версии исходников, лицензии и характер использования (English)](https://github.com/Iman/caspian/wiki/Third-Party-Credits).
+
+[Полный список библиотек, включая Xray, и лицензий (English)](https://github.com/Iman/caspian/wiki/Licence-and-Credits).
+
 <!-- Caspian guide navigation -->
 
 Руководства Caspian: [настройка и протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [SNI spoofing и обход DPI: настройка и ограничения (English)](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+
+</div>

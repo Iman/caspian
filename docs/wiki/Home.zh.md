@@ -49,3 +49,5 @@ SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://githu
 <!-- Caspian guide navigation -->
 
 Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[许可证与致谢](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)

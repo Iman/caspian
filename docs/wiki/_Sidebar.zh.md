@@ -149,3 +149,5 @@ SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://githu
 
 * [SNI spoofing (feature branch)](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
 * [Third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
+
+[许可证与致谢](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)

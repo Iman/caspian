@@ -149,3 +149,5 @@
 
 * [SNI spoofing (feature branch)](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
 * [Third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
+
+[Лицензии и благодарности](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru)

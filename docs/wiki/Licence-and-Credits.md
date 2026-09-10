@@ -105,3 +105,11 @@ See [third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credi
 <!-- Caspian guide navigation -->
 
 Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+[WinDivert — Basil (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
+
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+
+</div>

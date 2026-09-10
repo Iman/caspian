@@ -77,6 +77,32 @@ Windows 安装包含独立文件 `wintun.dll`。项目原样分发官方签名�
 SNI 伪装的主要代码和思路来自 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)（GPL-3.0）；Windows x64 版本使用 WinDivert（LGPL-3.0）。
 [第三方许可证、来源和致谢](../THIRD-PARTY.md).
 
+## SNI 创意致谢
+
+SNI 的主要代码和思路来自 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0-only).
+
+Caspian 感谢以下项目的作者和贡献者。这些项目的思路和实现对比帮助了 SNI 功能的开发。Caspian 不附带它们的代码或可执行文件。
+
+- [selfishblackberry177/sni-spoof](https://github.com/selfishblackberry177/sni-spoof): Go SNI 转发实现对比.
+- [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust): Rust SNI 实现与功能对比.
+- [bol-van/zapret](https://github.com/bol-van/zapret): DPI 绕过策略与诊断.
+- [ValdikSS/GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI): DPI 绕过策略.
+- [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android): Android SNI 集成思路.
+
+改编代码保留 GPL-3.0-only 许可证及原始声明。对思路的致谢不授予复制代码的许可，也不表示原作者认可 Caspian。
+
+[WinDivert — Basil (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
+
+[所查阅的版本、许可证及使用范围（English）](https://github.com/Iman/caspian/wiki/Third-Party-Credits).
+
+[完整的库与许可证列表，包括 Xray（English）](https://github.com/Iman/caspian/wiki/Licence-and-Credits).
+
 <!-- Caspian guide navigation -->
 
 Caspian 指南：[设置与支持的协议](https://github.com/Iman/caspian/wiki/Home.zh) · [SNI 欺骗与 DPI 规避：设置和限制（English）](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
+
+<div dir="ltr">
+
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+
+</div>

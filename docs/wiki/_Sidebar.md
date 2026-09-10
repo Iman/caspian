@@ -149,3 +149,5 @@ SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SN
 
 * [SNI spoofing (feature branch)](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
 * [Third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
+
+[Licences and credits](https://github.com/Iman/caspian/wiki/Licence-and-Credits)

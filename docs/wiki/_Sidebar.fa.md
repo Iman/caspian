@@ -153,3 +153,5 @@
 
 * [جعل SNI (شاخهٔ قابلیت)](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
 * [انتساب شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
+
+[مجوزها و قدردانی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa)
