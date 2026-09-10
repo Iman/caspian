@@ -1,23 +1,27 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) · [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) · [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Installation.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Installation.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
+
+<div dir="rtl" lang="ar">
+
+[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="installation"></a>
 # التثبيت
 
-
-
 [للتعرف على مخططات الاتصال وإعداد الكابل أولاً وإعادة تشغيل الخدمة والأخطاء الشائعة، اقرأ دليل استكشاف الأخطاء وإصلاحها للمستخدم المنزلي.](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
 
 وحدة المعالجة المركزية وذاكرة الوصول العشوائي: لا يوجد لدى Caspian حد أدنى مُقاس لذاكرة الوصول العشوائي أو عدد نواة وحدة المعالجة المركزية أو سرعة الساعة حتى الآن. يعتمد استخدام الموارد على حجم حركة المرور وبروتوكول الوكيل والاتصالات المتزامنة. هناك حاجة إلى معايير الخمول والتحميل قبل نشر الحد الأدنى من المتطلبات.
 
 تستهدف ثنائيات إصدار Linux x86-64 وARM64 وARMv6/ARMv7. التوافق مع البنية وحده لا ينشئ أداءً قابلاً للاستخدام.
-
-[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 > يأتي هذا الدليل من ملف README الموجود. تحتفظ قياساتها بتواريخها الأصلية. لا يُبلغ نقل التوثيق هذا عن تشغيل اختباري جديد.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -378,7 +382,6 @@ kernel، لم يتم تعيينه عمدا، لأن التخمين هو كيف �
 
 sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
-
 <a id="forgotten-panel-password"></a>
 ### نسيت كلمة مرور اللوحة
 
@@ -445,18 +448,11 @@ Zero وZero W الذي يقوم بتثبيته. يتحقق سير عمل الإ�
 يُبلغ عن حالة الأمر الأخير، لذا فإن توصيله إلى `tail` يؤدي إلى التخلص من الأمر
 الجواب الذي طلبته.
 
-
-
 <!-- SNI upstream credits -->
 
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
 [تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- Caspian guide navigation -->
-
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
-
 </div>
 
-
-<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->
+<!-- English-source-sha256: abb023f6408ff919116ca296c4d914e430ac0fb2b6aea1caf73990f480c1c5d9 -->

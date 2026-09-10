@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) · [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) · [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) · [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
 
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="development-and-testing"></a>
 # Разработка и тестирование
-
-
-
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -94,13 +98,6 @@ CLI сам об этом говорит: «После запуска устан�
 **Прибор не запрашивает у Интернета ничего, о чем вы его не просили.** Никакой телеметрии, никакого домашнего телефона, никаких сбоев.
 загрузки, без веб-шрифта, без файла геоданных и без преобразователя Google по умолчанию.
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.ru) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
-<!-- Caspian guide navigation -->
-
-Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
-
-<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->
+<!-- English-source-sha256: 5badcd2d45aa3aa7f927a0215bc4511dcd899932a2c648c8bec2484f9c77a161 -->

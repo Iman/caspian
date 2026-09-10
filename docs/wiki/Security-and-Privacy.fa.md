@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [**فارسی**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
+
+<div dir="rtl" lang="fa">
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="security-and-privacy"></a>
 # امنیت و حریم خصوصی
-
-
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 > این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -367,8 +371,6 @@ TUN ورودی موتور نشان داده نشده است که IPv6 را رو�
 یک رادیو و بدون آداپتور USB، بنابراین ترتیبی که این محصول به مردم می گوید
 خرید آداپتور برای بایت هایی که هیچ کس اندازه گیری نکرده است ثابت شده است.
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
 
 <!-- SNI upstream credits -->
@@ -376,11 +378,6 @@ TUN ورودی موتور نشان داده نشده است که IPv6 را رو�
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
 [مجوزهای شخص ثالث، نسخه های منبع و اعتبارات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- Caspian guide navigation -->
-
-راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
-
 </div>
 
-
-<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
+<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->

@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
+[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) · [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) · [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) · [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="protocols-and-transports"></a>
 # پروٹوکول اور ٹرانسپورٹ
-
-
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 > یہ گائیڈ موجودہ README سے آتا ہے۔ اس کی پیمائش اپنی اصل تاریخوں کو برقرار رکھتی ہے۔ یہ دستاویزی اقدام نئے ٹیسٹ رن کی اطلاع نہیں دیتا ہے۔
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -309,15 +313,8 @@ QR تصویر کو گرانے کی وضاحت ڈیزائن، سیکشن 5.2 می
 `qr.Encode` اور `qr.WiFiJoin` کے ساتھ، لہذا کوئی تصویری لائبریری اور کوئی ریموٹ سروس نہیں ہے
 ملوث
 
-
-
 [انگریزی: HTTP/2، HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [فارسی: HTTP/2، HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [روسی: HTTP/2، HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [中文: HTTP/2، HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
-
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
 
 </div>
 
-
-<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->
+<!-- English-source-sha256: 30f8b36af56f141cfe1ed994244c800fda2caede65af1db4d89d79326245e614 -->

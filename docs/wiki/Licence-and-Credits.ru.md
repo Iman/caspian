@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
 
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="licence-and-credits"></a>
 # Лицензия и кредиты
-
-
-
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -81,8 +85,6 @@ Caspian.
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) содержит полную запись: каждый модуль в двоичном виде, лицензия прочитана.
 из собственного файла лицензии и соображений совместимости.
 
-
-
 <!-- SNI upstream credits -->
 
 Кредиты на подмену SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0) с WinDivert (LGPL-3.0) в Windows x64.
@@ -104,11 +106,6 @@ Caspian.
 Благодарность за идею не дает разрешения на копирование кода и не подразумевает одобрения.
 См. [сторонние кредиты](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) для ознакомления с проверенными версиями, лицензиями и областью использования.
 
-<!-- Caspian guide navigation -->
-
-Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
 [WinDivert — Василий (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
 
-
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 626ed23e3eab55bb351c5d12fc420fb06471c2cf6e2e08fb42edb6a8062571bf -->

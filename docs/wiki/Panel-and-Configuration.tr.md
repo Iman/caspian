@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
 
+<div dir="ltr" lang="tr">
+
+[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="panel-and-configuration"></a>
 # Panel ve konfigürasyon
-
-
-
-[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 Tarayıcının kayıtlı seçeneği olmadığında panel İngilizce olarak açılır. Üstteki dil menüsünü kullanın ve Farsçaya veya İngilizceye geri dönmek için Uygula'yı seçin. Seçim, oturum açma ve yardım sayfaları da dahil olmak üzere tarayıcıda kalır. Menü JavaScript olmadan çalışır. Dar ekranlarda başlık ve gezinme, mevcut genişliğe sığacak şekilde kaydırılır.
 
@@ -143,11 +147,4 @@ Böylece panel süreci ve herhangi bir SSH oturumu baştan sona çalışır duru
 erişim noktasına bağlanın ve yeniden başlatın, böylece erişim noktasına bağlanan bir cihaz ayrılır
 ağa bağlanır ve sıcak nokta geri döndüğünde ağa yeniden katılır.
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
-
-
-<!-- English-source-sha256: a8e4593b041147f8a67533ec5f1eb75b6017a32cf457d4ea6151af7a8232382b -->
+<!-- English-source-sha256: d7e1ff1af94ccc77a97648658f4f4ee5fb24c5af9ae551c062ccc6677af7542d -->

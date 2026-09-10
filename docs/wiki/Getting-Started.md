@@ -1,16 +1,20 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
+[**English**](https://github.com/Iman/caspian/wiki/Getting-Started) · [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) · [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) · [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) · [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
 
 </div>
 
+<div dir="ltr" lang="en">
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+</div>
+<!-- wiki-navigation:end -->
+
 # Getting started
 
-
-
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -84,13 +88,7 @@ costs the user nothing. The fallback is reached only after the first choice has
 been tried and refused, and the first plan is torn down completely before the
 second is applied.
 
-
-
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
 [Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
-
-<!-- Caspian guide navigation -->
-
-Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

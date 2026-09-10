@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [**فارسی**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
+
+<div dir="rtl" lang="fa">
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="panel-and-configuration"></a>
 # پنل و پیکربندی
-
-
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 پانل به زبان انگلیسی باز می شود که مرورگر هیچ گزینه ذخیره شده ای نداشته باشد. از منوی زبان در بالا استفاده کنید و Apply را انتخاب کنید تا به فارسی یا انگلیسی برگردید. انتخاب با آن مرورگر باقی می ماند، از جمله در صفحات ورود به سیستم و راهنما. منو بدون جاوا اسکریپت کار می کند. در صفحه‌های باریک، هدر و ناوبری بسته می‌شوند تا با عرض موجود مطابقت داشته باشند.
 
@@ -145,13 +149,6 @@ iifname "wlan0" نظر را رها کنید "ترافیک مشتری توسط ک
 نقطه دسترسی و آن را دوباره راه اندازی کنید، بنابراین دستگاهی که به هات اسپات متصل می شود خارج می شود
 شبکه و پس از بازگشت هات اسپات دوباره به آن ملحق می شود.
 
-
-
-<!-- Caspian guide navigation -->
-
-راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
-
 </div>
 
-
-<!-- English-source-sha256: a8e4593b041147f8a67533ec5f1eb75b6017a32cf457d4ea6151af7a8232382b -->
+<!-- English-source-sha256: d7e1ff1af94ccc77a97648658f4f4ee5fb24c5af9ae551c062ccc6677af7542d -->

@@ -1,14 +1,18 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
+[**English**](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) · [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) · [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) · [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) · [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
 
+<div dir="ltr" lang="en">
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+</div>
+<!-- wiki-navigation:end -->
+
 # Protocols and transports
-
-
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -297,10 +301,4 @@ the one a phone scans to join the hotspot. [`internal/panel/view.go`](https://gi
 with `qr.Encode` and `qr.WiFiJoin`, so no image library and no remote service is
 involved.
 
-
-
 [English: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [فارسی: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [中文: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
-
-<!-- Caspian guide navigation -->
-
-Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

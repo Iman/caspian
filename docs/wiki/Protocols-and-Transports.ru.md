@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
+[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) · [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) · [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) · [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
 
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="protocols-and-transports"></a>
 # Протоколы и транспорты
-
-
-
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -307,13 +311,6 @@ sni=example.com хост=cdn.example.com
 с `qr.Encode` и `qr.WiFiJoin`, поэтому не требуется ни библиотека изображений, ни удаленное обслуживание.
 участвует.
 
-
-
 [Английский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [Тип: HTTP/2, HTTP/3.](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
 
-<!-- Caspian guide navigation -->
-
-Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
-
-<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->
+<!-- English-source-sha256: 30f8b36af56f141cfe1ed994244c800fda2caede65af1db4d89d79326245e614 -->

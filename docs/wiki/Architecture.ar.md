@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) | [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
+[English](https://github.com/Iman/caspian/wiki/Architecture) · [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) · [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Architecture.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Architecture.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) · [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
 
 </div>
+
+<div dir="rtl" lang="ar">
+
+[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="architecture-and-data-flow"></a>
 # الهندسة المعمارية وتدفق البيانات
-
-
-
-[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 > يأتي هذا الدليل من ملف README الموجود. تحتفظ قياساتها بتواريخها الأصلية. لا يُبلغ نقل التوثيق هذا عن تشغيل اختباري جديد.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -343,13 +347,6 @@ flowchart LR
     DOH["DNS over HTTPS<br/>port 443"] --> CAR["carried through the tunnel like any HTTPS.<br/>Not a leak. Not visible to anything here."]
 ```
 
-
-
-<!-- Caspian guide navigation -->
-
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
-
 </div>
 
-
-<!-- English-source-sha256: 07a2e0584db74a162eb7938428d733054b00788748889213f96e0e0679d0f650 -->
+<!-- English-source-sha256: c61eb46a98fa09164d26fd64714b16205c6a95bd9f2b26e13ccca199283bcb0d -->

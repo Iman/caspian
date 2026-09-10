@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
+[English](https://github.com/Iman/caspian/wiki/Getting-Started) · [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Getting-Started.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) · [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) · [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
 
 </div>
+
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <a id="getting-started"></a>
 # Начало работы
 
-
-
 [Схемы подключения, настройку с подключением кабеля, перезапуск службы и распространенные ошибки см. в руководстве по устранению неполадок для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -87,16 +91,9 @@ WiFi.** Драйвер `brcmfmac` отказывается от `iw phy phy0 int
 был опробован, но ему было отказано, и первый план был полностью разрушен до того, как
 применяется второй.
 
-
-
 <!-- SNI upstream credits -->
 
 Кредиты на подмену SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0) с WinDivert (LGPL-3.0) в Windows x64.
 [Сторонние лицензии, исходные версии и авторство](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- Caspian guide navigation -->
-
-Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
-
-<!-- English-source-sha256: 629d6e2b6255b16d3bc76228a7aec238747c2de1af4bc20e44050dafefa13075 -->
+<!-- English-source-sha256: a5c74774081ac02e3989f9029f44839c260680e1757760cd49c2d5dfabe4ed92 -->

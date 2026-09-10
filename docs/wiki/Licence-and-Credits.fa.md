@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) · [**فارسی**](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
+
+<div dir="rtl" lang="fa">
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="licence-and-credits"></a>
 # مجوز و اعتبار
-
-
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 > این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -83,8 +87,6 @@ xray-core، و تجزیه کننده اشتراک لینک XTLS است. هیچک
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) رکورد کامل را دارد: هر ماژول در باینری، مجوز خوانده می شود
 از فایل مجوز خود، و استدلال سازگاری.
 
-
-
 <!-- SNI upstream credits -->
 
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
@@ -106,13 +108,8 @@ xray-core، و تجزیه کننده اشتراک لینک XTLS است. هیچک
 تصدیق ایده اجازه کپی کد را نمی دهد یا به معنای تایید است.
 برای نسخه های بازبینی شده، مجوزها و دامنه استفاده، [اعتبارات شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) را ببینید.
 
-<!-- Caspian guide navigation -->
-
-راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
-
 [WinDivert - ریحان (ریحان00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64، LGPL-3.0.
 
 </div>
 
-
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 626ed23e3eab55bb351c5d12fc420fb06471c2cf6e2e08fb42edb6a8062571bf -->

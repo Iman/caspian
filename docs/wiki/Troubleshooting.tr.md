@@ -1,13 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
 
+<div dir="ltr" lang="tr">
+
+[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="troubleshooting-for-home-users"></a>
 # Ev kullanıcıları için sorun giderme
-
-
 
 Yönlendiricinizden Caspian çalıştıran bilgisayara Ethernet ile başlayın. Erişim noktası için bu bilgisayarın yerleşik Wi-Fi'sini veya Linux'ta uyumlu bir USB Wi-Fi adaptörünü kullanın. Bu, internet bağlantısı ve sıcak nokta için ayrı adaptörler sağlar. Bu, ölçülen bir hız garantisi değil, önerilen başlangıç düzenlemesidir.
 
@@ -17,7 +23,6 @@ Yönlendiricinizden Caspian çalıştıran bilgisayara Ethernet ile başlayın. 
 Otomatik algılama varsayılan olarak kalır. Caspian tespit edemediği sürece Ülke alanını boş bırakın. "Wi-Fi ülkesi ayarlanmadı" mesajını görüyorsanız Wi-Fi ülkesini Gelişmiş ayarlara ayarla seçeneğini izleyin. Bilgisayarın bulunduğu ülkenin iki harfli kodunu girin, kaydedin ve Caspian'ı tekrar açın. Kaydedilen seçim, hizmetin yeniden başlatılmasından sonra hayatta kalır. Otomatik algılamaya dönmek için alanı temizleyin ve kaydedin. Caspian IR'yi üstlenmez veya panel dilinden veya proxy sunucusundan bir ülke seçmez.
 
 Yüklü sürümünüz Ülke alanını gizliyorsa bu kurtarma kontrolü, 3 numaralı sorun güncellemesinin bir parçasıdır. Caspian ve Linux sürümlerinizi, adaptör düzenlemenizi ve güncellenen panelde Ülke seçeneğinin yeterli olup olmadığını kaydedin. Özel yapılandırma veya tam günlükler göndermeyin. Manuel bir iw komutunun yardımcı olduğuna dair bir rapor, uygulamanın sistem radyo ayarlarını değiştirmesi gerektiğini kanıtlamaz. Otomatik iw reg seti bu değişikliğin bir parçası değildir.
-
 
 <a id="choose-your-connection"></a>
 ## Bağlantınızı seçin
@@ -117,11 +122,4 @@ Kusur kaydı, güvenlik ve kurtarma boşluklarını kaydeder. Bu sorun giderme a
 - [Kod ve test kanıtı](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: Ethernet / Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
-
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

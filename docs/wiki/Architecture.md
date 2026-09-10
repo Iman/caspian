@@ -1,14 +1,18 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) | [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
+[**English**](https://github.com/Iman/caspian/wiki/Architecture) · [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) · [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Architecture.zh) · [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) · [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
 
 </div>
 
+<div dir="ltr" lang="en">
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+</div>
+<!-- wiki-navigation:end -->
+
 # Architecture and data flow
-
-
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -329,9 +333,3 @@ flowchart LR
     DOQ["DNS over QUIC<br/>udp 853"] --> DRP["drop"]
     DOH["DNS over HTTPS<br/>port 443"] --> CAR["carried through the tunnel like any HTTPS.<br/>Not a leak. Not visible to anything here."]
 ```
-
-
-
-<!-- Caspian guide navigation -->
-
-Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

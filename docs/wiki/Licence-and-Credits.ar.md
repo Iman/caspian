@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
+
+<div dir="rtl" lang="ar">
+
+[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="licence-and-credits"></a>
 # الترخيص والاعتمادات
-
-
-
-[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 > يأتي هذا الدليل من ملف README الموجود. تحتفظ قياساتها بتواريخها الأصلية. لا يُبلغ نقل التوثيق هذا عن تشغيل اختباري جديد.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -83,8 +87,6 @@ xray-core، ومحلل ارتباط المشاركة هو XTLS. ولا يؤيد 
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) يحمل السجل الكامل: كل وحدة في الثنائي، قراءة الترخيص
 من ملف الترخيص الخاص به، وأسباب التوافق.
 
-
-
 <!-- SNI upstream credits -->
 
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
@@ -106,13 +108,8 @@ xray-core، ومحلل ارتباط المشاركة هو XTLS. ولا يؤيد 
 لا تمنح إقرارات الفكرة الإذن بنسخ التعليمات البرمجية أو تشير ضمنيًا إلى التأييد.
 راجع [اعتمادات طرف ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) للاطلاع على الإصدارات والتراخيص ونطاق الاستخدام الذي تمت مراجعته.
 
-<!-- Caspian guide navigation -->
-
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
-
 [WinDivert — باسل (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): نظام التشغيل Windows x64، LGPL-3.0.
 
 </div>
 
-
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 626ed23e3eab55bb351c5d12fc420fb06471c2cf6e2e08fb42edb6a8062571bf -->

@@ -1,13 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
 
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="troubleshooting-for-home-users"></a>
 # Устранение неполадок для домашних пользователей
-
-
 
 Начните с Ethernet от вашего маршрутизатора к компьютеру, на котором работает Caspian. Используйте встроенный Wi-Fi этого компьютера в качестве точки доступа или совместимый USB-адаптер Wi-Fi в Linux. Это дает подключение к Интернету и точку доступа отдельные адаптеры. Это рекомендуемая схема запуска, а не гарантия измеренной скорости.
 
@@ -17,7 +23,6 @@
 Автоматическое обнаружение остается значением по умолчанию. Оставьте поле «Страна» пустым, если только компания «Caspian» не сможет ее обнаружить. Если вы видите «Страна Wi-Fi не установлена», выберите «Установить страну Wi-Fi» в разделе «Дополнительные настройки». Введите двухбуквенный код страны, где находится компьютер, сохраните, затем снова включите Каспиан. Сохраненный выбор сохраняется при перезапуске службы. Очистите поле и сохраните, чтобы вернуться к автоматическому обнаружению. Caspian не предполагает IR и не выбирает страну на языке панели или прокси-сервере.
 
 Если ваша установленная версия скрывает поле «Страна», этот элемент управления восстановлением является частью обновления проблемы № 3. Запишите ваши версии Каспия и Linux, расположение адаптера и достаточно ли выбора Country в обновленной панели. Не отправляйте личную конфигурацию или полные журналы. Отчет о том, что помогла команда iw вручную, не доказывает, что приложение должно изменить настройки системного радио. Автоматическая настройка iw reg не является частью этого изменения.
-
 
 <a id="choose-your-connection"></a>
 ## Выберите свое соединение
@@ -117,11 +122,4 @@ sudo systemctl restart caspian.service caspian-panel.service
 - [Кодирование и проверка доказательств](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: Ethernet/Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

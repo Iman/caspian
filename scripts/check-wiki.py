@@ -8,6 +8,9 @@ from collections import Counter
 from pathlib import Path
 import re
 import sys
+from urllib.parse import unquote, urlsplit
+
+import wiki_navigation as nav
 
 LANGUAGES = ("fa", "ru", "zh", "ar", "tr", "ur")
 BASE = "https://github.com/Iman/caspian/wiki/"
@@ -21,7 +24,15 @@ def literals(text):
 
 def check(root):
     errors = []
-    sources = sorted(p for p in root.glob("*.md") if p.stem.split(".")[-1] not in LANGUAGES)
+    sources = sorted(p for p in root.glob("*.md") if not p.name.startswith("_") and p.stem.split(".")[-1] not in LANGUAGES)
+    for obsolete in root.glob("_Sidebar.*.md"):
+        errors.append(f"{obsolete.name}: GitHub uses one shared _Sidebar.md")
+    for name, expected in nav.render(root).items():
+        page = root / name
+        actual = page.read_text(encoding="utf-8") if page.exists() else ""
+        actual = re.sub(r"\n<!-- English-source-sha256: [a-f0-9]+ -->\n", "", actual)
+        if actual != expected:
+            errors.append(f"{name}: generated navigation differs; run python scripts/wiki_navigation.py --write")
     for source in sources:
         english = source.read_text(encoding="utf-8")
         expected = literals(english)
@@ -57,9 +68,23 @@ def check(root):
         for page in [source, *(root / f"{source.stem}.{lang}.md" for lang in LANGUAGES)]:
             if not page.exists():
                 continue
-            for name in re.findall(re.escape(BASE) + r"([A-Za-z_.-]+)", page.read_text(encoding="utf-8")):
-                if not (root / (name + ".md")).exists():
-                    errors.append(f"{page.name}: wiki link has no page: {name}")
+            language = page.stem.rsplit(".", 1)[-1] if "." in page.stem else "en"
+            text = page.read_text(encoding="utf-8")
+            if not text.startswith(nav.navigation(source.stem, language)):
+                errors.append(f"{page.name}: missing or incorrect localized navigation")
+            if text.count(nav.START) != 1 or text.count(nav.END) != 1:
+                errors.append(f"{page.name}: duplicate or incomplete navigation")
+            if language in nav.RTL and '<div dir="rtl"' not in text[len(nav.navigation(source.stem, language)):]:
+                errors.append(f"{page.name}: missing right-to-left content wrapper")
+    for page in root.glob("*.md"):
+        for url in re.findall(r'\]\((https?://[^)]+)\)', page.read_text(encoding="utf-8")):
+            if not url.startswith(BASE):
+                continue
+            name = unquote(urlsplit(url).path.removeprefix("/Iman/caspian/wiki/"))
+            if name.startswith("_"):
+                errors.append(f"{page.name}: navigation links to a reserved wiki file: {name}")
+            elif not (root / (name + ".md")).exists():
+                errors.append(f"{page.name}: wiki link has no page: {name}")
     return sources, errors
 
 

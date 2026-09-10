@@ -1,8 +1,16 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
 </div>
+
+<div dir="rtl" lang="ar">
+
+[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
@@ -47,7 +55,6 @@
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | لم يتم العثور على ترخيص تطبيق عالي المستوى؛ الأفكار فقط |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | تعلن MIT؛ مصدر قالب GPL يحتاج إلى توضيح؛ لم يتم نسخ أي رمز |
 
-
 <a id="other-distributed-components"></a>
 ## المكونات الموزعة الأخرى
 
@@ -56,11 +63,6 @@
 تظل إشعاراتهم ضمن [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) ويتم تثبيتها بجانب التطبيق.
 يعد ربط Go Wintun أحد تبعيات وقت التشغيل MIT على Windows.
 
-<!-- Caspian guide navigation -->
-
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
-
 </div>
 
-
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: ceef83c2b7b0779eb04c1fa1c854f35aaf685978f4d17f439ddaa2fd2d01847c -->

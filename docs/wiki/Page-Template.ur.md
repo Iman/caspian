@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) | [اردو](https://github.com/Iman/caspian/wiki/Page-Template.ur)
+[English](https://github.com/Iman/caspian/wiki/Page-Template) · [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) · [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) · [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Page-Template.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="page-template"></a>
 # صفحہ ٹیمپلیٹ
-
-
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 حیثیت: خاکہ۔ مکمل گائیڈ شائع کرنے سے پہلے ہر پلیس ہولڈر کو تبدیل کریں۔
 
@@ -35,13 +39,6 @@ TODO: نمبر والے مراحل، عین مطابق کمانڈز، اور چ�
 
 TODO: غلطیاں، بازیابی کے مراحل، ٹیسٹ کے نتائج، تاریخیں، اور معلوم حدود ریکارڈ کریں۔
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
-
 </div>
 
-
-<!-- English-source-sha256: 96de2b0f6c166c14e5982c19975159622b6cd30bece0775255ca81c00f4f052b -->
+<!-- English-source-sha256: ec4ec5e67fa633cd63b33135783a55858c9a81ac8d14881e50696cbcbd922872 -->

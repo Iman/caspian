@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) | [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur)
+[English](https://github.com/Iman/caspian/wiki/Architecture) · [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) · [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Architecture.zh) · [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Architecture.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="architecture-and-data-flow"></a>
 # فن تعمیر اور ڈیٹا کا بہاؤ
-
-
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 > یہ گائیڈ موجودہ README سے آتا ہے۔ اس کی پیمائش اپنی اصل تاریخوں کو برقرار رکھتی ہے۔ یہ دستاویزی اقدام نئے ٹیسٹ رن کی اطلاع نہیں دیتا ہے۔
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -343,13 +347,6 @@ flowchart LR
     DOH["DNS over HTTPS<br/>port 443"] --> CAR["carried through the tunnel like any HTTPS.<br/>Not a leak. Not visible to anything here."]
 ```
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
-
 </div>
 
-
-<!-- English-source-sha256: 07a2e0584db74a162eb7938428d733054b00788748889213f96e0e0679d0f650 -->
+<!-- English-source-sha256: c61eb46a98fa09164d26fd64714b16205c6a95bd9f2b26e13ccca199283bcb0d -->

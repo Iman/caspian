@@ -1,17 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="panel-and-configuration"></a>
 # پینل اور ترتیب
-
-
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 پینل انگریزی میں کھلتا ہے جب براؤزر کے پاس کوئی محفوظ کردہ انتخاب نہیں ہوتا ہے۔ سب سے اوپر لینگویج مینو کا استعمال کریں اور فارسی یا انگریزی میں واپس جانے کے لیے اپلائی کو منتخب کریں۔ انتخاب اس براؤزر کے ساتھ رہتا ہے، بشمول سائن ان اور مدد کے صفحات پر۔ مینو جاوا اسکرپٹ کے بغیر کام کرتا ہے۔ تنگ اسکرینوں پر، دستیاب چوڑائی کے مطابق ہونے کے لیے ہیڈر اور نیویگیشن لپیٹیں۔
 
@@ -145,13 +149,6 @@ reassociation، کیونکہ کوئی بھی چیز جس کے ساتھ ڈیوا�
 رسائی پوائنٹ اور اسے دوبارہ شروع کریں، تو ایک آلہ ہاٹ اسپاٹ کی پتیوں سے جڑ گیا۔
 نیٹ ورک اور ہاٹ اسپاٹ کے واپس آنے پر اسے دوبارہ جوائن کرتا ہے۔
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
-
 </div>
 
-
-<!-- English-source-sha256: a8e4593b041147f8a67533ec5f1eb75b6017a32cf457d4ea6151af7a8232382b -->
+<!-- English-source-sha256: d7e1ff1af94ccc77a97648658f4f4ee5fb24c5af9ae551c062ccc6677af7542d -->

@@ -1,8 +1,16 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
@@ -110,7 +118,6 @@ Caspian ان دوسرے منصوبوں کو بنڈل نہیں کرتا ہے یا
 نہیں، درآمد شدہ SNI سرور کی اصل شناخت ہے۔ اس موڈ کو فعال کرنے کے لیے الگ اختیاری سپوف نام سیٹ کریں۔
 اسے فعال کرنے سے پہلے [SNI سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur) پڑھیں۔
 
-
 <a id="sni-idea-acknowledgements"></a>
 ## SNI خیال کے اعترافات
 
@@ -127,13 +134,8 @@ Caspian ان منصوبوں کے مصنفین اور تعاون کنندگان �
 آئیڈیا کے اعترافات کوڈ کو کاپی کرنے یا توثیق کرنے کی اجازت نہیں دیتے ہیں۔
 جائزہ شدہ ورژنز، لائسنسز اور استعمال کے دائرہ کار کے لیے [تیسری پارٹی کے کریڈٹ](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur) دیکھیں۔
 
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
-
 [توثیق کے نتائج اور باقی ہارڈ ویئر ٹیسٹ](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)
 
 </div>
 
-
-<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->
+<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->

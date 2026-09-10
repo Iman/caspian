@@ -1,8 +1,16 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
+
+<div dir="ltr" lang="zh">
+
+[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # Caspian SNI 欺骗和 TLS 分裂以规避 DPI
@@ -108,7 +116,6 @@ Caspian 没有捆绑这些其他项目，也没有声称它们的作者认可它
 不会，导入的SNI才是真实的服务器身份。设置单独的可选欺骗名称以启用此模式。
 启用之前请先阅读 [SNI 设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
-
 <a id="sni-idea-acknowledgements"></a>
 ## SNI 想法致谢
 
@@ -125,11 +132,6 @@ Caspian 还感谢这些项目的作者和贡献者的想法和实施比较，这
 想法确认并不授予复制代码的许可或暗示认可。
 请参阅 [第三方信用](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) 了解已审查的版本、许可证和使用范围。
 
-<!-- Caspian guide navigation -->
-
-Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/blob/feature/sni/README.md)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
-
 [验证结果和剩余硬件测试](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)。
 
-
-<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->
+<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->

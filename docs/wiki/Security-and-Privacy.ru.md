@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
 
+<div dir="ltr" lang="ru">
+
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="security-and-privacy"></a>
 # Безопасность и конфиденциальность
-
-
-
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -365,8 +369,6 @@ box все еще может подключиться к сети через п�
 одно радио и отсутствие USB-адаптера, поэтому этот продукт советует людям
 купите адаптер, ибо проверено, байты никто не измерял.
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.ru) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
 <!-- SNI upstream credits -->
@@ -374,9 +376,4 @@ box все еще может подключиться к сети через п�
 Кредиты на подмену SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0) с WinDivert (LGPL-3.0) в Windows x64.
 [Сторонние лицензии, исходные версии и авторство](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- Caspian guide navigation -->
-
-Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
-
-
-<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
+<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->

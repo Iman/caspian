@@ -1,15 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
+
+<div dir="rtl" lang="ur">
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="troubleshooting-for-home-users"></a>
 # گھریلو صارفین کے لیے خرابیوں کا سراغ لگانا
-
-
 
 ایتھرنیٹ کے ساتھ اپنے روٹر سے Caspian چلانے والے کمپیوٹر تک شروع کریں۔ ہاٹ اسپاٹ کے لیے اس کمپیوٹر کا بلٹ ان وائی فائی، یا لینکس پر مطابقت پذیر USB وائی فائی اڈاپٹر استعمال کریں۔ یہ انٹرنیٹ کنکشن اور ہاٹ اسپاٹ کو الگ اڈاپٹر فراہم کرتا ہے۔ یہ تجویز کردہ آغاز کا انتظام ہے، ناپی گئی رفتار کی ضمانت نہیں۔
 
@@ -19,7 +25,6 @@
 خودکار پتہ لگانا پہلے سے طے شدہ رہتا ہے۔ ملک کو خالی چھوڑ دیں جب تک کہ Caspian اس کا پتہ نہ لگا سکے۔ اگر آپ کو "Wi-Fi ملک سیٹ نہیں ہے" نظر آتا ہے، تو Wi-Fi ملک سیٹ کریں کو ایڈوانس سیٹنگ پر عمل کریں۔ اس ملک کے لیے دو حرفی کوڈ درج کریں جہاں کمپیوٹر واقع ہے، محفوظ کریں، پھر Caspian کو دوبارہ آن کریں۔ محفوظ کردہ انتخاب سروس کے دوبارہ شروع ہونے سے بچ جاتا ہے۔ فیلڈ کو صاف کریں اور خودکار شناخت پر واپس جانے کے لیے محفوظ کریں۔ Caspian IR کو قبول نہیں کرتا ہے یا پینل کی زبان یا پراکسی سرور سے ملک کا انتخاب نہیں کرتا ہے۔
 
 اگر آپ کا انسٹال کردہ ورژن کنٹری فیلڈ کو چھپاتا ہے، تو یہ ریکوری کنٹرول مسئلہ #3 اپ ڈیٹ کا حصہ ہے۔ اپنے Caspian اور لینکس ورژن، اڈاپٹر کا انتظام، اور کیا اپ ڈیٹ شدہ پینل میں ملک کا انتخاب کرنا کافی ہے ریکارڈ کریں۔ پرائیویٹ کنفیگریشن یا مکمل لاگز نہ بھیجیں۔ ایک رپورٹ جس میں ایک دستی iw کمانڈ نے مدد کی ہے اس سے یہ ثابت نہیں ہوتا ہے کہ ایپ کو سسٹم ریڈیو سیٹنگز کو تبدیل کرنا چاہیے۔ خودکار iw reg سیٹ اس تبدیلی کا حصہ نہیں ہے۔
-
 
 <a id="choose-your-connection"></a>
 ## اپنا کنکشن منتخب کریں۔
@@ -119,13 +124,6 @@ Caspian VLESS, VMess, Shadowsocks, SOCKS, Trojan، اور Hysteria2 لنکس ک�
 - [کوڈ اور ٹیسٹ ثبوت](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: ایتھرنیٹ / وائی فائی](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
-
 </div>
 
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

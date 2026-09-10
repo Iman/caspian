@@ -1,15 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [**فارسی**](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
+
+<div dir="rtl" lang="fa">
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="troubleshooting-for-home-users"></a>
 # عیب یابی برای کاربران خانگی
-
-
 
 با اترنت از روتر خود تا رایانه ای که Caspian اجرا می کند شروع کنید. از Wi-Fi داخلی آن رایانه برای نقطه اتصال یا یک آداپتور USB Wi-Fi سازگار در لینوکس استفاده کنید. این به اتصال اینترنت و هات اسپات آداپتورهای جداگانه می دهد. این ترتیب شروع توصیه شده است، نه تضمین سرعت اندازه گیری شده.
 
@@ -19,7 +25,6 @@
 تشخیص خودکار پیش فرض باقی می ماند. کشور را خالی بگذارید مگر اینکه کاسپین نتواند آن را تشخیص دهد. اگر "کشور Wi-Fi تنظیم نشده است" را می بینید، Set Wi-Fi country را روی تنظیمات پیشرفته دنبال کنید. کد دو حرفی کشوری که کامپیوتر در آن قرار دارد را وارد کنید، ذخیره کنید، سپس کاسپین را دوباره روشن کنید. انتخاب ذخیره شده از راه اندازی مجدد سرویس جان سالم به در می برد. برای بازگشت به تشخیص خودکار، فیلد را پاک کرده و ذخیره کنید. کاسپین IR را فرض نمی کند یا کشوری را از زبان پنل یا سرور پراکسی انتخاب نمی کند.
 
 اگر نسخه نصب شده شما فیلد Country را پنهان می کند، این کنترل بازیابی بخشی از به روز رسانی شماره 3 است. نسخه‌های کاسپین و لینوکس، چیدمان آداپتور و اینکه آیا انتخاب کشور در پنل به‌روز شده کافی است را ضبط کنید. پیکربندی خصوصی یا گزارش های کامل را ارسال نکنید. گزارشی که یک فرمان دستی iw به آن کمک کرده است ثابت نمی کند که برنامه باید تنظیمات رادیویی سیستم را تغییر دهد. تنظیم خودکار iw reg بخشی از این تغییر نیست.
-
 
 <a id="choose-your-connection"></a>
 ## اتصال خود را انتخاب کنید
@@ -119,13 +124,6 @@ sudo systemctl restart caspian.service caspian-panel.service
 - [کد و شواهد آزمایشی](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: اترنت / Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
-
 </div>
 
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

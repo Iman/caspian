@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) · [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) · [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) · [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) · [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
 
+<div dir="ltr" lang="tr">
+
+[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="development-and-testing"></a>
 # Geliştirme ve test
-
-
-
-[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 > Bu kılavuz mevcut README'den alınmıştır. Ölçümleri orijinal tarihlerini koruyor; bu belgeleme hamlesi yeni bir test çalıştırmasını bildirmez.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -94,13 +98,6 @@ gönderildi.
 **Kutu internetten sizin istemediğiniz hiçbir şeyi istemez.** Telemetri yok, eve telefon yok, kilitlenme yok
 varsayılan olarak yükleme yok, web yazı tipi yok, coğrafi veri dosyası yok ve Google çözümleyici yok.
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.tr) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
 
-<!-- Caspian guide navigation -->
-
-Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
-
-
-<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->
+<!-- English-source-sha256: 5badcd2d45aa3aa7f927a0215bc4511dcd899932a2c648c8bec2484f9c77a161 -->

@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) · [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) · [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) · [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) · [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
 
+<div dir="ltr" lang="zh">
+
+[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="development-and-testing"></a>
 # 开发与测试
-
-
-
-[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -94,13 +98,6 @@ CLI 本身是这样说的：“安装程序运行后，一个人所做的一切
 **该盒子会向互联网询问您未要求的任何信息。** 没有遥测，没有回拨，没有崩溃
 上传，没有网络字体，没有地理数据文件，并且在任何默认情况下都没有 Google 解析器。
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.zh) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
 
-<!-- Caspian guide navigation -->
-
-Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
-
-
-<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->
+<!-- English-source-sha256: 5badcd2d45aa3aa7f927a0215bc4511dcd899932a2c648c8bec2484f9c77a161 -->

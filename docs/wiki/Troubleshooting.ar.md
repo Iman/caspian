@@ -1,15 +1,21 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
+
+<div dir="rtl" lang="ar">
+
+[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
+
+</div>
+<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="troubleshooting-for-home-users"></a>
 # استكشاف الأخطاء وإصلاحها للمستخدمين المنزليين
-
-
 
 ابدأ باستخدام Ethernet من جهاز التوجيه الخاص بك إلى الكمبيوتر الذي يقوم بتشغيل Caspian. استخدم شبكة Wi-Fi المدمجة في هذا الكمبيوتر لنقطة الاتصال، أو محول USB Wi-Fi متوافق على نظام التشغيل Linux. وهذا يمنح الاتصال بالإنترنت ونقطة الاتصال محولات منفصلة. إنه ترتيب البدء الموصى به، وليس ضمانًا للسرعة المُقاسة.
 
@@ -19,7 +25,6 @@
 ويظل الكشف التلقائي هو الخيار الافتراضي. اترك البلد فارغًا ما لم يتمكن Caspian من اكتشافه. إذا رأيت "لم يتم تعيين بلد Wi-Fi"، فاتبع تعيين بلد Wi-Fi إلى الإعدادات المتقدمة. أدخل الرمز المكون من حرفين للدولة التي يوجد بها الكمبيوتر، ثم احفظه، ثم قم بتشغيل Caspian مرة أخرى. يبقى الاختيار المحفوظ بعد إعادة تشغيل الخدمة. امسح الحقل واحفظه للعودة إلى الاكتشاف التلقائي. لا يفترض Caspian IR أو يختار بلدًا من لغة اللوحة أو الخادم الوكيل.
 
 إذا كان الإصدار المثبت لديك يخفي حقل البلد، فإن التحكم في الاسترداد هذا يعد جزءًا من تحديث الإصدار رقم 3. قم بتسجيل إصدارات Caspian وLinux وترتيب المحول وما إذا كان اختيار البلد في اللوحة المحدثة كافيًا. لا ترسل التكوين الخاص أو السجلات الكاملة. لا يثبت التقرير الذي ساعده أمر iw اليدوي أن التطبيق يجب أن يغير إعدادات راديو النظام. مجموعة تسجيل iw التلقائية ليست جزءًا من هذا التغيير.
-
 
 <a id="choose-your-connection"></a>
 ## اختر اتصالك
@@ -119,13 +124,6 @@ sudo systemctl restart caspian.service caspian-panel.service
 - [رمز وأدلة الاختبار](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [ماك: إيثرنت / واي فاي](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
-
 </div>
 
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

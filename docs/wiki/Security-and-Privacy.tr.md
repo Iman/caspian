@@ -1,15 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
 
+<div dir="ltr" lang="tr">
+
+[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="security-and-privacy"></a>
 # Güvenlik ve gizlilik
-
-
-
-[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 > Bu kılavuz mevcut README'den alınmıştır. Ölçümleri orijinal tarihlerini koruyor; bu belgeleme hamlesi yeni bir test çalıştırmasını bildirmez.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -365,8 +369,6 @@ Her mod B fikstürü yazılmıştır. `PROVENANCE.md`, hedefin sahip olduğunu k
 tek bir radyo var ve USB adaptörü yok, bu nedenle bu ürünün insanlara söylediği düzenleme
 için bir adaptör satın alın, kimsenin ölçmediği baytlara karşı kanıtlanmıştır.
 
-
-
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.tr) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
 
 <!-- SNI upstream credits -->
@@ -374,9 +376,4 @@ için bir adaptör satın alın, kimsenin ölçmediği baytlara karşı kanıtla
 SNI kimlik sahtekarlığı kredileri: Windows x64'te WinDivert (LGPL-3.0) ile [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0).
 [Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- Caspian guide navigation -->
-
-Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
-
-
-<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
+<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->

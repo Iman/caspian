@@ -1,23 +1,50 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) · [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) · [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) · [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
 
 </div>
 
-<a id="caspian-wiki"></a>
-# Caspian вики
+<div dir="ltr" lang="ru">
 
+[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
+</div>
+<!-- wiki-navigation:end -->
 
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
+<div dir="ltr" lang="ru">
 
-[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
+# Вики Caspian
 
+Выберите свою операционную систему для установки Caspian. При проблемах с подключением откройте раздел устранения неполадок.
 
+## Установка Caspian
 
-<!-- Caspian guide navigation -->
+- [Начало работы](https://github.com/Iman/caspian/wiki/Getting-Started.ru)
+- [Linux и Raspberry Pi](https://github.com/Iman/caspian/wiki/Install-Linux.ru)
+- [macOS](https://github.com/Iman/caspian/wiki/Install-macOS.ru)
+- [Windows](https://github.com/Iman/caspian/wiki/Install-Windows.ru)
+- [Справочник по установке](https://github.com/Iman/caspian/wiki/Installation.ru)
 
-Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+## Использование и обслуживание
 
+- [Панель и настройка](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru)
+- [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
+- [Протоколы и транспорт](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru)
+- [Подмена SNI и разделение TLS](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru)
+- [Безопасность и конфиденциальность](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru)
+- [Обновления и обслуживание](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru)
 
-<!-- English-source-sha256: 6199b4f6140802a9f6e3795a8d8b61e3cefc182b8b1bf2e80decc18bdde986f7 -->
+## Разработка и участие
+
+- [Архитектура и поток данных](https://github.com/Iman/caspian/wiki/Architecture.ru)
+- [Разработка и тестирование](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru)
+- [Карта документации](https://github.com/Iman/caspian/wiki/Documentation-Map.ru)
+- [Переводы](https://github.com/Iman/caspian/wiki/Translations.ru)
+- [Шаблон страницы](https://github.com/Iman/caspian/wiki/Page-Template.ru)
+- [Лицензия и благодарности](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru)
+- [Сторонний код и благодарности](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru)
+
+</div>
+
+<!-- English-source-sha256: 9067ae3cb82b90e92eadc17aaf80c3735128a506c30cd730731448c068e74dcf -->

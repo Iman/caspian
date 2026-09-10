@@ -1,13 +1,19 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
 
+<div dir="ltr" lang="zh">
+
+[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
+
+</div>
+<!-- wiki-navigation:end -->
+
 <a id="troubleshooting-for-home-users"></a>
 # 家庭用户故障排除
-
-
 
 首先从路由器到运行 Caspian 的计算机的以太网开始。使用该计算机的内置 Wi-Fi 作为热点，或使用 Linux 上兼容的 USB Wi-Fi 适配器。这为互联网连接和热点提供了单独的适配器。这是推荐的起始安排，而不是测量的速度保证。
 
@@ -17,7 +23,6 @@
 自动检测仍然是默认设置。将国家/地区留空，除非 Caspian 无法检测到它。如果您看到“Wi-Fi 国家/地区未设置”，请按照将 Wi-Fi 国家/地区设置为高级设置进行操作。输入计算机所在国家/地区的两个字母代码，保存，然后再次打开 Caspian。保存的选择在服务重新启动后仍然有效。清除该字段并保存以返回自动检测。 Caspian 不假定 IR 或从面板语言或代理服务器中选择国家/地区。
 
 如果您安装的版本隐藏了“国家/地区”字段，则此恢复控制是问题 #3 更新的一部分。记录您的 Caspian 和 Linux 版本、适配器排列以及在更新的面板中选择国家/地区是否足够。不要发送私人配置或完整日志。手动 iw 命令有帮助的报告并不能证明该应用程序必须更改系统无线电设置。自动 iw reg 设置不属于此更改的一部分。
-
 
 <a id="choose-your-connection"></a>
 ## 选择您的连接
@@ -117,11 +122,4 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 - [代码和测试证据](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS：以太网/Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-
-
-<!-- Caspian guide navigation -->
-
-Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
-
-
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 0aabe8eb030a61e715e92a8c4a3e88fa8706d5ab64ca68345a948900d974e90d -->

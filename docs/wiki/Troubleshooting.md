@@ -1,12 +1,18 @@
+<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
+[**English**](https://github.com/Iman/caspian/wiki/Troubleshooting) · [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) · [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) · [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) · [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
 
+<div dir="ltr" lang="en">
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+</div>
+<!-- wiki-navigation:end -->
+
 # Troubleshooting for home users
-
-
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.
 
@@ -15,7 +21,6 @@ Start with Ethernet from your router to the computer running Caspian. Use that c
 Automatic detection remains the default. Leave Country blank unless Caspian cannot detect it. If you see “Wi-Fi country is not set”, follow Set Wi-Fi country to Advanced settings. Enter the two-letter code for the country where the computer is located, save, then switch Caspian on again. The saved choice survives a service restart. Clear the field and save to return to automatic detection. Caspian does not assume IR or choose a country from the panel language or proxy server.
 
 If your installed version hides the Country field, this recovery control is part of the issue #3 update. Record your Caspian and Linux versions, adapter arrangement, and whether choosing Country in the updated panel is enough. Do not send private configuration or complete logs. A report that a manual iw command helped does not prove that the app must change the system radio settings. Automatic iw reg set is not part of this change.
-
 
 ## Choose your connection
 
@@ -107,9 +112,3 @@ The defect register records security and recovery gaps. These troubleshooting st
 - [Known defects](https://github.com/Iman/caspian/blob/main/docs/DEFECTS.md)
 - [Code and test evidence](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: Ethernet / Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
-
-
-
-<!-- Caspian guide navigation -->
-
-Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
