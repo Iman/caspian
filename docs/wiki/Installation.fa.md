@@ -1,27 +1,23 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) · [**فارسی**](https://github.com/Iman/caspian/wiki/Installation.fa) · [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Installation.zh) · [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
-
-<div dir="rtl" lang="fa">
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="installation"></a>
 # نصب و راه اندازی
 
+
+
 [برای نمودارهای اتصال، راه اندازی اول کابل، راه اندازی مجدد سرویس و خطاهای رایج، راهنمای عیب یابی کاربر خانگی را بخوانید.](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
 
 CPU و RAM: Caspian هنوز حداقل RAM، تعداد هسته CPU یا سرعت کلاک اندازه گیری شده ندارد. استفاده از منابع به حجم ترافیک، پروتکل پروکسی و اتصالات همزمان بستگی دارد. قبل از انتشار حداقل الزامات، معیارهای بیکاری و بار مورد نیاز است.
 
 باینری های انتشار لینوکس x86-64، ARM64 و ARMv6/ARMv7 را هدف قرار می دهند. سازگاری معماری به تنهایی عملکرد قابل استفاده را ایجاد نمی کند.
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 > این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -382,6 +378,7 @@ curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh | کم
 
 sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
+
 <a id="forgotten-panel-password"></a>
 ### رمز عبور پنل فراموش شده
 
@@ -448,11 +445,18 @@ bash scripts/gate.sh
 وضعیت آخرین فرمان خود را گزارش می دهد، بنابراین لوله گذاری آن در `tail` دور می اندازد
 پاسخی که خواستی
 
+
+
 <!-- SNI upstream credits -->
 
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
 [مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
+<!-- Caspian guide navigation -->
+
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
 </div>
 
-<!-- English-source-sha256: abb023f6408ff919116ca296c4d914e430ac0fb2b6aea1caf73990f480c1c5d9 -->
+
+<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->

@@ -1,18 +1,14 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[**English**](https://github.com/Iman/caspian/wiki/Documentation-Map) · [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="ltr" lang="en">
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
-<!-- wiki-navigation:end -->
 
 # Documentation map
+
+
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 The README keeps the overview, screenshots, and recorded experiments. The wiki holds the detailed guides. These repository documents provide the supporting records.
 
@@ -28,3 +24,9 @@ The README keeps the overview, screenshots, and recorded experiments. The wiki h
 | [internal/netcfg/testdata/PROVENANCE.md](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) | Capture provenance |
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | Hardware harness and its limits |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | Browser and API tests |
+
+
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

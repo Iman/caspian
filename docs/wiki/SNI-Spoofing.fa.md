@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [**فارسی**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
-
-<div dir="rtl" lang="fa">
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
@@ -118,6 +110,7 @@ IP سرور، حجم ترافیک یا زمان‌بندی را پنهان نم�
 خیر. SNI وارداتی هویت سرور واقعی است. برای فعال کردن این حالت، نام جعلی اختیاری جداگانه را تنظیم کنید.
 قبل از فعال کردن [راه اندازی و محدودیت های SNI](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) آن را بخوانید.
 
+
 <a id="sni-idea-acknowledgements"></a>
 ## قدردانی ایده SNI
 
@@ -134,8 +127,13 @@ IP سرور، حجم ترافیک یا زمان‌بندی را پنهان نم�
 تصدیق ایده اجازه کپی کد را نمی دهد یا به معنای تایید است.
 برای نسخه های بازبینی شده، مجوزها و دامنه استفاده به [اعتبارات شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) مراجعه کنید.
 
+<!-- Caspian guide navigation -->
+
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
 [نتایج اعتبار سنجی و تست های سخت افزاری باقی مانده](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
 
 </div>
 
-<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->
+
+<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->

@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="panel-and-configuration"></a>
 # 面板及配置
+
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 当浏览器没有保存的选项时，面板会以英文打开。使用顶部的语言菜单并选择“应用”以切换到波斯语或返回英语。选择权取决于该浏览器，包括登录和帮助页面。该菜单无需 JavaScript 即可运行。在窄屏幕上，标题和导航会换行以适应可用宽度。
 
@@ -147,4 +143,11 @@ iifname“wlan0”删除评论“客户端流量被用户削减”
 接入点并再次启动它，这样加入热点的设备就会离开
 网络并在热点返回时重新加入。
 
-<!-- English-source-sha256: d7e1ff1af94ccc77a97648658f4f4ee5fb24c5af9ae551c062ccc6677af7542d -->
+
+
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: a8e4593b041147f8a67533ec5f1eb75b6017a32cf457d4ea6151af7a8232382b -->

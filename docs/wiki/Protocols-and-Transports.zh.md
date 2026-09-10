@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) · [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) · [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) · [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) · [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
+[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="protocols-and-transports"></a>
 # 协议和传输
+
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -311,6 +307,13 @@ sni=example.com 主机=cdn.example.com
 使用 `qr.Encode` 和 `qr.WiFiJoin`，因此没有图像库，也没有远程服务
 参与。
 
+
+
 [英语：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [状态：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [编码：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [中文：HTTP/2、HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
 
-<!-- English-source-sha256: 30f8b36af56f141cfe1ed994244c800fda2caede65af1db4d89d79326245e614 -->
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->

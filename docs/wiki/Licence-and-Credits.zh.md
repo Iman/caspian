@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="licence-and-credits"></a>
 # 许可证和学分
+
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -93,6 +89,8 @@ Windows SDK 参考包是构建输入，不随
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) 携带完整记录：二进制文件中的每个模块、许可证读取
 来自其自己的许可证文件和兼容性推理。
 
+
+
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
@@ -114,6 +112,11 @@ Caspian 还感谢这些项目的作者和贡献者的想法和实施比较，这
 想法确认并不授予复制代码的许可或暗示认可。
 请参阅 [第三方信用](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) 了解已审查的版本、许可证和使用范围。
 
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
 [WinDivert — 巴兹尔 (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2)：Windows x64、LGPL-3.0。
 
-<!-- English-source-sha256: 626ed23e3eab55bb351c5d12fc420fb06471c2cf6e2e08fb42edb6a8062571bf -->
+
+<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->

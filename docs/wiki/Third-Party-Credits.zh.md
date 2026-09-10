@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="third-party-code-and-credits"></a>
 # 第三方代码和积分
@@ -53,6 +45,7 @@ Caspian 还感谢这些项目的作者和贡献者的想法和实施比较，这
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | 未找到顶级应用许可证；仅想法 |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | 声明 MIT； GPL 模板出处需要澄清；没有复制代码 |
 
+
 <a id="other-distributed-components"></a>
 ## 其他分布式组件
 
@@ -61,4 +54,9 @@ Windows 安装程序还包含官方 Wintun 二进制文件和独立的 .NET 帮�
 他们的通知保留在 [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) 下，并安装在应用程序旁边。
 Go Wintun 绑定是 Windows 上的 MIT 运行时依赖项。
 
-<!-- English-source-sha256: ceef83c2b7b0779eb04c1fa1c854f35aaf685978f4d17f439ddaa2fd2d01847c -->
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->

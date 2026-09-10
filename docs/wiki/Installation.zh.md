@@ -1,25 +1,21 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) · [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) · [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Installation.zh) · [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="installation"></a>
 # 安装
+
+
 
 [有关连接图、电缆优先设置、服务重新启动和常见错误的信息，请阅读家庭用户故障排除指南。](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
 
 CPU 和 RAM：Caspian 尚未测量最低 RAM、CPU 核心数或时钟速度。资源使用取决于流量、代理协议和同时连接。在发布最低要求之前，需要进行空闲和负载基准测试。
 
 Linux 发行版二进制文件面向 x86-64、ARM64 和 ARMv6/ARMv7。仅架构兼容性并不能建立可用的性能。
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -380,6 +376,7 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/m
 
 sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
+
 <a id="forgotten-panel-password"></a>
 ### 忘记面板密码
 
@@ -446,9 +443,16 @@ bash 脚本/gate.sh
 报告其最后一个命令的状态，因此将其通过管道输送到 `tail` 会被丢弃
 你所要求的答案。
 
+
+
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
 [第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
 
-<!-- English-source-sha256: abb023f6408ff919116ca296c4d914e430ac0fb2b6aea1caf73990f480c1c5d9 -->
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->

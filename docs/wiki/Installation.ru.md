@@ -1,25 +1,21 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) · [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Installation.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Installation.zh) · [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
-
-<div dir="ltr" lang="ru">
-
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="installation"></a>
 # Установка
+
+
 
 [Схемы подключения, настройку с подключением кабеля, перезапуск службы и распространенные ошибки см. в руководстве по устранению неполадок для домашних пользователей.](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
 
 Процессор и оперативная память: у компанииCaspian пока нет измеренного минимального объема оперативной памяти, количества ядер процессора или тактовой частоты. Использование ресурсов зависит от объема трафика, протокола прокси и одновременных подключений. Прежде чем публиковать минимальные требования, необходимы тесты на холостом ходу и под нагрузкой.
 
 Бинарные файлы выпуска Linux предназначены для x86-64, ARM64 и ARMv6/ARMv7. Совместимость архитектуры сама по себе не обеспечивает полезную производительность.
+
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 > Это руководство взято из существующего README. Его измерения сохраняют свои первоначальные даты; этот шаг документации не сообщает о новом тестовом запуске.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -380,6 +376,7 @@ sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/m
 
 sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
+
 <a id="forgotten-panel-password"></a>
 ### Забыл пароль от панели
 
@@ -446,9 +443,16 @@ Zero и Zero W, которые его устанавливают. Рабочий
 сообщает о статусе своей последней команды, поэтому передача ее в `tail` выбрасывает
 ответ, который вы просили.
 
+
+
 <!-- SNI upstream credits -->
 
 Кредиты на подмену SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0) с WinDivert (LGPL-3.0) в Windows x64.
 [Сторонние лицензии, исходные версии и авторство](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- English-source-sha256: abb023f6408ff919116ca296c4d914e430ac0fb2b6aea1caf73990f480c1c5d9 -->
+<!-- Caspian guide navigation -->
+
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->

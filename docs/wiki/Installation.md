@@ -1,24 +1,20 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[**English**](https://github.com/Iman/caspian/wiki/Installation) · [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) · [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Installation.zh) · [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
-
-<div dir="ltr" lang="en">
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
-<!-- wiki-navigation:end -->
 
 # Installation
+
+
 
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
 CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
 
 Linux release binaries target x86-64, ARM64, and ARMv6/ARMv7. Architecture compatibility alone does not establish usable performance.
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -359,6 +355,7 @@ To install a specific release, replace the example tag below:
 
     sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
+
 ### Forgotten panel password
 
 On the Caspian computer, run this command in a terminal or SSH session:
@@ -422,7 +419,13 @@ subset. It exits non-zero on failure. Do not pipe it anywhere: a shell pipeline
 reports the status of its last command, so piping it into `tail` throws away
 the answer you asked for.
 
+
+
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
 [Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

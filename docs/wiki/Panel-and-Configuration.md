@@ -1,18 +1,14 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[**English**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
-
-<div dir="ltr" lang="en">
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
-<!-- wiki-navigation:end -->
 
 # Panel and configuration
+
+
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 The panel opens in English when the browser has no saved choice. Use the language menu at the top and select Apply to switch to Persian or back to English. The choice stays with that browser, including on the sign-in and help pages. The menu works without JavaScript. On narrow screens, the header and navigation wrap to fit the available width.
 
@@ -140,3 +136,9 @@ It deliberately does not reboot the machine and does not restart either systemd
 unit, so the panel process and any SSH session stay up throughout. It does stop
 the access point and start it again, so a device joined to the hotspot leaves
 the network and rejoins it when the hotspot returns.
+
+
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

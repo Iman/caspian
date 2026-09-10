@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
 </div>
-
-<div dir="rtl" lang="ur">
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
@@ -55,6 +47,7 @@ Caspian ان منصوبوں کے مصنفین اور تعاون کنندگان �
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | کوئی اعلیٰ سطحی ایپ لائسنس نہیں ملا؛ صرف خیالات |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | MIT کا اعلان کرتا ہے؛ GPL ٹیمپلیٹ پرووننس وضاحت کی ضرورت ہے؛ کوئی کوڈ کاپی نہیں کیا گیا۔ |
 
+
 <a id="other-distributed-components"></a>
 ## دیگر تقسیم شدہ اجزاء
 
@@ -63,6 +56,11 @@ Caspian ان منصوبوں کے مصنفین اور تعاون کنندگان �
 ان کے نوٹسز [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) کے تحت رہتے ہیں اور درخواست کے ساتھ نصب ہیں۔
 گو ونٹن بائنڈنگ ایک MIT ونڈوز پر رن ٹائم انحصار ہے۔
 
+<!-- Caspian guide navigation -->
+
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
 </div>
 
-<!-- English-source-sha256: ceef83c2b7b0779eb04c1fa1c854f35aaf685978f4d17f439ddaa2fd2d01847c -->
+
+<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->

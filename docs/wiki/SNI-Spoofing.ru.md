@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
-
-<div dir="ltr" lang="ru">
-
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # Подмена SNI и разделение TLS для обхода DPI
@@ -116,6 +108,7 @@ Windows ARM64 не может использовать поддельный SNI;
 Нет. Импортированный SNI является реальным идентификатором сервера. Установите отдельное необязательное имя подмены, чтобы включить этот режим.
 Прежде чем включать его, прочитайте [Настройка и ограничения SNI](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
 
+
 <a id="sni-idea-acknowledgements"></a>
 ## Благодарность за идею SNI
 
@@ -132,6 +125,11 @@ Windows ARM64 не может использовать поддельный SNI;
 Благодарность за идею не дает разрешения на копирование кода и не подразумевает одобрения.
 См. [сторонние кредиты](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) для ознакомления с проверенными версиями, лицензиями и областью использования.
 
+<!-- Caspian guide navigation -->
+
+Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
 [Результаты проверки и оставшиеся тесты оборудования](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
 
-<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->
+
+<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->

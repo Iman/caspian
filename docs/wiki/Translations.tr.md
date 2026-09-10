@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Translations) · [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) · [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Translations.zh) · [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Translations.tr) · [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
 
 </div>
-
-<div dir="ltr" lang="tr">
-
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="translations"></a>
 # Çeviriler
+
+
+
+[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 İngilizce, yedi wiki dilinin tamamının kaynak sürümüdür. İngilizce içerik değiştiğinde her dil sürümünü güncelleyin.
 
@@ -21,4 +17,17 @@ Güncelleme için ilgili sayfaları mevcut tüm dillerde değiştirin. Komutlar�
 
 Tüm wiki konularının İngilizce, Farsça, Rusça, Basitleştirilmiş Çince, Arapça, Türkçe ve Urduca versiyonları vardır. Çeviriler, uyarılar ve yukarı akış kredileri de dahil olmak üzere İngilizce kılavuz içeriğini kapsar. Otomatik kontroller sayfa kapsamını, kod örneklerini ve bağlantıları karşılaştırır. Güncellenen çevirilerin hâlâ bağımsız, anadili İngilizce olan kişilerce incelenmesi gerekiyor.
 
-<!-- English-source-sha256: c4a424a161af3ebbce9d085aec906513f81aea7361a640af7c433ac359a00054 -->
+<div dir="ltr" align="left">
+
+[العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
+
+</div>
+
+
+
+<!-- Caspian guide navigation -->
+
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

@@ -1,18 +1,14 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[**English**](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
-
-<div dir="ltr" lang="en">
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
-<!-- wiki-navigation:end -->
 
 # Security and privacy
+
+
+
+[Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -348,9 +344,15 @@ Every mode B fixture is authored. `PROVENANCE.md` records that the target has
 one radio and no USB adapter, so the arrangement this product tells people to
 buy an adapter for is proven against bytes nobody measured.
 
+
+
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
 [Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

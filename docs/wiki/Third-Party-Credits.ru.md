@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
 </div>
-
-<div dir="ltr" lang="ru">
-
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="third-party-code-and-credits"></a>
 # Сторонний код и кредиты
@@ -53,6 +45,7 @@ Windows ARM64 не включает WinDivert и не может использ�
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | Лицензия на приложение верхнего уровня не найдена; только идеи |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | Объявляет MIT; Происхождение шаблонов GPL требует разъяснения; код не скопирован |
 
+
 <a id="other-distributed-components"></a>
 ## Другие распределенные компоненты
 
@@ -61,4 +54,9 @@ Windows ARM64 не включает WinDivert и не может использ�
 Их уведомления остаются под [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) и устанавливаются рядом с приложением.
 Привязка Go Wintun — это зависимость времени выполнения MIT от Windows.
 
-<!-- English-source-sha256: ceef83c2b7b0779eb04c1fa1c854f35aaf685978f4d17f439ddaa2fd2d01847c -->
+<!-- Caspian guide navigation -->
+
+Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->

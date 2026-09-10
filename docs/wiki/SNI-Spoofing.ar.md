@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
-
-<div dir="rtl" lang="ar">
-
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
@@ -118,6 +110,7 @@ SNI هو اسم الخادم في تحية TLS.
 لا. إن SNI المستورد هو هوية الخادم الحقيقية. قم بتعيين اسم محاكاة ساخرة اختياري منفصل لتمكين هذا الوضع.
 اقرأ [إعداد SNI والقيود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) قبل تمكينه.
 
+
 <a id="sni-idea-acknowledgements"></a>
 ## اعترافات فكرة SNI
 
@@ -134,8 +127,13 @@ SNI هو اسم الخادم في تحية TLS.
 لا تمنح إقرارات الفكرة الإذن بنسخ التعليمات البرمجية أو تشير ضمنيًا إلى التأييد.
 راجع [اعتمادات طرف ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) للاطلاع على الإصدارات والتراخيص ونطاق الاستخدام الذي تمت مراجعته.
 
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
 [نتائج التحقق من الصحة واختبارات الأجهزة المتبقية](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
 
 </div>
 
-<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->
+
+<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->

@@ -1,50 +1,27 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) · [**فارسی**](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) · [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) · [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) · [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
+[English](https://github.com/Iman/caspian/wiki/Caspian-wiki) | [فارسی](https://github.com/Iman/caspian/wiki/Caspian-wiki.fa) | [Русский](https://github.com/Iman/caspian/wiki/Caspian-wiki.ru) | [中文](https://github.com/Iman/caspian/wiki/Caspian-wiki.zh) | [العربية](https://github.com/Iman/caspian/wiki/Caspian-wiki.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Caspian-wiki.tr) | [اردو](https://github.com/Iman/caspian/wiki/Caspian-wiki.ur)
 
 </div>
 
-<div dir="rtl" lang="fa">
+<div dir="rtl" align="right">
 
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-<!-- wiki-navigation:end -->
-
-<div dir="rtl" lang="fa">
-
+<a id="caspian-wiki"></a>
 # ویکی کاسپین
 
-برای نصب کاسپین، سیستم‌عامل خود را انتخاب کنید. برای رفع مشکلات اتصال، راهنمای عیب‌یابی را باز کنید.
 
-## راه‌اندازی کاسپین
 
-- [شروع کار](https://github.com/Iman/caspian/wiki/Getting-Started.fa)
-- [لینوکس و رزبری پای](https://github.com/Iman/caspian/wiki/Install-Linux.fa)
-- [macOS](https://github.com/Iman/caspian/wiki/Install-macOS.fa)
-- [ویندوز](https://github.com/Iman/caspian/wiki/Install-Windows.fa)
-- [مرجع نصب](https://github.com/Iman/caspian/wiki/Installation.fa)
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-## استفاده و نگهداری
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
-- [پنل و پیکربندی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa)
-- [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-- [پروتکل‌ها و روش‌های انتقال](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa)
-- [جعل SNI و تقسیم TLS](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
-- [امنیت و حریم خصوصی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa)
-- [به‌روزرسانی و نگهداری](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa)
 
-## توسعه و مشارکت
 
-- [معماری و جریان داده](https://github.com/Iman/caspian/wiki/Architecture.fa)
-- [توسعه و آزمایش](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa)
-- [نقشه مستندات](https://github.com/Iman/caspian/wiki/Documentation-Map.fa)
-- [ترجمه‌ها](https://github.com/Iman/caspian/wiki/Translations.fa)
-- [الگوی صفحه](https://github.com/Iman/caspian/wiki/Page-Template.fa)
-- [مجوز و قدردانی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa)
-- [کد شخص ثالث و قدردانی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
+<!-- Caspian guide navigation -->
+
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
 
 </div>
 
-<!-- English-source-sha256: 9067ae3cb82b90e92eadc17aaf80c3735128a506c30cd730731448c068e74dcf -->
+
+<!-- English-source-sha256: 6199b4f6140802a9f6e3795a8d8b61e3cefc182b8b1bf2e80decc18bdde986f7 -->

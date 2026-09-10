@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="security-and-privacy"></a>
 # 安全和隐私
+
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 > 本指南来自现有的自述文件。其测量结果保留其原始日期；此文档移动不会报告新的测试运行。
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -376,6 +372,8 @@ DNS 泄漏检查的打印输出而不仅仅是此处。
 一台收音机，没有USB适配器，所以这个产品的安排告诉人们
 购买适配器的字节数经过验证，无人测量。
 
+
+
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.zh) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
 
 <!-- SNI upstream credits -->
@@ -383,4 +381,9 @@ DNS 泄漏检查的打印输出而不仅仅是此处。
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
 [第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
 
-<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->

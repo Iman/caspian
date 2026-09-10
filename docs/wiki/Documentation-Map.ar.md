@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Documentation-Map) · [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="rtl" lang="ar">
-
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="documentation-map"></a>
 # خريطة التوثيق
+
+
+
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 يحتفظ الملف README بنظرة عامة ولقطات الشاشة والتجارب المسجلة. يحمل الويكي الأدلة التفصيلية. توفر وثائق المستودع هذه السجلات الداعمة.
 
@@ -32,6 +28,13 @@
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | تسخير الأجهزة وحدودها |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | اختبارات المتصفح وواجهة برمجة التطبيقات |
 
+
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
 </div>
 
-<!-- English-source-sha256: 43b46dc635de2035d3cc2fca919b1a2403083ee6105b7c754462d860ca7669d8 -->
+
+<!-- English-source-sha256: 229822c0b0977f1d12a82bfbc09867f5754620c857e088402b89cc7bf9da3002 -->

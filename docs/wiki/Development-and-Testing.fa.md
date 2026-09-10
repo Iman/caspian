@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) · [**فارسی**](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) · [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) · [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) · [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
-
-<div dir="rtl" lang="fa">
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="development-and-testing"></a>
 # توسعه و آزمایش
+
+
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 > این راهنما از README موجود می آید. اندازه گیری های آن تاریخ اصلی خود را حفظ می کند. این حرکت مستندسازی اجرای آزمایشی جدیدی را گزارش نمی‌کند.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -104,8 +100,15 @@ caspian serve --panel the caspian user: پنل وب، هیچ چیز ممتازی
 **جعبه از اینترنت چیزی نمی خواهد که شما از آن نخواسته اید.** بدون تله متری، بدون تلفن خانه، بدون خرابی
 آپلود، بدون فونت وب، بدون فایل داده های جغرافیایی، و بدون حل کننده گوگل در هر پیش فرض.
 
+
+
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
+
+<!-- Caspian guide navigation -->
+
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
 
 </div>
 
-<!-- English-source-sha256: 5badcd2d45aa3aa7f927a0215bc4511dcd899932a2c648c8bec2484f9c77a161 -->
+
+<!-- English-source-sha256: 0b014c20f10040f03746de1a758beef6a154eef8fa3c308a7a8ca9f7b44707a3 -->

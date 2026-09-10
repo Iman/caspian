@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
-
-<div dir="ltr" lang="tr">
-
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # Caspian SNI sahtekarlığı ve DPI'yı atlatmak için TLS bölme
@@ -116,6 +108,7 @@ Caspian bu diğer projeleri bir araya getirmez veya yazarlarının bunu destekle
 Hayır. İçe aktarılan SNI gerçek sunucu kimliğidir. Bu modu etkinleştirmek için isteğe bağlı ayrı bir sahtekarlık adı ayarlayın.
 Etkinleştirmeden önce [SNI kurulumu ve sınırlamaları](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr)'yi okuyun.
 
+
 <a id="sni-idea-acknowledgements"></a>
 ## SNI fikir teşekkürleri
 
@@ -132,6 +125,11 @@ Uyarlanmış kod, yukarı akış lisansını ve bildirimlerini korur.
 Fikir onayları, kodun kopyalanmasına izin vermez veya onaylandığı anlamına gelmez.
 İncelenen sürümler, lisanslar ve kullanım kapsamı için [üçüncü taraf kredileri](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr)'ye bakın.
 
+<!-- Caspian guide navigation -->
+
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
 [Doğrulama sonuçları ve kalan donanım testleri](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
 
-<!-- English-source-sha256: 0c3a086c7127a1bec0deacf690b2aed7696a340ce94ec55379e1f233bee629f0 -->
+
+<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->

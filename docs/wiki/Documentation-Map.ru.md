@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Documentation-Map) · [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="ltr" lang="ru">
-
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="documentation-map"></a>
 # Карта документации
+
+
+
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 README содержит обзор, снимки экрана и записанные эксперименты. Вики содержит подробные руководства. Эти документы хранилища предоставляют подтверждающие записи.
 
@@ -30,4 +26,11 @@ README содержит обзор, снимки экрана и записан�
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | Аппаратное обеспечение и его ограничения |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | Тесты браузера и API |
 
-<!-- English-source-sha256: 43b46dc635de2035d3cc2fca919b1a2403083ee6105b7c754462d860ca7669d8 -->
+
+
+<!-- Caspian guide navigation -->
+
+Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 229822c0b0977f1d12a82bfbc09867f5754620c857e088402b89cc7bf9da3002 -->

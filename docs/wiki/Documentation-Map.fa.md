@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Documentation-Map) · [**فارسی**](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="rtl" lang="fa">
-
-[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa) · [عیب‌یابی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="documentation-map"></a>
 # نقشه اسناد و مدارک
+
+
+
+[ویکی کاسپین](https://github.com/Iman/caspian/wiki/Home.fa)
 
 README نمای کلی، اسکرین شات ها و آزمایش های ضبط شده را نگه می دارد. ویکی حاوی راهنمای دقیق است. این اسناد مخزن سوابق پشتیبان را ارائه می دهند.
 
@@ -32,6 +28,13 @@ README نمای کلی، اسکرین شات ها و آزمایش های ضبط 
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | مهار سخت افزار و محدودیت های آن |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | تست های مرورگر و API |
 
+
+
+<!-- Caspian guide navigation -->
+
+راهنماهای کاسپین: [راه اندازی و پروتکل های پشتیبانی شده](https://github.com/Iman/caspian/wiki/Home.fa) · [جعل SNI برای دور زدن DPI: راه اندازی و محدودیت ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa).
+
 </div>
 
-<!-- English-source-sha256: 43b46dc635de2035d3cc2fca919b1a2403083ee6105b7c754462d860ca7669d8 -->
+
+<!-- English-source-sha256: 229822c0b0977f1d12a82bfbc09867f5754620c857e088402b89cc7bf9da3002 -->

@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
-
-<div dir="rtl" lang="ar">
-
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="security-and-privacy"></a>
 # الأمن والخصوصية
+
+
+
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 > يأتي هذا الدليل من ملف README الموجود. تحتفظ قياساتها بتواريخها الأصلية. لا يُبلغ نقل التوثيق هذا عن تشغيل اختباري جديد.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -371,6 +367,8 @@ IPv6 الذي لا يستطيع النفق حمله".
 راديو واحد ولا يوجد محول USB، لذا فإن الترتيب الذي يخبر به هذا المنتج الأشخاص
 شراء محول لثبت ضد بايت لا أحد يقاس.
 
+
+
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.ar) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
 
 <!-- SNI upstream credits -->
@@ -378,6 +376,11 @@ IPv6 الذي لا يستطيع النفق حمله".
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
 [تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
 </div>
 
-<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->
+
+<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->

@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Third-Party-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur)
 
 </div>
-
-<div dir="ltr" lang="tr">
-
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="third-party-code-and-credits"></a>
 # Üçüncü taraf kodu ve kredileri
@@ -53,6 +45,7 @@ Kodları ve yürütülebilir dosyaları paketlenmemiştir.
 | [Floxu1/UAC-SNI-Spoofer-Android](https://github.com/Floxu1/UAC-SNI-Spoofer-Android) | `c68e350f5f9e9cff308c289db261d7c5d034efa2` | Üst düzey uygulama lisansı bulunamadı; yalnızca fikirler |
 | [therealaleph/sni-spoofing-rust](https://github.com/therealaleph/sni-spoofing-rust) | `d2956025c31d96f0f0a341af4f1a8eda204857c7` | MIT'yi beyan eder; GPL şablonunun kaynağının açıklığa kavuşturulması gerekiyor; kod kopyalanmadı |
 
+
 <a id="other-distributed-components"></a>
 ## Diğer dağıtılmış bileşenler
 
@@ -61,4 +54,9 @@ Windows yükleyicileri ayrıca resmi Wintun ikili dosyalarını ve bağımsız .
 Bildirimleri [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) altında kalır ve uygulamanın yanına yüklenir.
 Go Wintun bağlaması, Windows'ta bir MIT çalışma zamanı bağımlılığıdır.
 
-<!-- English-source-sha256: ceef83c2b7b0779eb04c1fa1c854f35aaf685978f4d17f439ddaa2fd2d01847c -->
+<!-- Caspian guide navigation -->
+
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->

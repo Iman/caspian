@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Documentation-Map) · [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="ltr" lang="tr">
-
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="documentation-map"></a>
 # Dokümantasyon haritası
+
+
+
+[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 README genel bakışı, ekran görüntülerini ve kayıtlı deneyleri saklar. Wiki'de ayrıntılı kılavuzlar bulunur. Bu arşiv belgeleri destekleyici kayıtları sağlar.
 
@@ -30,4 +26,11 @@ README genel bakışı, ekran görüntülerini ve kayıtlı deneyleri saklar. Wi
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | Donanım koşum takımı ve sınırları |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | Tarayıcı ve API testleri |
 
-<!-- English-source-sha256: 43b46dc635de2035d3cc2fca919b1a2403083ee6105b7c754462d860ca7669d8 -->
+
+
+<!-- Caspian guide navigation -->
+
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: 229822c0b0977f1d12a82bfbc09867f5754620c857e088402b89cc7bf9da3002 -->

@@ -1,25 +1,21 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Installation) · [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) · [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Installation.zh) · [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) · [**Türkçe**](https://github.com/Iman/caspian/wiki/Installation.tr) · [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
-
-<div dir="ltr" lang="tr">
-
-[Caspian vikisi](https://github.com/Iman/caspian/wiki/Home.tr) · [Sorun giderme](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="installation"></a>
 # Kurulum
+
+
 
 [Bağlantı şemaları, ilk kablo kurulumu, hizmetin yeniden başlatılması ve yaygın hatalar için ev kullanıcısı sorun giderme kılavuzunu okuyun.](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
 
 CPU ve RAM: Caspian'ın henüz ölçülen minimum RAM'i, CPU çekirdek sayısı veya saat hızı yok. Kaynak kullanımı trafik hacmine, proxy protokolüne ve eşzamanlı bağlantılara bağlıdır. Minimum gereksinimlerin yayınlanabilmesi için boşta kalma ve yük kıyaslamalarına ihtiyaç vardır.
 
 Linux sürümü ikili dosyaları x86-64, ARM64 ve ARMv6/ARMv7'yi hedefler. Mimari uyumluluğu tek başına kullanılabilir performans sağlamaz.
+
+[Caspian wiki'si](https://github.com/Iman/caspian/wiki/Home.tr)
 
 > Bu kılavuz mevcut README'den alınmıştır. Ölçümleri orijinal tarihlerini koruyor; bu belgeleme hamlesi yeni bir test çalıştırmasını bildirmez.
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -380,6 +376,7 @@ Belirli bir sürümü yüklemek için aşağıdaki örnek etiketi değiştirin:
 
 sudo env CASPIAN_VERSION=v0.2.5 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/install.sh)"
 
+
 <a id="forgotten-panel-password"></a>
 ### Unutulan panel şifresi
 
@@ -446,9 +443,16 @@ altküme. Başarısızlık durumunda sıfır dışında çıkar. Hiçbir yere bo
 son komutunun durumunu rapor eder, bu nedenle onu `tail`'ye aktarmak gereksizdir
 aradığınız cevap.
 
+
+
 <!-- SNI upstream credits -->
 
 SNI kimlik sahtekarlığı kredileri: Windows x64'te WinDivert (LGPL-3.0) ile [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0).
 [Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
 
-<!-- English-source-sha256: abb023f6408ff919116ca296c4d914e430ac0fb2b6aea1caf73990f480c1c5d9 -->
+<!-- Caspian guide navigation -->
+
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+
+
+<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->

@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) · [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) · [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) · [**العربية**](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) · [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
+[English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur)
 
 </div>
-
-<div dir="rtl" lang="ar">
-
-[ويكي Caspian](https://github.com/Iman/caspian/wiki/Home.ar) · [استكشاف الأخطاء وإصلاحها](https://github.com/Iman/caspian/wiki/Troubleshooting.ar)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="panel-and-configuration"></a>
 # لوحة والتكوين
+
+
+
+[ويكي قزوين](https://github.com/Iman/caspian/wiki/Home.ar)
 
 يتم فتح اللوحة باللغة الإنجليزية عندما لا يكون لدى المتصفح خيار محفوظ. استخدم قائمة اللغة في الأعلى وحدد تطبيق للتبديل إلى اللغة الفارسية أو العودة إلى اللغة الإنجليزية. يبقى الاختيار مع هذا المتصفح، بما في ذلك صفحات تسجيل الدخول والمساعدة. القائمة تعمل بدون جافا سكريبت. في الشاشات الضيقة، يلتف الرأس والتنقل ليناسب العرض المتاح.
 
@@ -149,6 +145,13 @@ it، وهو إدخال دفتر يومية نجا من بداية فاشلة. ك
 نقطة الوصول وتشغيلها مرة أخرى، لذلك يغادر الجهاز المنضم إلى نقطة الاتصال
 الشبكة والانضمام إليها مرة أخرى عند عودة نقطة الاتصال.
 
+
+
+<!-- Caspian guide navigation -->
+
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/wiki/Home.ar) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+
 </div>
 
-<!-- English-source-sha256: d7e1ff1af94ccc77a97648658f4f4ee5fb24c5af9ae551c062ccc6677af7542d -->
+
+<!-- English-source-sha256: a8e4593b041147f8a67533ec5f1eb75b6017a32cf457d4ea6151af7a8232382b -->

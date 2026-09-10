@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) · [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) · [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) · [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
+[English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur)
 
 </div>
-
-<div dir="rtl" lang="ur">
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="licence-and-credits"></a>
 # لائسنس اور کریڈٹ
+
+
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 > یہ گائیڈ موجودہ README سے آتا ہے۔ اس کی پیمائش اپنی اصل تاریخوں کو برقرار رکھتی ہے۔ یہ دستاویزی اقدام نئے ٹیسٹ رن کی اطلاع نہیں دیتا ہے۔
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -87,6 +83,8 @@ Caspian
 [`NOTICE`](https://github.com/Iman/caspian/blob/main/NOTICE) مکمل ریکارڈ رکھتا ہے: بائنری میں ہر ماڈیول، لائسنس پڑھا جاتا ہے
 اس کی اپنی لائسنس فائل، اور مطابقت استدلال سے۔
 
+
+
 <!-- SNI upstream credits -->
 
 SNI سپوفنگ کریڈٹ: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، WinDivert (LGPL-3.0) کے ساتھ Windows x64 پر۔
@@ -108,8 +106,13 @@ Caspian ان منصوبوں کے مصنفین اور تعاون کنندگان �
 آئیڈیا کے اعترافات کوڈ کو کاپی کرنے یا توثیق کرنے کی اجازت نہیں دیتے ہیں۔
 جائزہ شدہ ورژنز، لائسنسز اور استعمال کے دائرہ کار کے لیے [تیسری پارٹی کے کریڈٹ](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ur) دیکھیں۔
 
+<!-- Caspian guide navigation -->
+
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
 [WinDivert — تلسی (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0۔
 
 </div>
 
-<!-- English-source-sha256: 626ed23e3eab55bb351c5d12fc420fb06471c2cf6e2e08fb42edb6a8062571bf -->
+
+<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->

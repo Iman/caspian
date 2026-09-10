@@ -1,16 +1,8 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[**English**](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) · [简体中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
+[English](https://github.com/Iman/caspian/wiki/SNI-Spoofing) | [فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) | [Русский](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru) | [中文](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) | [العربية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) | [اردو](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)
 
 </div>
-
-<div dir="ltr" lang="en">
-
-[Caspian wiki](https://github.com/Iman/caspian/wiki/Home) · [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
-
-</div>
-<!-- wiki-navigation:end -->
 
 # Caspian SNI spoofing and TLS splitting for DPI circumvention
 
@@ -106,6 +98,7 @@ Caspian does not bundle those other projects or claim their authors endorse it.
 No. The imported SNI is the real server identity. Set the separate optional spoof name to enable this mode.
 Read [SNI setup and limitations](https://github.com/Iman/caspian/wiki/SNI-Spoofing) before enabling it.
 
+
 ## SNI idea acknowledgements
 
 Caspian also credits the authors and contributors of these projects for ideas and implementation comparisons that informed its SNI work.
@@ -120,5 +113,9 @@ Their code and executables are not bundled.
 Adapted code retains its upstream license and notices.
 Idea acknowledgements do not grant permission to copy code or imply endorsement.
 See [third-party credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits) for reviewed versions, licenses, and the scope of use.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).
 
 [Validation results and remaining hardware tests](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).

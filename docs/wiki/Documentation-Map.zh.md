@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Documentation-Map) · [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) · [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) · [**简体中文**](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) · [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) · [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
+[English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur)
 
 </div>
-
-<div dir="ltr" lang="zh">
-
-[Caspian 文档](https://github.com/Iman/caspian/wiki/Home.zh) · [故障排除](https://github.com/Iman/caspian/wiki/Troubleshooting.zh)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="documentation-map"></a>
 # 文档地图
+
+
+
+[Caspian维基](https://github.com/Iman/caspian/wiki/Home.zh)
 
 自述文件保留了概述、屏幕截图和记录的实验。维基百科有详细的指南。这些存储库文档提供支持记录。
 
@@ -30,4 +26,11 @@
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | 硬件线束及其局限性 |
 | [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | 浏览器和 API 测试 |
 
-<!-- English-source-sha256: 43b46dc635de2035d3cc2fca919b1a2403083ee6105b7c754462d860ca7669d8 -->
+
+
+<!-- Caspian guide navigation -->
+
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+
+
+<!-- English-source-sha256: 229822c0b0977f1d12a82bfbc09867f5754620c857e088402b89cc7bf9da3002 -->

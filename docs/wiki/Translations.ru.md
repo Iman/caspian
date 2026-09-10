@@ -1,19 +1,15 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Translations) · [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) · [**Русский**](https://github.com/Iman/caspian/wiki/Translations.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Translations.zh) · [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) · [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
+[English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur)
 
 </div>
-
-<div dir="ltr" lang="ru">
-
-[Вики Caspian](https://github.com/Iman/caspian/wiki/Home.ru) · [Устранение неполадок](https://github.com/Iman/caspian/wiki/Troubleshooting.ru)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <a id="translations"></a>
 # Переводы
+
+
+
+[Caspian вики](https://github.com/Iman/caspian/wiki/Home.ru)
 
 Английский является исходным изданием для всех семи языков вики. Обновляйте каждое языковое издание при изменении содержания на английском языке.
 
@@ -21,4 +17,17 @@
 
 Все темы вики имеют издания на английском, персидском, русском, китайском (упрощенное письмо), арабском, турецком и урду. Переводы охватывают содержание руководства на английском языке, включая предупреждения и пояснения. Автоматические проверки сравнивают покрытие страниц, примеры кода и ссылки. Обновленные переводы по-прежнему нуждаются в независимой проверке носителями языка.
 
-<!-- English-source-sha256: c4a424a161af3ebbce9d085aec906513f81aea7361a640af7c433ac359a00054 -->
+<div dir="ltr" align="left">
+
+[العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
+
+</div>
+
+
+
+<!-- Caspian guide navigation -->
+
+Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
+
+
+<!-- English-source-sha256: 1b1084a444260779b06b41a118fbdca0a0bd59f51853dbf1af1655f9ef072a20 -->

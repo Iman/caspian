@@ -1,21 +1,17 @@
-<!-- wiki-navigation:start -->
 <div dir="ltr">
 
-[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) · [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) · [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) · [简体中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) · [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) · [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) · [**اردو**](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
+[English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur)
 
 </div>
-
-<div dir="rtl" lang="ur">
-
-[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur) · [مسائل کا حل](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
-
-</div>
-<!-- wiki-navigation:end -->
 
 <div dir="rtl" align="right">
 
 <a id="security-and-privacy"></a>
 # سیکیورٹی اور رازداری
+
+
+
+[Caspian ویکی](https://github.com/Iman/caspian/wiki/Home.ur)
 
 > یہ گائیڈ موجودہ README سے آتا ہے۔ اس کی پیمائش اپنی اصل تاریخوں کو برقرار رکھتی ہے۔ یہ دستاویزی اقدام نئے ٹیسٹ رن کی اطلاع نہیں دیتا ہے۔
 > [English](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.md) | [فارسی](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/108567a6a529be05b577ee68b65b48790f07e43d/README.zh.md)
@@ -371,6 +367,8 @@ start" کا مطلب ہے کہ یہ کیا کہتا ہے، لیکن سرنگ ا�
 ایک ریڈیو اور کوئی USB اڈاپٹر نہیں، اس لیے یہ پروڈکٹ لوگوں کو بتاتی ہے۔
 کے لئے ایک اڈاپٹر خریدیں بائٹس کے خلاف ثابت ہے کوئی بھی ماپا نہیں ہے.
 
+
+
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture.ur) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 <!-- SNI upstream credits -->
@@ -378,6 +376,11 @@ start" کا مطلب ہے کہ یہ کیا کہتا ہے، لیکن سرنگ ا�
 SNI سپوفنگ کریڈٹ: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، WinDivert (LGPL-3.0) کے ساتھ Windows x64 پر۔
 [فریق ثالث کے لائسنس، سورس ورژنز، اور کریڈٹس](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)
 
+<!-- Caspian guide navigation -->
+
+Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://github.com/Iman/caspian/wiki/Home.ur) · [ڈی پی آئی کو روکنے کے لیے SNI کی جعل سازی: سیٹ اپ اور حدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ur)۔
+
 </div>
 
-<!-- English-source-sha256: f01a4bb4b0754ac9ea4a7df01b7c999743ac67c449ac3ac996fe225c0d006c8d -->
+
+<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
