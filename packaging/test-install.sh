@@ -472,6 +472,19 @@ if command -v python3 >/dev/null 2>&1; then
     pass "nothing off the allowlist is executed"
   fi
 
+  # An undo naming nmcli. internal/netcfg/command.go allows it, because taking
+  # an interface over means taking it away from NetworkManager, and the inverse
+  # is journalled. This tuple named four binaries until 2026-09-12, when a real
+  # journal on a Raspberry Pi was refused whole at its nmcli entry and nothing
+  # was restored. TestTheUninstallerReplaysEveryBinaryThisPackageMayRun in
+  # internal/netcfg holds the two lists equal; this proves the replay accepts it.
+  printf '%s\n' '{"seq":1,"phase":"begin","op":"link","why":"take the radio away from NetworkManager","do":{"path":"nmcli","args":["device","set","wlan0","managed","no"]},"undo":{"path":"nmcli","args":["device","set","wlan0","managed","yes"]}}' \
+    >"${replay_dir}/nmcli.journal"
+  out="$(python3 "${replay_dir}/replay.py" "${replay_dir}/nmcli.journal" --dry-run 2>&1)"
+  status=$?
+  check_eq "an nmcli inverse is accepted" "0" "$status"
+  check_contains "the nmcli inverse is replayed" "$out" "would replay entry 1 (link)"
+
   # A malformed command inside an otherwise valid record.
   printf '%s\n' '{"seq":1,"phase":"begin","op":"route","undo":{"path":"ip","args":[7]}}' \
     >"${replay_dir}/malformed.journal"

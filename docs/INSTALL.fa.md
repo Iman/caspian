@@ -394,7 +394,7 @@ v1 هنوز باید پاسخش را بدهد.
 
 چهار خاصیتِ این بازپخش عمدی‌اند:
 
-- **فقط و فقط <span dir="ltr">`ip`</span>، <span dir="ltr">`iw`</span>، <span dir="ltr">`nft`</span> یا <span dir="ltr">`sysctl`</span> را اجرا می‌کند.** این همان فهرست
+- **فقط و فقط <span dir="ltr">`ip`</span>، <span dir="ltr">`iw`</span>، <span dir="ltr">`nft`</span>، <span dir="ltr">`sysctl`</span> یا <span dir="ltr">`nmcli`</span> را اجرا می‌کند.** این همان فهرست
   مجاز در <span dir="ltr">`internal/netcfg/command.go`</span> است، که وجود دارد تا سمت ممتاز هرگز
   فرمانی را که از ورودی کاربر ساخته شده اجرا نکند. همین استدلال با قوت بیشتری
   دربارهٔ فایلی صدق می‌کند که مدتی روی دیسک نشسته است. کل فایل پیش از اجرای هر

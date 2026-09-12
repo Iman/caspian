@@ -184,7 +184,7 @@ require_root() {
 # record is on disk rather than in the process that made it.
 #
 # The replay refuses to run anything outside the allowlist in
-# internal/netcfg/command.go: ip, iw, nft, sysctl. That allowlist exists so
+# internal/netcfg/command.go: ip, iw, nft, sysctl, nmcli. That allowlist exists so
 # that the privileged side never runs a command built from user input, and the
 # same reasoning applies with more force here, where the input is a file that
 # has been sitting on disk.
@@ -227,7 +227,7 @@ import subprocess
 import sys
 
 # internal/netcfg/command.go, allowedBinaries.
-ALLOWED = ("ip", "iw", "nft", "sysctl")
+ALLOWED = ("ip", "iw", "nft", "sysctl", "nmcli")
 
 
 def refuse(message):
@@ -408,9 +408,9 @@ replay_teardown_journal() {
     fi
     die "python3 is not installed, and it is needed to read ${CASPIAN_NETCFG_JOURNAL}.
 The journal is the record of every network change this software made, and replaying
-it is what puts the box back. Nothing has been removed. Either install python3 and
-run this again, or run it again with --force to remove the software and leave the
-network as it is."
+it is what puts the box back. The services are stopped and disabled. No file has been
+removed. Either install python3 and run this again, or run it again with --force to
+remove the software and leave the network as it is."
   fi
 
   program="${WORK_DIR}/replay.py"
@@ -445,9 +445,10 @@ network as it is."
         REPLAY_PARTIAL="1"
         return 0
       fi
-      die "the network journal at ${DEST_JOURNAL} was refused, so nothing was replayed
-and nothing has been removed. The journal is still there. Run again with --force to
-remove the software anyway and leave the network as it is."
+      die "the network journal at ${DEST_JOURNAL} was refused, so nothing was replayed.
+The services are stopped and disabled. No file has been removed. The journal is still
+there. Run again with --force to remove the software anyway and leave the network as
+it is."
       ;;
   esac
 }

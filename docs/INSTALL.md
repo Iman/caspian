@@ -358,7 +358,7 @@ be mirrored in the replay:
 
 Four properties of the replay are deliberate:
 
-- **It only ever runs `ip`, `iw`, `nft` or `sysctl`.** That is the allowlist in
+- **It only ever runs `ip`, `iw`, `nft`, `sysctl` or `nmcli`.** That is the allowlist in
   `internal/netcfg/command.go`, which exists so the privileged side never runs a
   command built from user input. The same reasoning applies with more force to a
   file that has been sitting on disk. The whole file is checked before anything
