@@ -22,6 +22,7 @@ Caspian-BYOC 把运行 Windows 或 macOS 的电脑、Raspberry Pi 或 Linux 电�
 也支持 Clash 和 Clash.Meta YAML、原始 Xray JSON、链接列表以及 base64 订阅数据。
 Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因此加入热点的每台设备
 无需安装应用即可受到保护。
+可选的反 DPI（DPI 规避）控制，即 SNI 欺骗和 TLS 分片，有助于在会检查流量的网络上建立连接。
 
 ![Caspian 面板，已连接](docs/images/panel-en.png)
 
@@ -36,14 +37,17 @@ Caspian 通过 Xray-core 建立连接，并将隧道共享为 WiFi 热点，因�
 
 ![macOS 上的 Caspian Control](docs/images/caspian-control-macos.png)
 
-## SNI 欺骗与 DPI 规避
+## 反 DPI：SNI 欺骗与 TLS 分片
 
-`feature/sni` 分支增加了可选的 SNI 欺骗功能，用于尝试规避深度包检测（DPI）。
-该模式保留真实的 TLS 或 REALITY 服务器名称和证书验证，支持通过兼容 IPv4 TCP 传输的 VLESS、VMess 和 Trojan。
-此功能仍在开发中，尚未包含在当前发布的安装程序中。
-效果取决于网络；Caspian 不保证绕过所有 DPI，也不保证连接无法被检测。
-[SNI 设置与限制（English）](docs/SNI.md) · [来源与许可证（English）](docs/THIRD-PARTY.md)。
+深度包检测（DPI）是网络读取连接起始数据、决定是否阻断的手段。Caspian 提供三项可选的反 DPI（DPI 规避）控制，位于面板中已保存配置的旁边：
 
+- **伪装服务器名。** Caspian 在真实代理流之前发送一个带有掩护域名的 TLS 问候。真实的 TLS 或 REALITY 服务器名和证书校验保持原样。
+- **TCP 分片。** 首个 TLS 问候分两次写出，分割点在服务器名的中间附近。
+- **TLS 记录分片。** 问候记录在同一位置被拆分，握手内容不变。
+
+三项控制彼此独立，可以组合使用。保存后，正在运行的隧道会用新设置重新连接。它们适用于通过受支持的 IPv4 TCP 传输的 VLESS、VMess 和 Trojan；两种分片需要普通 TLS。
+
+DPI 规避取决于网络及其过滤规则。Caspian 不承诺无法被检测，也不保证绕过所有 DPI。环回测试验证数据未被改动、真实的 TLS 握手以及对错误证书名的拒绝；它们不能证明可以绕过运营商。[SNI 设置与限制（English）](docs/SNI.md) · [来源与许可证（English）](docs/THIRD-PARTY.md)。
 
 ## 连接方式与支持的配置格式
 
