@@ -1030,26 +1030,46 @@ func (p *Plan) acceptHotspot(f Facts, c apCandidate, o Options) error {
 		// This is the DEFAULT ARRANGEMENT's branch on a box whose built-in
 		// radio is joined to a network, and it is deliberately untouched by
 		// the takeover-first change above.
-		name := o.APIfaceName
-		if name == "" {
-			name = defaultAPIfaceName
-		}
-		if !ValidInterfaceName(name) {
-			return fmt.Errorf("netcfg: access point interface name %q is not a valid interface name", name)
-		}
-		p.Hotspot = name
-		p.HotspotIsVirtual = true
-		p.HotspotParent = c.station.Name
-		// The interface this names does not exist yet, so nothing has measured
-		// who manages it and this stays unknown. See the note on HotspotManager.
-		p.HotspotManager = ManagedByUnknown
+		if o.Platform == PlatformWindows {
+			// Mobile Hotspot hosts the access point on the SAME adapter that
+			// holds the station link. Windows creates the Wi-Fi Direct virtual
+			// adapter itself and lets nothing name it, so the plan names the
+			// physical radio, whose alias is what the tethering helper takes.
+			//
+			// Naming a new interface here handed the helper "ap0", the Linux
+			// default, and it answered "the selected Wi-Fi adapter is
+			// unavailable: ap0". Measured 2026-09-12 from a Windows 11 report
+			// with a Wi-Fi uplink and no cable (issue #2). An Ethernet uplink
+			// never reaches this branch, which is why that arrangement worked
+			// while this one did not.
+			if !ValidInterfaceNameOn(o.Platform, c.station.Name) {
+				return fmt.Errorf("netcfg: hotspot interface name %q is not usable", c.station.Name)
+			}
+			p.Hotspot = c.station.Name
+			p.HotspotManager = c.station.Manager
+		} else {
+			name := o.APIfaceName
+			if name == "" {
+				name = defaultAPIfaceName
+			}
+			if !ValidInterfaceName(name) {
+				return fmt.Errorf("netcfg: access point interface name %q is not a valid interface name", name)
+			}
+			p.Hotspot = name
+			p.HotspotIsVirtual = true
+			p.HotspotParent = c.station.Name
+			// The interface this names does not exist yet, so nothing has
+			// measured who manages it and this stays unknown. See the note on
+			// HotspotManager.
+			p.HotspotManager = ManagedByUnknown
 
-		// The fallback, decided now and used only if creation fails. Never
-		// the uplink: an access point on the interface carrying the internet
-		// connection ends that connection, and a box that cannot reach the
-		// internet has nothing to share.
-		if c.station.Name != p.Uplink {
-			p.HotspotFallback = c.station.Name
+			// The fallback, decided now and used only if creation fails. Never
+			// the uplink: an access point on the interface carrying the
+			// internet connection ends that connection, and a box that cannot
+			// reach the internet has nothing to share.
+			if c.station.Name != p.Uplink {
+				p.HotspotFallback = c.station.Name
+			}
 		}
 
 		ok, combo := c.phy.APWithStation()
