@@ -112,6 +112,30 @@ CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed
 
 </div>
 
+## Uninstall
+
+This section is for Linux and Raspberry Pi. Run the copy that the installer left on the box:
+
+    sudo /usr/local/bin/caspian-uninstall
+
+The uninstaller stops both services. Then it replays the network journal, so the routes, firewall rules and sysctl settings return to what they were. Then it removes the units, the binary and the runtime directories. Last, it asks whether to keep `/var/lib/caspian`, which holds the saved configuration.
+
+To delete the saved configuration and the `caspian` account as well, with no questions:
+
+    sudo /usr/local/bin/caspian-uninstall --purge -y
+
+To print every action and take none:
+
+    sudo /usr/local/bin/caspian-uninstall --dry-run
+
+If the journal cannot be replayed, the uninstaller stops the services, removes nothing else, and says so. Run it again with `--force` to remove the software anyway. Then reboot. A reboot returns the network to the box's own configuration.
+
+If the local copy is missing, fetch the same script from this repository:
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/uninstall.sh)"
+
+The uninstaller removes only Caspian's own files. It does not remove `hostapd`, `dnsmasq` or any other package.
+
 ## Recorded experiments
 
 > This guide comes from the existing README. Its measurements retain their original dates; this documentation move does not report a new test run.

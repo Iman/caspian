@@ -100,6 +100,30 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 
 </div>
 
+## 卸载
+
+本节适用于 Linux 和 Raspberry Pi。运行安装程序留在设备上的副本：
+
+    sudo /usr/local/bin/caspian-uninstall
+
+卸载程序先停止两个服务。然后回放网络日志，使路由、防火墙规则和 sysctl 设置恢复原状。然后删除单元文件、二进制文件和运行时目录。最后询问是否保留 `/var/lib/caspian`，其中存放着已保存的配置。
+
+如需同时删除已保存的配置和 `caspian` 账户，并且不回答任何问题：
+
+    sudo /usr/local/bin/caspian-uninstall --purge -y
+
+如需打印每一步操作而不执行：
+
+    sudo /usr/local/bin/caspian-uninstall --dry-run
+
+如果日志无法回放，卸载程序会停止服务，不再删除其他任何东西，并说明原因。加上 `--force` 再运行一次，即可强制删除软件。然后重启。重启会让网络恢复到设备自身的配置。
+
+如果本地副本不存在，从本仓库获取同一脚本：
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/uninstall.sh)"
+
+卸载程序只删除 Caspian 自己的文件。它不会删除 `hostapd`、`dnsmasq` 或任何其他软件包。
+
 ## 已记录的实验
 
 > 本指南从现有 README 迁移而来。测量结果保留原有日期；此次文档迁移不代表重新运行了测试。
