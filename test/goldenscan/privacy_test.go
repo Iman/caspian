@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -104,6 +105,96 @@ func TestScanRepoWalksMoreThanTestdata(t *testing.T) {
 				"in files of exactly this kind, so a walk that misses it reports CLEAN over the "+
 				"thing the scan exists to find.", w)
 		}
+	}
+}
+
+// Generated executable/package output is not source evidence. Scope these
+// exclusions to exact repository paths so a source directory named build or
+// dist elsewhere cannot silently stop receiving the privacy checks.
+func TestPrivacyGeneratedArtifactsDoNotHideSourcePlants(t *testing.T) {
+	root := t.TempDir()
+	generated := []string{
+		"dist/release/caspian", "ui/build/test_cache/program.dill",
+		"ui/.dart_tool/flutter_build/program.dill", "internal/panel/flutter/main.dart.js",
+		"ui/linux/flutter/ephemeral/plugin.cc", "ui/windows/flutter/ephemeral/plugin.cc",
+		"ui/macos/Flutter/ephemeral/plugin.swift",
+	}
+	source := []string{
+		"ui/lib/planted.dart", "ui/build-tools/planted.txt", "ui/.dart_tool_source/planted.txt",
+		"internal/panel/flutter_source.go", "internal/panel/fluttering/planted.txt",
+		"docs/build/planted.txt", "test/hardware/planted.txt",
+		"nested/ui/build/planted.txt", "package/dist/planted.txt", "distribution/planted.txt",
+		"ui/linux/flutter/ephemeral_source/planted.cc", "ui/linux/runner/planted.cc",
+		"ui/windows/flutter/ephemeral_source/planted.cc", "ui/windows/runner/planted.cc",
+		"ui/macos/Flutter/ephemeral_source/planted.swift", "ui/macos/Runner/planted.swift",
+		"nested/ui/linux/flutter/ephemeral/planted.cc",
+		"nested/ui/windows/flutter/ephemeral/planted.cc",
+		"nested/ui/macos/Flutter/ephemeral/planted.swift",
+	}
+	for _, rel := range append(append([]string{}, generated...), source...) {
+		path := filepath.Join(root, filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.WriteFile(path, []byte(plantedSentinel), 0600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	findings, err := ScanRepo(root, []PrivacySentinel{plantedSentinelEntry()})
+	if err != nil {
+		t.Fatal(err)
+	}
+	seen := map[string]bool{}
+	for _, finding := range findings {
+		seen[finding.Path] = true
+	}
+	for _, rel := range generated {
+		if seen[rel] {
+			t.Errorf("generated output remains in source scan: %s", rel)
+		}
+		if walk, why := PrivacyRoots(rel); walk || len(why) < 20 {
+			t.Errorf("missing explicit generated-path decision: %s", rel)
+		}
+	}
+	for _, rel := range source {
+		if !seen[rel] {
+			t.Errorf("source privacy plant was missed: %s", rel)
+		}
+	}
+}
+
+func TestPrivacySkipsOnlyGeneratedFlutterPluginSymlinks(t *testing.T) {
+	root := t.TempDir()
+	plugin := t.TempDir()
+	if err := os.WriteFile(filepath.Join(plugin, "plugin.txt"), []byte(plantedSentinel), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, rel := range []string{
+		"ui/linux/flutter/ephemeral/.plugin_symlinks/plugin",
+		"ui/windows/flutter/ephemeral/.plugin_symlinks/plugin",
+		"ui/macos/Flutter/ephemeral/.symlinks/plugins/plugin",
+	} {
+		path := filepath.Join(root, filepath.FromSlash(rel))
+		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
+			t.Fatal(err)
+		}
+		if err := os.Symlink(plugin, path); err != nil {
+			if runtime.GOOS == "windows" {
+				t.Skip("directory symlinks require Windows developer mode or symlink privilege; exact generated/source path boundaries have a separate test")
+			}
+			t.Fatal(err)
+		}
+	}
+	const source = "ui/linux/flutter/source.txt"
+	if err := os.WriteFile(filepath.Join(root, filepath.FromSlash(source)), []byte(plantedSentinel), 0600); err != nil {
+		t.Fatal(err)
+	}
+	findings, err := ScanRepo(root, []PrivacySentinel{plantedSentinelEntry()})
+	if err != nil {
+		t.Fatalf("generated plugin directory symlinks must not be read as source files: %v", err)
+	}
+	if len(findings) != 1 || findings[0].Path != source {
+		t.Fatalf("expected only the source sibling plant; found %d findings", len(findings))
 	}
 }
 
@@ -255,6 +346,71 @@ func TestPrivacyScannerCatchesAValueInAFileName(t *testing.T) {
 		}
 	}
 	t.Fatalf("a removed value in a FILE NAME was not reported; findings were %v", findings)
+}
+
+// TestPrivacyScannerReadsASymlinkAsItsTargetText pins what the walk does with
+// a symbolic link, because on 2026-09-12 it did the wrong thing and the gate
+// ended in an error rather than a verdict.
+//
+// Flutter's macOS build output holds App.framework/Resources, a link to a
+// directory. WalkDir does not follow links, so the entry was not a directory,
+// and os.ReadFile on it failed with "is a directory". That aborted
+// TestRepositoryCarriesNobodysAddress after 479 seconds of reading build
+// output, with nothing scanned to a conclusion.
+//
+// git stores a symlink as its target path and nothing else, so that is the text
+// this scan reads. A link to a directory is therefore harmless, a link whose
+// TARGET PATH names a removed value is a finding, and a dangling link is not
+// followed at all. All three are planted here.
+func TestPrivacyScannerReadsASymlinkAsItsTargetText(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, "internal", "planted")
+	if err := os.MkdirAll(filepath.Join(dir, "Versions", "Current", "Resources"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// The shape that broke the walk: a relative link to a directory.
+	if err := os.Symlink(filepath.Join("Versions", "Current", "Resources"), filepath.Join(dir, "Resources")); err != nil {
+		if runtime.GOOS == "windows" {
+			t.Skip("symlinks need Windows developer mode or the symlink privilege, so the symlink rule is not proven on this machine")
+		}
+		t.Fatal(err)
+	}
+	// A dangling link whose target path carries the planted value. Nothing
+	// exists at the target, so a walk that followed links would fail here, and
+	// a walk that ignored links would miss the value.
+	linkWithValue := filepath.Join(dir, "capture")
+	if err := os.Symlink(filepath.Join("..", plantedSentinel, "iw-dev.txt"), linkWithValue); err != nil {
+		t.Fatal(err)
+	}
+
+	sentinels := append(PrivacySentinels(), plantedSentinelEntry())
+	findings, err := ScanRepo(root, sentinels)
+	if err != nil {
+		t.Fatalf("a symlink to a directory made the scan fail instead of finishing: %v", err)
+	}
+	var hits []Finding
+	for _, f := range findings {
+		if f.Class == ClassPrivacySentinel && f.Path == "internal/planted/capture" {
+			hits = append(hits, f)
+		}
+	}
+	if len(hits) == 0 {
+		t.Fatalf("the planted value in a symlink's target path was not reported; findings were %v", findings)
+	}
+	t.Logf("symlink target text reported as expected: %s", hits[0])
+
+	// With the value link removed, the directory link alone leaves the tree
+	// clean, so the hit above came from the link text and nothing else.
+	if err := os.Remove(linkWithValue); err != nil {
+		t.Fatal(err)
+	}
+	after, err := ScanRepo(root, sentinels)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(after) != 0 {
+		t.Fatalf("with the value link removed the scan still reports %v", after)
+	}
 }
 
 // TestAPlantedPrivacySentinelCannotBeAllowlisted holds the rule that has no
@@ -574,7 +730,19 @@ func rawPrivacyFindings(root string) ([]Finding, error) {
 		}
 		opt := scanOpts{applyLiteralAllow: false, sentinelsOnly: shapeExempt}
 		raw = append(raw, scanPrivacyName(rel, sentinels, opt)...)
-		if info.IsDir() || skipExt[strings.ToLower(filepath.Ext(path))] {
+		if info.IsDir() {
+			return nil
+		}
+		if info.Mode()&os.ModeSymlink != 0 {
+			// Same rule as ScanRepo: the link's target text, never the target.
+			target, lerr := os.Readlink(path)
+			if lerr != nil {
+				return lerr
+			}
+			raw = append(raw, scanPrivacyBody(rel, target, sentinels, opt)...)
+			return nil
+		}
+		if skipExt[strings.ToLower(filepath.Ext(path))] {
 			return nil
 		}
 		b, rerr := os.ReadFile(path)

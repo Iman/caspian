@@ -456,6 +456,22 @@ var privacySkipDirs = map[string]string{
 	"local":        "gitignored and holding real configuration by design. Never committed, and reading it would pull live values into this process for no benefit",
 }
 
+// These paths are relative to the repository root, unlike privacySkipDirs.
+// Generated binaries and dependency caches can contain address-shaped bytes
+// unrelated to application source. They are ignored build output, not evidence
+// of a literal in source. Release-artifact privacy is outside this source scan;
+// skipping these paths does not establish that a packaged binary is sanitized.
+// Never broaden these entries to every directory called build or dist.
+var privacyGeneratedPaths = map[string]string{
+	"dist":                         "gitignored release-package output. Binary contents are not source text; this source scan does not establish release-artifact privacy",
+	"ui/build":                     "gitignored Flutter compiler, test and package output. UI sources remain scanned under ui/lib and ui/test",
+	"ui/.dart_tool":                "gitignored Dart dependency and compiler cache, regenerated from the versioned package manifests and source",
+	"internal/panel/flutter":       "gitignored staged Flutter web release assets generated from the scanned UI source and package dependencies",
+	"ui/linux/flutter/ephemeral":   "gitignored Flutter Linux build scaffolding and generated plugin directory symlinks; adjacent Flutter and runner sources remain scanned",
+	"ui/windows/flutter/ephemeral": "gitignored Flutter Windows build scaffolding and generated plugin directory symlinks; adjacent Flutter and runner sources remain scanned",
+	"ui/macos/Flutter/ephemeral":   "gitignored Flutter macOS build scaffolding and generated plugin directory symlinks; adjacent Flutter and Runner sources remain scanned",
+}
+
 // shapeExemptPaths are walked, but only the privacy-sentinel class is applied
 // to them.
 //
@@ -485,6 +501,11 @@ var shapeExemptPaths = map[string]string{
 // test rather than trusted.
 func privacyScope(rel string) (walk bool, shapeExempt bool, why string) {
 	rel = filepath.ToSlash(rel)
+	for dir, why := range privacyGeneratedPaths {
+		if rel == dir || strings.HasPrefix(rel, dir+"/") {
+			return false, false, why
+		}
+	}
 	for _, seg := range strings.Split(rel, "/") {
 		if w, ok := privacySkipDirs[seg]; ok {
 			return false, false, w
@@ -543,6 +564,21 @@ func ScanRepo(moduleRoot string, sentinels []PrivacySentinel) ([]Finding, error)
 		opt := scanOpts{applyLiteralAllow: true, sentinelsOnly: shapeExempt}
 		found = append(found, scanPrivacyName(rel, sentinels, opt)...)
 		if d.IsDir() {
+			return nil
+		}
+		if d.Type()&fs.ModeSymlink != 0 {
+			// A symlink is scanned as the text git commits for it: the target
+			// path, and nothing behind it. The file it points at is walked in
+			// its own right if it lies inside the tree, and if it lies outside
+			// the tree its contents reach no clone. Following the link is also
+			// what broke this walk on 2026-09-12. Flutter build output holds
+			// links to directories, os.ReadFile on one says "is a directory",
+			// and the whole scan ended in an error instead of a verdict.
+			target, lerr := os.Readlink(path)
+			if lerr != nil {
+				return lerr
+			}
+			found = append(found, scanPrivacyBody(rel, target, sentinels, opt)...)
 			return nil
 		}
 		if skipExt[strings.ToLower(filepath.Ext(path))] {
@@ -677,6 +713,9 @@ func PrivacySkipReasons() map[string]string {
 		out[k] = v
 	}
 	for k, v := range shapeExemptPaths {
+		out[k] = v
+	}
+	for k, v := range privacyGeneratedPaths {
 		out[k] = v
 	}
 	return out

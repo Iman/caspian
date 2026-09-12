@@ -83,6 +83,13 @@ bdd/web/se-metadata.json
 # and read what it excludes, rather than trusting the pattern to mean what you
 # meant.
 
+# Flutter source manifests and bundled font license must remain versioned.
+!/ui/**/CMakeLists.txt
+!/ui/assets/fonts/OFL.txt
+!/ui/assets/fonts/*-OFL.txt
+/internal/panel/flutter/
+/scripts/__pycache__/
+
 # Research and deferred-work notes remain local.
 **/*[Rr][Ee][Ss][Ee][Aa][Rr][Cc][Hh]*.md
 **/*[Tt][Oo][Dd][Oo]*.md
