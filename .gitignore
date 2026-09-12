@@ -10,6 +10,11 @@
 # /local/ holds pasted proxy configurations, hardware run artefacts, captured
 # baselines and the panel password used during testing.
 /local/
+# Flutter BDD run reports. Each run writes JSON, HTML and screenshots that
+# carry the hotspot name and passphrase the run used. The Flutter branch keeps
+# the same rule in bdd/flutter/.gitignore; this one covers a checkout that does
+# not have that file yet.
+/bdd/flutter/reports/
 # Proxy configurations in any shape, wherever they land.
 *.vless
 *.vmess
