@@ -261,6 +261,15 @@ func TestEveryPublishedDocumentOffersTheSameFourLanguages(t *testing.T) {
 		text := string(body)
 		if strings.HasPrefix(filepath.ToSlash(english), "docs/wiki/") {
 			page := strings.TrimSuffix(filepath.Base(english), ".md")
+			// _Sidebar is navigation, not a topic. GitHub shows it beside every
+			// page and no page links to it, so it carries no language bar of
+			// its own. Its first line points at the Navigation editions, which
+			// are ordinary pages and are checked here like any other. The seven
+			// _Sidebar copies are held identical by scripts/check-wiki.py
+			// instead, because GitHub may pick any one of them as the sidebar.
+			if strings.HasPrefix(page, "_Sidebar") {
+				return nil
+			}
 			for _, suffix := range []string{"", ".fa", ".ru", ".zh", ".ar", ".tr", ".ur"} {
 				url := "https://github.com/Iman/caspian/wiki/" + page + suffix + ")"
 				if !strings.Contains(text, url) {
