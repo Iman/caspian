@@ -4,6 +4,7 @@
 package panel
 
 import (
+	"errors"
 	"net/http"
 	"net/url"
 	"strings"
@@ -244,7 +245,11 @@ func TestTheThreeFailureStatesReachTheUser(t *testing.T) {
 			t.Fatalf("status %d", res.StatusCode)
 		}
 		_, body := h.get("/")
-		assertHeadline(t, h.lang, body, MsgEngineHeadline, MsgParseHeadline, MsgServerHeadline)
+		// The fixture is refused for allowInsecure, which since 2026-09-12
+		// has a sentence of its own: still the engine state, still not the
+		// parse or server state, but naming the setting to ask about rather
+		// than the general "cannot be used as written".
+		assertHeadline(t, h.lang, body, MsgEngineInsecureHeadline, MsgParseHeadline, MsgServerHeadline, MsgEngineHeadline)
 		if h.store.Proxy().IsConfigured() {
 			t.Error("a config the engine refused was stored anyway")
 		}
@@ -420,5 +425,64 @@ func TestHotspotWordsComeFromInternalHotspot(t *testing.T) {
 	}
 	if p := ValidateSSID(SuggestSSID()); !p.Empty() {
 		t.Errorf("the suggested network name is refused: %s", T(LangEN, p.Headline))
+	}
+}
+
+// TestEngineRejectionTellsTheTwoRemediableRefusalsApart covers the split made on
+// 2026-09-12. A survey of 8,600 public share links found the engine's refusals
+// were almost all one of two removed features, and a Windows report (issue #2)
+// showed a port held by another program worded as though the config were bad.
+// Each now has its own sentence; everything else keeps the general one.
+func TestEngineRejectionTellsTheTwoRemediableRefusalsApart(t *testing.T) {
+	insecure := errors.New(`validate: infra/conf: Failed to build TLS config. > common/errors: The feature "allowInsecure" has been removed and migrated to "pinnedPeerCertSha256".`)
+	cipher := errors.New("validate: infra/conf: failed to build outbound handler for protocol shadowsocks > infra/conf: unknown cipher method: rc4-md5")
+	other := errors.New("validate: infra/conf: Trojan password is not specified.")
+
+	if p := EngineRejection(insecure); p.Headline != MsgEngineInsecureHeadline || p.Stage != StageEngine || p.Advice == "" {
+		t.Errorf("allowInsecure: %+v", p)
+	}
+	if p := EngineRejection(cipher); p.Headline != MsgEngineCipherHeadline || p.Stage != StageEngine || p.Advice == "" {
+		t.Errorf("dead cipher: %+v", p)
+	}
+	if p, g := EngineRejection(other), EngineProblem(); p.Headline != g.Headline || p.Advice != g.Advice || p.Stage != g.Stage {
+		t.Errorf("an unclassified refusal must keep the general sentence, got %+v", p)
+	}
+
+	// The same words whether the refusal came at paste time through Validate
+	// or at start time through the privileged side's fault.
+	sameWords := func(a, b Problem) bool { return a.Headline == b.Headline && a.Advice == b.Advice && a.Stage == b.Stage }
+	if !sameWords(StartProblem(FaultInsecureRemoved), EngineRejection(insecure)) {
+		t.Error("the start-time fault and the paste-time refusal word allowInsecure differently")
+	}
+	if !sameWords(StartProblem(FaultCipherRemoved), EngineRejection(cipher)) {
+		t.Error("the start-time fault and the paste-time refusal word a dead cipher differently")
+	}
+
+	// A busy port is not a config state. Its stage is none, so the page does
+	// not point at the link, and its sentence names the port in both languages
+	// so a person who knows what a port is can find the other program.
+	port := StartProblem(FaultPortInUse)
+	if port.Stage != StageNone || port.Headline != MsgFaultPortInUse || port.Advice != MsgFaultPortInUseAdvice {
+		t.Errorf("busy port: %+v", port)
+	}
+	for _, lang := range Langs {
+		s := T(lang, port.Headline)
+		if !strings.Contains(s, "10808") && !strings.Contains(s, "۱۰۸۰۸") {
+			t.Errorf("%s: the busy-port sentence does not name the port: %s", lang, s)
+		}
+	}
+
+	// All five headlines are distinct in every language, or the states they
+	// separate are not separated on screen.
+	heads := []Key{MsgParseHeadline, MsgEngineHeadline, MsgEngineInsecureHeadline, MsgEngineCipherHeadline, MsgServerHeadline, MsgFaultPortInUse}
+	for _, lang := range Langs {
+		seen := map[string]Key{}
+		for _, k := range heads {
+			s := T(lang, k)
+			if o, dup := seen[s]; dup {
+				t.Errorf("%s: %q and %q render the same sentence", lang, k, o)
+			}
+			seen[s] = k
+		}
 	}
 }

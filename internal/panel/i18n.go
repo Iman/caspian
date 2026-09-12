@@ -414,6 +414,14 @@ const (
 	MsgServerHeadline Key = "problem.server.headline"
 	MsgServerAdvice   Key = "problem.server.advice"
 
+	// Two engine refusals with a remedy of their own, split out of the general
+	// engine sentence because a survey of public share links on 2026-09-12
+	// found them behind most real-world refusals.
+	MsgEngineInsecureHeadline Key = "problem.engine.insecure.headline"
+	MsgEngineInsecureAdvice   Key = "problem.engine.insecure.advice"
+	MsgEngineCipherHeadline   Key = "problem.engine.cipher.headline"
+	MsgEngineCipherAdvice     Key = "problem.engine.cipher.advice"
+
 	// Why a link would not parse.
 	MsgParseEmpty       Key = "problem.parse.empty.headline"
 	MsgParseEmptyAdvice Key = "problem.parse.empty.advice"
@@ -430,6 +438,8 @@ const (
 	MsgFaultNoAPAdapter           Key = "fault.noapadapter"
 	MsgFaultIfaceBusy             Key = "fault.interfacebusy"
 	MsgFaultNotRunning            Key = "fault.notrunning"
+	MsgFaultPortInUse             Key = "fault.portinuse"
+	MsgFaultPortInUseAdvice       Key = "fault.portinuse.advice"
 	MsgEventTrafficCut            Key = "event.trafficcut"
 	MsgEventTrafficRestored       Key = "event.trafficrestored"
 	MsgEventWrongPassword         Key = "event.wrongpassword"

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"time"
 
+	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/link"
 	"caspianbyoc.org/caspian/internal/state"
 )
@@ -184,6 +185,32 @@ func EngineProblem() Problem {
 	return Problem{Stage: StageEngine, Headline: MsgEngineHeadline, Advice: MsgEngineAdvice}
 }
 
+// EngineRejection is EngineProblem with the two refusals that have a remedy of
+// their own told apart. internal/engine classifies the text; this package only
+// chooses the words. Anything it does not classify keeps the general sentence,
+// so a reworded engine error degrades to that and never to silence.
+//
+// Both are still the second state, StageEngine: the link parsed and the engine
+// refused the document built from it. What differs is that the person can be
+// told which setting to ask their provider about.
+func EngineRejection(err error) Problem {
+	switch engine.ReasonOf(err) {
+	case engine.ReasonInsecureRemoved:
+		return insecureProblem()
+	case engine.ReasonCipherRemoved:
+		return cipherProblem()
+	}
+	return EngineProblem()
+}
+
+func insecureProblem() Problem {
+	return Problem{Stage: StageEngine, Headline: MsgEngineInsecureHeadline, Advice: MsgEngineInsecureAdvice}
+}
+
+func cipherProblem() Problem {
+	return Problem{Stage: StageEngine, Headline: MsgEngineCipherHeadline, Advice: MsgEngineCipherAdvice}
+}
+
 // ServerProblem is the third state: the config loaded and nothing answered.
 //
 // The advice puts the machine's own internet connection first, because that is
@@ -207,6 +234,14 @@ func StartProblem(f Fault) Problem {
 		return Problem{}
 	case FaultEngineRejectedConfig:
 		return EngineProblem()
+	case FaultInsecureRemoved:
+		return insecureProblem()
+	case FaultCipherRemoved:
+		return cipherProblem()
+	case FaultPortInUse:
+		// Not a config state: the link is fine and another program holds the
+		// port. StageNone, so nothing on the page points at the config.
+		return Problem{Stage: StageNone, Headline: MsgFaultPortInUse, Advice: MsgFaultPortInUseAdvice}
 	case FaultServerNoAnswer:
 		return ServerProblem()
 	case FaultCountryMissing:
@@ -245,6 +280,12 @@ func (f Fault) Key() Key {
 		return MsgFaultDHCP
 	case FaultEngineRejectedConfig:
 		return MsgEngineHeadline
+	case FaultInsecureRemoved:
+		return MsgEngineInsecureHeadline
+	case FaultCipherRemoved:
+		return MsgEngineCipherHeadline
+	case FaultPortInUse:
+		return MsgFaultPortInUse
 	case FaultServerNoAnswer:
 		return MsgServerHeadline
 	case FaultClockImplausible:
@@ -288,7 +329,7 @@ var faults = []Fault{
 	FaultClockImplausible, FaultPermissionDenied, FaultSoftwareMissing, FaultUnavailable,
 	FaultIPv6Unsupported, FaultCountryMissing, FaultUnknown,
 	FaultRefreshBadAddress, FaultRefreshNoAnswer, FaultRefreshTooLarge, FaultRefreshNotHTTPS,
-	FaultWindowsTooOld,
+	FaultWindowsTooOld, FaultPortInUse, FaultInsecureRemoved, FaultCipherRemoved,
 }
 
 // Key is what to call an interface kind on screen.

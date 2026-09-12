@@ -228,6 +228,26 @@ const (
 	// panel to tell apart.
 	FaultEngineRejectedConfig Fault = "engine-rejected-config"
 
+	// FaultPortInUse means the engine could not listen on the loopback port it
+	// needs because another program on the machine already holds it. The config
+	// is not at fault, so this is not FaultEngineRejectedConfig: the remedy is
+	// to close the other program, not to fetch another link. Measured
+	// 2026-09-12 from a Windows 11 report where another proxy client held
+	// 10808 (issue #2).
+	FaultPortInUse Fault = "port-in-use"
+
+	// FaultInsecureRemoved means the engine refused the config because it asks
+	// to skip the server's certificate check: insecure=1 in the link,
+	// tlsSettings.allowInsecure in the document, a feature xray-core removed. A
+	// sub-case of the engine refusing the config, split out because the remedy
+	// is specific: a link without that flag.
+	FaultInsecureRemoved Fault = "insecure-not-allowed"
+
+	// FaultCipherRemoved means a Shadowsocks link names an encryption method
+	// the engine no longer ships, such as aes-256-cfb or rc4-md5. Split out for
+	// the same reason as FaultInsecureRemoved.
+	FaultCipherRemoved Fault = "cipher-not-supported"
+
 	// FaultServerNoAnswer means the config loaded and the server did not
 	// answer. The third of the three states.
 	FaultServerNoAnswer Fault = "server-no-answer"

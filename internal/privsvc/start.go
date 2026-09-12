@@ -295,7 +295,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// -----------------------------------------------------------------------
 	if err := s.cfg.Engine.Start(ctx, doc); err != nil {
 		s.recordFailure("the engine would not start", "", err)
-		return fail("engine", panel.FaultEngineRejectedConfig, err)
+		return fail("engine", engineFault(err), err)
 	}
 
 	// -----------------------------------------------------------------------
@@ -390,7 +390,7 @@ func (s *Service) reassertLocked(ctx context.Context) error {
 	}
 
 	if err := s.cfg.Engine.Start(ctx, doc); err != nil {
-		return fail("engine", panel.FaultEngineRejectedConfig, err)
+		return fail("engine", engineFault(err), err)
 	}
 	st, err := s.sup.Start(ctx, hp)
 	if err != nil {

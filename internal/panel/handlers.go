@@ -392,7 +392,7 @@ func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Co
 		// Problem.Detail, and this package's rule is that no log line carries
 		// anything derived from the pasted config.
 		p.log.Warn("engine refused the config", "config_fingerprint", st.Proxy.Fingerprint())
-		prob := EngineProblem()
+		prob := EngineRejection(err)
 		prob.Detail = engineDetail(err)
 		return prob
 	}
@@ -503,7 +503,7 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := engine.Validate(cfgJSON); err != nil {
-		prob := EngineProblem()
+		prob := EngineRejection(err)
 		prob.Detail = engineDetail(err)
 		p.log.Info("the engine refused a pasted config")
 		sess.setFlash(prob, "")
@@ -707,7 +707,7 @@ func (p *Panel) handleRefresh(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		// The same sentence a pasted config gets when the engine refuses it,
 		// because it is the same fact about the same document.
-		prob := EngineProblem()
+		prob := EngineRejection(err)
 		prob.Detail = engineDetail(err)
 		p.log.Info("the engine refused a refreshed config")
 		p.events.add(EventRefreshFailed, FaultNone)

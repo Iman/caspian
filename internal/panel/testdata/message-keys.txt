@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 446 keys
+## en: 452 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -159,6 +159,8 @@
   fault.nointernet
   fault.notrunning
   fault.permission
+  fault.portinuse
+  fault.portinuse.advice
   fault.radioblocked
   fault.softwaremissing
   fault.tunnelnohotspot
@@ -341,7 +343,11 @@
   problem.crosssite.headline
   problem.detail.label
   problem.engine.advice
+  problem.engine.cipher.advice
+  problem.engine.cipher.headline
   problem.engine.headline
+  problem.engine.insecure.advice
+  problem.engine.insecure.headline
   problem.internal.advice
   problem.internal.headline
   problem.notfound.advice
@@ -453,7 +459,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 446 keys
+## fa: 452 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -607,6 +613,8 @@
   fault.nointernet
   fault.notrunning
   fault.permission
+  fault.portinuse
+  fault.portinuse.advice
   fault.radioblocked
   fault.softwaremissing
   fault.tunnelnohotspot
@@ -789,7 +797,11 @@
   problem.crosssite.headline
   problem.detail.label
   problem.engine.advice
+  problem.engine.cipher.advice
+  problem.engine.cipher.headline
   problem.engine.headline
+  problem.engine.insecure.advice
+  problem.engine.insecure.headline
   problem.internal.advice
   problem.internal.headline
   problem.notfound.advice

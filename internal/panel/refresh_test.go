@@ -502,7 +502,9 @@ func TestEveryRefreshFailureLeavesTheConfigUntouched(t *testing.T) {
 		}, MsgRefreshNotConfig, true},
 		{"the engine refused the new configuration", func(h *harness) {
 			h.priv.SetRefreshReply(RefreshReply{Status: 200, Body: []byte(engineRejectedConfig())})
-		}, MsgEngineHeadline, true},
+			// The fixture is refused for allowInsecure, which has its own
+			// sentence since 2026-09-12; see EngineRejection.
+		}, MsgEngineInsecureHeadline, true},
 		{"the body is over the paste cap", func(h *harness) {
 			// The privileged side caps this already; the panel holds the
 			// same cap rather than trusting that.

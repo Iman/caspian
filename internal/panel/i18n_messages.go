@@ -289,11 +289,15 @@ var messagesFA = map[Key]string{
 	"problem.detail.label":       "چیزی که نرم‌افزار اتصال گفت:",
 
 	// The three config failure states.
-	"problem.parse.headline":  "کاسپین نتوانست آن لینک را بخواند.",
-	"problem.engine.headline": "کاسپین آن لینک را خواند، اما همان‌طور که هست قابل استفاده نیست.",
-	"problem.engine.advice":   "یکی از تنظیمات داخل آن، تنظیمی نیست که نرم‌افزار اتصال بپذیرد. از کسی که لینک را به شما داده بخواهید دوباره بفرستد. در حالت پیشرفته می‌بینید که نرم‌افزار چه گفت.",
-	"problem.server.headline": "کاسپین آن لینک را خواند و امتحان کرد، اما سرور جواب نداد.",
-	"problem.server.advice":   "خود لینک سالم است. اول ببینید همین دستگاه هنوز اینترنت خودش را دارد، بعد دوباره امتحان کنید. اگر دارد، ممکن است سرور خاموش باشد یا کسی که کانفیگ را به شما داده آن را جابه‌جا کرده باشد.",
+	"problem.parse.headline":           "کاسپین نتوانست آن لینک را بخواند.",
+	"problem.engine.headline":          "کاسپین آن لینک را خواند، اما همان‌طور که هست قابل استفاده نیست.",
+	"problem.engine.advice":            "یکی از تنظیمات داخل آن، تنظیمی نیست که نرم‌افزار اتصال بپذیرد. از کسی که لینک را به شما داده بخواهید دوباره بفرستد. در حالت پیشرفته می‌بینید که نرم‌افزار چه گفت.",
+	"problem.engine.insecure.headline": "این لینک از کاسپین می‌خواهد بررسی هویت سرور را نادیده بگیرد، و نرم‌افزار اتصال دیگر این را نمی‌پذیرد.",
+	"problem.engine.insecure.advice":   "از کسی که لینک را به شما داده، لینکی بخواهید که این بررسی را نادیده نگیرد. در حالت پیشرفته می‌بینید که نرم‌افزار چه گفت.",
+	"problem.engine.cipher.headline":   "این لینک از یک روش رمزنگاری قدیمی استفاده می‌کند که نرم‌افزار اتصال دیگر از آن پشتیبانی نمی‌کند.",
+	"problem.engine.cipher.advice":     "از کسی که لینک را به شما داده، لینکی با روش جدیدتر مانند aes-256-gcm بخواهید. در حالت پیشرفته می‌بینید که نرم‌افزار چه گفت.",
+	"problem.server.headline":          "کاسپین آن لینک را خواند و امتحان کرد، اما سرور جواب نداد.",
+	"problem.server.advice":            "خود لینک سالم است. اول ببینید همین دستگاه هنوز اینترنت خودش را دارد، بعد دوباره امتحان کنید. اگر دارد، ممکن است سرور خاموش باشد یا کسی که کانفیگ را به شما داده آن را جابه‌جا کرده باشد.",
 
 	// Why a link would not parse.
 	"problem.parse.empty.headline":   "چیزی برای افزودن نبود.",
@@ -310,6 +314,8 @@ var messagesFA = map[Key]string{
 	// Faults.
 	"fault.noapadapter":             "هیچ آداپتوری روی این دستگاه نمی‌تواند هات‌اسپات بسازد. یک آداپتور وای‌فای USB به آن وصل کنید.",
 	"fault.interfacebusy":           "آداپتور وای‌فایی که کاسپین برای هات‌اسپات لازم دارد هنوز به یک شبکه دیگر وصل است. کاسپین آن را از دست آن شبکه نگرفت و متوقف شد. آن شبکه را روی این دستگاه قطع کنید، یا یک آداپتور وای‌فای USB وصل کنید. بعد کاسپین را دوباره روشن کنید.",
+	"fault.portinuse":               "برنامهٔ دیگری روی این کامپیوتر از پورت ۱۰۸۰۸ استفاده می‌کند، و کاسپین برای اتصال به همین پورت نیاز دارد.",
+	"fault.portinuse.advice":        "برنامه‌های پراکسی یا VPN دیگر را ببندید و کاسپین را دوباره روشن کنید.",
 	"fault.notrunning":              "کاسپین روشن نیست، پس ترافیکی برای قطع کردن وجود ندارد. اول آن را روشن کنید.",
 	"event.trafficcut":              "ترافیک دستگاه‌ها قطع شد.",
 	"event.trafficrestored":         "ترافیک دستگاه‌ها دوباره وصل شد.",
@@ -791,11 +797,15 @@ var messagesEN = map[Key]string{
 	"problem.detail.label":       "What the connection software said:",
 
 	// The three config failure states.
-	"problem.parse.headline":  "Caspian could not read that link.",
-	"problem.engine.headline": "Caspian read that link, but it cannot be used as written.",
-	"problem.engine.advice":   "One of the settings inside it is not one the connection software accepts. Ask whoever gave you the link to send it again. Advanced mode shows what the software said.",
-	"problem.server.headline": "Caspian read that link and tried it, but the server did not answer.",
-	"problem.server.advice":   "The link itself is fine. Check that this box still has its own internet connection, then try again. If it does, either the server is switched off, or the person who gave you the config has moved it.",
+	"problem.parse.headline":           "Caspian could not read that link.",
+	"problem.engine.headline":          "Caspian read that link, but it cannot be used as written.",
+	"problem.engine.advice":            "One of the settings inside it is not one the connection software accepts. Ask whoever gave you the link to send it again. Advanced mode shows what the software said.",
+	"problem.engine.insecure.headline": "This link asks Caspian to skip checking who the server is, and the connection software no longer allows that.",
+	"problem.engine.insecure.advice":   "Ask whoever gave you the link for one that does not skip that check. Advanced mode shows what the software said.",
+	"problem.engine.cipher.headline":   "This link uses an old encryption method that the connection software no longer supports.",
+	"problem.engine.cipher.advice":     "Ask whoever gave you the link for one that uses a current method, such as aes-256-gcm. Advanced mode shows what the software said.",
+	"problem.server.headline":          "Caspian read that link and tried it, but the server did not answer.",
+	"problem.server.advice":            "The link itself is fine. Check that this box still has its own internet connection, then try again. If it does, either the server is switched off, or the person who gave you the config has moved it.",
 
 	// Why a link would not parse.
 	"problem.parse.empty.headline":   "There was nothing to add.",
@@ -812,6 +822,8 @@ var messagesEN = map[Key]string{
 	// Faults.
 	"fault.noapadapter":             "No adapter on this box can create a hotspot. Plug in a USB WiFi adapter.",
 	"fault.interfacebusy":           "The WiFi adapter Caspian needs for the hotspot is still connected to another network. Caspian stopped rather than take it over. Disconnect that network on this box, or plug in a USB WiFi adapter. Then switch Caspian on again.",
+	"fault.portinuse":               "Another program on this computer is already using port 10808, which Caspian needs for its connection.",
+	"fault.portinuse.advice":        "Close other proxy or VPN programs, then switch Caspian on again.",
 	"fault.notrunning":              "Caspian is not switched on, so there is no client traffic to cut. Switch it on first.",
 	"event.trafficcut":              "Client traffic was cut.",
 	"event.trafficrestored":         "Client traffic was restored.",
