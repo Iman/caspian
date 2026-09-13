@@ -6,7 +6,7 @@
 //
 // In an ordinary run the answer is "none", and CASPIAN_DEFECT is empty. In a
 // mutation run, CASPIAN_MUTATION is set, and the answer comes from the
-// scenario's own tag through bdd/defects.json.
+// scenario's own tag through test/cucumber/defects.json.
 //
 // Doing it per scenario rather than per process is not only faster. Running one
 // scenario per cucumber process meant one Chrome per scenario, which on this
@@ -43,7 +43,7 @@ function defectFor(suite, tags) {
   }
   const table = registry[suite];
   if (!table) {
-    throw new Error('bdd/defects.json has no section for the suite "' + suite + '"');
+    throw new Error('test/cucumber/defects.json has no section for the suite "' + suite + '"');
   }
   const named = tags.filter((t) => !ORGANISING_TAGS.has(t));
   for (const tag of named) {
@@ -53,8 +53,8 @@ function defectFor(suite, tags) {
   }
   throw new Error(
     'this scenario names no defect, so nobody has seen it fail. Its tags are [' +
-      tags.join(', ') + ']. Add a row for one of them to bdd/defects.json, and ' +
-      'implement the defect in defectsByName in bdd/harness/main.go.'
+      tags.join(', ') + ']. Add a row for one of them to test/cucumber/defects.json, and ' +
+      'implement the defect in defectsByName in test/cucumber/harness/main.go.'
   );
 }
 

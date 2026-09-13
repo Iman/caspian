@@ -21,7 +21,8 @@ const fs = require('fs');
 const readline = require('readline');
 const { defectFor } = require('../../../mutation-support');
 
-const repoRoot = path.resolve(__dirname, '..', '..', '..', '..');
+// features/support -> api -> cucumber -> test -> the repository root.
+const repoRoot = path.resolve(__dirname, '..', '..', '..', '..', '..');
 
 let harness = null;
 let harnessBinary = null;
@@ -36,14 +37,14 @@ const messages = { fa: {}, en: {} };
 // outlives the run that created it.
 function buildHarness() {
   const out = path.join(os.tmpdir(), 'caspian-bdd-api-harness-' + process.pid + (process.platform === 'win32' ? '.exe' : ''));
-  const built = spawnSync('go', ['build', '-o', out, './bdd/harness'], {
+  const built = spawnSync('go', ['build', '-o', out, './test/cucumber/harness'], {
     cwd: repoRoot,
     encoding: 'utf8',
   });
   if (built.status !== 0) {
     throw new Error(
       'could not build the harness. Run this by hand to see why:\n' +
-      '  go build -o /tmp/caspian-bdd-harness ./bdd/harness\n' +
+      '  go build -o /tmp/caspian-bdd-harness ./test/cucumber/harness\n' +
       (built.stderr || '')
     );
   }

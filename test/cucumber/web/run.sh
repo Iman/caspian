@@ -2,17 +2,18 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 # Copyright (C) 2026 Iman Samizadeh
 #
-# run.sh runs the HTTP suite.
+# run.sh runs the browser suite.
 #
 # It is a convenience and not the only way in. The suite starts its own
-# appliance from features/support/hooks.js, so a bare `npx cucumber-js` in this
-# directory works exactly as well, which is what makes it possible to run one
-# feature file or one scenario by line number. The README lists all four
-# invocations.
+# appliance and its own browser from features/support/hooks.js, so a bare
+# `npx cucumber-js` in this directory works exactly as well, which is what makes
+# it possible to run one feature file or one scenario by line number. The README
+# lists all four invocations.
 #
-# There is no browser here at all. This suite talks to the panel's endpoints
-# over HTTP, keeps a session cookie, and scrapes the per-session form token out
-# of rendered HTML the way any client would have to.
+# There is no Selenium server to start and no display to arrange. The reference
+# project this suite is modelled on needed both, in 2016; selenium-webdriver
+# talks to chromedriver directly, chromedriver is fetched and cached by Selenium
+# Manager on the first run, and Chrome runs headless.
 #
 # READ THIS BEFORE YOU PIPE THIS SCRIPT INTO ANYTHING.
 #
@@ -22,7 +23,7 @@
 # A shell pipeline exits with the status of its LAST command. scripts/gate.sh
 # records what that trap cost this project. Do this instead:
 #
-#     bash bdd/api/run.sh > api.log 2>&1; echo "exit: $?"
+#     bash test/cucumber/web/run.sh > web.log 2>&1; echo "exit: $?"
 
 set -o errexit
 set -o nounset

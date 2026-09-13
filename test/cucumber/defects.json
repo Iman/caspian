@@ -1,8 +1,8 @@
 {
   "_comment": [
     "One named defect per scenario tag. This file is the registry that makes",
-    "bdd/mutation.sh possible, and it is the JavaScript half of a pair: the",
-    "names on the right are implemented in defectsByName in bdd/harness/main.go,",
+    "test/cucumber/mutation.sh possible, and it is the JavaScript half of a pair: the",
+    "names on the right are implemented in defectsByName in test/cucumber/harness/main.go,",
     "which refuses an unknown one with a 400, so a typo here fails loudly at the",
     "first scenario rather than silently testing nothing.",
     "",

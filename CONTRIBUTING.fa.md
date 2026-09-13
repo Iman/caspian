@@ -57,7 +57,7 @@
 
 <div dir="ltr" align="left">
 
-    bash bdd/run-all.sh
+    bash test/cucumber/run-all.sh
 
 
 </div>

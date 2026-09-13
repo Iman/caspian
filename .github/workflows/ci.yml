@@ -38,13 +38,13 @@ jobs:
           node-version: "24"
           cache: npm
           cache-dependency-path: |
-            bdd/api/package-lock.json
-            bdd/web/package-lock.json
+            test/cucumber/api/package-lock.json
+            test/cucumber/web/package-lock.json
       - name: Install API test dependencies
-        run: npm ci --prefix bdd/api
+        run: npm ci --prefix test/cucumber/api
       - name: Install browser test dependencies
-        run: npm ci --prefix bdd/web
+        run: npm ci --prefix test/cucumber/web
       - name: Run API and browser BDD
-        run: bash bdd/run-all.sh
+        run: bash test/cucumber/run-all.sh
       - name: Verify BDD detects deliberate defects
-        run: bash bdd/mutation.sh
+        run: bash test/cucumber/mutation.sh

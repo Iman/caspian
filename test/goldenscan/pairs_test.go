@@ -47,7 +47,7 @@ func TestEveryEnglishDocumentHasAPersianEditionThatKeptUp(t *testing.T) {
 		}
 		if info.IsDir() {
 			base := info.Name()
-			if base == ".git" || base == "node_modules" || base == "local" || base == "bdd" {
+			if base == ".git" || base == "node_modules" || base == "local" || base == "cucumber" {
 				return filepath.SkipDir
 			}
 			return nil
@@ -230,7 +230,7 @@ func TestEveryPublishedDocumentOffersTheSameFourLanguages(t *testing.T) {
 		}
 		if info.IsDir() {
 			base := info.Name()
-			if base == ".git" || base == "node_modules" || base == "local" || base == "bdd" {
+			if base == ".git" || base == "node_modules" || base == "local" || base == "cucumber" {
 				return filepath.SkipDir
 			}
 			return nil

@@ -44,7 +44,7 @@ into `tail` throws away the answer.
 
 The browser and HTTP suites are separate:
 
-    bash bdd/run-all.sh
+    bash test/cucumber/run-all.sh
 
 ## House rules on output
 

@@ -23,7 +23,7 @@ The README keeps the overview, screenshots, and recorded experiments. The wiki h
 | [docs/HARDWARE-TEST.md](https://github.com/Iman/caspian/blob/main/docs/HARDWARE-TEST.md) | Hardware test procedure |
 | [internal/netcfg/testdata/PROVENANCE.md](https://github.com/Iman/caspian/blob/main/internal/netcfg/testdata/PROVENANCE.md) | Capture provenance |
 | [test/hardware/README.md](https://github.com/Iman/caspian/blob/main/test/hardware/README.md) | Hardware harness and its limits |
-| [bdd/README.md](https://github.com/Iman/caspian/blob/main/bdd/README.md) | Browser and API tests |
+| [test/cucumber/README.md](https://github.com/Iman/caspian/blob/main/test/cucumber/README.md) | Browser and API tests |
 
 
 

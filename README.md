@@ -216,7 +216,7 @@ At commit `5b0a8a7` with a clean working tree, on go1.27.0 darwin/arm64:
     go test -count=1 -v ./...      exit 0
 
 That run executed 1577 tests including subtests: 1572 passed, 5 skipped, 0
-failed. Fifteen packages reported `ok`. Two have no test files: `bdd/harness`
+failed. Fifteen packages reported `ok`. Two have no test files: `test/cucumber/harness`
 and `local/devpanel`. The five skips announce what they are not proving: the TUN
 device lifecycle, which is linux-only and needs root and `/dev/net/tun`, three
 dnsmasq configuration checks that need dnsmasq installed, and an opt-in QR PNG

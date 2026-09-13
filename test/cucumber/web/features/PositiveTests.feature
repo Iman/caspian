@@ -6,7 +6,7 @@ Feature: PositiveTests.feature
   browser with the real stylesheet applied.
 
   Every scenario carries a tag of its own as well as @smoke or @ready. The tag
-  is not decoration: bdd/mutation.sh uses it to run that one scenario against a
+  is not decoration: test/cucumber/mutation.sh uses it to run that one scenario against a
   build with its subject deliberately broken, and requires it to go red. A
   scenario nobody has watched fail is not evidence, and the tag is how the
   watching is automated.

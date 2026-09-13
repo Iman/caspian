@@ -66,7 +66,7 @@ class CaspianApiWorld extends World {
     if (!table || !(key in table)) {
       throw new Error(
         'the harness did not export the message key "' + key + '". ' +
-        'Add it to exportedKeys in bdd/harness/main.go.'
+        'Add it to exportedKeys in test/cucumber/harness/main.go.'
       );
     }
     return table[key];
@@ -192,7 +192,7 @@ class CaspianApiWorld extends World {
   }
 
   // The defect is passed in rather than read here, because in a mutation run it
-  // depends on which scenario is about to run. See bdd/mutation-support.js.
+  // depends on which scenario is about to run. See test/cucumber/mutation-support.js.
   async reset(defect) {
     await this.control('reset', { defect: defect || '' });
     this.cookies.clear();
@@ -208,7 +208,7 @@ class CaspianApiWorld extends World {
 
   // setConfig replaces the stored config with a text of the scenario's
   // choosing, optionally with a chosen entry recorded. See /__control/config
-  // in bdd/harness/main.go.
+  // in test/cucumber/harness/main.go.
   async setConfig(config, selected) {
     const body = { config };
     if (selected !== undefined) {

@@ -4,7 +4,7 @@
 // This file is part of Caspian-BYOC.
 
 // Command caspian-bdd-harness serves the real panel, against fakes, so that the
-// Cucumber suites under bdd/web and bdd/api have something to drive.
+// Cucumber suites under test/cucumber/web and test/cucumber/api have something to drive.
 //
 // # This is a test fixture and it is not the appliance
 //
@@ -35,7 +35,7 @@
 // A scenario nobody has watched fail is not evidence. test/bdd makes that point
 // in behaviour_test.go and enforces it with TestEveryScenarioCanFail, which
 // runs every scenario a second time with a named fault injected and requires
-// red. bdd/mutation.sh does the same job for the Cucumber suites, and this is
+// red. test/cucumber/mutation.sh does the same job for the Cucumber suites, and this is
 // where the faults are applied.
 //
 // A defect changes WHAT THE BROWSER RECEIVES. Some are applied to the machine
@@ -562,7 +562,7 @@ type defect struct {
 	droppedLineSilenced    bool
 }
 
-// defectsByName is the registry. bdd/mutation.sh names one of these per
+// defectsByName is the registry. test/cucumber/mutation.sh names one of these per
 // scenario tag, and the empty name is the healthy appliance.
 var defectsByName = map[string]defect{
 	"":                         {},

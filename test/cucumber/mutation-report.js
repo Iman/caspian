@@ -4,7 +4,7 @@
 // Reads a Cucumber JSON report from a mutation run and prints the table, then
 // exits non-zero if any row did not get the result its registry entry expects.
 //
-// Usage: node bdd/mutation-report.js <suite> <report.json>
+// Usage: node test/cucumber/mutation-report.js <suite> <report.json>
 //
 // The table is the deliverable. A run where every scenario still passes with its
 // subject deliberately broken is a suite that proves nothing, and the point of
@@ -20,7 +20,7 @@ const suite = process.argv[2];
 const reportPath = process.argv[3];
 
 if (!suite || !reportPath) {
-  console.error('usage: node bdd/mutation-report.js <suite> <report.json>');
+  console.error('usage: node test/cucumber/mutation-report.js <suite> <report.json>');
   process.exit(2);
 }
 

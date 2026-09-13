@@ -10,7 +10,7 @@
 // nothing can ever resolve it, and every credential is invented and has never
 // been a working one.
 //
-// The same fixture exists in bdd/web/features/support/entries.js. The two
+// The same fixture exists in test/cucumber/api/features/support/entries.js. The two
 // suites do not share files (each has its own world and hooks), so it is
 // repeated rather than reached across.
 

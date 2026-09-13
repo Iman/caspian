@@ -4,7 +4,7 @@ Two Cucumber suites for the panel, in the shape of the `carcodeal-bdd` project
 this is modelled on: a `web/` suite that drives a real browser, and an `api/`
 suite that talks to the endpoints directly.
 
-    bdd/
+    test/cucumber/
       harness/            a Go program that serves the REAL panel against fakes
       web/                browser BDD, CucumberJS plus selenium-webdriver
         features/
@@ -37,8 +37,8 @@ suite that talks to the endpoints directly.
 Node and npm, a Go toolchain, and Chrome. The browser suite runs Chrome
 headless.
 
-    cd bdd/web && npm install
-    cd bdd/api && npm install
+    cd test/cucumber/web && npm install
+    cd test/cucumber/api && npm install
 
 Measured on 2026-08-30, on the machine this was written on: Node 26.0.0, npm
 11.12.1, Go 1.27.0, Chrome 151.0.7922.175, `@cucumber/cucumber` 13.2.1,
@@ -58,9 +58,9 @@ thing either suite fetches at run time, and only once.
 
 One command for everything:
 
-    bash bdd/run-all.sh
+    bash test/cucumber/run-all.sh
 
-Or one suite at a time, from `bdd/web` or `bdd/api`:
+Or one suite at a time, from `test/cucumber/web` or `test/cucumber/api`:
 
     npx cucumber-js
     npx cucumber-js --tags @smoke
@@ -80,11 +80,11 @@ about the exit code. A pipeline exits with the status of its last command, so
 piping throws away the answer and hands you a green that means "tail worked".
 `scripts/gate.sh` records what that trap has already cost this project.
 
-    bash bdd/run-all.sh > bdd.log 2>&1; echo "exit: $?"
+    bash test/cucumber/run-all.sh > bdd.log 2>&1; echo "exit: $?"
 
 ## No hardware, no root, no network
 
-`bdd/harness` starts the real `internal/panel` on a loopback listener: the real
+`test/cucumber/harness` starts the real `internal/panel` on a loopback listener: the real
 templates, the real stylesheet, the real script, the real QR encoder and the
 real message catalogue, all through the same embedded filesystem the appliance
 uses. What is faked is the machine underneath, through the `FakePrivileged` that
@@ -119,12 +119,12 @@ the same reason.
 A scenario nobody has watched fail is not evidence. `test/bdd` enforces that in
 Go with `TestEveryScenarioCanFail`. The same job, for these suites:
 
-    bash bdd/mutation.sh          # every row
-    bash bdd/mutation.sh web      # the browser suite only
-    bash bdd/mutation.sh api      # the HTTP suite only
+    bash test/cucumber/mutation.sh          # every row
+    bash test/cucumber/mutation.sh web      # the browser suite only
+    bash test/cucumber/mutation.sh api      # the HTTP suite only
 
 One cucumber run per suite, with `CASPIAN_MUTATION=1`. In that mode the `Before`
-hook looks up the scenario's OWN tag in `bdd/defects.json` and rebuilds the
+hook looks up the scenario's OWN tag in `test/cucumber/defects.json` and rebuilds the
 appliance carrying that defect, so every scenario runs against a build with its
 own subject broken and nothing else. `mutation-report.js` then reads the JSON
 report and prints one row per scenario: which scenario, which defect, whether it
@@ -140,7 +140,7 @@ scenario. On this machine that leaked browsers and wedged on the fourteenth row,
 measured 2026-08-30. One process, one browser, and an appliance rebuilt between
 scenarios gives the same isolation without the cost.
 
-The defects live in `bdd/harness/main.go` and each one is a plausible fault
+The defects live in `test/cucumber/harness/main.go` and each one is a plausible fault
 rather than a random mutation. The headline example puts back exactly the
 declaration that commit `5c51497` removed:
 
@@ -155,7 +155,7 @@ whose only symptom is which of two equally specific rules won.
 
 ## One scenario is red on purpose
 
-`bdd/web/features/NegativeTests.feature` ends with a scenario tagged
+`test/cucumber/web/features/NegativeTests.feature` ends with a scenario tagged
 `known-defect`. It FAILS on this build, and that is the finding rather than a
 broken test.
 
@@ -180,7 +180,7 @@ that is not being broadcast.
 The default profile excludes it, so a normal run is meaningful. Run it
 deliberately:
 
-    cd bdd/web && npx cucumber-js --profile defect
+    cd test/cucumber/web && npx cucumber-js --profile defect
 
 It is a profile rather than `--tags @known-defect`, because a profile's tags and
 the command line's tags are ANDed: `--tags @known-defect` against a default

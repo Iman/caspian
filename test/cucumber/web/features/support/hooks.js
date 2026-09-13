@@ -5,7 +5,7 @@
 //
 // # The appliance
 //
-// bdd/harness is a Go program that serves the REAL panel against fakes. It is
+// test/cucumber/harness is a Go program that serves the REAL panel against fakes. It is
 // started here rather than by run.sh so that a bare `cucumber-js`, typed by
 // hand with no wrapper, works. That is one of the four invocations the README
 // documents, and a suite that only runs through its own shell script is a suite
@@ -44,7 +44,8 @@ const { defectFor } = require('../../../mutation-support');
 
 // The repository root, found from this file rather than from the working
 // directory, so the suite can be run from anywhere.
-const repoRoot = path.resolve(__dirname, '..', '..', '..', '..');
+// features/support -> web -> cucumber -> test -> the repository root.
+const repoRoot = path.resolve(__dirname, '..', '..', '..', '..', '..');
 
 let harness = null;
 let harnessBinary = null;
@@ -61,14 +62,14 @@ const messages = { fa: {}, en: {} };
 // cache and nothing afterwards.
 function buildHarness() {
   const out = path.join(os.tmpdir(), 'caspian-bdd-harness-' + process.pid + (process.platform === 'win32' ? '.exe' : ''));
-  const built = spawnSync('go', ['build', '-o', out, './bdd/harness'], {
+  const built = spawnSync('go', ['build', '-o', out, './test/cucumber/harness'], {
     cwd: repoRoot,
     encoding: 'utf8',
   });
   if (built.status !== 0) {
     throw new Error(
       'could not build the harness. Run this by hand to see why:\n' +
-      '  go build -o /tmp/caspian-bdd-harness ./bdd/harness\n' +
+      '  go build -o /tmp/caspian-bdd-harness ./test/cucumber/harness\n' +
       (built.stderr || '')
     );
   }
@@ -115,7 +116,7 @@ function startHarness(binary) {
     proc.on('exit', (code) => {
       failed(new Error(
         'the harness exited with code ' + code + ' before it was ready.\n' +
-        'Run it by hand to see why:  go run ./bdd/harness\n' + stderr
+        'Run it by hand to see why:  go run ./test/cucumber/harness\n' + stderr
       ));
     });
 

@@ -242,7 +242,7 @@ golden سنجاق شده است**، پس تغییر در نحوهٔ ساخته �
 
 آن اجرا 1577 آزمون شاملِ زیرآزمون‌ها را اجرا کرد: 1572 قبول، 5 رد شده (skip)، 0
 مردود. پانزده بسته <span dir="ltr">`ok`</span> گزارش دادند. دو بسته هیچ فایلِ آزمونی ندارند:
-<span dir="ltr">`bdd/harness`</span> و <span dir="ltr">`local/devpanel`</span>. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
+<span dir="ltr">`test/cucumber/harness`</span> و <span dir="ltr">`local/devpanel`</span>. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
 نمی‌کنند: چرخهٔ عمرِ دستگاهِ TUN، که فقط لینوکسی است و به root و <span dir="ltr">`/dev/net/tun`</span>
 نیاز دارد؛ سه بررسیِ پیکربندیِ dnsmasq که به نصب بودنِ dnsmasq نیاز دارند؛ و یک
 تخلیهٔ PNG از QR که باید خودتان روشنش کنید.

@@ -12,9 +12,9 @@
 /local/
 # Flutter BDD run reports. Each run writes JSON, HTML and screenshots that
 # carry the hotspot name and passphrase the run used. The Flutter branch keeps
-# the same rule in bdd/flutter/.gitignore; this one covers a checkout that does
+# the same rule in test/cucumber/flutter/.gitignore; this one covers a checkout that does
 # not have that file yet.
-/bdd/flutter/reports/
+/test/cucumber/flutter/reports/
 # Proxy configurations in any shape, wherever they land.
 *.vless
 *.vmess
@@ -70,10 +70,10 @@ out/
 *.out
 coverage.txt
 
-# Node dependency trees for the Cucumber suites. bdd/README.md says how to
+# Node dependency trees for the Cucumber suites. test/cucumber/README.md says how to
 # install them.
-bdd/**/node_modules/
-bdd/web/se-metadata.json
+test/cucumber/**/node_modules/
+test/cucumber/web/se-metadata.json
 
 # NOTE for whoever edits this next.
 #

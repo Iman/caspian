@@ -15,24 +15,25 @@
 # on 2026-08-30 by ANDing with the default profile's tag filter.
 #
 # It does NOT run the scenario tagged known-defect, which fails on purpose. See
-# bdd/README.md. Run that one with:
+# test/cucumber/README.md. Run that one with:
 #
-#     cd bdd/web && npx cucumber-js --profile defect
+#     cd test/cucumber/web && npx cucumber-js --profile defect
 #
 # READ THIS BEFORE YOU PIPE THIS SCRIPT INTO ANYTHING.
 #
-#     bash bdd/run-all.sh | tail -40    # WRONG: reports tail's status
+#     bash test/cucumber/run-all.sh | tail -40    # WRONG: reports tail's status
 #
 # A shell pipeline exits with the status of its LAST command. Do this instead:
 #
-#     bash bdd/run-all.sh > bdd.log 2>&1; echo "exit: $?"
+#     bash test/cucumber/run-all.sh > bdd.log 2>&1; echo "exit: $?"
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-root=$(dirname "$script_dir")
+# test/cucumber sits two levels below the repository root.
+root=$(dirname "$(dirname "$script_dir")")
 cd "$root"
 
 # No colour, anywhere, ever.
@@ -43,7 +44,7 @@ summary=""
 
 run_suite() {
     local suite=$1
-    local dir="$root/bdd/$suite"
+    local dir="$root/test/cucumber/$suite"
     local log
     log=$(mktemp)
 

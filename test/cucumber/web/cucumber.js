@@ -14,7 +14,7 @@ process.env.FORCE_COLOR = '0';
 
 // THE DEFAULT PROFILE EXCLUDES ONE SCENARIO, AND THAT IS NOT TIDINESS.
 //
-// bdd/web/features/NegativeTests.feature ends with a scenario tagged
+// test/cucumber/web/features/NegativeTests.feature ends with a scenario tagged
 // known-defect: the device count that claims a phone is connected while the
 // appliance is switched off. It is RED on this build, on purpose, because it
 // describes what the panel should do and the panel does something else.
@@ -33,7 +33,7 @@ process.env.FORCE_COLOR = '0';
 //
 // resolves to "not @known-defect and @known-defect", matches nothing, and exits
 // 0 having run no scenarios. That is a false green of exactly the shape
-// scripts/gate.sh warns about in its header, and it is why bdd/mutation.sh
+// scripts/gate.sh warns about in its header, and it is why test/cucumber/mutation.sh
 // refuses a run that reports zero scenarios. Use:
 //
 //     cucumber-js --profile defect

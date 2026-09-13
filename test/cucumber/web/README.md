@@ -41,7 +41,7 @@ Negative:
 2. A switched off box does not draw the plain page ground
 3. The dashboard does not claim a device is connected while the box is off
    (tagged `known-defect`, RED on this build, excluded from the default profile,
-   see the repository's `bdd/README.md`)
+   see the repository's `test/cucumber/README.md`)
 
 ## The parts that are not ordinary Cucumber
 
@@ -65,4 +65,4 @@ page drawn in the wrong language is not.
 
 **One step reaches into the page, and says so in its own name.** "The control
 bar is put into the waiting state by hand" exists because the panel cannot
-produce that state; the repository's `bdd/README.md` has the measurement.
+produce that state; the repository's `test/cucumber/README.md` has the measurement.

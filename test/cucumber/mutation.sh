@@ -7,14 +7,14 @@
 # A scenario nobody has watched fail is not evidence. test/bdd makes that point
 # in behaviour_test.go and enforces it with TestEveryScenarioCanFail, which runs
 # every scenario a second time with a named fault injected and requires red.
-# This is the same job for the suites under bdd/web and bdd/api.
+# This is the same job for the suites under test/cucumber/web and test/cucumber/api.
 #
 # HOW IT WORKS
 #
 # One cucumber run per suite, with CASPIAN_MUTATION=1. In that mode the Before
-# hook looks up the scenario's OWN tag in bdd/defects.json and rebuilds the
+# hook looks up the scenario's OWN tag in test/cucumber/defects.json and rebuilds the
 # appliance carrying that defect, so every scenario runs against a build with
-# its own subject broken and nothing else. bdd/mutation-report.js then reads the
+# its own subject broken and nothing else. test/cucumber/mutation-report.js then reads the
 # JSON report and prints one row per scenario.
 #
 # It was one cucumber process per scenario at first, which meant one Chrome per
@@ -39,16 +39,17 @@
 #
 # Usage:
 #
-#     bash bdd/mutation.sh            # both suites
-#     bash bdd/mutation.sh web        # the browser suite only
-#     bash bdd/mutation.sh api        # the HTTP suite only
+#     bash test/cucumber/mutation.sh            # both suites
+#     bash test/cucumber/mutation.sh web        # the browser suite only
+#     bash test/cucumber/mutation.sh api        # the HTTP suite only
 
 set -o errexit
 set -o nounset
 set -o pipefail
 
 script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)
-root=$(dirname "$script_dir")
+# test/cucumber sits two levels below the repository root.
+root=$(dirname "$(dirname "$script_dir")")
 cd "$root"
 
 only=${1:-all}
@@ -62,7 +63,7 @@ fail=0
 
 run_suite() {
     local suite=$1
-    local dir="$root/bdd/$suite"
+    local dir="$root/test/cucumber/$suite"
     local report="$work/$suite.json"
     local log="$work/$suite.log"
     local report_target="$report"
@@ -100,7 +101,7 @@ run_suite() {
     fi
 
     local report_status=0
-    node "$root/bdd/mutation-report.js" "$suite" "$report" || report_status=$?
+    node "$root/test/cucumber/mutation-report.js" "$suite" "$report" || report_status=$?
     if [ "$report_status" -ne 0 ]; then
         fail=1
         printf '\n--- the last 40 lines of the %s run ---\n' "$suite"
@@ -110,7 +111,7 @@ run_suite() {
 
 printf 'MUTATION RUN\n'
 printf 'Every scenario runs against an appliance carrying the defect its own tag names.\n'
-printf 'The registry is bdd/defects.json; the defects are in bdd/harness/main.go.\n'
+printf 'The registry is test/cucumber/defects.json; the defects are in test/cucumber/harness/main.go.\n'
 
 if [ "$only" = "all" ] || [ "$only" = "api" ]; then
     run_suite api
