@@ -270,6 +270,17 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
 
 <p class="detected" id="detected">{{.DetectedLine}}</p>
 
+{{- /*
+  The loopback proxy address, shown only while the box is connected. The
+  element is always in the page and hidden when there is nothing to show,
+  because panel.js has to be able to make it appear and disappear on a poll
+  and cannot build the translated label itself. The address is a technical
+  value that can never be Persian, so it carries dir="ltr".
+*/ -}}
+<p class="detected" id="local-proxy"{{if not .LocalProxy}} hidden{{end}}>
+  <span class="label">{{.T "status.localproxy"}}</span>
+  <bdi dir="ltr" class="mono" id="local-proxy-value">{{.LocalProxy}}</bdi></p>
+
 <section class="card" aria-labelledby="events-heading">
   <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>{{.T "events.heading"}}</h2>
   {{if .Events}}

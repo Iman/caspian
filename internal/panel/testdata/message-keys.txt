@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 452 keys
+## en: 453 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -427,6 +427,7 @@
   status.connected
   status.cut
   status.heading
+  status.localproxy
   status.noconfig
   status.notconnected
   status.notworking
@@ -459,7 +460,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 452 keys
+## fa: 453 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -881,6 +882,7 @@
   status.connected
   status.cut
   status.heading
+  status.localproxy
   status.noconfig
   status.notconnected
   status.notworking

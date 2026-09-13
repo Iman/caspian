@@ -59,6 +59,7 @@ var messagesFA = map[Key]string{
 	"status.noconfig":     "هنوز هیچ کانفیگی اضافه نشده است.",
 	"status.using":        "در حال استفاده از %s.",
 	"status.unreadable":   "کاسپین نمی‌تواند کانفیگ شما را بخواند.",
+	"status.localproxy":   "پراکسی محلی",
 	"power.on":            "روشن کن",
 	"power.off":           "خاموش کن",
 
@@ -567,6 +568,7 @@ var messagesEN = map[Key]string{
 	"status.noconfig":     "No config added yet.",
 	"status.using":        "Using %s.",
 	"status.unreadable":   "Caspian cannot read your config.",
+	"status.localproxy":   "Local proxy",
 	"power.on":            "Switch on",
 	"power.off":           "Switch off",
 

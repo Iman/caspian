@@ -157,8 +157,32 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 
 	// -----------------------------------------------------------------------
 	// 6. Decide.
+	//
+	// The loopback SOCKS port first, because two of the decisions below carry
+	// it: the network plan names it as the macOS system proxy endpoint, and
+	// the engine document names it as the inbound's port. Deciding it here,
+	// once, is what keeps the two from disagreeing. See socksport.go for why
+	// it is decided at all rather than fixed: on 2026-09-12 a Windows 11 box
+	// (issue #2) had another proxy client on 127.0.0.1:10808 and the engine
+	// could not bind.
 	// -----------------------------------------------------------------------
-	netOpts, err := s.netOptionsFor(req)
+	socksPort, moved, err := chooseSocksPort(s.cfg.SocksPort)
+	if err != nil {
+		// Not FaultPortInUse: that word says another program holds the port
+		// and the remedy is to close it. Here not even an ephemeral loopback
+		// port could be bound, which no other program explains.
+		return fail("local proxy port", panel.FaultUnknown, err)
+	}
+	if moved {
+		// Fixed words and two port numbers. Neither is a credential.
+		s.cfg.Logger.Info("another program holds the preferred local proxy port, using a free one",
+			"preferred", s.cfg.SocksPort, "chosen", socksPort)
+	}
+	s.mu.Lock()
+	s.socksPort = socksPort
+	s.mu.Unlock()
+
+	netOpts, err := s.netOptionsFor(req, socksPort)
 	if err != nil {
 		return err
 	}
@@ -297,6 +321,11 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 		s.recordFailure("the engine would not start", "", err)
 		return fail("engine", engineFault(err), err)
 	}
+	// The engine has bound its inbounds, so the address is a fact now and not
+	// a plan. It goes to the advanced view because it is the one place a
+	// person at the box can read which port the local proxy is on when the
+	// preferred one was taken. The loopback address is not a secret.
+	s.note("local proxy listening at " + localProxyAddr(socksPort))
 
 	// -----------------------------------------------------------------------
 	// 11. Steps that depend on engine-owned resources: tunnel-device routes,
@@ -541,6 +570,7 @@ func (s *Service) stopLocked(ctx context.Context) error {
 	s.fingerprint = ""
 	s.forward = netcfg.ForwardNormal
 	s.engineDoc = nil
+	s.socksPort = 0
 	s.lastDetectAt = time.Time{}
 	s.mu.Unlock()
 

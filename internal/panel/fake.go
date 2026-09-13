@@ -119,14 +119,26 @@ func (f *FakePrivileged) Status(ctx context.Context) (SystemStatus, error) {
 	if f.statusErr != nil {
 		return SystemStatus{}, f.statusErr
 	}
-	return SystemStatus{
+	st := SystemStatus{
 		Engine:           f.engine,
 		Hotspot:          f.hotspot,
 		Detection:        f.detection,
 		ClientTrafficCut: f.cut,
 		At:               f.now(),
-	}, nil
+	}
+	if f.engine.Phase == engine.PhaseRunning {
+		// The real side reports the port its run bound. This fake reports
+		// docs/LAYOUT.md's default, which is what a box whose port was free
+		// reports; it does not model the port moving.
+		st.LocalProxy = fakeLocalProxy
+	}
+	return st, nil
 }
+
+// fakeLocalProxy is the loopback SOCKS inbound the fake reports while its
+// engine runs: docs/LAYOUT.md's default port on the loopback address. Not a
+// credential, and not a value any test should need to hide.
+const fakeLocalProxy = "127.0.0.1:10808"
 
 func (f *FakePrivileged) Start(ctx context.Context, req StartRequest) error {
 	f.mu.Lock()

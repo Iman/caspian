@@ -15,6 +15,7 @@
   events       null
   hasConfig    bool
   heroClass    string
+  localProxy   string
   nextStep     string
   powerClass   string
   powerLabel   string

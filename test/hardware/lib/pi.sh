@@ -204,6 +204,11 @@ pi_hotspot_is_ap() {
 # endpoint's own constant address, not an exit address.
 pi_socks_exit() {
   local url="$1" port
+  # 10808 is the DEFAULT, not a guarantee. Since 2026-09-12 the service moves
+  # its loopback SOCKS inbound to a free port when another program holds 10808
+  # (issue #2), and the panel shows the port in use as the local proxy. This
+  # harness assumes the default; on a box where the port moved, set
+  # CASPIAN_HW_SOCKS_PORT to the port the panel shows.
   port="${CASPIAN_HW_SOCKS_PORT:-10808}"
   pi_ssh "curl -fsS --max-time 20 --socks5-hostname 127.0.0.1:$port '$url'" 2>/dev/null
 }

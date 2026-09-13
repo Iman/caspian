@@ -214,6 +214,10 @@ const (
 	MsgStatusNoConfig   Key = "status.noconfig"
 	MsgStatusUsing      Key = "status.using"
 	MsgStatusUnreadable Key = "status.unreadable"
+	// The label beside the loopback SOCKS address the connected page shows.
+	// Added 2026-09-12 with the port fallback (issue #2): the port is no
+	// longer always 10808, so the page has to say which one is in use.
+	MsgStatusLocalProxy Key = "status.localproxy"
 	MsgSwitchOn         Key = "power.on"
 	MsgSwitchOff        Key = "power.off"
 

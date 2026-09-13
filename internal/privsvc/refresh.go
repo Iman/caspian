@@ -11,7 +11,6 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 
@@ -19,7 +18,6 @@ import (
 
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/panel"
-	"caspianbyoc.org/caspian/internal/xcfg"
 )
 
 // ---------------------------------------------------------------------------
@@ -203,7 +201,9 @@ func checkRefreshAddress(u *url.URL) error {
 // a port, so it resolves nothing, and the destination name is written into
 // the SOCKS request for the engine to resolve through the tunnel.
 func (s *Service) refreshClient() (*http.Client, error) {
-	inbound := net.JoinHostPort(xcfg.DefaultSocksListen, strconv.Itoa(int(s.cfg.SocksPort)))
+	// The port this run's engine actually bound, which since 2026-09-12 is
+	// not always the preferred one (socksport.go).
+	inbound := localProxyAddr(s.socksPortInForce())
 	forward := &net.Dialer{Timeout: 5 * time.Second}
 	socks, err := proxy.SOCKS5("tcp", inbound, nil, forward)
 	if err != nil {

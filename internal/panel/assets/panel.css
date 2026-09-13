@@ -1351,6 +1351,16 @@ textarea::placeholder {
   border-radius: var(--r-ctl);
 }
 
+/* The local proxy line sits under the detected line and shares its box. Its
+   label is set off the same way problem-detail's is, and the hidden attribute
+   is honoured explicitly, as it is for the other two elements panel.js hides,
+   so a stylesheet rule can never draw a line the server said to hide. */
+.detected .label {
+  font-weight: 600;
+  margin-inline-end: var(--s2);
+}
+#local-proxy[hidden] { display: none; }
+
 /* ==========================================================================
    EVENTS AND LOG
    ========================================================================== */

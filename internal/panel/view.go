@@ -168,6 +168,13 @@ type pageData struct {
 	// ---- what was detected ----
 	DetectedLine string
 
+	// LocalProxy is the engine's loopback SOCKS inbound, host:port, filled
+	// only while the page is Connected and empty otherwise. LTR because it is
+	// an address with dots and a colon, which is exactly the shape the bidi
+	// algorithm reorders inside Persian text. The label beside it comes from
+	// the catalogue (MsgStatusLocalProxy) in the template.
+	LocalProxy LTR
+
 	// ---- events ----
 	Events []EventLine
 
@@ -369,6 +376,10 @@ func (d *pageData) fillStatus(st SystemStatus, fault Fault) {
 	case st.Connected():
 		d.Connected = true
 		d.StatusWord, d.StatusShape = T(l, MsgStatusConnected), shapeOn
+		// Only here. A box that is off, starting, faulted or cut shows no
+		// proxy address, because in none of those states can a person use it,
+		// and a stale address on a page is an address somebody types in.
+		d.LocalProxy = LTR(st.LocalProxy)
 	case st.Engine.Phase == engine.PhaseStarting:
 		d.StatusWord, d.StatusShape = T(l, MsgStatusStarting), shapeWorking
 	case st.Engine.Phase == engine.PhaseFailed:
@@ -805,6 +816,13 @@ type statusJSON struct {
 	Devices    int    `json:"devices"`
 	DeviceLine string `json:"deviceLine"`
 	Detected   string `json:"detected"`
+
+	// LocalProxy is the loopback SOCKS inbound, host:port, while the page is
+	// Connected and empty otherwise. It lets the address appear and disappear
+	// without a reload, which matters because the port is not fixed any more:
+	// since 2026-09-12 the privileged side moves off 10808 when another
+	// program holds it (issue #2). A loopback address is not a credential.
+	LocalProxy string `json:"localProxy"`
 	Problem    string `json:"problem"`
 	HasConfig  bool   `json:"hasConfig"`
 	Uptime     string `json:"uptime"`
@@ -844,6 +862,7 @@ func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, h
 		Devices:    st.Hotspot.Devices,
 		DeviceLine: d.DeviceLine,
 		Detected:   d.DetectedLine,
+		LocalProxy: string(d.LocalProxy),
 		Problem:    strings.TrimSpace(strings.TrimSpace(d.ProblemHeadline + " " + d.ProblemAdvice)),
 		HasConfig:  hasConfig,
 		Uptime:     d.Tiles[3].Value,

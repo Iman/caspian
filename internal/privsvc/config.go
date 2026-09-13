@@ -105,7 +105,11 @@ type Config struct {
 	// Empty means netcfg.DefaultOptions().TunName.
 	TunName string
 
-	// SocksPort is the loopback proxy and diagnostics inbound, LAYOUT.md 10808.
+	// SocksPort is the PREFERRED port of the loopback proxy and diagnostics
+	// inbound, LAYOUT.md 10808. Since 2026-09-12 a start probes it and moves
+	// to a free loopback port when another program holds it (socksport.go,
+	// after a Windows 11 report, issue #2); Status reports the port in force
+	// as SystemStatus.LocalProxy.
 	SocksPort uint16
 
 	// LocalDNSPort is the engine's local DNS listener, LAYOUT.md 5354. It is

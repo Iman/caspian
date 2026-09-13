@@ -69,7 +69,10 @@ Built and unit-tested (with recorders, no root):
   endpoint, the measured bypass domains, and enabled state. A service that had
   no endpoint remains disabled; `networksetup` has no endpoint-clear verb. An
   existing authenticated proxy is refused because its hidden password cannot
-  be restored.
+  be restored. 10808 is the default, not a guarantee: when another program
+  already holds it, the engine binds a free loopback port instead, the
+  `networksetup` steps name that port, and the panel shows it as the local
+  proxy (measured 2026-09-12 from a Windows 11 report, issue #2).
 - `internetsharing.go`: writes the preferences file with the keys real dumps
   and the plugin's strings show (NetworkName, NetworkPassword as UTF-16LE
   data, Channel, PrimaryService as the uplink's service UUID, SharingDevices,

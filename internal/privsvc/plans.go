@@ -43,8 +43,18 @@ const (
 // Every override is one internal/netcfg already accepts, and each is passed
 // through rather than acted on here: the planner is what decides whether an
 // override can be honoured, and it has the wording for the refusal.
-func (s *Service) netOptionsFor(req panel.StartRequest) (netcfg.Options, error) {
+//
+// socksPort is the loopback port this run's SOCKS inbound binds, chosen by
+// chooseSocksPort. It replaces the preferred port in the macOS SystemSOCKS
+// options, because those options become the networksetup steps that point
+// every network service at the inbound (internal/netcfg/system_socks.go,
+// darwinSystemSOCKSSteps), and a Mac pointed at 10808 while the engine
+// listens elsewhere is a Mac whose proxy setting reaches nothing.
+func (s *Service) netOptionsFor(req panel.StartRequest, socksPort uint16) (netcfg.Options, error) {
 	o := s.cfg.netOptions()
+	if o.SystemSOCKS.Enabled && socksPort != 0 {
+		o.SystemSOCKS.Port = socksPort
+	}
 	o.UplinkOverride = req.Network.InternetInterface
 	if h := req.Hotspot.Interface; h != "" && !s.isVirtualAPName(h) {
 		o.HotspotOverride = h
@@ -94,7 +104,10 @@ func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts n
 	o.Link = l
 	o.TUN.Disabled = s.cfg.TUNDisabled
 	o.TUN.Name = netOpts.TunName
-	o.SOCKS.Port = s.cfg.SocksPort
+	// The port this run chose, not the preferred one (socksport.go). This is
+	// the same value netOptionsFor gave the macOS system proxy steps and the
+	// same value Status reports as LocalProxy.
+	o.SOCKS.Port = s.socksPortInForce()
 
 	// The listener internal/hotspot's dnsmasq forwards to. Enabling it is what
 	// makes client DNS resolvable at all: with it off, dnsmasq forwards to a

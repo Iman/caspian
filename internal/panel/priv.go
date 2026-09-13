@@ -502,6 +502,15 @@ type SystemStatus struct {
 	// a control with no visible way back is one people pull the plug over.
 	ClientTrafficCut bool
 
+	// LocalProxy is the host:port of the engine's loopback SOCKS inbound while
+	// the engine runs, and empty otherwise. The port is the one the run bound,
+	// which since 2026-09-12 is not always docs/LAYOUT.md's 10808: a Windows
+	// 11 report (issue #2) had another proxy client holding that port, and the
+	// privileged side now moves to a free loopback port rather than failing.
+	// The panel shows this so a person can see where the proxy went. A
+	// loopback address is not a credential.
+	LocalProxy string
+
 	// At is when this was measured.
 	At time.Time
 }

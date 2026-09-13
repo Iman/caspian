@@ -70,6 +70,13 @@ does not own.
 | 8088 | panel address | The web panel |
 | 10808 | 127.0.0.1 | SOCKS, for diagnostics, the exit-IP proof, and the interim macOS system proxy |
 
+10808 is the default, not a guarantee. When another program on the machine
+already holds it, Caspian moves its loopback SOCKS inbound to a free loopback
+port for that run, and the panel shows the port in use as the local proxy; the
+macOS system proxy setting and the subscription refresh follow the same port.
+Measured 2026-09-12 from a Windows 11 report (issue #2) where another proxy
+client held 10808 and the engine could not bind.
+
 The 5354 pairing is the one that breaks quietly. dnsmasq refuses any upstream
 that is not a loopback address, and the engine's listener is what answers there.
 If the two drift, DNS stops resolving for every joined device while the hotspot
