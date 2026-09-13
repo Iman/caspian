@@ -103,6 +103,16 @@ func parseOutbounds(raw string) (*parsed, error) {
 	if text == "" {
 		return nil, ErrEmpty
 	}
+	// A link copied from a web page or a Telegram post arrives with its
+	// ampersands HTML-escaped: "&amp;security=tls&amp;sni=...". url.Parse then
+	// sees one parameter named "amp;security" and the link loses its TLS, its
+	// server name, its host and its path, and fails against a server that is
+	// up. Measured 2026-09-13 across 8,600 public links: 88 carried "&amp;",
+	// and the one sampled into the probe failed at the TLS handshake for
+	// exactly this reason. No share link, base64 blob, JSON or Clash document
+	// carries a literal "&amp;" that means anything else, so it is unescaped
+	// here, once, for every path that parses.
+	text = strings.ReplaceAll(text, "&amp;", "&")
 	if err := checkScheme(text); err != nil {
 		return nil, err
 	}
