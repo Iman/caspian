@@ -149,6 +149,9 @@ Caspian принимает ссылки VLESS, VMess, Shadowsocks, SOCKS, Trojan
 | протокол | транспорт | безопасность | переносит HTTP-запрос |
 |---|---|---|---|
 | VLESS | tcp (raw) | none | да |
+| VLESS | websocket | none | да |
+| VLESS | grpc | none | да |
+| VLESS | httpupgrade | none | да |
 | VMess | tcp (raw) | none | да |
 | Shadowsocks, aes-256-gcm | tcp (raw) | none | да |
 | SOCKS | tcp (raw) | none | да |
@@ -166,8 +169,7 @@ Caspian принимает ссылки VLESS, VMess, Shadowsocks, SOCKS, Trojan
 `TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` и делают эти механизмы
 доказательством, а не намерением.
 
-Читайте каждую строку узко. Все строки, кроме Hysteria2, работают поверх сырого
-TCP. Ни одна строка не задействует REALITY, серверной стороне которого нужна
+Читайте каждую строку узко. Все строки, кроме Hysteria2, работают поверх TCP: сырого для каждого протокола, а с 2026-09-13 ещё websocket, gRPC и httpupgrade на VLESS. Ни одна строка не задействует REALITY, серверной стороне которого нужна
 настоящая цель для рукопожатия. Shadowsocks взят только с aes-256-gcm, потому
 что шифры 2022 года идут другим путём в коде. Каждая строка несёт запрос по TCP,
 а UDP associate выключен. Всё происходит на loopback, поэтому адрес выхода не

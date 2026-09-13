@@ -170,6 +170,9 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 | پروتکل | ترابری | امنیت | یک درخواست HTTP را حمل می‌کند |
 |---|---|---|---|
 | VLESS | tcp (raw) | none | بله |
+| VLESS | websocket | none | بله |
+| VLESS | grpc | none | بله |
+| VLESS | httpupgrade | none | بله |
 | VMess | tcp (raw) | none | بله |
 | Shadowsocks، aes-256-gcm | tcp (raw) | none | بله |
 | SOCKS | tcp (raw) | none | بله |
@@ -186,7 +189,7 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 <span dir="ltr">`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel`</span> همان‌هایی هستند که این
 کنترل‌ها را از قصد به شاهد تبدیل می‌کنند.
 
-هر سطر را تنگ بخوانید. هر سطر جز Hysteria2 روی TCP خام اجرا می‌شود. هیچ سطری
+هر سطر را تنگ بخوانید. هر سطر جز Hysteria2 روی TCP اجرا می‌شود: خام برای همهٔ پروتکل‌ها، و از 2026-09-13 websocket، gRPC و httpupgrade هم روی VLESS. هیچ سطری
 REALITY را نمی‌راند، چون سمتِ سرورِ آن به یک هدفِ دست‌دادنِ واقعی نیاز دارد.
 Shadowsocks فقط aes-256-gcm است، چون رمزهای 2022 مسیرِ کدِ دیگری دارند. هر سطر
 یک درخواست TCP حمل می‌کند و UDP associate خاموش است. همه چیز روی loopback است،

@@ -151,6 +151,9 @@ product path, unmodified: `link.Parse`, then `xcfg.Build`, then
 | protocol | transport | security | carries an HTTP request |
 |---|---|---|---|
 | VLESS | tcp (raw) | none | yes |
+| VLESS | websocket | none | yes |
+| VLESS | grpc | none | yes |
+| VLESS | httpupgrade | none | yes |
 | VMess | tcp (raw) | none | yes |
 | Shadowsocks, aes-256-gcm | tcp (raw) | none | yes |
 | SOCKS | tcp (raw) | none | yes |
@@ -167,7 +170,7 @@ none. `TestEveryCarriageProofCanFail` and
 `TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` are what make those
 controls evidence rather than intent.
 
-Read each row narrowly. Every row but Hysteria2 runs over raw TCP. No row drives
+Read each row narrowly. Every row but Hysteria2 runs over TCP: raw for every protocol, and since 2026-09-13 websocket, gRPC and httpupgrade on VLESS as well. No row drives
 REALITY, whose server side needs a real handshake target. Shadowsocks is
 aes-256-gcm only, because the 2022 ciphers take a different code path. Every row
 carries a TCP request, and UDP associate is off. Everything is on loopback, so

@@ -143,6 +143,9 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 | 协议 | 传输 | 安全层 | 能送出一个 HTTP 请求 |
 |---|---|---|---|
 | VLESS | tcp (raw) | none | 是 |
+| VLESS | websocket | none | 是 |
+| VLESS | grpc | none | 是 |
+| VLESS | httpupgrade | none | 是 |
 | VMess | tcp (raw) | none | 是 |
 | Shadowsocks，aes-256-gcm | tcp (raw) | none | 是 |
 | SOCKS | tcp (raw) | none | 是 |
@@ -157,7 +160,7 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 `TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel` 才是让这些控制措施成为证据
 而不是意图的东西。
 
-每一行都要读得窄一点。除 Hysteria2 外，每一行都跑在裸 TCP 上。没有一行驱动 REALITY，
+每一行都要读得窄一点。除 Hysteria2 外，每一行都跑在 TCP 上：每种协议都有裸 TCP，自 2026-09-13 起 VLESS 还有 websocket、gRPC 和 httpupgrade。没有一行驱动 REALITY，
 因为它的服务端需要一个真实的握手目标。Shadowsocks 只有 aes-256-gcm，因为 2022 系列的
 加密套件走的是另一条代码路径。每一行送的都是一个 TCP 请求，UDP associate 是关的。
 一切都在环回地址上，所以没有抓到出口 IP，也不可能抓到。
