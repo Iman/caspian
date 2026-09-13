@@ -18,6 +18,13 @@
 // Optional: CASPIAN_PUBLIC_PROBE_MAX (default 200 links), CASPIAN_PUBLIC_PROBE_PARALLEL
 // (default 4 engines at once), CASPIAN_PUBLIC_PROBE_TIMEOUT (default 12s per link).
 //
+// Origin mode, for a server of our own on the same LAN, where the exit address
+// would be this household's and proves nothing: set CASPIAN_PUBLIC_PROBE_ORIGIN
+// to a URL only the server's side can reach, its own loopback, and
+// CASPIAN_PUBLIC_PROBE_TOKEN to the text that origin serves. A link connected
+// when the token came back through the tunnel. Added 2026-09-13 for the
+// Raspberry Pi used as a temporary server.
+//
 // What it writes, all under <dir>/working/, which lives in local/ and is
 // gitignored: one file per protocol shape holding the links that connected, a
 // results table, and a README with the date and the counts. It never writes or
@@ -72,6 +79,17 @@ func TestPublicConfigsConnect(t *testing.T) {
 	max := envInt("CASPIAN_PUBLIC_PROBE_MAX", 200)
 	parallel := envInt("CASPIAN_PUBLIC_PROBE_PARALLEL", 4)
 	timeout := time.Duration(envInt("CASPIAN_PUBLIC_PROBE_TIMEOUT", 12)) * time.Second
+	// Origin mode, for a server we run ourselves on the same LAN. The exit
+	// through such a server is this household's own address, so the exit
+	// comparison cannot prove anything there. Instead the probe fetches an
+	// origin that only the server's side of the tunnel can reach, the
+	// server's own loopback, and looks for a token only that origin serves:
+	// the same shape of proof test/tunnel uses on loopback.
+	origin := os.Getenv("CASPIAN_PUBLIC_PROBE_ORIGIN")
+	token := os.Getenv("CASPIAN_PUBLIC_PROBE_TOKEN")
+	if (origin == "") != (token == "") {
+		t.Fatal("CASPIAN_PUBLIC_PROBE_ORIGIN and CASPIAN_PUBLIC_PROBE_TOKEN go together")
+	}
 
 	lines := collectLinks(t, dir, max)
 	if len(lines) == 0 {
@@ -80,11 +98,17 @@ func TestPublicConfigsConnect(t *testing.T) {
 
 	// The direct baseline: what this connection's exit looks like with no
 	// tunnel. Held in memory for the comparison and never written anywhere.
-	direct, err := echoDirect(timeout)
-	if err != nil {
-		t.Fatalf("the echo endpoint does not answer directly, so no exit can be compared: %v", err)
+	var direct string
+	if origin == "" {
+		var err error
+		direct, err = echoDirect(timeout)
+		if err != nil {
+			t.Fatalf("the echo endpoint does not answer directly, so no exit can be compared: %v", err)
+		}
+		t.Logf("baseline read from %s; probing %d links, %d at a time, %s each", echoURL, len(lines), parallel, timeout)
+	} else {
+		t.Logf("origin mode: fetching %s through each tunnel and looking for its token; probing %d links, %d at a time, %s each", origin, len(lines), parallel, timeout)
 	}
-	t.Logf("baseline read from %s; probing %d links, %d at a time, %s each", echoURL, len(lines), parallel, timeout)
 
 	results := make([]result, len(lines))
 	var wg sync.WaitGroup
@@ -95,7 +119,7 @@ func TestPublicConfigsConnect(t *testing.T) {
 		go func(i int, ln string) {
 			defer wg.Done()
 			defer func() { <-sem }()
-			results[i] = probeOne(ln, direct, timeout)
+			results[i] = probeOne(ln, direct, origin, token, timeout)
 		}(i, ln)
 	}
 	wg.Wait()
@@ -185,7 +209,7 @@ func collectLinks(t *testing.T, dir string, max int) []string {
 // probeOne runs one link the way the appliance does, link.Parse, xcfg.Build,
 // engine.Start, then one GET through the SOCKS inbound, and classifies what
 // came back. The engine is stopped before it returns.
-func probeOne(ln string, direct string, timeout time.Duration) result {
+func probeOne(ln string, direct, origin, token string, timeout time.Duration) result {
 	l, err := link.Parse(ln)
 	if err != nil {
 		return result{line: ln, shape: "unparsed", class: "parse"}
@@ -211,6 +235,17 @@ func probeOne(ln string, direct string, timeout time.Duration) result {
 	defer func() { _ = e.Stop() }()
 	if !acceptsWithin(port, 5*time.Second) {
 		return result{line: ln, shape: shape, class: "no-listener"}
+	}
+	if origin != "" {
+		body, err := fetchThrough(port, origin, timeout)
+		if err != nil {
+			return result{line: ln, shape: shape, class: classify(err) + "/" + reachability(l, timeout)}
+		}
+		if !strings.Contains(body, token) {
+			// Something answered through the tunnel, and it was not the origin.
+			return result{line: ln, shape: shape, class: "wrong-origin"}
+		}
+		return result{line: ln, shape: shape, class: "connected", exit: "origin-token"}
 	}
 	exit, err := echoThrough(port, timeout)
 	if err != nil {
@@ -258,12 +293,32 @@ func acceptsWithin(port int, d time.Duration) bool {
 // travels inside the SOCKS request, so the engine resolves it through the
 // tunnel, the way client traffic would.
 func echoThrough(port int, timeout time.Duration) (string, error) {
-	dialer, err := proxy.SOCKS5("tcp", fmt.Sprintf("127.0.0.1:%d", port), nil, &net.Dialer{Timeout: timeout})
+	return echoWith(socksClient(port, timeout))
+}
+
+// fetchThrough performs one GET of url through the SOCKS inbound and returns
+// the body. The destination name travels inside the SOCKS request, so the
+// engine resolves it on the far side, the way client traffic would.
+func fetchThrough(port int, url string, timeout time.Duration) (string, error) {
+	resp, err := socksClient(port, timeout).Get(url)
 	if err != nil {
 		return "", err
 	}
+	defer func() { _ = resp.Body.Close() }()
+	body, err := io.ReadAll(io.LimitReader(resp.Body, 65536))
+	if err != nil {
+		return "", err
+	}
+	if resp.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("http %d", resp.StatusCode)
+	}
+	return string(body), nil
+}
+
+func socksClient(port int, timeout time.Duration) *http.Client {
+	dialer, _ := proxy.SOCKS5("tcp", fmt.Sprintf("127.0.0.1:%d", port), nil, &net.Dialer{Timeout: timeout})
 	cd, _ := dialer.(proxy.ContextDialer)
-	client := &http.Client{
+	return &http.Client{
 		Timeout: timeout,
 		Transport: &http.Transport{
 			DialContext:           cd.DialContext,
@@ -272,7 +327,6 @@ func echoThrough(port int, timeout time.Duration) (string, error) {
 			DisableKeepAlives:     true,
 		},
 	}
-	return echoWith(client)
 }
 
 func echoDirect(timeout time.Duration) (string, error) {
