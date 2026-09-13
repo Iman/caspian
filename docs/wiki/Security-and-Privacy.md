@@ -351,7 +351,7 @@ buy an adapter for is proven against bytes nobody measured.
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
-[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 

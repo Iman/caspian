@@ -88,7 +88,7 @@ Caspian
 <!-- SNI upstream credits -->
 
 SNI سپوفنگ کریڈٹ: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، WinDivert (LGPL-3.0) کے ساتھ Windows x64 پر۔
-[فریق ثالث کے لائسنس، سورس ورژنز، اور کریڈٹس](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)
+[فریق ثالث کے لائسنس، سورس ورژنز، اور کریڈٹس](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)
 
 <a id="sni-idea-acknowledgements"></a>
 ## SNI خیال کے اعترافات
@@ -115,4 +115,4 @@ Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://g
 </div>
 
 
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 6a5d08d8e259a405c11fa59447c1c3afa36a008c8eef3b0eac748f3d5ea7afac -->

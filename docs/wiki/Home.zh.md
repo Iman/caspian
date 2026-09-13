@@ -45,20 +45,20 @@
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
-[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
+[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)。
 
 <a id="sni-spoofing-for-dpi-circumvention"></a>
-## 用于规避 DPI 的 SNI 欺骗
+## 反 DPI：SNI 欺骗与 TLS 分片
 
-Caspian 的 `feature/sni` 分支向自带配置的 WiFi 网关添加了可选的 SNI 欺骗功能。
-深度数据包检测 (DPI) 检查网络流量以对连接进行分类或过滤。
-此模式在真实代理流之前发送诱饵 TLS ClientHello，同时保留真实 TLS 或 REALITY 服务器名称和证书检查。
-它通过受支持的 IPv4 TCP 传输支持 VLESS、VMess 和 Trojan。
-它正在开发中，不在当前发布的安装程序中。
+深度包检测（DPI）是网络读取连接起始数据、决定是否阻断的手段。Caspian 提供三项可选的反 DPI（DPI 规避）控制，位于面板中已保存配置的旁边：
 
-DPI绕过取决于网络及其过滤规则； Caspian 不承诺无法检测或普遍“DPI 安全”。
-Windows 环回测试验证未更改的数据、真实的 TLS 握手以及拒绝不正确的证书名称。
-他们不会成功绕过互联网提供商。
+- **伪装服务器名。** Caspian 在真实代理流之前发送一个带有掩护域名的 TLS 问候。真实的 TLS 或 REALITY 服务器名和证书校验保持原样。
+- **TCP 分片。** 首个 TLS 问候分两次写出，分割点在服务器名的中间附近。
+- **TLS 记录分片。** 问候记录在同一位置被拆分，握手内容不变。
+
+三项控制彼此独立，可以组合使用。保存后，正在运行的隧道会用新设置重新连接。它们适用于通过受支持的 IPv4 TCP 传输的 VLESS、VMess 和 Trojan；两种分片需要普通 TLS。
+
+DPI 规避取决于网络及其过滤规则。Caspian 不承诺无法被检测，也不保证绕过所有 DPI。环回测试验证数据未被改动、真实的 TLS 握手以及对错误证书名的拒绝；它们不能证明可以绕过运营商。
 请参见 [SNI 设置、支持的平台和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) 和 [上游研究和学分](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh)。
 
 [英文 SNI 指南](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [英语学分](https://github.com/Iman/caspian/wiki/Third-Party-Credits.zh) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
@@ -71,4 +71,4 @@ Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/
 [许可证和学分](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
 
 
-<!-- English-source-sha256: a1d910a3448d0c31bcd8e22385760700c030cf93dc89e3308e4e359b018fc82a -->
+<!-- English-source-sha256: 2c9b1c5bd305af149322ad482c94b42f822cb075f17cd01bf6a27d34996f0b06 -->

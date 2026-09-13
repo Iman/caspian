@@ -9,7 +9,7 @@
 <a id="third-party-code-and-credits"></a>
 # فریق ثالث کوڈ اور کریڈٹس
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) Caspian کی منسلک لائبریریوں اور تقسیم کی فائلوں کی فہرست دیتا ہے۔
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) Caspian کی منسلک لائبریریوں اور تقسیم کی فائلوں کی فہرست دیتا ہے۔
 ہر اپ اسٹریم جزو اپنا لائسنس رکھتا ہے۔
 Caspian کی AGPL شرائط ان اپ اسٹریم نوٹسز کی جگہ نہیں لیتی ہیں۔
 
@@ -22,7 +22,7 @@ ClientHello ٹیمپلیٹ اور ہینڈ شیک الگورتھم `internal/sni
 Caspian کی تبدیلیوں میں گو انٹیگریشن، توثیق، کنکشن کی ملکیت، وسائل کی حدود، رول بیک اور ٹیسٹ شامل ہیں۔
 
 اخذ کردہ سورس فائلز GPL-3.0-only نوٹسز کو برقرار رکھتی ہیں۔
-مکمل [اپ اسٹریم GPL لائسنس](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) اور [اعترافِ خدمات](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) ریپوزٹری میں باقی ہیں۔
+مکمل [اپ اسٹریم GPL لائسنس](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) اور [اعترافِ خدمات](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) ریپوزٹری میں باقی ہیں۔
 GPLv3 سیکشن 13 AGPLv3 کوڈ کے ساتھ امتزاج کی اجازت دیتا ہے جبکہ ہر حصہ اپنی شرائط کو برقرار رکھتا ہے۔
 تقسیم کاروں کو قابل اطلاق لائسنس کے تحت نوٹس کو محفوظ کرنا، تبدیلیوں کو نشان زد کرنا اور متعلقہ ذریعہ فراہم کرنا چاہیے۔
 کریڈٹ کا مطلب اپ اسٹریم مصنفین کی توثیق نہیں ہے۔
@@ -30,7 +30,7 @@ GPLv3 سیکشن 13 AGPLv3 کوڈ کے ساتھ امتزاج کی اجازت د�
 Windows x64 استعمال کرتا ہے **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** بذریعہ Basil (basil00) اور شراکت دار۔
 Caspian اپنے دوہری لائسنس سے LGPL-3.0 کو منتخب کرتا ہے۔
 انسٹالر میں غیر ترمیم شدہ ڈرائیور اور DLL، مکمل لائسنس بنڈل، انتساب، اور v2.2.2 کے لیے سورس آرکائیو شامل ہے۔
-[WinDivert تقسیم کی تفصیلات](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md) دیکھیں۔
+[WinDivert تقسیم کی تفصیلات](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md) دیکھیں۔
 Windows ARM64 میں WinDivert شامل نہیں ہے اور یہ SNI خصوصیت استعمال نہیں کر سکتا۔
 
 <a id="ideas-and-acknowledgements"></a>
@@ -51,9 +51,9 @@ Caspian ان منصوبوں کے مصنفین اور تعاون کنندگان �
 <a id="other-distributed-components"></a>
 ## دیگر تقسیم شدہ اجزاء
 
-[شیئر لنک پارسر](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) نے اپنا MIT لائسنس برقرار رکھا ہے۔
+[شیئر لنک پارسر](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) نے اپنا MIT لائسنس برقرار رکھا ہے۔
 ونڈوز انسٹالرز میں آفیشل ونٹن بائنریز اور خود ساختہ .NET مددگار بھی ہوتے ہیں۔
-ان کے نوٹسز [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) کے تحت رہتے ہیں اور درخواست کے ساتھ نصب ہیں۔
+ان کے نوٹسز [third_party](https://github.com/Iman/caspian/blob/main/third_party) کے تحت رہتے ہیں اور درخواست کے ساتھ نصب ہیں۔
 گو ونٹن بائنڈنگ ایک MIT ونڈوز پر رن ٹائم انحصار ہے۔
 
 <!-- Caspian guide navigation -->
@@ -63,4 +63,4 @@ Caspian گائیڈز: [سیٹ اپ اور معاون پروٹوکول](https://g
 </div>
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->

@@ -47,20 +47,20 @@
 <!-- SNI upstream credits -->
 
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
-[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="sni-spoofing-for-dpi-circumvention"></a>
-## انتحال SNI للتحايل على DPI
+## مضاد DPI: انتحال SNI وتقسيم TLS
 
-يضيف فرع `feature/sni` الخاص بـ Caspian انتحال SNI اختياريًا إلى بوابة WiFi الخاصة بك.
-يقوم الفحص العميق للحزم (DPI) بفحص حركة مرور الشبكة لتصنيف الاتصالات أو تصفيتها.
-يرسل هذا الوضع خدعة TLS ClientHello قبل دفق الوكيل الحقيقي، مع الحفاظ على اسم خادم TLS أو REALITY الحقيقي وعمليات التحقق من الشهادة.
-وهو يدعم VLESS وVMess وTrojan عبر عمليات نقل IPv4 TCP المدعومة.
-إنه قيد التطوير وليس في برنامج التثبيت الذي تم إصداره حاليًا.
+الفحص العميق للحزم (DPI) هو الطريقة التي تقرأ بها الشبكة بداية الاتصال لتقرر حجبه أو تركه. يوفر Caspian ثلاثة ضوابط اختيارية مضادة لـ DPI (تجاوز DPI) في اللوحة بجانب التكوين المحفوظ:
 
-يعتمد تجاوز DPI على الشبكة وقواعد التصفية الخاصة بها؛ لا يعد Caspian بأنه غير قابل للاكتشاف أو "آمن DPI" عالميًا.
-تتحقق اختبارات الاسترجاع لنظام التشغيل Windows من البيانات التي لم تتغير، ومصافحة TLS الحقيقية، ورفض اسم الشهادة غير الصحيح.
-إنهم لا يثبتون نجاح التجاوز ضد مزود الإنترنت.
+- **اسم خادم مزيف.** يرسل Caspian تحية TLS تحمل اسم نطاق للتغطية قبل دفق الوكيل الحقيقي. يبقى اسم خادم TLS أو REALITY الحقيقي والتحقق من الشهادة كما هما تمامًا.
+- **تقسيم TCP.** تخرج تحية TLS الأولى في كتابتين، مقسومتين قرب منتصف اسم الخادم.
+- **تقسيم سجل TLS.** يُقسم سجل التحية عند النقطة نفسها دون تغيير محتوى المصافحة.
+
+كل ضابط مستقل ويمكن جمعه مع غيره. الحفظ يعيد وصل النفق العامل بالإعدادات الجديدة. تعمل الضوابط مع VLESS وVMess وTrojan عبر نقل IPv4 TCP المدعوم، ويحتاج التقسيمان إلى TLS عادي.
+
+يعتمد تجاوز DPI على الشبكة وقواعد التصفية فيها. لا يعد Caspian بأنه غير قابل للاكتشاف أو "آمن من DPI" في كل مكان. تتحقق اختبارات الحلقة المحلية من بقاء البيانات دون تغيير، ومن مصافحة TLS حقيقية، ومن رفض اسم شهادة خاطئ؛ ولا تثبت تجاوز مزود الإنترنت.
 انظر [إعداد SNI والأنظمة الأساسية المدعومة والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) و[البحوث الأولية والاعتمادات](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar).
 
 [دليل SNI باللغة الإنجليزية](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [الاعتمادات الإنجليزية](https://github.com/Iman/caspian/wiki/Third-Party-Credits.ar) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
@@ -75,4 +75,4 @@
 </div>
 
 
-<!-- English-source-sha256: a1d910a3448d0c31bcd8e22385760700c030cf93dc89e3308e4e359b018fc82a -->
+<!-- English-source-sha256: 2c9b1c5bd305af149322ad482c94b42f822cb075f17cd01bf6a27d34996f0b06 -->

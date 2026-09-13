@@ -86,7 +86,7 @@ kendi lisans dosyasından ve uyumluluk gerekçesinden.
 <!-- SNI upstream credits -->
 
 SNI kimlik sahtekarlığı kredileri: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), Windows x64'te WinDivert (LGPL-3.0) ile.
-[Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="sni-idea-acknowledgements"></a>
 ## SNI fikir teşekkürleri
@@ -111,4 +111,4 @@ Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/I
 [WinDivert — Fesleğen (fesleğen00)](https://github.com/basil00/WinDivert/tree/v2.2.2): Windows x64, LGPL-3.0.
 
 
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 6a5d08d8e259a405c11fa59447c1c3afa36a008c8eef3b0eac748f3d5ea7afac -->

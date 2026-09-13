@@ -448,11 +448,11 @@ bash 脚本/gate.sh
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
-[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
+[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)。
 
 <!-- Caspian guide navigation -->
 
 Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
 
-<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->
+<!-- English-source-sha256: c2e3cf2c15822dd24d4ad8935128a8cd77b53ea25f5d72dddf4d14a1633d04d2 -->

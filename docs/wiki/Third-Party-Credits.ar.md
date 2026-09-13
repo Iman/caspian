@@ -9,7 +9,7 @@
 <a id="third-party-code-and-credits"></a>
 # رمز الطرف الثالث والائتمانات
 
-يسرد [NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) مكتبات Caspian المرتبطة وملفات التوزيع.
+يسرد [NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) مكتبات Caspian المرتبطة وملفات التوزيع.
 يحتفظ كل مكون من مكونات المنبع بترخيصه الخاص.
 لا تحل شروط AGPL الخاصة بـ Caspian محل تلك الإشعارات الأولية.
 
@@ -22,7 +22,7 @@
 تضيف تغييرات Caspian تكامل Go والتحقق من الصحة وملكية الاتصال وحدود الموارد والتراجع والاختبارات.
 
 تحتفظ الملفات المصدر المشتقة بإشعارات GPL-3.0-only.
-يظل [ترخيص GPL المنبع](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) و[نسبة العمل إلى أصحابه](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) كاملين في المستودع.
+يظل [ترخيص GPL المنبع](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) و[نسبة العمل إلى أصحابه](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) كاملين في المستودع.
 يسمح القسم 13 من GPLv3 بالدمج مع كود AGPLv3 بينما يحتفظ كل جزء بشروطه الخاصة.
 يجب على الموزعين الحفاظ على الإشعارات ووضع علامة على التغييرات وتوفير المصدر المقابل بموجب التراخيص المعمول بها.
 الائتمان لا يعني موافقة المؤلفين المنبع.
@@ -30,7 +30,7 @@
 يستخدم Windows x64 **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** بواسطة Basil (basil00) والمساهمين.
 يختار Caspian LGPL-3.0 من رخصته المزدوجة.
 يحتوي برنامج التثبيت على برنامج التشغيل غير المعدل وDLL وحزمة الترخيص الكاملة والإسناد وأرشيف المصدر للإصدار 2.2.2.
-انظر [تفاصيل توزيع WinDivert](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md).
+انظر [تفاصيل توزيع WinDivert](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md).
 لا يتضمن Windows ARM64 WinDivert ولا يمكنه استخدام ميزة SNI هذه.
 
 <a id="ideas-and-acknowledgements"></a>
@@ -51,9 +51,9 @@
 <a id="other-distributed-components"></a>
 ## المكونات الموزعة الأخرى
 
-يحتفظ [محلل ارتباط المشاركة](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) بترخيص MIT الخاص به.
+يحتفظ [محلل ارتباط المشاركة](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) بترخيص MIT الخاص به.
 تحتوي مثبتات Windows أيضًا على ثنائيات Wintun الرسمية ومساعدي .NET المستقلين.
-تظل إشعاراتهم ضمن [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) ويتم تثبيتها بجانب التطبيق.
+تظل إشعاراتهم ضمن [third_party](https://github.com/Iman/caspian/blob/main/third_party) ويتم تثبيتها بجانب التطبيق.
 يعد ربط Go Wintun أحد تبعيات وقت التشغيل MIT على Windows.
 
 <!-- Caspian guide navigation -->
@@ -63,4 +63,4 @@
 </div>
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->

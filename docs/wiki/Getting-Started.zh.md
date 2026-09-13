@@ -92,11 +92,11 @@ WiFi.** `brcmfmac` 驱动程序拒绝 `iw phy phy0 interface add ap0 type __ap`
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
-[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
+[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)。
 
 <!-- Caspian guide navigation -->
 
 Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
 
-<!-- English-source-sha256: 629d6e2b6255b16d3bc76228a7aec238747c2de1af4bc20e44050dafefa13075 -->
+<!-- English-source-sha256: 1ab0e565056a61b09e4151ee4fcdb5fe44486f3ce99d3893135d7b5312112e40 -->

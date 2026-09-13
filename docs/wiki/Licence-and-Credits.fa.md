@@ -88,7 +88,7 @@ xray-core، و تجزیه کننده اشتراک لینک XTLS است. هیچک
 <!-- SNI upstream credits -->
 
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
-[مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="sni-idea-acknowledgements"></a>
 ## قدردانی ایده SNI
@@ -115,4 +115,4 @@ xray-core، و تجزیه کننده اشتراک لینک XTLS است. هیچک
 </div>
 
 
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 6a5d08d8e259a405c11fa59447c1c3afa36a008c8eef3b0eac748f3d5ea7afac -->

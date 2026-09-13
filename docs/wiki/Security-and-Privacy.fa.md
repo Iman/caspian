@@ -374,7 +374,7 @@ TUN ورودی موتور نشان داده نشده است که IPv6 را رو�
 <!-- SNI upstream credits -->
 
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
-[مجوزهای شخص ثالث، نسخه های منبع و اعتبارات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[مجوزهای شخص ثالث، نسخه های منبع و اعتبارات](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
@@ -383,4 +383,4 @@ TUN ورودی موتور نشان داده نشده است که IPv6 را رو�
 </div>
 
 
-<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
+<!-- English-source-sha256: cec3c304baae70d78d55833d249b11d8b1e3244db09a2b19b771a5f28b48f892 -->

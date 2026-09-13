@@ -88,7 +88,7 @@ xray-core، ومحلل ارتباط المشاركة هو XTLS. ولا يؤيد 
 <!-- SNI upstream credits -->
 
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
-[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="sni-idea-acknowledgements"></a>
 ## اعترافات فكرة SNI
@@ -115,4 +115,4 @@ xray-core، ومحلل ارتباط المشاركة هو XTLS. ولا يؤيد 
 </div>
 
 
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 6a5d08d8e259a405c11fa59447c1c3afa36a008c8eef3b0eac748f3d5ea7afac -->

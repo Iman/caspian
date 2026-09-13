@@ -45,20 +45,20 @@ Tüm wiki konularının İngilizce, Farsça, Rusça, Basitleştirilmiş Çince, 
 <!-- SNI upstream credits -->
 
 SNI kimlik sahtekarlığı kredileri: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), Windows x64'te WinDivert (LGPL-3.0) ile.
-[Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[Üçüncü taraf lisanslar, kaynak sürümleri ve krediler](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="sni-spoofing-for-dpi-circumvention"></a>
-## DPI'yı aşmak için SNI sahtekarlığı
+## Anti-DPI: SNI sahteciliği ve TLS bölme
 
-Caspian'ın `feature/sni` şubesi, kendi yapılandırmanızı getir WiFi ağ geçidine isteğe bağlı SNI sahtekarlığı ekler.
-Derin paket incelemesi (DPI), bağlantıları sınıflandırmak veya filtrelemek için ağ trafiğini inceler.
-Bu mod, gerçek TLS veya REALITY sunucu adını ve sertifika kontrollerini korurken, gerçek proxy akışından önce sahte bir TLS ClientHello gönderir.
-Desteklenen IPv4 TCP aktarımları üzerinden VLESS, VMess ve Trojan'yi destekler.
-Geliştirme aşamasındadır ve şu anda yayımlanan yükleyicide yer almamaktadır.
+Derin paket incelemesi (DPI), bir ağın bağlantının başını okuyup engelleyip engellemeyeceğine karar verme yoludur. Caspian, panelde kayıtlı yapılandırmanın yanında üç isteğe bağlı anti-DPI (DPI atlatma) denetimi sunar:
 
-DPI bypass'ı ağa ve onun filtreleme kurallarına bağlıdır; Caspian, tespit edilemez veya evrensel olarak "DPI açısından güvenli" olma sözünü vermez.
-Windows geridöngü testleri, değişmeyen verileri, gerçek bir TLS anlaşmasını ve yanlış bir sertifika adının reddedilmesini doğrular.
-Bir internet sağlayıcısına karşı bypass başarısı sağlamazlar.
+- **Sahte sunucu adı.** Caspian, gerçek proxy akışından önce bir örtü alan adını taşıyan bir TLS karşılaması gönderir. Gerçek TLS veya REALITY sunucu adı ve sertifika denetimleri olduğu gibi kalır.
+- **TCP bölme.** İlk TLS karşılaması, sunucu adının ortasına yakın bir yerden bölünmüş iki yazmayla gider.
+- **TLS kayıt bölme.** Karşılama kaydı aynı noktada, el sıkışmanın içeriği değişmeden bölünür.
+
+Her denetim bağımsızdır ve diğerleriyle birleştirilebilir. Kaydetmek, çalışan tüneli yeni ayarlarla yeniden bağlar. Denetimler desteklenen IPv4 TCP taşımaları üzerinden VLESS, VMess ve Trojan ile çalışır; iki bölme de düz TLS gerektirir.
+
+DPI atlatma ağa ve filtreleme kurallarına bağlıdır. Caspian tespit edilemez olmayı veya her yerde "DPI'ya karşı güvenli" olmayı vaat etmez. Geri döngü testleri verinin değişmediğini, gerçek bir TLS el sıkışmasını ve yanlış bir sertifika adının reddini doğrular; bir internet sağlayıcısına karşı atlatmayı kanıtlamaz.
 Bkz. [SNI kurulumu, desteklenen platformlar ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) ve [yukarı yönlü araştırma ve krediler](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr).
 
 [İngilizce SNI kılavuzu](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [İngilizce kredisi](https://github.com/Iman/caspian/wiki/Third-Party-Credits.tr) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
@@ -71,4 +71,4 @@ Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/I
 [Lisanslar ve krediler](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr)
 
 
-<!-- English-source-sha256: a1d910a3448d0c31bcd8e22385760700c030cf93dc89e3308e4e359b018fc82a -->
+<!-- English-source-sha256: 2c9b1c5bd305af149322ad482c94b42f822cb075f17cd01bf6a27d34996f0b06 -->

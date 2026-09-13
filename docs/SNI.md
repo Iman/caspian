@@ -2,7 +2,7 @@
 
 # Caspian SNI spoofing and TLS splitting for DPI circumvention
 
-This guide covers optional deep packet inspection (DPI) circumvention in `feature/sni`, not the current released installer.
+This guide covers Caspian's optional anti-DPI (DPI circumvention) controls: a decoy server name, a TCP split and a TLS-record split.
 
 SNI is the server name in a TLS greeting.
 This feature sends an extra greeting with a spoof name before the real proxy stream.
@@ -12,7 +12,7 @@ An imported `sni` value does not automatically enable spoofing.
 ## Set a spoof name
 
 1. Save your proxy config in the panel.
-2. Open **DPI circumvention (optional)** on the dashboard.
+2. Open **Anti-DPI (DPI circumvention)** on the dashboard.
 3. Enter a domain name, such as `cover.example.invalid` for a local test.
 4. Save the setting.
 
@@ -22,9 +22,13 @@ To disable spoofing, clear the field and save it.
 Replacing the config clears the spoof name and both split settings.
 Selecting another entry or refreshing a subscription preserves it.
 
+## See what is active
+
+On the dashboard, the section heading reads "Anti-DPI (DPI circumvention): on" while a decoy name or a split is saved, and ": off" otherwise. While the box is connected, one line under the status lists what is in force: the decoy name, TCP split, TLS-record split. The line is absent when nothing is on, and when the box is off.
+
 ## Independent TCP split and TLS-record split
 
-Open **DPI circumvention (optional)** beside your saved config:
+Open **Anti-DPI (DPI circumvention)** beside your saved config:
 
 - **Fake server name**: leave blank to turn fake SNI off.
 - **TCP split**: send the initial TLS greeting in two writes near the middle of the SNI hostname.
@@ -81,7 +85,7 @@ See [third-party credits](THIRD-PARTY.md).
 
 There is no universal DPI-safe guarantee. Optional SNI spoofing attempts to influence how a filtering system reads the initial TCP traffic.
 It does not hide the server IP, traffic volume, or timing, and a provider can still block the connection.
-The `feature/sni` implementation keeps the real TLS identity and rejects failed spoof confirmation instead of sending the real stream directly.
+Caspian keeps the real TLS identity and rejects a failed spoof confirmation instead of sending the real stream directly.
 
 ### Does Caspian include GoodbyeDPI or zapret?
 

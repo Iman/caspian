@@ -94,7 +94,7 @@ Windows SDK 参考包是构建输入，不随
 <!-- SNI upstream credits -->
 
 SNI 欺骗来源：[patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)，以及 Windows x64 上的 WinDivert (LGPL-3.0)。
-[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
+[第三方许可证、源版本和积分](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)。
 
 <a id="sni-idea-acknowledgements"></a>
 ## SNI 想法致谢
@@ -119,4 +119,4 @@ Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/
 [WinDivert — 巴兹尔 (basil00)](https://github.com/basil00/WinDivert/tree/v2.2.2)：Windows x64、LGPL-3.0。
 
 
-<!-- English-source-sha256: 55e2110d5bfd7485670033a177167abbb056f030356d7a78eb46204807b5452e -->
+<!-- English-source-sha256: 6a5d08d8e259a405c11fa59447c1c3afa36a008c8eef3b0eac748f3d5ea7afac -->

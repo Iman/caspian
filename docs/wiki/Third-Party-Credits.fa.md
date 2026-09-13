@@ -9,7 +9,7 @@
 <a id="third-party-code-and-credits"></a>
 # کد و اعتبار شخص ثالث
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) کتابخانه های مرتبط و فایل های توزیع کاسپین را فهرست می کند.
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) کتابخانه های مرتبط و فایل های توزیع کاسپین را فهرست می کند.
 هر جزء بالادستی مجوز خود را حفظ می کند.
 شرایط AGPL کاسپین جایگزین آن اطلاعیه های بالادستی نمی شود.
 
@@ -22,7 +22,7 @@
 تغییرات کاسپین یکپارچه سازی Go، اعتبار سنجی، مالکیت اتصال، محدودیت منابع، بازگشت مجدد و آزمایشات را اضافه می کند.
 
 فایل های منبع مشتق شده، یادداشت های GPL-3.0-only را حفظ می کنند.
-[مجوز GPL بالادست](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) و [انتساب](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) کامل در مخزن باقی می مانند.
+[مجوز GPL بالادست](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) و [انتساب](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) کامل در مخزن باقی می مانند.
 بخش 13 GPLv3 اجازه ترکیب با کد AGPLv3 را می دهد در حالی که هر قسمت شرایط خاص خود را حفظ می کند.
 توزیع کنندگان باید اعلامیه ها را حفظ کنند، تغییرات را علامت گذاری کنند، و منبع مربوطه را تحت مجوزهای مربوطه ارائه دهند.
 اعتبار به معنای تایید توسط نویسندگان بالادستی نیست.
@@ -30,7 +30,7 @@
 Windows x64 از **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** توسط Basil (basil00) و مشارکت کنندگان استفاده می کند.
 کاسپین LGPL-3.0 را از لایسنس دوگانه خود انتخاب می کند.
 نصب کننده شامل درایور اصلاح نشده و DLL، بسته مجوز کامل، منبع، و آرشیو منبع نسخه 2.2.2 است.
-[جزئیات توزیع WinDivert](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md) را ببینید.
+[جزئیات توزیع WinDivert](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md) را ببینید.
 ویندوز ARM64 شامل WinDivert نیست و نمی تواند از این ویژگی SNI استفاده کند.
 
 <a id="ideas-and-acknowledgements"></a>
@@ -51,9 +51,9 @@ Windows x64 از **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)
 <a id="other-distributed-components"></a>
 ## سایر اجزای توزیع شده
 
-[تجزیه کننده پیوند اشتراک گذاری](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) مجوز MIT خود را حفظ می کند.
+[تجزیه کننده پیوند اشتراک گذاری](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) مجوز MIT خود را حفظ می کند.
 نصب‌کننده‌های ویندوز همچنین حاوی باینری‌های رسمی Wintun و کمک‌کننده‌های دات‌نت مستقل هستند.
-اعلامیه های آنها تحت [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) باقی می ماند و در کنار برنامه نصب می شود.
+اعلامیه های آنها تحت [third_party](https://github.com/Iman/caspian/blob/main/third_party) باقی می ماند و در کنار برنامه نصب می شود.
 اتصال Go Wintun یک وابستگی زمان اجرا MIT به ویندوز است.
 
 <!-- Caspian guide navigation -->
@@ -63,4 +63,4 @@ Windows x64 از **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)
 </div>
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->

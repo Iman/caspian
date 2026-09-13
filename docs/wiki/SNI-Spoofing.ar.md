@@ -9,7 +9,7 @@
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # خداع Caspian SNI وتقسيم TLS للتحايل على DPI
 
-يغطي هذا الدليل التحايل على فحص الحزم العميق الاختياري (DPI) في `feature/sni`، وليس المثبت الذي تم إصداره حاليًا.
+يغطي هذا الدليل ضوابط Caspian الاختيارية المضادة لـ DPI (تجاوز DPI): اسم خادم مزيف، وتقسيم TCP، وتقسيم سجل TLS.
 
 SNI هو اسم الخادم في تحية TLS.
 ترسل هذه الميزة تحية إضافية باسم مزيف قبل دفق الوكيل الحقيقي.
@@ -20,7 +20,7 @@ SNI هو اسم الخادم في تحية TLS.
 ## تعيين اسم محاكاة ساخرة
 
 1. احفظ تكوين الوكيل الخاص بك في اللوحة.
-2. افتح **تحايل DPI (اختياري)** على لوحة القيادة.
+2. افتح **مضاد DPI (تجاوز DPI)** على لوحة القيادة.
 3. أدخل اسم المجال، مثل `cover.example.invalid` للاختبار المحلي.
 4. احفظ الإعداد.
 
@@ -31,9 +31,13 @@ SNI هو اسم الخادم في تحية TLS.
 يؤدي تحديد إدخال آخر أو تحديث الاشتراك إلى الحفاظ عليه.
 
 <a id="independent-tcp-split-and-tls-record-split"></a>
+## معرفة ما هو مفعّل
+
+في لوحة التحكم، يظهر عنوان القسم «مضاد DPI (تجاوز DPI): مفعّل» ما دام اسم مزيف أو أحد التقسيمات محفوظًا، و«: معطّل» في غير ذلك. وأثناء اتصال الجهاز، يعرض سطر تحت الحالة ما هو ساري: الاسم المزيف، تقسيم TCP، تقسيم سجل TLS. يختفي السطر عندما لا يكون شيء مفعّلًا أو عندما يكون الجهاز متوقفًا.
+
 ## تقسيم TCP مستقل وتقسيم سجل TLS
 
-افتح **تحايل DPI (اختياري)** بجانب التكوين المحفوظ:
+افتح **مضاد DPI (تجاوز DPI)** بجانب التكوين المحفوظ:
 
 - **اسم الخادم المزيف**: اتركه فارغًا لإيقاف تشغيل SNI المزيف.
 - **تقسيم TCP**: أرسل تحية TLS الأولية في كتابتين بالقرب من منتصف اسم مضيف SNI.
@@ -85,7 +89,7 @@ SNI هو اسم الخادم في تحية TLS.
 ## الاعتمادات
 
 المصدر والفكرة الأساسية هي [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)، المرخصة بموجب GPL-3.0.
-انظر [اعتمادات طرف ثالث](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+انظر [اعتمادات طرف ثالث](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="dpi-bypass-sni-spoofing-and-security"></a>
 ## تجاوز DPI وانتحال SNI والأمن
@@ -95,7 +99,7 @@ SNI هو اسم الخادم في تحية TLS.
 
 لا يوجد ضمان عالمي آمن لـ DPI. يحاول انتحال SNI الاختياري التأثير على كيفية قراءة نظام التصفية لحركة مرور TCP الأولية.
 ولا يخفي عنوان IP للخادم أو حجم حركة المرور أو التوقيت، ولا يزال بإمكان المزود حظر الاتصال.
-يحتفظ تطبيق `feature/sni` بهوية TLS الحقيقية ويرفض تأكيد المحاكاة الساخرة الفاشلة بدلاً من إرسال الدفق الحقيقي مباشرةً.
+يحتفظ Caspian بهوية TLS الحقيقية ويرفض تأكيد الانتحال الفاشل بدلاً من إرسال الدفق الحقيقي مباشرةً.
 
 <a id="does-caspian-include-goodbyedpi-or-zapret"></a>
 ### هل يتضمن Caspian GoodbyeDPI أو zapret؟
@@ -129,11 +133,11 @@ SNI هو اسم الخادم في تحية TLS.
 
 <!-- Caspian guide navigation -->
 
-أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
+أدلة Caspian: [الإعداد والبروتوكولات المدعومة](https://github.com/Iman/caspian/blob/main/README.md) · [انتحال SNI للتحايل على DPI: الإعداد والحدود](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ar).
 
-[نتائج التحقق من الصحة واختبارات الأجهزة المتبقية](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
+[نتائج التحقق من الصحة واختبارات الأجهزة المتبقية](https://github.com/Iman/caspian/blob/main/docs/SNI-VALIDATION.md).
 
 </div>
 
 
-<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->
+<!-- English-source-sha256: 8ddde3d5a9a5e63e4f3b78c8f24e55d50cdf6eb394d2eb1837a83d528df7e41c -->

@@ -7,7 +7,7 @@
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # Caspian SNI 欺骗和 TLS 分裂以规避 DPI
 
-本指南涵盖了 `feature/sni` 中可选的深度数据包检测 (DPI) 规避，而不是当前发布的安装程序。
+本指南介绍 Caspian 可选的反 DPI（DPI 规避）控制：伪装服务器名、TCP 分片和 TLS 记录分片。
 
 SNI 是 TLS 问候语中的服务器名称。
 此功能会在真正的代理流之前发送带有欺骗名称的额外问候语。
@@ -18,7 +18,7 @@ SNI 是 TLS 问候语中的服务器名称。
 ## 设置一个恶搞名称
 
 1. 在面板中保存您的代理配置。
-2. 在仪表板上打开 **DPI 规避（可选）**。
+2. 在仪表板上打开 **反 DPI（DPI 规避）**。
 3. 输入域名，例如本地测试的`cover.example.invalid`。
 4. 保存设置。
 
@@ -29,9 +29,13 @@ SNI 是 TLS 问候语中的服务器名称。
 选择另一个条目或刷新订阅会保留它。
 
 <a id="independent-tcp-split-and-tls-record-split"></a>
+## 查看当前启用项
+
+在控制面板上，只要保存了伪装名或任一分片，该区块标题会显示"反 DPI（DPI 规避）：开"，否则显示"：关"。设备已连接时，状态下方的一行会列出正在生效的项：伪装名、TCP 分片、TLS 记录分片。没有任何启用项或设备关闭时，该行不显示。
+
 ## 独立的 TCP 分割和 TLS 记录分割
 
-在保存的配置旁边打开 **DPI 规避（可选）**：
+在保存的配置旁边打开 **反 DPI（DPI 规避）**：
 
 - **假服务器名称**：留空以关闭假 SNI。
 - **TCP 分割**：在 SNI 主机名中间附近的两次写入中发送初始 TLS 问候语。
@@ -83,7 +87,7 @@ Linux 和 macOS 版本还需要在其目标系统上进行实时数据包测试�
 ## 制作人员
 
 主要来源和想法是 [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)，已获得 GPL-3.0 许可。
-参见 [第三方信用](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md)。
+参见 [第三方信用](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md)。
 
 <a id="dpi-bypass-sni-spoofing-and-security"></a>
 ## DPI 绕过、SNI 欺骗和安全
@@ -93,7 +97,7 @@ Linux 和 macOS 版本还需要在其目标系统上进行实时数据包测试�
 
 不存在通用的 DPI 安全保证。可选的 SNI 欺骗尝试影响过滤系统读取初始 TCP 流量的方式。
 它不会隐藏服务器 IP、流量或时间，并且提供商仍然可以阻止连接。
-`feature/sni` 实现保留真实的 TLS 身份并拒绝失败的欺骗确认，而不是直接发送真实流。
+Caspian 保留真实的 TLS 身份，并在欺骗确认失败时拒绝连接，而不是直接发送真实流。
 
 <a id="does-caspian-include-goodbyedpi-or-zapret"></a>
 ### Caspian 是否包含 GoodbyeDPI 或 zapret？
@@ -127,9 +131,9 @@ Caspian 还感谢这些项目的作者和贡献者的想法和实施比较，这
 
 <!-- Caspian guide navigation -->
 
-Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/blob/feature/sni/README.md)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
+Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/blob/main/README.md)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
-[验证结果和剩余硬件测试](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)。
+[验证结果和剩余硬件测试](https://github.com/Iman/caspian/blob/main/docs/SNI-VALIDATION.md)。
 
 
-<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->
+<!-- English-source-sha256: 8ddde3d5a9a5e63e4f3b78c8f24e55d50cdf6eb394d2eb1837a83d528df7e41c -->

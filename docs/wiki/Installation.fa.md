@@ -450,7 +450,7 @@ bash scripts/gate.sh
 <!-- SNI upstream credits -->
 
 اعتبارات جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، با WinDivert (LGPL-3.0) در Windows x64.
-[مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[مجوزهای شخص ثالث، نسخه های منبع، و اعتبار](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
@@ -459,4 +459,4 @@ bash scripts/gate.sh
 </div>
 
 
-<!-- English-source-sha256: b5ed00f600b06aa55c5250f3ac9465f05c5905e24ac9ae230aa23c100d6626c5 -->
+<!-- English-source-sha256: c2e3cf2c15822dd24d4ad8935128a8cd77b53ea25f5d72dddf4d14a1633d04d2 -->

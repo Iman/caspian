@@ -29,7 +29,7 @@ English, served from the box with no internet. `README.md` is the long form.
 
 There is no universal DPI-safe guarantee. Optional SNI spoofing attempts to influence how a filtering system reads the initial TCP traffic.
 It does not hide the server IP, traffic volume, or timing, and a provider can still block the connection.
-The `feature/sni` implementation keeps the real TLS identity and rejects failed spoof confirmation instead of sending the real stream directly.
+Caspian keeps the real TLS identity and rejects a failed spoof confirmation instead of sending the real stream directly.
 
 ### Does Caspian include GoodbyeDPI or zapret?
 

@@ -3,7 +3,7 @@
 [English](SNI-VALIDATION.md) · [فارسی](SNI-VALIDATION.fa.md) · [Русский](../README.ru.md) · [中文](../README.zh.md)
 
 Validated on 2026-09-09 on Windows 11 x64, build 22621, with Go 1.26.2.
-This record covers the optional DPI circumvention work on `feature/sni`.
+This record covers the optional DPI circumvention work, developed on the `feature/sni` branch and since merged into main.
 It does not certify Windows 10 hardware, Linux/macOS packet behavior, or bypass against an internet provider.
 
 ## Results

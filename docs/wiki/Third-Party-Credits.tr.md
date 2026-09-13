@@ -7,7 +7,7 @@
 <a id="third-party-code-and-credits"></a>
 # Üçüncü taraf kodu ve kredileri
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE), Caspian'ın bağlantılı kitaplıklarını ve dağıtım dosyalarını listeler.
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE), Caspian'ın bağlantılı kitaplıklarını ve dağıtım dosyalarını listeler.
 Her yukarı akış bileşeni kendi lisansını korur.
 Caspian'ın AGPL şartları bu yukarı yönlü bildirimlerin yerine geçmez.
 
@@ -20,7 +20,7 @@ ClientHello şablonu ve el sıkışma algoritması `internal/snispoof`'yi bilgil
 Caspian'daki değişiklikler arasında Go entegrasyonu, doğrulama, bağlantı sahipliği, kaynak sınırları, geri alma ve testler yer alıyor.
 
 Türetilmiş kaynak dosyaları GPL-3.0-only bildirimlerini korur.
-[yukarı akış GPL lisansı](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) ve [kaynak ve yazar bilgileri](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md)'nin tamamı depoda kalır.
+[yukarı akış GPL lisansı](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) ve [kaynak ve yazar bilgileri](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md)'nin tamamı depoda kalır.
 GPLv3 bölüm 13, her parça kendi koşullarını korurken AGPLv3 koduyla kombinasyona izin verir.
 Distribütörler, geçerli lisanslar kapsamında bildirimleri saklamalı, değişiklikleri işaretlemeli ve ilgili kaynağı sağlamalıdır.
 Kredi, yukarı yöndeki yazarların onayladığı anlamına gelmez.
@@ -28,7 +28,7 @@ Kredi, yukarı yöndeki yazarların onayladığı anlamına gelmez.
 Windows x64, Basil (basil00) ve katkıda bulunanların **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** ürününü kullanır.
 Caspian ikili lisansından LGPL-3.0'yi seçiyor.
 Yükleyici, v2.2.2 için değiştirilmemiş sürücüyü ve DLL'yi, tam lisans paketini, ilişkilendirmeyi ve kaynak arşivini içerir.
-Bkz. [WinDivert dağıtım ayrıntıları](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md).
+Bkz. [WinDivert dağıtım ayrıntıları](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md).
 Windows ARM64, WinDivert'i içermez ve bu SNI özelliğini kullanamaz.
 
 <a id="ideas-and-acknowledgements"></a>
@@ -49,9 +49,9 @@ Kodları ve yürütülebilir dosyaları paketlenmemiştir.
 <a id="other-distributed-components"></a>
 ## Diğer dağıtılmış bileşenler
 
-[paylaşım bağlantısı ayrıştırıcısı](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE), MIT lisansını korur.
+[paylaşım bağlantısı ayrıştırıcısı](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE), MIT lisansını korur.
 Windows yükleyicileri ayrıca resmi Wintun ikili dosyalarını ve bağımsız .NET yardımcılarını da içerir.
-Bildirimleri [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) altında kalır ve uygulamanın yanına yüklenir.
+Bildirimleri [third_party](https://github.com/Iman/caspian/blob/main/third_party) altında kalır ve uygulamanın yanına yüklenir.
 Go Wintun bağlaması, Windows'ta bir MIT çalışma zamanı bağımlılığıdır.
 
 <!-- Caspian guide navigation -->
@@ -59,4 +59,4 @@ Go Wintun bağlaması, Windows'ta bir MIT çalışma zamanı bağımlılığıd�
 Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->

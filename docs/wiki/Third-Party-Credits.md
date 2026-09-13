@@ -6,7 +6,7 @@
 
 # Third-party code and credits
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) lists Caspian's linked libraries and distribution files.
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) lists Caspian's linked libraries and distribution files.
 Each upstream component keeps its own license.
 Caspian's AGPL terms do not replace those upstream notices.
 
@@ -18,7 +18,7 @@ The ClientHello template and handshake algorithm inform `internal/snispoof`.
 Caspian's changes add Go integration, validation, connection ownership, resource limits, rollback, and tests.
 
 The derived source files retain GPL-3.0-only notices.
-The complete [upstream GPL license](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) and [attribution](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) remain in the repository.
+The complete [upstream GPL license](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) and [attribution](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) remain in the repository.
 GPLv3 section 13 permits combination with AGPLv3 code while each part retains its own terms.
 Distributors must preserve notices, mark changes, and provide corresponding source under the applicable licenses.
 Credit does not imply endorsement by the upstream authors.
@@ -26,7 +26,7 @@ Credit does not imply endorsement by the upstream authors.
 Windows x64 uses **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** by Basil (basil00) and contributors.
 Caspian selects LGPL-3.0 from its dual license.
 The installer contains the unmodified driver and DLL, complete license bundle, attribution, and source archive for v2.2.2.
-See [WinDivert distribution details](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md).
+See [WinDivert distribution details](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md).
 Windows ARM64 does not include WinDivert and cannot use this SNI feature.
 
 ## Ideas and acknowledgements
@@ -45,9 +45,9 @@ Their code and executables are not bundled.
 
 ## Other distributed components
 
-The [share-link parser](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) retains its MIT license.
+The [share-link parser](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) retains its MIT license.
 Windows installers also contain official Wintun binaries and self-contained .NET helpers.
-Their notices remain under [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) and are installed beside the application.
+Their notices remain under [third_party](https://github.com/Iman/caspian/blob/main/third_party) and are installed beside the application.
 The Go Wintun binding is an MIT runtime dependency on Windows.
 
 <!-- Caspian guide navigation -->

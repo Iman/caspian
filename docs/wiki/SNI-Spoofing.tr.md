@@ -7,7 +7,7 @@
 <a id="caspian-sni-spoofing-and-tls-splitting-for-dpi-circumvention"></a>
 # Caspian SNI sahtekarlığı ve DPI'yı atlatmak için TLS bölme
 
-Bu kılavuz, mevcut olarak yayımlanan yükleyiciyi değil, `feature/sni`'deki isteğe bağlı derin paket incelemesini (DPI) atlatmayı kapsar.
+Bu kılavuz Caspian'ın isteğe bağlı anti-DPI (DPI atlatma) denetimlerini anlatır: sahte sunucu adı, TCP bölme ve TLS kayıt bölme.
 
 SNI, TLS karşılamasındaki sunucu adıdır.
 Bu özellik, gerçek proxy akışından önce sahte bir adla ekstra bir karşılama mesajı gönderir.
@@ -18,7 +18,7 @@ Bu özellik, gerçek proxy akışından önce sahte bir adla ekstra bir karşıl
 ## Sahte bir ad belirleyin
 
 1. Proxy yapılandırmanızı panele kaydedin.
-2. Kontrol panelinde **DPI atlatmayı (isteğe bağlı)** açın.
+2. Kontrol panelinde **Anti-DPI (DPI atlatma)** açın.
 3. Yerel test için `cover.example.invalid` gibi bir alan adı girin.
 4. Ayarı kaydedin.
 
@@ -29,9 +29,13 @@ Yapılandırmanın değiştirilmesi sahte adı ve her iki bölünmüş ayarı te
 Başka bir giriş seçmek veya bir aboneliği yenilemek onu korur.
 
 <a id="independent-tcp-split-and-tls-record-split"></a>
+## Neyin etkin olduğunu görmek
+
+Panoda bölüm başlığı, sahte bir ad veya bölmelerden biri kayıtlıyken "Anti-DPI (DPI atlatma): açık", aksi halde ": kapalı" yazar. Cihaz bağlıyken durumun altındaki bir satır yürürlükte olanları listeler: sahte ad, TCP bölme, TLS kayıt bölme. Hiçbir şey açık değilken ve cihaz kapalıyken satır görünmez.
+
 ## Bağımsız TCP bölünmesi ve TLS kaydı bölünmesi
 
-Kayıtlı yapılandırmanızın yanında **DPI atlatmayı (isteğe bağlı)** açın:
+Kayıtlı yapılandırmanızın yanında **Anti-DPI (DPI atlatma)** açın:
 
 - **Sahte sunucu adı**: Sahte SNI'yi kapatmak için boş bırakın.
 - **TCP bölünmesi**: İlk TLS karşılamasını SNI ana bilgisayar adının ortasına yakın bir yerde iki yazma halinde gönderin.
@@ -83,7 +87,7 @@ Linux ve macOS sürümlerinin de hedef sistemlerinde canlı paket testlerine iht
 ## Kredi
 
 Birincil kaynak ve fikir, GPL-3.0 kapsamında lisanslanan [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing)'dir.
-Bkz. [üçüncü taraf kredileri](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+Bkz. [üçüncü taraf kredileri](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <a id="dpi-bypass-sni-spoofing-and-security"></a>
 ## DPI bypass, SNI sahtekarlığı ve güvenlik
@@ -93,7 +97,7 @@ Bkz. [üçüncü taraf kredileri](https://github.com/Iman/caspian/blob/feature/s
 
 Evrensel bir DPI güvenliği garantisi yoktur. İsteğe bağlı SNI sahtekarlığı, bir filtreleme sisteminin ilk TCP trafiğini nasıl okuyacağını etkilemeye çalışır.
 Sunucu IP'sini, trafik hacmini veya zamanlamasını gizlemez ve sağlayıcı bağlantıyı yine de engelleyebilir.
-`feature/sni` uygulaması gerçek TLS kimliğini korur ve gerçek akışı doğrudan göndermek yerine başarısız olan sahtekarlık onayını reddeder.
+Caspian gerçek TLS kimliğini korur ve başarısız bir sahtecilik onayında gerçek akışı doğrudan göndermek yerine bağlantıyı reddeder.
 
 <a id="does-caspian-include-goodbyedpi-or-zapret"></a>
 ### Caspian, GoodbyeDPI veya zapret'i içeriyor mu?
@@ -127,9 +131,9 @@ Fikir onayları, kodun kopyalanmasına izin vermez veya onaylandığı anlamına
 
 <!-- Caspian guide navigation -->
 
-Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/blob/feature/sni/README.md) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
+Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/blob/main/README.md) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
 
-[Doğrulama sonuçları ve kalan donanım testleri](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md).
+[Doğrulama sonuçları ve kalan donanım testleri](https://github.com/Iman/caspian/blob/main/docs/SNI-VALIDATION.md).
 
 
-<!-- English-source-sha256: 7f6b5b08bb4f9111dd2c9f7d959e5caf32e6878758e537e1b754ce52708f5bd9 -->
+<!-- English-source-sha256: 8ddde3d5a9a5e63e4f3b78c8f24e55d50cdf6eb394d2eb1837a83d528df7e41c -->

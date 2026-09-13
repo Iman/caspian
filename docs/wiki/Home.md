@@ -44,19 +44,19 @@ All wiki topics have editions in English, Persian, Russian, Simplified Chinese, 
 <!-- SNI upstream credits -->
 
 SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
-[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
-## SNI spoofing for DPI circumvention
+## Anti-DPI: SNI spoofing and TLS splitting
 
-Caspian's `feature/sni` branch adds optional SNI spoofing to a bring-your-own-config WiFi gateway.
-Deep packet inspection (DPI) examines network traffic to classify or filter connections.
-This mode sends a decoy TLS ClientHello before the real proxy stream, while preserving the real TLS or REALITY server name and certificate checks.
-It supports VLESS, VMess, and Trojan over supported IPv4 TCP transports.
-It is under development and is not in the current released installer.
+Deep packet inspection (DPI) is how a network reads the start of a connection to decide whether to block it. Caspian carries three optional anti-DPI (DPI circumvention) controls, in the panel beside the saved config:
 
-DPI bypass depends on the network and its filtering rules; Caspian does not promise to be undetectable or universally “DPI safe”.
-The Windows loopback tests verify unchanged data, a real TLS handshake, and rejection of an incorrect certificate name.
-They do not establish bypass success against an internet provider.
+- **Decoy server name.** Caspian sends a TLS greeting that names a decoy domain before the real proxy stream. The real TLS or REALITY server name and the certificate checks stay exactly as they were.
+- **TCP split.** The first TLS greeting leaves in two writes, split near the middle of the server name.
+- **TLS-record split.** The greeting record is divided at that point without changing the handshake itself.
+
+Each control is independent and can be combined with the others. Saving reconnects a running tunnel with the new settings. They work with VLESS, VMess and Trojan over the supported IPv4 TCP transports, and the two splits need plain TLS.
+
+DPI bypass depends on the network and its filtering rules. Caspian does not promise to be undetectable or universally "DPI safe". The loopback tests verify unchanged data, a real TLS handshake, and rejection of a wrong certificate name; they do not establish bypass against an internet provider.
 See [SNI setup, supported platforms, and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing) and [upstream research and credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits).
 
 [English SNI guide](https://github.com/Iman/caspian/wiki/SNI-Spoofing) · [راهنمای فارسی](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa) · [English credits](https://github.com/Iman/caspian/wiki/Third-Party-Credits) · [منابع فارسی](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)

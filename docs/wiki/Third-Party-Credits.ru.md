@@ -7,7 +7,7 @@
 <a id="third-party-code-and-credits"></a>
 # Сторонний код и кредиты
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) перечисляет связанные библиотеки и файлы дистрибутива Каспиана.
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) перечисляет связанные библиотеки и файлы дистрибутива Каспиана.
 Каждый вышестоящий компонент имеет собственную лицензию.
 Условия AGPL проекта Caspian не заменяют лицензионные уведомления исходных проектов.
 
@@ -20,7 +20,7 @@
 Изменения Каспиана включают интеграцию Go, проверку, владение соединением, ограничения ресурсов, откат и тесты.
 
 В производных исходных файлах сохраняются уведомления GPL-3.0-only.
-Полные версии [исходная лицензия GPL](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) и [указание авторства](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) остаются в репозитории.
+Полные версии [исходная лицензия GPL](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) и [указание авторства](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) остаются в репозитории.
 Раздел 13 GPLv3 разрешает сочетание с кодом AGPLv3, при этом каждая часть сохраняет свои собственные условия.
 Дистрибьюторы должны сохранять уведомления, отмечать изменения и предоставлять соответствующий источник в соответствии с применимыми лицензиями.
 Благодарность не подразумевает одобрения со стороны вышестоящих авторов.
@@ -28,7 +28,7 @@
 Windows x64 использует **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)** от Бэзила (basil00) и его участников.
 Компания «Caspian» выбирает LGPL-3.0 из своей двойной лицензии.
 Установщик содержит немодифицированный драйвер и DLL, полный пакет лицензий, атрибуцию и исходный архив для версии 2.2.2.
-См. [Подробности распространения WinDivert](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md).
+См. [Подробности распространения WinDivert](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md).
 Windows ARM64 не включает WinDivert и не может использовать эту функцию SNI.
 
 <a id="ideas-and-acknowledgements"></a>
@@ -49,9 +49,9 @@ Windows ARM64 не включает WinDivert и не может использ�
 <a id="other-distributed-components"></a>
 ## Другие распределенные компоненты
 
-[парсер общих ссылок](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) сохраняет лицензию MIT.
+[парсер общих ссылок](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) сохраняет лицензию MIT.
 Установщики Windows также содержат официальные двоичные файлы Wintun и автономные помощники .NET.
-Их уведомления остаются под [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) и устанавливаются рядом с приложением.
+Их уведомления остаются под [third_party](https://github.com/Iman/caspian/blob/main/third_party) и устанавливаются рядом с приложением.
 Привязка Go Wintun — это зависимость времени выполнения MIT от Windows.
 
 <!-- Caspian guide navigation -->
@@ -59,4 +59,4 @@ Windows ARM64 не включает WinDivert и не может использ�
 Caspianские гиды: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->

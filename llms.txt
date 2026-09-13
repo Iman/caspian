@@ -3,7 +3,7 @@
 > A bring-your-own-config WiFi gateway for Windows, macOS, Raspberry Pi, and Linux. Caspian shares an Xray proxy tunnel with connected devices.
 
 Caspian accepts supported VLESS, VMess, Trojan, Shadowsocks, SOCKS, and Hysteria2 configurations. Protocol support does not mean every transport combination is supported.
-Optional SNI spoofing for deep packet inspection (DPI) circumvention is under development on feature/sni and is not in the current released installer.
+Optional anti-DPI (DPI circumvention) controls, SNI spoofing and TLS splitting, are on main and ship in the release after v0.2.9; the current released installer predates them.
 That mode supports VLESS, VMess, and Trojan on supported IPv4 TCP transports. It preserves the real TLS or REALITY name and certificate verification.
 DPI bypass depends on the network. Local packet and TLS tests do not prove provider-level bypass or universal detection resistance.
 The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-3.0. GoodbyeDPI and zapret are research references, not bundled engines.
@@ -14,10 +14,10 @@ The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-
 - [Documentation home](https://github.com/Iman/caspian/wiki/Home)
 - [SNI spoofing setup and limitations](https://github.com/Iman/caspian/wiki/SNI-Spoofing)
 - [Third-party source versions and licenses](https://github.com/Iman/caspian/wiki/Third-Party-Credits)
-- [Windows local build and installer](https://github.com/Iman/caspian/blob/feature/sni/docs/WINDOWS-BUILD.md)
+- [Windows local build and installer](https://github.com/Iman/caspian/blob/main/docs/WINDOWS-BUILD.md)
 - [Primary SNI reference](https://github.com/patterniha/SNI-Spoofing)
 
-- [Validation evidence and remaining hardware checks](https://github.com/Iman/caspian/blob/feature/sni/docs/SNI-VALIDATION.md)
+- [Validation evidence and remaining hardware checks](https://github.com/Iman/caspian/blob/main/docs/SNI-VALIDATION.md)
 
 ## Persian guides
 
@@ -25,4 +25,4 @@ The primary SNI code and idea are credited to patterniha/SNI-Spoofing under GPL-
 - [تنظیم SNI و محدودیت‌ها](https://github.com/Iman/caspian/wiki/SNI-Spoofing.fa)
 - [منابع و مجوزهای شخص ثالث](https://github.com/Iman/caspian/wiki/Third-Party-Credits.fa)
 
-On feature/sni, optional TCP split and TLS-record split are independent of fake SNI; splitting currently requires ordinary TLS over supported IPv4 TCP transports, and REALITY splitting is disabled.
+Optional TCP split and TLS-record split are independent of fake SNI; splitting currently requires ordinary TLS over supported IPv4 TCP transports, and REALITY splitting is disabled.

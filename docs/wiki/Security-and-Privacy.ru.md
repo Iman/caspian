@@ -372,11 +372,11 @@ box все еще может подключиться к сети через п�
 <!-- SNI upstream credits -->
 
 Кредиты на подмену SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0) с WinDivert (LGPL-3.0) в Windows x64.
-[Сторонние лицензии, исходные версии и авторство](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[Сторонние лицензии, исходные версии и авторство](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
 Путеводители по Каспию: [настройка и поддерживаемые протоколы](https://github.com/Iman/caspian/wiki/Home.ru) · [Подмена SNI для обхода DPI: настройка и ограничения](https://github.com/Iman/caspian/wiki/SNI-Spoofing.ru).
 
 
-<!-- English-source-sha256: 535cf4665f69f332fe7b3455f5d65126b1a3ebbe759ae17c46983ea6ab766450 -->
+<!-- English-source-sha256: cec3c304baae70d78d55833d249b11d8b1e3244db09a2b19b771a5f28b48f892 -->

@@ -94,7 +94,7 @@ WiFi.** يرفض برنامج التشغيل `brcmfmac` `iw phy phy0 interface a
 <!-- SNI upstream credits -->
 
 أرصدة انتحال SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0)، مع WinDivert (LGPL-3.0) على نظام التشغيل Windows x64.
-[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/feature/sni/docs/THIRD-PARTY.md).
+[تراخيص الطرف الثالث، والإصدارات المصدر، والائتمانات](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
 
 <!-- Caspian guide navigation -->
 
@@ -103,4 +103,4 @@ WiFi.** يرفض برنامج التشغيل `brcmfmac` `iw phy phy0 interface a
 </div>
 
 
-<!-- English-source-sha256: 629d6e2b6255b16d3bc76228a7aec238747c2de1af4bc20e44050dafefa13075 -->
+<!-- English-source-sha256: 1ab0e565056a61b09e4151ee4fcdb5fe44486f3ce99d3893135d7b5312112e40 -->

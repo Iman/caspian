@@ -7,7 +7,7 @@
 <a id="third-party-code-and-credits"></a>
 # 第三方代码和积分
 
-[NOTICE](https://github.com/Iman/caspian/blob/feature/sni/NOTICE) 列出了 Caspian 的链接库和分发文件。
+[NOTICE](https://github.com/Iman/caspian/blob/main/NOTICE) 列出了 Caspian 的链接库和分发文件。
 每个上游组件都有自己的许可证。
 Caspian 的 AGPL 条款不会取代那些上游通知。
 
@@ -20,7 +20,7 @@ ClientHello 模板和握手算法通知 `internal/snispoof`。
 Caspian 的更改添加了 Go 集成、验证、连接所有权、资源限制、回滚和测试。
 
 派生的源文件保留 GPL-3.0-only 通知。
-完整的 [上游 GPL 许可证](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/LICENSE.txt) 和 [署名信息](https://github.com/Iman/caspian/blob/feature/sni/third_party/sni-spoofing/README.md) 保留在存储库中。
+完整的 [上游 GPL 许可证](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/LICENSE.txt) 和 [署名信息](https://github.com/Iman/caspian/blob/main/third_party/sni-spoofing/README.md) 保留在存储库中。
 GPLv3 第 13 节允许与 AGPLv3 代码组合，同时每个部分保留自己的条款。
 分销商必须保留通知、标记更改并根据适用的许可提供相应的来源。
 信用并不意味着上游作者的认可。
@@ -28,7 +28,7 @@ GPLv3 第 13 节允许与 AGPLv3 代码组合，同时每个部分保留自己�
 Windows x64 使用 Basil (basil00) 和贡献者的 **[WinDivert](https://github.com/basil00/WinDivert/tree/v2.2.2)**。
 Caspian 从其双重许可证中选择 LGPL-3.0。
 安装程序包含未经修改的驱动程序和 DLL、完整的许可证包、归属以及 v2.2.2 的源存档。
-参见 [WinDivert 分发详细信息](https://github.com/Iman/caspian/blob/feature/sni/third_party/windivert/README.md)。
+参见 [WinDivert 分发详细信息](https://github.com/Iman/caspian/blob/main/third_party/windivert/README.md)。
 Windows ARM64 不包含 WinDivert，因此无法使用此 SNI 功能。
 
 <a id="ideas-and-acknowledgements"></a>
@@ -49,9 +49,9 @@ Caspian 还感谢这些项目的作者和贡献者的想法和实施比较，这
 <a id="other-distributed-components"></a>
 ## 其他分布式组件
 
-[共享链接解析器](https://github.com/Iman/caspian/blob/feature/sni/third_party/libxray-share/LICENSE) 保留其 MIT 许可证。
+[共享链接解析器](https://github.com/Iman/caspian/blob/main/third_party/libxray-share/LICENSE) 保留其 MIT 许可证。
 Windows 安装程序还包含官方 Wintun 二进制文件和独立的 .NET 帮助程序。
-他们的通知保留在 [third_party](https://github.com/Iman/caspian/blob/feature/sni/third_party) 下，并安装在应用程序旁边。
+他们的通知保留在 [third_party](https://github.com/Iman/caspian/blob/main/third_party) 下，并安装在应用程序旁边。
 Go Wintun 绑定是 Windows 上的 MIT 运行时依赖项。
 
 <!-- Caspian guide navigation -->
@@ -59,4 +59,4 @@ Go Wintun 绑定是 Windows 上的 MIT 运行时依赖项。
 Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
 
-<!-- English-source-sha256: 8a269a35df1d8ba95feb6a256569515780e472a71eb004eea9f0540dc32cc216 -->
+<!-- English-source-sha256: 864d784ba0ebb1ea531b44f2c6db08667bd3f5709be5f109e01c5f5c9cd3a768 -->
