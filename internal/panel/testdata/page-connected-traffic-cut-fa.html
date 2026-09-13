@@ -330,7 +330,7 @@
 
 
   <details class="disclose">
-    <summary>گزینه‌های عبور از DPI (اختیاری)</summary>
+    <summary>ضد DPI (عبور از DPI): خاموش</summary>
     <form method="post" action="/sni" class="stack">
       <input type="hidden" name="csrf" value="<redacted:csrf-token>">
       <label for="spoof_sni">نام جعلی سرور</label>
@@ -339,7 +339,7 @@
       <label><input type="checkbox" name="tcp_split" > تقسیم TCP</label>
       <label><input type="checkbox" name="tls_record_split" > تقسیم رکورد TLS</label>
       <p class="hint">هر گزینه مستقل است؛ برای خاموش کردن جعل SNI، نام را خالی بگذارید. تقسیم فقط برای TLS روی TCP است و ممکن است با بعضی سرورها سازگار نباشد. پس از ذخیره، اتصال دوباره برقرار می‌شود.</p>
-      <button type="submit">ذخیرهٔ تنظیمات DPI</button>
+      <button type="submit">ذخیرهٔ تنظیمات ضد DPI</button>
     </form>
   </details>
 
@@ -366,7 +366,9 @@
 
 <p class="detected" id="detected">اینترنت: کابل شبکه. هات‌اسپات: وای‌فای داخلی.</p><p class="detected" id="local-proxy" hidden>
   <span class="label">پراکسی محلی</span>
-  <bdi dir="ltr" class="mono" id="local-proxy-value"></bdi></p>
+  <bdi dir="ltr" class="mono" id="local-proxy-value"></bdi></p><p class="detected" id="anti-dpi" hidden>
+  <span class="label">ضد DPI</span>
+  <span id="anti-dpi-value"></span></p>
 
 <section class="card" aria-labelledby="events-heading">
   <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>رویدادها</h2>

@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 453 keys
+## en: 457 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -413,6 +413,8 @@
   setup.submit
   setup.title
   setup.writeitdown
+  sni.active_label
+  sni.active_name
   sni.heading
   sni.hint
   sni.invalid
@@ -420,6 +422,8 @@
   sni.save
   sni.saved
   sni.split_hint
+  sni.state_off
+  sni.state_on
   sni.tcp_split
   sni.tls_record_split
   sni.unavailable
@@ -460,7 +464,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 453 keys
+## fa: 457 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -868,6 +872,8 @@
   setup.submit
   setup.title
   setup.writeitdown
+  sni.active_label
+  sni.active_name
   sni.heading
   sni.hint
   sni.invalid
@@ -875,6 +881,8 @@
   sni.save
   sni.saved
   sni.split_hint
+  sni.state_off
+  sni.state_on
   sni.tcp_split
   sni.tls_record_split
   sni.unavailable

@@ -196,6 +196,7 @@
   var detected = document.getElementById("detected");
   var localProxy = document.getElementById("local-proxy");
   var localProxyValue = document.getElementById("local-proxy-value");
+  var antiDPI = document.getElementById("anti-dpi");
   var powerButton = document.getElementById("power-button");
   var powerLabel = document.getElementById("power-label");
   var powerValue = document.getElementById("power-value");
@@ -263,6 +264,12 @@
     if (localProxy && localProxyValue && typeof status.localProxy === "string") {
       setText(localProxyValue, status.localProxy);
       localProxy.hidden = status.localProxy === "";
+    }
+    // The anti-DPI line: shown while connected and a control is saved. Only
+    // the hidden flag moves here; the words change through the Save form,
+    // which re-renders the page with them.
+    if (antiDPI && typeof status.antiDPI === "boolean") {
+      antiDPI.hidden = !status.antiDPI;
     }
     if (deviceCount && typeof status.devices === "number") {
       // The tile shows the bare number; the sentence under the QR shows the

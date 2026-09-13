@@ -10,6 +10,7 @@
   "deviceLine": "3 devices connected",
   "detected": "Internet: Ethernet. Hotspot: built-in WiFi.",
   "localProxy": "127.0.0.1:10808",
+  "antiDPI": false,
   "problem": "",
   "hasConfig": true,
   "uptime": "2 hours",

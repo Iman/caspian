@@ -140,8 +140,18 @@ type pageData struct {
 	SpoofSNI        string
 	TCPSplit        bool
 	TLSRecordSplit  bool
-	ConfigName      string
-	ConfigSummary   LTR
+	// AntiDPIOn says whether any anti-DPI control is saved, a decoy name or a
+	// split, and suffixes the section heading so the state is visible without
+	// opening it. AntiDPIShown is AntiDPIOn while the page is Connected and
+	// drives the line under the status. AntiDPIDecoy and AntiDPISplits are that
+	// line's two halves: the decoy name isolated as LTR, because it is a domain
+	// with dots, and the active splits already joined in the reader's language.
+	AntiDPIOn     bool
+	AntiDPIShown  bool
+	AntiDPIDecoy  LTR
+	AntiDPISplits string
+	ConfigName    string
+	ConfigSummary LTR
 	// ConfigEntries is the list the person chooses from when the pasted text
 	// holds more than one usable entry; empty otherwise, so the page draws no
 	// list for a single link. ConfigDroppedLine is the sentence about lines
@@ -380,6 +390,9 @@ func (d *pageData) fillStatus(st SystemStatus, fault Fault) {
 		// proxy address, because in none of those states can a person use it,
 		// and a stale address on a page is an address somebody types in.
 		d.LocalProxy = LTR(st.LocalProxy)
+		// Same rule for the anti-DPI line: only while connected, because that
+		// is when the saved controls are in force on a live connection.
+		d.AntiDPIShown = d.AntiDPIOn
 	case st.Engine.Phase == engine.PhaseStarting:
 		d.StatusWord, d.StatusShape = T(l, MsgStatusStarting), shapeWorking
 	case st.Engine.Phase == engine.PhaseFailed:
@@ -477,6 +490,16 @@ func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 	d.SpoofSNI = proxy.SpoofSNI.Reveal()
 	d.TCPSplit = proxy.TCPSplit
 	d.TLSRecordSplit = proxy.TLSRecordSplit
+	d.AntiDPIOn = d.SpoofSNI != "" || d.TCPSplit || d.TLSRecordSplit
+	d.AntiDPIDecoy = LTR(d.SpoofSNI)
+	var splits []string
+	if d.TCPSplit {
+		splits = append(splits, T(d.Lang, MsgTCPSplit))
+	}
+	if d.TLSRecordSplit {
+		splits = append(splits, T(d.Lang, MsgTLSRecordSplit))
+	}
+	d.AntiDPISplits = strings.Join(splits, ", ")
 	if !d.HasConfig {
 		return
 	}
@@ -823,9 +846,14 @@ type statusJSON struct {
 	// since 2026-09-12 the privileged side moves off 10808 when another
 	// program holds it (issue #2). A loopback address is not a credential.
 	LocalProxy string `json:"localProxy"`
-	Problem    string `json:"problem"`
-	HasConfig  bool   `json:"hasConfig"`
-	Uptime     string `json:"uptime"`
+
+	// AntiDPI is true while the page is Connected and at least one anti-DPI
+	// control is saved. It only shows and hides the line under the status;
+	// the words on it change through the Save form, which re-renders the page.
+	AntiDPI   bool   `json:"antiDPI"`
+	Problem   string `json:"problem"`
+	HasConfig bool   `json:"hasConfig"`
+	Uptime    string `json:"uptime"`
 
 	// PowerLabel is the word on the switch, already in the reader's language.
 	//
@@ -849,6 +877,13 @@ type statusJSON struct {
 func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, hasHotspot bool, events []Event) statusJSON {
 	d := pageData{Lang: l}
 	d.HasConfig = hasConfig
+	if p.store != nil {
+		// The saved anti-DPI controls decide whether the line under the status
+		// is shown; fillConfig is not run here because the poll must not parse
+		// the config every few seconds for one boolean.
+		proxy := p.store.Proxy()
+		d.AntiDPIOn = proxy.SpoofSNI.Reveal() != "" || proxy.TCPSplit || proxy.TLSRecordSplit
+	}
 	d.fillStatus(st, fault)
 	d.fillTiles(st, fault, p.now)
 	d.fillNextStep(hasHotspot, st.ClientTrafficCut,
@@ -863,6 +898,7 @@ func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, h
 		DeviceLine: d.DeviceLine,
 		Detected:   d.DetectedLine,
 		LocalProxy: string(d.LocalProxy),
+		AntiDPI:    d.AntiDPIShown,
 		Problem:    strings.TrimSpace(strings.TrimSpace(d.ProblemHeadline + " " + d.ProblemAdvice)),
 		HasConfig:  hasConfig,
 		Uptime:     d.Tiles[3].Value,

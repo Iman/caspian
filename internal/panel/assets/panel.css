@@ -1359,7 +1359,7 @@ textarea::placeholder {
   font-weight: 600;
   margin-inline-end: var(--s2);
 }
-#local-proxy[hidden] { display: none; }
+#local-proxy[hidden], #anti-dpi[hidden] { display: none; }
 
 /* ==========================================================================
    EVENTS AND LOG

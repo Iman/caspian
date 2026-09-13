@@ -234,7 +234,7 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
 
 {{if .HasConfig}}
   <details class="disclose">
-    <summary>{{.T "sni.heading"}}</summary>
+    <summary>{{.T "sni.heading"}}: {{if .AntiDPIOn}}{{.T "sni.state_on"}}{{else}}{{.T "sni.state_off"}}{{end}}</summary>
     <form method="post" action="/sni" class="stack">
       <input type="hidden" name="csrf" value="{{.CSRF}}">
       <label for="spoof_sni">{{.T "sni.label"}}</label>
@@ -280,6 +280,17 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
 <p class="detected" id="local-proxy"{{if not .LocalProxy}} hidden{{end}}>
   <span class="label">{{.T "status.localproxy"}}</span>
   <bdi dir="ltr" class="mono" id="local-proxy-value">{{.LocalProxy}}</bdi></p>
+
+{{- /*
+  The anti-DPI controls in force, shown only while the box is connected and at
+  least one is saved. Always in the page and hidden otherwise, so panel.js can
+  show and hide it on a poll; the words change only through the Save form,
+  which re-renders the page. The decoy name is a domain and is isolated as LTR
+  like every other address on this page.
+*/ -}}
+<p class="detected" id="anti-dpi"{{if not .AntiDPIShown}} hidden{{end}}>
+  <span class="label">{{.T "sni.active_label"}}</span>
+  <span id="anti-dpi-value">{{if .AntiDPIDecoy}}{{.T "sni.active_name"}} <bdi dir="ltr" class="mono">{{.AntiDPIDecoy}}</bdi>{{if .AntiDPISplits}}, {{end}}{{end}}{{.AntiDPISplits}}</span></p>
 
 <section class="card" aria-labelledby="events-heading">
   <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>{{.T "events.heading"}}</h2>
