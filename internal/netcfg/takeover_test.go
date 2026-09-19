@@ -143,7 +143,7 @@ func TestApply_FallsBackWhenTheDriverRefusesToCreateTheInterface(t *testing.T) {
 	before := k.Snapshot()
 
 	path := tmpJournal(t)
-	a, err := NewApplier(k, path)
+	a, err := newTestApplier(t, k, path)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -175,7 +175,7 @@ func TestApply_FallsBackWhenTheDriverRefusesToCreateTheInterface(t *testing.T) {
 		t.Fatalf("a fallback must exist here: the uplink is eth0 and wlan0 is releasable: %v", err)
 	}
 
-	a2, err := NewApplier(k, tmpJournal(t))
+	a2, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -222,7 +222,7 @@ func TestApply_NoFallbackWhenTheDriverAccepts(t *testing.T) {
 	k.Reads = pi5Captured().runner(t)
 	// RefuseIfaceAdd unset: the driver does what its table advertises.
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -50,7 +50,7 @@
 ```sh
 bash scripts/test-ui.sh
 bash scripts/build-ui.sh web dev
-bash bdd/flutter/run.sh
+bash test/cucumber/flutter/run.sh
 bash scripts/test-integration.sh macos
 ```
 

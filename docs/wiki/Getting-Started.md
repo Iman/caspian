@@ -1,10 +1,12 @@
-# Getting started
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr)
+[English](https://github.com/Iman/caspian/wiki/Getting-Started) | [فارسی](https://github.com/Iman/caspian/wiki/Getting-Started.fa) | [Русский](https://github.com/Iman/caspian/wiki/Getting-Started.ru) | [中文](https://github.com/Iman/caspian/wiki/Getting-Started.zh) | [العربية](https://github.com/Iman/caspian/wiki/Getting-Started.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Getting-Started.tr) | [اردو](https://github.com/Iman/caspian/wiki/Getting-Started.ur)
 
 </div>
+
+# Getting started
+
+
 
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
@@ -32,7 +34,9 @@ refused by name.
 
 ## What it needs
 
-Current releases include Windows 10 version 2004 (build 19041) or later and
+Connecting needs Windows 10 version 2004 (build 19041) or later. On an older
+Windows, back to version 1607, Caspian installs and the panel opens and says
+what that version cannot do. Current releases include Windows 10 version 2004 (build 19041) or later and
 Windows 11 on x64 and ARM64, macOS 13 or later on Intel and Apple Silicon, and
 Linux on x86_64, ARM64, ARMv7 and ARMv6. Android and iOS
 are not gateway hosts; phones and tablets join the Caspian Wi-Fi as clients.
@@ -80,8 +84,13 @@ costs the user nothing. The fallback is reached only after the first choice has
 been tried and refused, and the first plan is torn down completely before the
 second is applied.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

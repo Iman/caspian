@@ -5,6 +5,7 @@ package netcfg
 import (
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -189,6 +190,9 @@ func TestRewriteJournal_KeepsWhatIsLeft(t *testing.T) {
 }
 
 func TestJournal_FileIsNotWorldReadable(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("Windows uses directory ACLs; Unix permission bits are not implemented")
+	}
 	path := tmpJournal(t)
 	j, err := OpenJournal(path)
 	if err != nil {

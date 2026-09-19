@@ -2,6 +2,8 @@
 # Copyright (C) 2026 Iman Samizadeh
 #
 # Install Caspian-BYOC on Windows 10 (version 2004 or later) or Windows 11.
+# Version 1607 is the floor for installing; connecting needs 2004, and a box
+# between the two says so in the panel. See internal/netcfg/winversion.go.
 # Run from an elevated PowerShell in the
 # repository with Go, Flutter and the .NET SDK installed:
 #
@@ -40,6 +42,11 @@ function Invoke-ICACLS([string[]]$AclArgs) {
     if ($LASTEXITCODE -ne 0) {
         Refuse "icacls failed: $($output -join ' ')"
     }
+}
+
+# Refuse before elevation, builds, directories, or service changes.
+if ([Environment]::OSVersion.Version -lt [Version]"10.0.14393") {
+    Refuse "Windows 10 version 1607 or later is required to install; connecting requires version 2004 or later."
 }
 
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())

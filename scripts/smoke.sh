@@ -87,6 +87,8 @@ fi
 printf '\n%-24s %8s  %s\n' "PACKAGE" "PASSED" "RESULT"
 
 while read -r pkg pattern; do
+    # Git can check out the registry with Windows line endings.
+    pattern=${pattern%$'\r'}
     case "$pkg" in
         '' | \#*) continue ;;
     esac

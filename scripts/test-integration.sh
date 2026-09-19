@@ -19,7 +19,7 @@ cleanup() {
 }
 trap cleanup EXIT
 cd "$ROOT"
-go build -tags flutterui -o "$FIXTURE" ./bdd/harness
+go build -tags flutterui -o "$FIXTURE" ./test/cucumber/harness
 "$FIXTURE" > "$WORK/fixture.json" 2> "$WORK/fixture.log" &
 FIXTURE_PID=$!
 for attempt in {1..100}; do

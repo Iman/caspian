@@ -72,7 +72,11 @@ MEASURED روی مکِ توسعه (macOS 26.6، Apple Silicon)، فقط‌خوا
   teardown با ترتیب معکوس endpoint ازپیش‌تنظیم‌شده، bypass domainها و state
   اندازه‌گیری‌شده را برمی‌گرداند. سرویسی که endpoint نداشت خاموش می‌ماند؛
   <span dir="ltr">`networksetup`</span> فعلِ پاک‌کردن endpoint ندارد. پروکسیِ احرازشدهٔ موجود رد
-  می‌شود، چون رمز پنهانش قابل بازیابی نیست.
+  می‌شود، چون رمز پنهانش قابل بازیابی نیست. 10808 پورت پیش‌فرض است، نه یک
+  ضمانت: وقتی برنامهٔ دیگری از قبل آن را گرفته باشد، موتور به جای آن یک پورت
+  آزاد loopback را bind می‌کند، گام‌های <span dir="ltr">`networksetup`</span> همان پورت را
+  می‌نویسند، و پنل آن را به عنوان پراکسی محلی نشان می‌دهد (اندازه‌گیری‌شده در
+  2026-09-12 از یک گزارش Windows 11، issue #2).
 - <span dir="ltr">`internetsharing.go`</span>: فایل تنظیمات را با کلیدهایی می‌نویسد که دامپ‌های واقعی
   و رشته‌های پلاگین نشان می‌دهند (NetworkName، NetworkPassword به شکل دادهٔ
   UTF-16LE، Channel، PrimaryService به عنوان UUID سرویسِ uplink،
@@ -101,8 +105,7 @@ UNVERIFIED تا وقتی با root روی یک مک اجرا شود، به ای�
 
 تنظیم SOCKS سیستم عمداً «موقت» نامیده شده است. برنامه‌هایی که تنظیمات پروکسی
 macOS را نادیده می‌گیرند، UDP به‌طور کلی، و همهٔ DNS سیستم را پوشش نمی‌دهد.
-تونل کامل میزبان، شامل DNS بدون fallback روی uplink فیزیکی، Option 1 در
-<span dir="ltr">`docs/PORTS.md`</span> است و این پورت هنوز چنین ادعایی ندارد.
+این پورت تونل کامل میزبان، شامل DNS بدون fallback روی uplink فیزیکی، را فراهم نمی‌کند.
 
 اجرای آن روی این مک یک uplink اترنت می‌خواهد (یک کابل در یکی از آداپتورهای
 USB Ethernet)، <span dir="ltr">`sudo`</span>، و <span dir="ltr">`bash packaging/darwin/install-darwin.sh`</span>.
@@ -227,3 +230,7 @@ Unix را لازم می‌دانست، اما <span dir="ltr">`os.Stat`</span> �
   (<span dir="ltr">`perm_other.go`</span> این را می‌گوید)؛ ACLهای نصاب جای آن را می‌گیرند.
 
 </div>
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

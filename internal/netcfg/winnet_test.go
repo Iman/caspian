@@ -203,3 +203,30 @@ func TestWindowsMetric(t *testing.T) {
 		t.Fatal("auto is not a number")
 	}
 }
+
+// TestWindowsPlan_WiFiUplinkHostsTheHotspotOnTheSameAdapter is the second fault
+// in issue #2. A Windows 11 laptop on Wi-Fi with no cable: the only radio is the
+// uplink, and the radio declares it can hold the hotspot beside the station.
+// Until 2026-09-12 the plan answered with a NEW interface named ap0, the Linux
+// default, and the tethering helper reported "the selected Wi-Fi adapter is
+// unavailable: ap0". Mobile Hotspot has no such adapter and creates its own, so
+// on Windows the plan names the physical radio and creates nothing.
+func TestWindowsPlan_WiFiUplinkHostsTheHotspotOnTheSameAdapter(t *testing.T) {
+	const wifiOnly = `{"adapters":[
+ {"alias":"Wi-Fi","index":7,"type":"wifi","up":true,"prefixes":["198.51.100.23/24"],"forwarding":false},
+ {"alias":"Loopback Pseudo-Interface 1","index":1,"type":"loopback","up":true,"prefixes":["127.0.0.1/8"],"forwarding":false}
+],"defaults":[{"alias":"Wi-Fi","gateway":"198.51.100.1","metric":35,"family":4,"up":true}]}`
+	p, _ := winPlan(t, wifiOnly)
+	if p.Uplink != "Wi-Fi" {
+		t.Fatalf("uplink = %q, want the Wi-Fi adapter", p.Uplink)
+	}
+	if p.Hotspot != "Wi-Fi" {
+		t.Fatalf("hotspot = %q, want the same Wi-Fi adapter: ap0 is a Linux name Mobile Hotspot has never heard of", p.Hotspot)
+	}
+	if p.HotspotIsVirtual || p.HotspotParent != "" {
+		t.Errorf("the plan still wants to create an interface (virtual=%v parent=%q); Windows creates its own", p.HotspotIsVirtual, p.HotspotParent)
+	}
+	if strings.Contains(p.Explain(), "ap0") {
+		t.Errorf("the explanation still mentions ap0:\n%s", p.Explain())
+	}
+}

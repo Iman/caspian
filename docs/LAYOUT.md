@@ -24,6 +24,7 @@ here first, not in one package.
 | Path | Mode | Owner | What |
 |---|---|---|---|
 | `/usr/local/bin/caspian` | 0755 | root | The single binary. Subcommands select the role |
+| `/usr/local/share/doc/caspian` | 0755 | root | Installed licenses and credits; files are 0644 |
 | `/var/lib/caspian` | 0700 | caspian | Persistent state. Holds a credential |
 | `/var/lib/caspian/state.json` | 0600 | caspian | Written atomically by package state |
 | `/run/caspian` | 0750 | root:caspian | Runtime sockets |
@@ -68,6 +69,13 @@ does not own.
 | 5354 | 127.0.0.1 | The engine's local DNS listener. dnsmasq's only permitted upstream |
 | 8088 | panel address | The web panel |
 | 10808 | 127.0.0.1 | SOCKS, for diagnostics, the exit-IP proof, and the interim macOS system proxy |
+
+10808 is the default, not a guarantee. When another program on the machine
+already holds it, Caspian moves its loopback SOCKS inbound to a free loopback
+port for that run, and the panel shows the port in use as the local proxy; the
+macOS system proxy setting and the subscription refresh follow the same port.
+Measured 2026-09-12 from a Windows 11 report (issue #2) where another proxy
+client held 10808 and the engine could not bind.
 
 The 5354 pairing is the one that breaks quietly. dnsmasq refuses any upstream
 that is not a loopback address, and the engine's listener is what answers there.
@@ -165,3 +173,7 @@ The release artefacts follow the Go convention, not the kernel's:
 maps `uname -m` onto those: `x86_64` to amd64, `aarch64` to arm64, `armv7l` and
 `armv6l` to arm. A previous project in this workspace mapped armv6 onto an armv7
 artefact and broke the older Pi models. Do not repeat that.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

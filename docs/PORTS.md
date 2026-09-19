@@ -69,7 +69,10 @@ Built and unit-tested (with recorders, no root):
   endpoint, the measured bypass domains, and enabled state. A service that had
   no endpoint remains disabled; `networksetup` has no endpoint-clear verb. An
   existing authenticated proxy is refused because its hidden password cannot
-  be restored.
+  be restored. 10808 is the default, not a guarantee: when another program
+  already holds it, the engine binds a free loopback port instead, the
+  `networksetup` steps name that port, and the panel shows it as the local
+  proxy (measured 2026-09-12 from a Windows 11 report, issue #2).
 - `internetsharing.go`: writes the preferences file with the keys real dumps
   and the plugin's strings show (NetworkName, NetworkPassword as UTF-16LE
   data, Channel, PrimaryService as the uplink's service UUID, SharingDevices,
@@ -99,7 +102,7 @@ UNVERIFIED until run with root on a Mac, in this order (script:
 The system SOCKS setting is deliberately described as interim. It does not
 cover applications that ignore macOS proxy settings, UDP in general, or all
 system DNS. Full host tunnelling, including DNS with no physical-uplink
-fallback, is Option 1 in `docs/PORTS.md` and is not claimed by this port.
+fallback, is not provided by this port.
 
 Exercising it on this Mac needs an Ethernet uplink (a cable in one of the USB
 Ethernet adapters), `sudo`, and `bash packaging/darwin/install-darwin.sh`.
@@ -229,3 +232,7 @@ To finish on the Windows machine, in this order:
   platform installers are under `packaging/darwin` and `packaging/windows`.
 - On Windows the 0600 protection `internal/state` promises is not in force
   (`perm_other.go` says so); the installer's ACLs stand in for it.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

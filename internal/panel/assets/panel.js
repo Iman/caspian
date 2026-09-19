@@ -194,6 +194,9 @@
   var deviceLine = document.getElementById("device-line");
   var deviceCount = document.getElementById("device-count");
   var detected = document.getElementById("detected");
+  var localProxy = document.getElementById("local-proxy");
+  var localProxyValue = document.getElementById("local-proxy-value");
+  var antiDPI = document.getElementById("anti-dpi");
   var powerButton = document.getElementById("power-button");
   var powerLabel = document.getElementById("power-label");
   var powerValue = document.getElementById("power-value");
@@ -253,6 +256,21 @@
     setText(nextStep, status.nextStep);
     setText(deviceLine, status.deviceLine);
     setText(detected, status.detected);
+
+    // The local proxy address. The server sends it only while the box is
+    // connected and an empty string otherwise, so this is what makes the line
+    // appear and disappear without a reload. The element and its translated
+    // label are always in the page; only the value and the hidden flag move.
+    if (localProxy && localProxyValue && typeof status.localProxy === "string") {
+      setText(localProxyValue, status.localProxy);
+      localProxy.hidden = status.localProxy === "";
+    }
+    // The anti-DPI line: shown while connected and a control is saved. Only
+    // the hidden flag moves here; the words change through the Save form,
+    // which re-renders the page with them.
+    if (antiDPI && typeof status.antiDPI === "boolean") {
+      antiDPI.hidden = !status.antiDPI;
+    }
     if (deviceCount && typeof status.devices === "number") {
       // The tile shows the bare number; the sentence under the QR shows the
       // words. Both come from the server already in the reader's language, so

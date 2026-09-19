@@ -4,6 +4,7 @@ package state
 
 import (
 	"bytes"
+	"caspianbyoc.org/caspian/internal/snispoof"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -73,6 +74,22 @@ func Load(dir string) (*Store, error) {
 	di, err := os.Stat(dir)
 	switch {
 	case errors.Is(err, fs.ErrNotExist):
+		// Windows reports PATH_NOT_FOUND even when an ancestor is a file.
+		for parent := filepath.Dir(dir); ; parent = filepath.Dir(parent) {
+			info, parentErr := os.Stat(parent)
+			if parentErr == nil {
+				if !info.IsDir() {
+					return nil, fmt.Errorf("state: examining %s: parent %s is not a directory", dir, parent)
+				}
+				break
+			}
+			if !errors.Is(parentErr, fs.ErrNotExist) {
+				return nil, fmt.Errorf("state: examining %s: %w", parent, parentErr)
+			}
+			if filepath.Dir(parent) == parent {
+				break
+			}
+		}
 		return s.asFirstRun(), nil
 	case err != nil:
 		return nil, fmt.Errorf("state: examining %s: %w", dir, err)
@@ -96,7 +113,7 @@ func Load(dir string) (*Store, error) {
 		return nil, err
 	}
 
-	raw, err := os.ReadFile(s.path)
+	raw, err := readStateFile(s.path)
 	if err != nil {
 		return nil, fmt.Errorf("state: reading %s: %w", s.path, err)
 	}
@@ -208,7 +225,41 @@ func (s *Store) SetProxyConfig(raw, scheme, label string) error {
 		st.Proxy.Raw = Secret(raw)
 		st.Proxy.Scheme = scheme
 		st.Proxy.Label = label
+		// A new paste is a new list. Whatever entry was chosen in the old one
+		// has no meaning in this one, so the choice goes back to the first.
+		st.Proxy.Selected = 0
+		st.Proxy.SpoofSNI = ""
+		st.Proxy.TCPSplit = false
+		st.Proxy.TLSRecordSplit = false
 		st.Proxy.AddedAt = time.Now().UTC()
+		// The figures and the refresh time describe the config that was
+		// fetched, and this paste has just replaced it. The address stays: it
+		// is where the next refresh comes from, whatever is stored now.
+		st.Proxy.RefreshedAt = time.Time{}
+		st.Proxy.Quota = Quota{}
+		return nil
+	})
+}
+
+// SelectProxyEntry records which entry of the stored config the box should use,
+// counting from zero, and touches nothing else: the config itself, its scheme,
+// its label and its timestamp all stay as they were.
+//
+// It refuses a negative index, which is not an entry, and it refuses to record
+// a selection when no config is stored, because there is nothing to select
+// from. It does NOT check the upper bound: the store does not parse the config
+// (that is internal/link's job) so it cannot know how long the list is. An index
+// past the end is tolerated by internal/link.Select, which falls back to the
+// first entry and says so.
+func (s *Store) SelectProxyEntry(i int) error {
+	return s.Update(func(st *State) error {
+		if i < 0 {
+			return errors.New("state: the proxy entry to use cannot be negative")
+		}
+		if !st.Proxy.IsConfigured() {
+			return errors.New("state: no proxy config is stored, so there is no entry to select")
+		}
+		st.Proxy.Selected = i
 		return nil
 	})
 }
@@ -257,6 +308,12 @@ func (s *Store) VerifyPanelPassword(plaintext string) (bool, error) {
 // internal/hotspot and internal/netcfg, and duplicating them would put two
 // packages in disagreement about what is legal.
 func (s State) validate() error {
+	name := s.Proxy.SpoofSNI.Reveal()
+	normalized, err := snispoof.NormalizeName(name)
+	if err != nil || normalized != name || ((name != "" || s.Proxy.TCPSplit || s.Proxy.TLSRecordSplit) && !s.Proxy.IsConfigured()) {
+		return errors.New("state: invalid SNI spoofing setting")
+	}
+
 	if s.Version != CurrentVersion {
 		return fmt.Errorf("state: refusing to write schema version %d, this build writes %d", s.Version, CurrentVersion)
 	}
@@ -352,7 +409,7 @@ func (s *Store) writeAtomic(st State) (err error) {
 		}
 	}
 
-	if err := os.Rename(tmpPath, s.path); err != nil {
+	if err := replaceStateFile(tmpPath, s.path); err != nil {
 		return fmt.Errorf("state: replacing %s: %w", s.path, err)
 	}
 	renamed = true

@@ -554,3 +554,12 @@ RESULT PARTIAL. This run did not complete. Do not read it as a clean result.
 اگر چیزی را با دست تجزیه می‌کنید از <span dir="ltr">`sed -n '1,200p' <file>`</span> استفاده کنید.
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع جعل SNI: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با GPL-3.0، همراه WinDivert با LGPL-3.0 در Windows x64.
+[مجوزها، نسخه‌های منبع و انتساب شخص ثالث](THIRD-PARTY.fa.md).
+
+<!-- Caspian guide navigation -->
+
+راهنماهای Caspian: [راه‌اندازی و پروتکل‌های پشتیبانی‌شده](../README.fa.md) · [جعل SNI برای عبور از DPI: تنظیم و محدودیت‌ها](SNI.fa.md).

@@ -70,6 +70,75 @@ func protocolCases() []protocolCase {
 					secret, port)
 			},
 		},
+		// The three CDN-style transports over plain TCP, on the protocol whose
+		// raw row above is the known-good baseline. Added 2026-09-13 after a
+		// probe of public servers found every failure on these transports
+		// indistinguishable from a dead node: a broken composition of the
+		// websocket, gRPC or httpupgrade stream settings would have shown up
+		// as "server closed" too. Here the server is ours, so a closed
+		// connection can only be the client's fault. xhttp is covered by
+		// xhttp_version_test.go with TLS and ALPN, which is where its
+		// difficulty lives.
+		{
+			name:        "vless over websocket",
+			scheme:      "vless",
+			secret:      credVLess,
+			wrongSecret: wrongUUID,
+			inbound: func(port int, _ serverCert) string {
+				return fmt.Sprintf(`{
+    "tag": "in",
+    "listen": "127.0.0.1",
+    "port": %d,
+    "protocol": "vless",
+    "settings": {"clients": [{"id": "%s"}], "decryption": "none"},
+    "streamSettings": {"network": "ws", "wsSettings": {"path": "/caspian-ws"}}
+  }`, port, credVLess)
+			},
+			shareLink: func(port int, secret, _ string) string {
+				return fmt.Sprintf("vless://%s@127.0.0.1:%d?encryption=none&type=ws&path=%%2Fcaspian-ws&security=none#Caspian%%20test",
+					secret, port)
+			},
+		},
+		{
+			name:        "vless over grpc",
+			scheme:      "vless",
+			secret:      credVLess,
+			wrongSecret: wrongUUID,
+			inbound: func(port int, _ serverCert) string {
+				return fmt.Sprintf(`{
+    "tag": "in",
+    "listen": "127.0.0.1",
+    "port": %d,
+    "protocol": "vless",
+    "settings": {"clients": [{"id": "%s"}], "decryption": "none"},
+    "streamSettings": {"network": "grpc", "grpcSettings": {"serviceName": "caspian"}}
+  }`, port, credVLess)
+			},
+			shareLink: func(port int, secret, _ string) string {
+				return fmt.Sprintf("vless://%s@127.0.0.1:%d?encryption=none&type=grpc&serviceName=caspian&security=none#Caspian%%20test",
+					secret, port)
+			},
+		},
+		{
+			name:        "vless over httpupgrade",
+			scheme:      "vless",
+			secret:      credVLess,
+			wrongSecret: wrongUUID,
+			inbound: func(port int, _ serverCert) string {
+				return fmt.Sprintf(`{
+    "tag": "in",
+    "listen": "127.0.0.1",
+    "port": %d,
+    "protocol": "vless",
+    "settings": {"clients": [{"id": "%s"}], "decryption": "none"},
+    "streamSettings": {"network": "httpupgrade", "httpupgradeSettings": {"path": "/caspian-hu"}}
+  }`, port, credVLess)
+			},
+			shareLink: func(port int, secret, _ string) string {
+				return fmt.Sprintf("vless://%s@127.0.0.1:%d?encryption=none&type=httpupgrade&path=%%2Fcaspian-hu&security=none#Caspian%%20test",
+					secret, port)
+			},
+		},
 		{
 			name:        "vmess",
 			scheme:      "vmess",

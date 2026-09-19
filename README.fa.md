@@ -30,6 +30,7 @@ VMess، Shadowsocks، SOCKS، Trojan و Hysteria2 را می‌پذیرد. فای
 به Clash و Clash.Meta، فایل JSON خامِ Xray، فهرست لینک‌ها و اشتراک base64 نیز
 پذیرفته می‌شوند. Caspian با Xray-core وصل می‌شود و تونل را به شکل هات‌اسپات
 وای‌فای پخش می‌کند، پس هر دستگاهی که وصل شود بدون نصب برنامه محافظت می‌شود.
+کنترل‌های اختیاری ضد DPI (عبور از DPI)، یعنی جعل SNI و تکه‌کردن TLS، کمک می‌کنند اتصال در شبکه‌هایی که ترافیک را بازرسی می‌کنند برقرار شود.
 
 ![پنل کاسپین، متصل](docs/images/panel-fa.png)
 
@@ -39,11 +40,24 @@ Raspberry Pi 5 در تاریخ 2026-09-03 با تونلِ بالا و پیش ا�
 شده، چون آن کد نامِ شبکه و رمزش را در خودش دارد. هیچ چیزِ دیگری تغییر نکرده است.
 
 پنل به‌صورت پیش‌فرض انگلیسی است. از فهرست زبان در بالای صفحه، فارسی را انتخاب کنید. هیچ حسابی در کار نیست، هیچ داده‌ای از شما
-فرستاده نمی‌شود، و پنل چیزی از اینترنت نمی‌گیرد.
+فرستاده نمی‌شود، و پنل به خودی خود چیزی از اینترنت نمی‌گیرد، مگر آنکه شما روی
+نشانی اشتراکی که ذخیره کرده‌اید دکمهٔ تازه‌سازی را بزنید.
 
 ![Caspian Control در Windows](docs/images/caspian-control-windows.png)
 
 ![Caspian Control در macOS](docs/images/caspian-control-macos.png)
+
+## ضد DPI: جعل SNI و تکه‌کردن TLS
+
+بازرسی عمیق بسته (DPI) روشی است که شبکه با آن آغاز یک اتصال را می‌خواند تا تصمیم بگیرد آن را مسدود کند یا نه. کاسپین سه کنترل اختیاری ضد DPI (عبور از DPI) دارد که در پنل، کنار پیکربندی ذخیره‌شده، قرار گرفته‌اند:
+
+- **نام سرور جعلی.** کاسپین پیش از جریان واقعی پراکسی یک سلام TLS می‌فرستد که نام یک دامنهٔ پوششی را دارد. نام واقعی سرور TLS یا REALITY و بررسی گواهی دقیقاً همان‌طور که بود می‌ماند.
+- **تکه‌کردن TCP.** نخستین سلام TLS در دو نوشتار می‌رود که نزدیک میانهٔ نام سرور از هم جدا شده‌اند.
+- **تکه‌کردن رکورد TLS.** رکورد سلام در همان نقطه تقسیم می‌شود، بدون آنکه محتوای دست‌دهی تغییر کند.
+
+هر کنترل مستقل است و می‌تواند با دیگران ترکیب شود. ذخیره‌کردن، تونل روشن را با تنظیم تازه دوباره وصل می‌کند. این کنترل‌ها با VLESS، VMess و Trojan روی انتقال‌های پشتیبانی‌شدهٔ TCP در IPv4 کار می‌کنند و دو تکه‌کردن به TLS معمولی نیاز دارند.
+
+عبور از DPI به شبکه و قواعد فیلترینگ آن بستگی دارد. کاسپین نامرئی بودن یا ایمنی همگانی در برابر DPI را وعده نمی‌دهد. آزمون‌های حلقهٔ محلی دادهٔ بدون تغییر، دست‌دهی واقعی TLS و رد نام نادرست گواهی را بررسی می‌کنند؛ عبور از محدودیت ارائه‌دهندهٔ اینترنت را ثابت نمی‌کنند. [تنظیم SNI، سکوها و محدودیت‌ها](docs/SNI.fa.md) و [پژوهش و انتساب بالادستی](docs/THIRD-PARTY.fa.md) را ببینید.
 
 ## روش‌های اتصال و قالب‌های پشتیبانی‌شده
 
@@ -71,7 +85,7 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 
 این جدول نشان می‌دهد کد فعلی چه چیدمان‌هایی را می‌پذیرد یا رد می‌کند. همهٔ آداپتورها، نسخه‌های سیستم‌عامل و لپ‌تاپ‌ها تأیید نشده‌اند. آداپتوری که به وای‌فای خانه وصل می‌شود، لزوماً نمی‌تواند هات‌اسپات بسازد. چیدمان‌های USB لینوکس آزمون مدل‌شده دارند؛ سابقهٔ آزمون سخت‌افزاری، کارکرد همهٔ آداپتورهای USB را ثابت نمی‌کند. در مک، مسیر مستندشده اترنت به وای‌فای داخلی است. افزودن وای‌فای USB این محدودیت را برطرف نمی‌کند.
 
-کاسپین لینک‌های VLESS، VMess، Shadowsocks، SOCKS، Trojan و Hysteria2، از جمله نام جایگزین hy2 را می‌پذیرد. قالب‌های پشتیبانی‌شدهٔ Clash/Clash.Meta YAML، Xray JSON، فهرست لینک و محتوای اشتراک base64 نیز پذیرفته می‌شوند. از فهرست فقط اولین لینک استفاده می‌شود؛ نشانی اینترنتی اشتراک دریافت نمی‌شود. از ارائه‌دهنده خودِ کانفیگ سازگار را بگیرید، نه رمز حساب یا پیوند یک صفحهٔ وب.
+کاسپین لینک‌های VLESS، VMess، Shadowsocks، SOCKS، Trojan و Hysteria2، از جمله نام جایگزین hy2 را می‌پذیرد. قالب‌های پشتیبانی‌شدهٔ Clash/Clash.Meta YAML، Xray JSON، فهرست لینک و محتوای اشتراک base64 نیز پذیرفته می‌شوند. از فهرست هر موردی را که انتخاب کنید استفاده می‌شود. نشانی اشتراک را می‌توان کنار کانفیگ ذخیره کرد و با زدن دکمه، از درون تونل تازه کرد. از ارائه‌دهنده خودِ کانفیگ سازگار را بگیرید، نه رمز حساب یا پیوند یک صفحهٔ وب.
 
 نام‌های ترابری شامل raw/tcp، ws، grpc، httpupgrade، xhttp/splithttp و kcp/mkcp هستند. پروتکل، ترابری و تنظیمات امنیت باید سازگار باشند؛ همهٔ ترکیب‌ها کار نمی‌کنند. لینک‌های TUIC، WireGuard، SSR، AnyTLS و Hysteria نسخهٔ 1 پشتیبانی نمی‌شوند. نام پروتکل ناسازگار را برای عبور از اعتبارسنجی عوض نکنید. محدودیت‌ها و شواهد آزمون را در راهنمای پروتکل‌ها بخوانید.
 
@@ -80,8 +94,6 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 ## نصب و راهنماها
 
 پردازنده و رم: حداقل رم، تعداد هسته و سرعت پردازندهٔ موردنیاز کاسپین هنوز با اندازه‌گیری مشخص نشده است. مصرف منابع به حجم ترافیک، پروتکل پراکسی و تعداد اتصال‌های هم‌زمان بستگی دارد. برای اعلام حداقل نیازمندی‌ها، باید مصرف منابع در حالت بیکار و زیر بار اندازه‌گیری شود.
-
-در ستون‌های عربی، اردو و ترکی، پیوندهای با برچسب <span dir="ltr">English</span> راهنمای انگلیسی را باز می‌کنند؛ ترجمهٔ این صفحه‌ها هنوز آماده نیست.
 
 <div dir="ltr" align="left">
 
@@ -92,19 +104,59 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 | <span dir="rtl">نصب در Linux و Raspberry Pi</span> | [English](https://github.com/Iman/caspian/wiki/Install-Linux) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Linux.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Linux.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Linux.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Linux.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Linux.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Linux.tr) |
 | <span dir="rtl">نصب در macOS</span> | [English](https://github.com/Iman/caspian/wiki/Install-macOS) | [فارسی](https://github.com/Iman/caspian/wiki/Install-macOS.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-macOS.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-macOS.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-macOS.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-macOS.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-macOS.tr) |
 | <span dir="rtl">نصب در Windows</span> | [English](https://github.com/Iman/caspian/wiki/Install-Windows) | [فارسی](https://github.com/Iman/caspian/wiki/Install-Windows.fa) | [Русский](https://github.com/Iman/caspian/wiki/Install-Windows.ru) | [中文](https://github.com/Iman/caspian/wiki/Install-Windows.zh) | [العربية](https://github.com/Iman/caspian/wiki/Install-Windows.ar) | [اردو](https://github.com/Iman/caspian/wiki/Install-Windows.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Install-Windows.tr) |
-| <span dir="rtl">پروتکل‌ها و ترابری‌ها</span> | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) |
-| <span dir="rtl">معماری و جریان داده</span> | [English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [English](https://github.com/Iman/caspian/wiki/Architecture) | [English](https://github.com/Iman/caspian/wiki/Architecture) | [English](https://github.com/Iman/caspian/wiki/Architecture) |
-| <span dir="rtl">پنل و تنظیمات</span> | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) |
-| <span dir="rtl">امنیت و حریم خصوصی</span> | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) |
-| <span dir="rtl">توسعه و آزمون</span> | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) |
+| <span dir="rtl">پروتکل‌ها و ترابری‌ها</span> | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) |
+| <span dir="rtl">معماری و جریان داده</span> | [English](https://github.com/Iman/caspian/wiki/Architecture) | [فارسی](https://github.com/Iman/caspian/wiki/Architecture.fa) | [Русский](https://github.com/Iman/caspian/wiki/Architecture.ru) | [中文](https://github.com/Iman/caspian/wiki/Architecture.zh) | [العربية](https://github.com/Iman/caspian/wiki/Architecture.ar) | [اردو](https://github.com/Iman/caspian/wiki/Architecture.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Architecture.tr) |
+| <span dir="rtl">پنل و تنظیمات</span> | [English](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [فارسی](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.fa) | [Русский](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ru) | [中文](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.zh) | [العربية](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ar) | [اردو](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Panel-and-Configuration.tr) |
+| <span dir="rtl">امنیت و حریم خصوصی</span> | [English](https://github.com/Iman/caspian/wiki/Security-and-Privacy) | [فارسی](https://github.com/Iman/caspian/wiki/Security-and-Privacy.fa) | [Русский](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ru) | [中文](https://github.com/Iman/caspian/wiki/Security-and-Privacy.zh) | [العربية](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ar) | [اردو](https://github.com/Iman/caspian/wiki/Security-and-Privacy.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Security-and-Privacy.tr) |
+| <span dir="rtl">توسعه و آزمون</span> | [English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) |
 | <span dir="rtl">عیب‌یابی و نقص‌های شناخته‌شده</span> | [English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) |
-| <span dir="rtl">انتشار و نگهداری</span> | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh) | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) |
-| <span dir="rtl">پروانه و منابع پروژه</span> | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) |
-| <span dir="rtl">نقشهٔ مستندات</span> | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) |
+| <span dir="rtl">انتشار و نگهداری</span> | [English](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance) | [فارسی](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) | [Русский](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru) | [中文](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh) | [العربية](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ar) | [اردو](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.tr) |
+| <span dir="rtl">پروانه و منابع پروژه</span> | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr) |
+| <span dir="rtl">نقشهٔ مستندات</span> | [English](https://github.com/Iman/caspian/wiki/Documentation-Map) | [فارسی](https://github.com/Iman/caspian/wiki/Documentation-Map.fa) | [Русский](https://github.com/Iman/caspian/wiki/Documentation-Map.ru) | [中文](https://github.com/Iman/caspian/wiki/Documentation-Map.zh) | [العربية](https://github.com/Iman/caspian/wiki/Documentation-Map.ar) | [اردو](https://github.com/Iman/caspian/wiki/Documentation-Map.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Documentation-Map.tr) |
 | <span dir="rtl">ترجمه‌ها</span> | [English](https://github.com/Iman/caspian/wiki/Translations) | [فارسی](https://github.com/Iman/caspian/wiki/Translations.fa) | [Русский](https://github.com/Iman/caspian/wiki/Translations.ru) | [中文](https://github.com/Iman/caspian/wiki/Translations.zh) | [العربية](https://github.com/Iman/caspian/wiki/Translations.ar) | [اردو](https://github.com/Iman/caspian/wiki/Translations.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Translations.tr) |
-| <span dir="rtl">الگوی صفحه</span> | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [English](https://github.com/Iman/caspian/wiki/Page-Template) |
+| <span dir="rtl">الگوی صفحه</span> | [English](https://github.com/Iman/caspian/wiki/Page-Template) | [فارسی](https://github.com/Iman/caspian/wiki/Page-Template.fa) | [Русский](https://github.com/Iman/caspian/wiki/Page-Template.ru) | [中文](https://github.com/Iman/caspian/wiki/Page-Template.zh) | [العربية](https://github.com/Iman/caspian/wiki/Page-Template.ar) | [اردو](https://github.com/Iman/caspian/wiki/Page-Template.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Page-Template.tr) |
 
 </div>
+
+## حذف نصب
+
+این بخش برای لینوکس و Raspberry Pi است. نسخه‌ای را اجرا کنید که نصب‌کننده روی دستگاه گذاشته است:
+
+<div dir="ltr" align="left">
+
+    sudo /usr/local/bin/caspian-uninstall
+
+</div>
+
+حذف‌کننده هر دو سرویس را متوقف می‌کند. سپس دفترچهٔ شبکه را بازپخش می‌کند تا مسیرها، قواعد فایروال و تنظیمات sysctl به حالت پیشین برگردند. سپس یونیت‌ها، فایل اجرایی و پوشه‌های زمان اجرا را حذف می‌کند. در پایان می‌پرسد که <span dir="ltr">`/var/lib/caspian`</span>، که پیکربندی ذخیره‌شده را در خود دارد، نگه داشته شود یا نه.
+
+برای حذف پیکربندی ذخیره‌شده و حساب <span dir="ltr">`caspian`</span> هم، بدون هیچ پرسشی:
+
+<div dir="ltr" align="left">
+
+    sudo /usr/local/bin/caspian-uninstall --purge -y
+
+</div>
+
+برای چاپ همهٔ کارها بدون انجام هیچ‌کدام:
+
+<div dir="ltr" align="left">
+
+    sudo /usr/local/bin/caspian-uninstall --dry-run
+
+</div>
+
+اگر دفترچه بازپخش نشود، حذف‌کننده سرویس‌ها را متوقف می‌کند، چیز دیگری حذف نمی‌کند و همین را می‌گوید. دوباره با <span dir="ltr">`--force`</span> اجرا کنید تا نرم‌افزار در هر حال حذف شود. سپس دستگاه را راه‌اندازی دوباره کنید. راه‌اندازی دوباره، شبکه را به پیکربندی خودِ دستگاه برمی‌گرداند.
+
+اگر نسخهٔ محلی وجود ندارد، همان اسکریپت را از این مخزن بگیرید:
+
+<div dir="ltr" align="left">
+
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Iman/caspian/main/uninstall.sh)"
+
+</div>
+
+حذف‌کننده فقط فایل‌های خودِ کاسپین را حذف می‌کند. <span dir="ltr">`hostapd`</span>، <span dir="ltr">`dnsmasq`</span> یا هیچ بستهٔ دیگری را حذف نمی‌کند.
 
 ## آزمایش‌های ثبت‌شده
 
@@ -122,6 +174,9 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 | پروتکل | ترابری | امنیت | یک درخواست HTTP را حمل می‌کند |
 |---|---|---|---|
 | VLESS | tcp (raw) | none | بله |
+| VLESS | websocket | none | بله |
+| VLESS | grpc | none | بله |
+| VLESS | httpupgrade | none | بله |
 | VMess | tcp (raw) | none | بله |
 | Shadowsocks، aes-256-gcm | tcp (raw) | none | بله |
 | SOCKS | tcp (raw) | none | بله |
@@ -138,7 +193,7 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 <span dir="ltr">`TestTheProofRejectsARequestThatDidNotGoThroughTheTunnel`</span> همان‌هایی هستند که این
 کنترل‌ها را از قصد به شاهد تبدیل می‌کنند.
 
-هر سطر را تنگ بخوانید. هر سطر جز Hysteria2 روی TCP خام اجرا می‌شود. هیچ سطری
+هر سطر را تنگ بخوانید. هر سطر جز Hysteria2 روی TCP اجرا می‌شود: خام برای همهٔ پروتکل‌ها، و از 2026-09-13 websocket، gRPC و httpupgrade هم روی VLESS. هیچ سطری
 REALITY را نمی‌راند، چون سمتِ سرورِ آن به یک هدفِ دست‌دادنِ واقعی نیاز دارد.
 Shadowsocks فقط aes-256-gcm است، چون رمزهای 2022 مسیرِ کدِ دیگری دارند. هر سطر
 یک درخواست TCP حمل می‌کند و UDP associate خاموش است. همه چیز روی loopback است،
@@ -194,7 +249,7 @@ golden سنجاق شده است**، پس تغییر در نحوهٔ ساخته �
 
 آن اجرا 1577 آزمون شاملِ زیرآزمون‌ها را اجرا کرد: 1572 قبول، 5 رد شده (skip)، 0
 مردود. پانزده بسته <span dir="ltr">`ok`</span> گزارش دادند. دو بسته هیچ فایلِ آزمونی ندارند:
-<span dir="ltr">`bdd/harness`</span> و <span dir="ltr">`local/devpanel`</span>. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
+<span dir="ltr">`test/cucumber/harness`</span> و <span dir="ltr">`local/devpanel`</span>. آن 5 رد شدن اعلام می‌کنند چه چیزی را اثبات
 نمی‌کنند: چرخهٔ عمرِ دستگاهِ TUN، که فقط لینوکسی است و به root و <span dir="ltr">`/dev/net/tun`</span>
 نیاز دارد؛ سه بررسیِ پیکربندیِ dnsmasq که به نصب بودنِ dnsmasq نیاز دارند؛ و یک
 تخلیهٔ PNG از QR که باید خودتان روشنش کنید.
@@ -542,6 +597,11 @@ stateDiagram-v2
 
 ## پروانه
 
-AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh)
+AGPL-3.0-or-later. [LICENSE](LICENSE) | [NOTICE](NOTICE) | [English](https://github.com/Iman/caspian/wiki/Licence-and-Credits) | [فارسی](https://github.com/Iman/caspian/wiki/Licence-and-Credits.fa) | [Русский](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ru) | [中文](https://github.com/Iman/caspian/wiki/Licence-and-Credits.zh) | [العربية](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ar) | [اردو](https://github.com/Iman/caspian/wiki/Licence-and-Credits.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Licence-and-Credits.tr)
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](docs/THIRD-PARTY.md).

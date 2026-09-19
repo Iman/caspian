@@ -43,7 +43,10 @@ func (execSystem) ProcessAlive(pid int) (bool, error) {
 // Supervisor's TERM, poll, KILL sequence does not exist here; the access
 // point drivers on this platform do not spawn daemons, so nothing reaches
 // this in practice.
-func (execSystem) SignalProcess(pid int, _ Signal) error {
+func (execSystem) SignalProcess(pid int, sig Signal) error {
+	if sig != SignalTerm && sig != SignalKill {
+		return fmt.Errorf("hotspot: unknown signal %d", sig)
+	}
 	if pid <= 0 {
 		return fmt.Errorf("hotspot: refusing to signal pid %d", pid)
 	}

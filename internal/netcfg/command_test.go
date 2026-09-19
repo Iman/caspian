@@ -5,6 +5,10 @@ package netcfg
 import (
 	"context"
 	"errors"
+	"os"
+	"path/filepath"
+	"regexp"
+	"runtime"
 	"testing"
 )
 
@@ -12,7 +16,7 @@ import (
 // command built from anything the user typed. The allowlist is where that
 // stops being a convention.
 func TestValidateCommand_Allowlist(t *testing.T) {
-	for _, ok := range []string{BinIP, BinIw, BinNft, BinSysctl} {
+	for _, ok := range []string{BinIP, BinIw, BinNft, BinSysctl, BinNmcli} {
 		if err := ValidateCommand(Command{Path: ok, Args: []string{"x"}}); err != nil {
 			t.Errorf("%s should be allowed: %v", ok, err)
 		}
@@ -88,6 +92,9 @@ func TestNewSystemRunner_RefusesOffLinux(t *testing.T) {
 	if !errors.Is(err, ErrDisallowedBinary) {
 		t.Errorf("err = %v, want ErrDisallowedBinary for a Linux binary on a non-Linux runner", err)
 	}
+	if runtime.GOOS == "windows" {
+		return
+	}
 	if _, err := r.Run(context.Background(), Command{Path: "ifconfig", Args: []string{"lo0"}}); err != nil {
 		t.Errorf("ifconfig lo0 on the macOS runner: %v", err)
 	}
@@ -99,5 +106,44 @@ func TestCommandString_IsNotAShellCommand(t *testing.T) {
 	want := `ip route add "a b"`
 	if got != want {
 		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+// TestTheUninstallerReplaysEveryBinaryThisPackageMayRun holds uninstall.sh to
+// the allowlist above.
+//
+// The uninstaller replays the network journal, and it refuses a journal that
+// names a binary it does not know. That is the right refusal for /bin/sh. It is
+// the wrong refusal for nmcli, which this package runs when it takes an
+// interface away from NetworkManager, and whose inverse it journals. The two
+// lists drifted: this package allowed five binaries, the script's ALLOWED tuple
+// named four, and on 2026-09-12 a real uninstall on a Raspberry Pi refused its
+// whole journal at entry 6 and restored nothing. The script cannot import this
+// package, so this test reads its tuple and compares the two sets.
+func TestTheUninstallerReplaysEveryBinaryThisPackageMayRun(t *testing.T) {
+	body, err := os.ReadFile(filepath.Join("..", "..", "uninstall.sh"))
+	if err != nil {
+		t.Fatalf("reading uninstall.sh: %v", err)
+	}
+	m := regexp.MustCompile(`(?m)^ALLOWED = \((.*)\)$`).FindSubmatch(body)
+	if m == nil {
+		t.Fatal("uninstall.sh no longer has a line of the form ALLOWED = (...). " +
+			"The replay allowlist moved; move this test with it rather than deleting it.")
+	}
+	script := map[string]bool{}
+	for _, q := range regexp.MustCompile(`"([^"]+)"`).FindAllSubmatch(m[1], -1) {
+		script[string(q[1])] = true
+	}
+	for bin := range allowedBinaries {
+		if !script[bin] {
+			t.Errorf("this package may run %q and journal its inverse, but the uninstaller's "+
+				"ALLOWED tuple does not name it, so a journal holding one is refused whole and "+
+				"the box's network is not restored", bin)
+		}
+	}
+	for bin := range script {
+		if !allowedBinaries[bin] {
+			t.Errorf("the uninstaller would replay %q, which this package never runs", bin)
+		}
 	}
 }

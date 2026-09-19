@@ -593,7 +593,8 @@ func TestSocksNeverBindsAWildcard(t *testing.T) {
 // necessary: no geoip: or geosite: value anywhere.
 //
 // A geo rule sends the engine to a .dat file on disk located by
-// xray.location.asset (infra/conf/router.go:445-458 and :180-192), which would
+// xray.location.asset (common/geodata/rule_parser.go:20-21 and
+// geodat_loader.go:28-42), which would
 // reintroduce a downloaded artefact this product removed. See private.go.
 func TestNoGeoRules(t *testing.T) {
 	count := 0

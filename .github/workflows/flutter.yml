@@ -39,7 +39,7 @@ jobs:
       - name: Run Flutter browser integration
         run: |
           bash scripts/build-ui.sh web dev
-          bash bdd/flutter/run.sh
+          bash test/cucumber/flutter/run.sh
       - name: Preserve test evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -47,7 +47,7 @@ jobs:
           name: flutter-test-evidence
           path: |
             ui/build/unit-tests/
-            bdd/flutter/reports/
+            test/cucumber/flutter/reports/
 
   native-build-and-integration:
     name: Native ${{ matrix.target }}

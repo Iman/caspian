@@ -11,6 +11,7 @@ import (
 	"net/netip"
 	"os"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"time"
@@ -317,7 +318,7 @@ func theConfigIsSavedOnDisk(w *World) error {
 	if err != nil {
 		return fmt.Errorf("no state file at %s: %w", p, err)
 	}
-	if got := fi.Mode().Perm(); got != 0o600 {
+	if got := fi.Mode().Perm(); runtime.GOOS != "windows" && got != 0o600 {
 		return fmt.Errorf("the state file holds the pasted credential and its mode is %#o, want 0600", got)
 	}
 	if !w.store.Proxy().IsConfigured() {

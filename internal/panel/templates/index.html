@@ -198,10 +198,55 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
     {{if .ConfigName}}<span class="config-name">{{.ConfigName}}</span>{{end}}
     <bdi dir="ltr" class="mono muted">{{.ConfigSummary}}</bdi>
   </p>
+  {{if .ConfigEntryReset}}<p class="hint">{{.T "config.entries.reset"}}</p>{{end}}
+  {{if .ConfigDroppedLine}}<p class="hint">{{.ConfigDroppedLine}}</p>{{end}}
+  {{if .ConfigEntries}}
+  <form method="post" action="/select" class="stack entries">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <fieldset>
+      <legend>{{.T "config.entries.heading"}}</legend>
+      {{range .ConfigEntries}}
+      <label>
+        <input type="radio" name="entry" value="{{.Index}}"{{if .Selected}} checked{{end}}>
+        <span>{{.Label}}</span>
+        {{if .Name}}<bdi dir="ltr" class="mono">{{.Name}}</bdi>{{end}}
+        <bdi dir="ltr" class="mono muted">{{.Summary}}</bdi>
+      </label>
+      {{end}}
+    </fieldset>
+    <button type="submit" class="go">{{.T "config.entries.submit"}}</button>
+  </form>
+  {{end}}
   {{else}}
   <p>{{.T "config.none"}}</p>
   {{end}}
+  {{if .SubscriptionSet}}
+  <p class="hint">{{.T "config.subscription.set"}}</p>
+  {{if .RefreshLine}}<p class="hint">{{.RefreshLine}}</p>{{end}}
+  {{if .RefreshUsedLine}}<p class="hint">{{.RefreshUsedLine}}</p>{{end}}
+  {{if .RefreshExpiresLine}}<p class="hint">{{.RefreshExpiresLine}}</p>{{end}}
+  <form method="post" action="/refresh" class="stack">
+    <input type="hidden" name="csrf" value="{{.CSRF}}">
+    <button type="submit" id="refresh-button" class="go"{{if not .RefreshLive}} disabled{{end}}>{{.T "config.refresh.button"}}</button>
+  </form>
+  {{if .RefreshDisabledWhy}}<p class="hint">{{.RefreshDisabledWhy}}</p>{{end}}
+  {{end}}
 
+{{if .HasConfig}}
+  <details class="disclose">
+    <summary>{{.T "sni.heading"}}: {{if .AntiDPIOn}}{{.T "sni.state_on"}}{{else}}{{.T "sni.state_off"}}{{end}}</summary>
+    <form method="post" action="/sni" class="stack">
+      <input type="hidden" name="csrf" value="{{.CSRF}}">
+      <label for="spoof_sni">{{.T "sni.label"}}</label>
+      <input id="spoof_sni" name="spoof_sni" type="text" value="{{.SpoofSNI}}" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <p class="hint">{{.T "sni.hint"}}</p>
+      <label><input type="checkbox" name="tcp_split" {{if .TCPSplit}}checked{{end}}> {{.T "sni.tcp_split"}}</label>
+      <label><input type="checkbox" name="tls_record_split" {{if .TLSRecordSplit}}checked{{end}}> {{.T "sni.tls_record_split"}}</label>
+      <p class="hint">{{.T "sni.split_hint"}}</p>
+      <button type="submit">{{.T "sni.save"}}</button>
+    </form>
+  </details>
+{{end}}
   <details class="disclose" {{if .SetupIncomplete}}open{{end}}>
     <summary>{{if .HasConfig}}{{.T "config.replace"}}{{else}}{{.T "config.add"}}{{end}}</summary>
     <form method="post" action="/config" class="stack">
@@ -213,12 +258,39 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
       <p class="hint">{{.T "config.paste.hint"}}</p>
       <label for="label">{{.T "config.name.label"}}</label>
       <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <label for="subscription_url">{{.T "config.subscription.label"}}</label>
+      <input id="subscription_url" name="subscription_url" type="text" dir="ltr"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             autocomplete="off" inputmode="url">
+      <p class="hint">{{.T "config.subscription.hint"}}</p>
       <button type="submit" class="go">{{.T "config.submit"}}</button>
     </form>
   </details>
 </section>
 
 <p class="detected" id="detected">{{.DetectedLine}}</p>
+
+{{- /*
+  The loopback proxy address, shown only while the box is connected. The
+  element is always in the page and hidden when there is nothing to show,
+  because panel.js has to be able to make it appear and disappear on a poll
+  and cannot build the translated label itself. The address is a technical
+  value that can never be Persian, so it carries dir="ltr".
+*/ -}}
+<p class="detected" id="local-proxy"{{if not .LocalProxy}} hidden{{end}}>
+  <span class="label">{{.T "status.localproxy"}}</span>
+  <bdi dir="ltr" class="mono" id="local-proxy-value">{{.LocalProxy}}</bdi></p>
+
+{{- /*
+  The anti-DPI controls in force, shown only while the box is connected and at
+  least one is saved. Always in the page and hidden otherwise, so panel.js can
+  show and hide it on a poll; the words change only through the Save form,
+  which re-renders the page. The decoy name is a domain and is isolated as LTR
+  like every other address on this page.
+*/ -}}
+<p class="detected" id="anti-dpi"{{if not .AntiDPIShown}} hidden{{end}}>
+  <span class="label">{{.T "sni.active_label"}}</span>
+  <span id="anti-dpi-value">{{if .AntiDPIDecoy}}{{.T "sni.active_name"}} <bdi dir="ltr" class="mono">{{.AntiDPIDecoy}}</bdi>{{if .AntiDPISplits}}, {{end}}{{end}}{{.AntiDPISplits}}</span></p>
 
 <section class="card" aria-labelledby="events-heading">
   <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>{{.T "events.heading"}}</h2>

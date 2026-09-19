@@ -80,3 +80,8 @@ GPL-3.0 را لینک می‌کند، پس شرایطِ خانوادهٔ GPL ا�
 جایش را به نسخه‌ای بدهید که بازبینی حقوقی شده باشد.
 
 </div>
+
+<!-- SNI upstream credits -->
+
+منبع اصلی کد و ایدهٔ جعل SNI، [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) با مجوز GPL-3.0 است؛ نسخهٔ x64 ویندوز از WinDivert با مجوز LGPL-3.0 استفاده می‌کند.
+[مجوزها، منابع و قدردانی از پروژه‌های دیگر](docs/THIRD-PARTY.md).

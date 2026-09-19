@@ -348,6 +348,71 @@ func TestPrivacyScannerCatchesAValueInAFileName(t *testing.T) {
 	t.Fatalf("a removed value in a FILE NAME was not reported; findings were %v", findings)
 }
 
+// TestPrivacyScannerReadsASymlinkAsItsTargetText pins what the walk does with
+// a symbolic link, because on 2026-09-12 it did the wrong thing and the gate
+// ended in an error rather than a verdict.
+//
+// Flutter's macOS build output holds App.framework/Resources, a link to a
+// directory. WalkDir does not follow links, so the entry was not a directory,
+// and os.ReadFile on it failed with "is a directory". That aborted
+// TestRepositoryCarriesNobodysAddress after 479 seconds of reading build
+// output, with nothing scanned to a conclusion.
+//
+// git stores a symlink as its target path and nothing else, so that is the text
+// this scan reads. A link to a directory is therefore harmless, a link whose
+// TARGET PATH names a removed value is a finding, and a dangling link is not
+// followed at all. All three are planted here.
+func TestPrivacyScannerReadsASymlinkAsItsTargetText(t *testing.T) {
+	root := t.TempDir()
+	dir := filepath.Join(root, "internal", "planted")
+	if err := os.MkdirAll(filepath.Join(dir, "Versions", "Current", "Resources"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	// The shape that broke the walk: a relative link to a directory.
+	if err := os.Symlink(filepath.Join("Versions", "Current", "Resources"), filepath.Join(dir, "Resources")); err != nil {
+		if runtime.GOOS == "windows" {
+			t.Skip("symlinks need Windows developer mode or the symlink privilege, so the symlink rule is not proven on this machine")
+		}
+		t.Fatal(err)
+	}
+	// A dangling link whose target path carries the planted value. Nothing
+	// exists at the target, so a walk that followed links would fail here, and
+	// a walk that ignored links would miss the value.
+	linkWithValue := filepath.Join(dir, "capture")
+	if err := os.Symlink(filepath.Join("..", plantedSentinel, "iw-dev.txt"), linkWithValue); err != nil {
+		t.Fatal(err)
+	}
+
+	sentinels := append(PrivacySentinels(), plantedSentinelEntry())
+	findings, err := ScanRepo(root, sentinels)
+	if err != nil {
+		t.Fatalf("a symlink to a directory made the scan fail instead of finishing: %v", err)
+	}
+	var hits []Finding
+	for _, f := range findings {
+		if f.Class == ClassPrivacySentinel && f.Path == "internal/planted/capture" {
+			hits = append(hits, f)
+		}
+	}
+	if len(hits) == 0 {
+		t.Fatalf("the planted value in a symlink's target path was not reported; findings were %v", findings)
+	}
+	t.Logf("symlink target text reported as expected: %s", hits[0])
+
+	// With the value link removed, the directory link alone leaves the tree
+	// clean, so the hit above came from the link text and nothing else.
+	if err := os.Remove(linkWithValue); err != nil {
+		t.Fatal(err)
+	}
+	after, err := ScanRepo(root, sentinels)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(after) != 0 {
+		t.Fatalf("with the value link removed the scan still reports %v", after)
+	}
+}
+
 // TestAPlantedPrivacySentinelCannotBeAllowlisted holds the rule that has no
 // exceptions, for the privacy half.
 //
@@ -665,7 +730,19 @@ func rawPrivacyFindings(root string) ([]Finding, error) {
 		}
 		opt := scanOpts{applyLiteralAllow: false, sentinelsOnly: shapeExempt}
 		raw = append(raw, scanPrivacyName(rel, sentinels, opt)...)
-		if info.IsDir() || skipExt[strings.ToLower(filepath.Ext(path))] {
+		if info.IsDir() {
+			return nil
+		}
+		if info.Mode()&os.ModeSymlink != 0 {
+			// Same rule as ScanRepo: the link's target text, never the target.
+			target, lerr := os.Readlink(path)
+			if lerr != nil {
+				return lerr
+			}
+			raw = append(raw, scanPrivacyBody(rel, target, sentinels, opt)...)
+			return nil
+		}
+		if skipExt[strings.ToLower(filepath.Ext(path))] {
 			return nil
 		}
 		b, rerr := os.ReadFile(path)

@@ -367,6 +367,13 @@ func (l *Listener) dispatch(ctx context.Context, req wireRequest) wireResponse {
 			return l.faultResponse(req.Action, err)
 		}
 		return wireResponse{Log: &lg}
+
+	case panel.ActionRefresh:
+		reply, err := l.svc.Refresh(ctx, *req.Refresh)
+		if err != nil {
+			return l.faultResponse(req.Action, err)
+		}
+		return wireResponse{Refresh: &reply}
 	}
 	// Unreachable: decodeRequest refused anything not in panel.Actions. It is
 	// here so that an action added to internal/panel without a case above is a

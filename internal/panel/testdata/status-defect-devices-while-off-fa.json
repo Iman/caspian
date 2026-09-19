@@ -9,6 +9,8 @@
   "devices": 1,
   "deviceLine": "1 دستگاه متصل است",
   "detected": "اینترنت: کابل شبکه. هات‌اسپات: وای‌فای داخلی.",
+  "localProxy": "",
+  "antiDPI": false,
   "problem": "",
   "hasConfig": true,
   "uptime": "روشن نیست",

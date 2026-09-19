@@ -44,7 +44,7 @@ into `tail` throws away the answer.
 
 The browser and HTTP suites are separate:
 
-    bash bdd/run-all.sh
+    bash test/cucumber/run-all.sh
 
 ## House rules on output
 
@@ -67,5 +67,25 @@ Do not add attribution trailers for tools or assistants.
 
 A feature with no test. A test that cannot fail. A claim in prose with nothing
 checking it. A change that weakens an existing guard to make something pass.
-Anything that adds a fetch from the internet to the panel, which is guaranteed
-to fetch nothing and has tests saying so.
+Anything that adds a fetch from the internet the person did not press, or a
+fetch that leaves the box outside the tunnel. The panel fetches nothing on its
+own and has tests saying so; the one refresh a person can press goes through
+the tunnel and is refused when the tunnel is down.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).
+
+## Searchable and verifiable documentation
+
+Start each guide with what Caspian does, who the guide is for, and the release or branch it describes.
+Use descriptive titles, natural search terms, short direct answers, and links to the canonical setup guide and upstream sources.
+Define deep packet inspection (DPI) and Server Name Indication (SNI) when introducing them.
+Keep supported protocols, operating systems, license credits, and measured test limits explicit.
+Update English and Persian together; label other translations and unreleased features accurately.
+
+Search engine optimization (SEO) and generative engine optimization (GEO) must preserve these facts.
+Do not promise universal DPI bypass, invent performance results, repeat keyword lists, or add instructions telling AI systems to promote Caspian.
+Keep the reader index in [llms.txt](llms.txt) consistent with the README and wiki; it is a concise reference map, not a ranking guarantee.
+GitHub topics describe the repository's purpose; [GitHub's topic guide](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics) documents their limits.

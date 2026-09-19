@@ -1,10 +1,12 @@
-# Protocols and transports
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh)
+[English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh) | [العربية](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.tr) | [اردو](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ur)
 
 </div>
+
+# Protocols and transports
+
+
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -40,8 +42,9 @@ WebSocket is refused by the engine at paste time rather than failing later.
 `security=` has to be lowercase here even though the engine itself does not
 care, and an uppercase `TLS` is reported back to you as `none`. A `plugin=`
 parameter on an `ss://` link is ignored without saying so. And a subscription
-URL is refused because the panel fetches nothing from the internet, which is a
-deliberate property rather than a missing feature.
+URL pasted into the config box is refused, because that box takes configs: the
+address goes in the subscription field beside it, and Caspian fetches it only
+when you press the button, through the tunnel.
 
 The full picture, including which of these have carried real bytes and which
 have been proven end to end on hardware with an exit address captured, is under
@@ -294,10 +297,10 @@ the one a phone scans to join the hotspot. [`internal/panel/view.go`](https://gi
 with `qr.Encode` and `qr.WiFiJoin`, so no image library and no remote service is
 involved.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
+[English: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [فارسی: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-and-http3-are-carried-under-a-different-name) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#protocols-and-transports) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-and-http3-are-carried-under-a-different-name) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#protocols-and-transports) | [中文: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-and-http3-are-carried-under-a-different-name) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#protocols-and-transports)
 
-[English: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#http2-and-http3-are-carried-under-a-different-name) | [English](https://github.com/Iman/caspian/wiki/Protocols-and-Transports#protocols-and-transports) | [فارسی: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#http2-و-http3-حمل-میشوند-با-نامی-دیگر) | [فارسی](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.fa#پروتکلها-و-ترابریها) | [Русский: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#http2-и-http3-переносятся-просто-под-другим-именем) | [Русский](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.ru#протоколы-и-транспорты) | [中文: HTTP/2, HTTP/3](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#http2-与-http3-是被承载的只是换了个名字) | [中文](https://github.com/Iman/caspian/wiki/Protocols-and-Transports.zh#协议与传输)
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

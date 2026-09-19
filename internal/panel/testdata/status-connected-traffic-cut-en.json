@@ -9,6 +9,8 @@
   "devices": 3,
   "deviceLine": "3 devices connected",
   "detected": "Internet: Ethernet. Hotspot: built-in WiFi.",
+  "localProxy": "",
+  "antiDPI": false,
   "problem": "",
   "hasConfig": true,
   "uptime": "Not running",

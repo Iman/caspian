@@ -138,11 +138,53 @@ type pageData struct {
 	// ---- the config ----
 	SetupIncomplete bool
 	HasConfig       bool
-	ConfigName      string
-	ConfigSummary   LTR
+	SpoofSNI        string
+	TCPSplit        bool
+	TLSRecordSplit  bool
+	// AntiDPIOn says whether any anti-DPI control is saved, a decoy name or a
+	// split, and suffixes the section heading so the state is visible without
+	// opening it. AntiDPIShown is AntiDPIOn while the page is Connected and
+	// drives the line under the status. AntiDPIDecoy and AntiDPISplits are that
+	// line's two halves: the decoy name isolated as LTR, because it is a domain
+	// with dots, and the active splits already joined in the reader's language.
+	AntiDPIOn     bool
+	AntiDPIShown  bool
+	AntiDPIDecoy  LTR
+	AntiDPISplits string
+	ConfigName    string
+	ConfigSummary LTR
+	// ConfigEntries is the list the person chooses from when the pasted text
+	// holds more than one usable entry; empty otherwise, so the page draws no
+	// list for a single link. ConfigDroppedLine is the sentence about lines
+	// that were in the text and are not in the list, or empty when none were.
+	// ConfigEntryReset says the stored selection pointed past the end of the
+	// list and the box is on the first entry instead.
+	ConfigEntries     []ConfigEntry
+	ConfigDroppedLine string
+	ConfigEntryReset  bool
+
+	// The subscription address and the refresh it allows. The address itself
+	// is NOT here in any form: it is a credential, and the isolation test
+	// walks this struct, so a field holding it would be a field the page
+	// could render. SubscriptionSet is the whole of what the page may say
+	// about it. RefreshLive is false while the tunnel is down, which is when
+	// the button is drawn disabled with RefreshDisabledWhy beside it.
+	SubscriptionSet    bool
+	RefreshLive        bool
+	RefreshDisabledWhy string
+	RefreshLine        string
+	RefreshUsedLine    string
+	RefreshExpiresLine string
 
 	// ---- what was detected ----
 	DetectedLine string
+
+	// LocalProxy is the engine's loopback SOCKS inbound, host:port, filled
+	// only while the page is Connected and empty otherwise. LTR because it is
+	// an address with dots and a colon, which is exactly the shape the bidi
+	// algorithm reorders inside Persian text. The label beside it comes from
+	// the catalogue (MsgStatusLocalProxy) in the template.
+	LocalProxy LTR
 
 	// ---- events ----
 	Events []EventLine
@@ -346,6 +388,13 @@ func (d *pageData) fillStatus(st SystemStatus, fault Fault) {
 	case st.Connected():
 		d.Connected = true
 		d.StatusWord, d.StatusShape = T(l, MsgStatusConnected), shapeOn
+		// Only here. A box that is off, starting, faulted or cut shows no
+		// proxy address, because in none of those states can a person use it,
+		// and a stale address on a page is an address somebody types in.
+		d.LocalProxy = LTR(st.LocalProxy)
+		// Same rule for the anti-DPI line: only while connected, because that
+		// is when the saved controls are in force on a live connection.
+		d.AntiDPIShown = d.AntiDPIOn
 	case st.Engine.Phase == engine.PhaseStarting:
 		d.StatusWord, d.StatusShape = T(l, MsgStatusStarting), shapeWorking
 	case st.Engine.Phase == engine.PhaseFailed:
@@ -418,18 +467,48 @@ func (d *pageData) fillTiles(st SystemStatus, fault Fault, now func() time.Time)
 	d.Tiles = []Tile{status, devices, config, uptime}
 }
 
+// ConfigEntry is one row of the entry list: a position to post back, a label
+// naming that position, the provider's name for it when there is one, and the
+// same protocol-and-host summary the config line shows for the chosen entry.
+//
+// Name is provider text. It is capped and stripped of control characters by
+// internal/link before it gets here, and it is typed LTR so the template
+// isolates it from the surrounding Persian; it must never reach a log line, an
+// event or the status document, which is why none of those read this struct.
+type ConfigEntry struct {
+	Index    int
+	Label    string
+	Name     LTR
+	Summary  LTR
+	Selected bool
+}
+
 // fillConfig writes what the page says about the stored config.
 //
 // The raw text is read from state here and used for exactly one thing: parsing
 // it. What leaves this function is the parsed, redacted view.
 func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 	d.HasConfig = proxy.IsConfigured()
+	d.SpoofSNI = proxy.SpoofSNI.Reveal()
+	d.TCPSplit = proxy.TCPSplit
+	d.TLSRecordSplit = proxy.TLSRecordSplit
+	d.AntiDPIOn = d.SpoofSNI != "" || d.TCPSplit || d.TLSRecordSplit
+	d.AntiDPIDecoy = LTR(d.SpoofSNI)
+	var splits []string
+	if d.TCPSplit {
+		splits = append(splits, T(d.Lang, MsgTCPSplit))
+	}
+	if d.TLSRecordSplit {
+		splits = append(splits, T(d.Lang, MsgTLSRecordSplit))
+	}
+	d.AntiDPISplits = strings.Join(splits, ", ")
 	if !d.HasConfig {
 		return
 	}
 	d.ConfigName = proxy.Label
 
-	l, err := link.Parse(proxy.Raw.Reveal())
+	raw := proxy.Raw.Reveal()
+	list, err := link.ParseAll(raw)
 	if err != nil {
 		// A stored config that no longer parses is a real state: it can happen
 		// after an engine upgrade drops a transport. Saying so is better than
@@ -440,8 +519,119 @@ func (d *pageData) fillConfig(proxy state.ProxyConfig) {
 		d.ConfigSummary = ""
 		return
 	}
+	d.ConfigDroppedLine = droppedLine(d.Lang, list.Dropped)
+
+	l, clamped, err := link.Select(raw, proxy.Selected)
+	if err != nil {
+		// The chosen entry is one this box refuses. The others are still
+		// listed so the person can pick another; nothing is chosen for them.
+		if !d.HasProblem {
+			d.setProblem(ParseProblem(err))
+		}
+		d.ConfigSummary = ""
+		d.fillEntries(list, -1)
+		return
+	}
+	d.ConfigEntryReset = clamped
 	d.ConfigSummary = LTR(fmt.Sprintf("%s %s", l.Protocol, l.Address))
+	d.fillEntries(list, l.Index)
 	d.fillConfigFacts(l)
+}
+
+// fillEntries draws the list only when there is a choice to make. A single
+// usable entry gets no radio, because a list of one is a question with one
+// answer.
+func (d *pageData) fillEntries(list *link.List, selected int) {
+	if len(list.Entries) < 2 {
+		return
+	}
+	for _, e := range list.Entries {
+		d.ConfigEntries = append(d.ConfigEntries, ConfigEntry{
+			Index:    e.Index,
+			Label:    T(d.Lang, MsgConfigEntryNumber, e.Index+1),
+			Name:     LTR(e.Tag),
+			Summary:  LTR(fmt.Sprintf("%s %s", e.Protocol, e.Address)),
+			Selected: e.Index == selected,
+		})
+	}
+}
+
+// fillSubscription writes what the page says about the subscription address
+// and the last refresh.
+//
+// It runs after fillConfig because the number of entries in the refreshed
+// list is what fillConfig already parsed. It says nothing at all when no
+// address is stored, so a person who pastes and never subscribes sees the
+// config card they saw before.
+func (d *pageData) fillSubscription(proxy state.ProxyConfig, st SystemStatus, fault Fault, now time.Time) {
+	d.SubscriptionSet = proxy.SubscriptionURL.Reveal() != ""
+	if !d.SubscriptionSet {
+		return
+	}
+	d.RefreshLive = fault == FaultNone && st.Engine.Phase == engine.PhaseRunning
+	if !d.RefreshLive {
+		d.RefreshDisabledWhy = T(d.Lang, MsgConfigRefreshDisabled)
+	}
+	if proxy.RefreshedAt.IsZero() {
+		return
+	}
+	entries := len(d.ConfigEntries)
+	if entries == 0 {
+		// fillConfig draws no list for a single entry, and a config that no
+		// longer parses has none at all. One is the honest reading of both:
+		// the box is using one entry either way.
+		entries = 1
+	}
+	count := T(d.Lang, MsgRefreshEntriesOne)
+	if entries > 1 {
+		count = T(d.Lang, MsgRefreshEntriesMany, entries)
+	}
+	d.RefreshLine = T(d.Lang, MsgRefreshLine, ago(d.Lang, now.Sub(proxy.RefreshedAt)), count)
+
+	// The figures are the provider's own. Total zero is how a provider says
+	// there is no limit, and a limit of nothing is not worth a sentence.
+	if proxy.Quota.Total > 0 {
+		used := proxy.Quota.Upload + proxy.Quota.Download
+		d.RefreshUsedLine = T(d.Lang, MsgRefreshUsed,
+			isolateLTR(gigabytes(used)), isolateLTR(gigabytes(proxy.Quota.Total)))
+	}
+	if proxy.Quota.Expire > 0 {
+		// The figure is the instant the subscription stops working, so the
+		// last day it still covers is the day before that instant. A provider
+		// whose month ends at midnight on the first would otherwise be shown
+		// as expiring on a day the person cannot use.
+		when := time.Unix(proxy.Quota.Expire-1, 0).UTC().Format("2006-01-02")
+		d.RefreshExpiresLine = T(d.Lang, MsgRefreshExpires, isolateLTR(when))
+	}
+}
+
+// ago renders how long ago the refresh happened, in the largest unit that
+// still reads as a number the person can check against their own memory.
+func ago(lang Lang, d time.Duration) string {
+	switch {
+	case d < time.Minute:
+		return T(lang, MsgRefreshWhenJustNow)
+	case d < time.Hour:
+		return T(lang, MsgRefreshWhenMinutes, int(d.Minutes()))
+	case d < 24*time.Hour:
+		return T(lang, MsgRefreshWhenHours, int(d.Hours()))
+	default:
+		return T(lang, MsgRefreshWhenDays, int(d.Hours()/24))
+	}
+}
+
+// droppedLine is the sentence for n lines that were in the text and are not
+// in the list, or empty for none. One and many are separate keys because the
+// two languages inflect them differently.
+func droppedLine(lang Lang, n int) string {
+	switch {
+	case n <= 0:
+		return ""
+	case n == 1:
+		return T(lang, MsgConfigDroppedOne)
+	default:
+		return T(lang, MsgConfigDroppedMany, n)
+	}
 }
 
 func (d *pageData) fillConfigFacts(l *link.Link) {
@@ -481,7 +671,7 @@ func (d *pageData) fillConfigFacts(l *link.Link) {
 	if l.Count > 1 {
 		d.ConfigFacts = append(d.ConfigFacts, Fact{
 			Label: T(lang, MsgAdvConfigCount),
-			Words: T(lang, MsgAdvConfigCount, l.Count),
+			Words: T(lang, MsgAdvConfigCount, l.Count, l.Index+1),
 		})
 	}
 }
@@ -651,9 +841,21 @@ type statusJSON struct {
 	Devices    int    `json:"devices"`
 	DeviceLine string `json:"deviceLine"`
 	Detected   string `json:"detected"`
-	Problem    string `json:"problem"`
-	HasConfig  bool   `json:"hasConfig"`
-	Uptime     string `json:"uptime"`
+
+	// LocalProxy is the loopback SOCKS inbound, host:port, while the page is
+	// Connected and empty otherwise. It lets the address appear and disappear
+	// without a reload, which matters because the port is not fixed any more:
+	// since 2026-09-12 the privileged side moves off 10808 when another
+	// program holds it (issue #2). A loopback address is not a credential.
+	LocalProxy string `json:"localProxy"`
+
+	// AntiDPI is true while the page is Connected and at least one anti-DPI
+	// control is saved. It only shows and hides the line under the status;
+	// the words on it change through the Save form, which re-renders the page.
+	AntiDPI   bool   `json:"antiDPI"`
+	Problem   string `json:"problem"`
+	HasConfig bool   `json:"hasConfig"`
+	Uptime    string `json:"uptime"`
 
 	// PowerLabel is the word on the switch, already in the reader's language.
 	//
@@ -677,6 +879,13 @@ type statusJSON struct {
 func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, hasHotspot bool, events []Event) statusJSON {
 	d := pageData{Lang: l}
 	d.HasConfig = hasConfig
+	if p.store != nil {
+		// The saved anti-DPI controls decide whether the line under the status
+		// is shown; fillConfig is not run here because the poll must not parse
+		// the config every few seconds for one boolean.
+		proxy := p.store.Proxy()
+		d.AntiDPIOn = proxy.SpoofSNI.Reveal() != "" || proxy.TCPSplit || proxy.TLSRecordSplit
+	}
 	d.fillStatus(st, fault)
 	d.fillTiles(st, fault, p.now)
 	d.fillNextStep(hasHotspot, st.ClientTrafficCut,
@@ -690,6 +899,8 @@ func (p *Panel) newStatusJSON(l Lang, st SystemStatus, fault Fault, hasConfig, h
 		Devices:    st.Hotspot.Devices,
 		DeviceLine: d.DeviceLine,
 		Detected:   d.DetectedLine,
+		LocalProxy: string(d.LocalProxy),
+		AntiDPI:    d.AntiDPIShown,
 		Problem:    strings.TrimSpace(strings.TrimSpace(d.ProblemHeadline + " " + d.ProblemAdvice)),
 		HasConfig:  hasConfig,
 		Uptime:     d.Tiles[3].Value,

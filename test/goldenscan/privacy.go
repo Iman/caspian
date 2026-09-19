@@ -566,6 +566,21 @@ func ScanRepo(moduleRoot string, sentinels []PrivacySentinel) ([]Finding, error)
 		if d.IsDir() {
 			return nil
 		}
+		if d.Type()&fs.ModeSymlink != 0 {
+			// A symlink is scanned as the text git commits for it: the target
+			// path, and nothing behind it. The file it points at is walked in
+			// its own right if it lies inside the tree, and if it lies outside
+			// the tree its contents reach no clone. Following the link is also
+			// what broke this walk on 2026-09-12. Flutter build output holds
+			// links to directories, os.ReadFile on one says "is a directory",
+			// and the whole scan ended in an error instead of a verdict.
+			target, lerr := os.Readlink(path)
+			if lerr != nil {
+				return lerr
+			}
+			found = append(found, scanPrivacyBody(rel, target, sentinels, opt)...)
+			return nil
+		}
 		if skipExt[strings.ToLower(filepath.Ext(path))] {
 			return nil
 		}

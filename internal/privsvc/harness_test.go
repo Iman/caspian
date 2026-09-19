@@ -545,7 +545,11 @@ func newWorld(t *testing.T, opts ...func(*world)) *world {
 	paths.DnsmasqConf = filepath.Join(dir, "dnsmasq.conf")
 	paths.HostapdPID = filepath.Join(dir, "hostapd.pid")
 	paths.DnsmasqPID = filepath.Join(dir, "dnsmasq.pid")
+	// The recorder models Linux paths even when the tests run on Windows.
 	paths.LeaseFile = filepath.Join(dir, "dnsmasq.leases")
+	if !strings.HasPrefix(paths.LeaseFile, "/") {
+		paths.LeaseFile = "/" + filepath.ToSlash(paths.LeaseFile)
+	}
 	paths.StateDir = dir
 
 	w.cfg = Config{

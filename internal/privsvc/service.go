@@ -30,10 +30,11 @@ import (
 // reads, and is only ever held for the length of a struct copy. This is the
 // same shape internal/engine uses for the same reason.
 type Service struct {
-	cfg  Config
-	sup  hotspot.AccessPoint
-	diag *diagRing
-	opMu sync.Mutex
+	cfg          Config
+	sup          hotspot.AccessPoint
+	diag         *diagRing
+	opMu         sync.Mutex
+	sniForwarder SNIForwarder // guarded by opMu
 
 	mu             sync.RWMutex
 	applier        *netcfg.Applier
@@ -59,6 +60,15 @@ type Service struct {
 	// the only part of the user's configuration this struct retains, it is
 	// not a credential, and it is never logged beside the address.
 	serverPortValue uint16
+
+	// socksPort is the loopback port this run's SOCKS inbound binds. It is
+	// chosen by chooseSocksPort (socksport.go) at the start of a run, read by
+	// every consumer of the port through socksPortInForce, reported by Status
+	// as LocalProxy, and cleared by stopLocked. Zero between runs. It is
+	// cfg.SocksPort when that port was free and another loopback port when
+	// another program held it, which is the Windows report of 2026-09-12
+	// (issue #2).
+	socksPort uint16
 }
 
 var _ panel.Privileged = (*Service)(nil)
@@ -225,7 +235,17 @@ func (s *Service) Status(ctx context.Context) (panel.SystemStatus, error) {
 	plan := s.plan
 	hp := s.hotspotPlan
 	running := s.running
+	socksPort := s.socksPort
 	s.mu.RUnlock()
+
+	// The loopback SOCKS inbound, host and port, while the box is running.
+	// The port is the one this run chose, not the preferred one, and the
+	// panel shows it as the local proxy so a person can see where the inbound
+	// moved to when another program held 10808. A loopback address is not a
+	// secret and this is the one place it crosses the socket.
+	if running && socksPort != 0 {
+		st.LocalProxy = localProxyAddr(socksPort)
+	}
 
 	iface := st.Detection.HotspotInterface
 	if plan != nil {

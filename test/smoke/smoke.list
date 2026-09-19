@@ -54,7 +54,7 @@ internal/hotspot       ^TestRenderHostapdGolden$|^TestRenderDnsmasqGolden$|^Test
 internal/xcfg          ^TestGoldenFilesAreAcceptedByTheEngine$
 
 # The firewall the box installs.
-internal/netcfg        ^TestGolden_RulesetCaptured$
+internal/netcfg        ^TestGolden_RulesetCaptured$|^TestWindowsSupportAtTheDNSFloor$
 
 # The panel: the polled document and the route table. TestGolden_RenderedPages
 # is deliberately NOT here; it renders eighteen pages and belongs in the gate.
@@ -62,7 +62,7 @@ internal/panel         ^TestGolden_StatusJSON$|^TestGolden_RouteInventory$
 
 # The privileged service's start ordering, which is where a fail-open would
 # live if one existed.
-internal/privsvc       ^TestStartAppliesThingsInTheRequiredOrder$|^TestAFailedStartLeavesNothingApplied$
+internal/privsvc       ^TestStartAppliesThingsInTheRequiredOrder$|^TestAFailedStartLeavesNothingApplied$|^TestWindowsSupportIsCheckedBeforeStartupChanges$
 
 # Real traffic through a real xray-core server: one row per protocol the parser
 # accepts, driven from a pasted share link. The passing direction is well under a
@@ -77,3 +77,9 @@ test/goldenscan        ^TestNoCommittedFixtureCarriesACredential$|^TestScannerCa
 # The command line: it must still build and its check subcommand must still run
 # without touching the box.
 cmd/caspian            ^TestCheckChangesNothingAndSaysWhatItLookedAt$
+
+# Optional SNI: preserve the real identity and close before sending real bytes on failure.
+internal/snispoof      ^TestForwarderNeverLeaksRealBytesWithoutConfirmation$|^TestClientHelloMatchesMasterLayoutAndTLSParser$
+internal/link          ^TestThroughLoopbackPreservesIdentityAndCredentials$|^TestThroughLoopbackPreservesImplicitTLSAndHTTPNames$
+internal/panel         ^TestSNIFormPreservesRealConfigAndReconnects$|^TestSNIFormRejectsBadInputAndCSRF$
+internal/privsvc       ^TestSNIServicePreservesIdentityAndOwnsLifecycle$|^TestSNIServiceRollsBackFailures$

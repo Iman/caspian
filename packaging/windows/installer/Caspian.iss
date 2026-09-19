@@ -19,6 +19,8 @@ DefaultDirName={autopf}\Caspian
 DefaultGroupName=Caspian
 ArchitecturesAllowed={#AllowedArchitecture}
 ArchitecturesInstallIn64BitMode={#AllowedArchitecture}
+; The Flutter distribution requires Windows 10 version 2004 (build 19041),
+; matching the hotspot helper and the DNS support check in netcfg.
 PrivilegesRequired=admin
 MinVersion=10.0.19041
 OutputDir=..\..\..\out\installer
@@ -51,6 +53,15 @@ Source: "payload\{#BuildArchitecture}\*"; DestDir: "{app}"; Excludes: "caspian.e
 Source: "lifecycle.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "service-install.ps1"; DestDir: "{app}"; Flags: ignoreversion
 Source: "payload\{#BuildArchitecture}\wintun.dll"; DestDir: "{app}"; Flags: ignoreversion
+#if BuildArchitecture == "x64"
+Source: "payload\{#BuildArchitecture}\WinDivert-source.zip"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\WinDivert.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "payload\{#BuildArchitecture}\WinDivert64.sys"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\..\..\third_party\windivert\LICENSE.txt"; DestDir: "{app}"; DestName: "WINDIVERT-LICENSE.txt"; Flags: ignoreversion
+Source: "..\..\..\third_party\windivert\README.md"; DestDir: "{app}"; DestName: "WINDIVERT-CREDITS.md"; Flags: ignoreversion
+#endif
+Source: "..\..\..\third_party\sni-spoofing\LICENSE.txt"; DestDir: "{app}"; DestName: "SNI-SPOOFING-LICENSE.txt"; Flags: ignoreversion
+Source: "..\..\..\third_party\sni-spoofing\README.md"; DestDir: "{app}"; DestName: "SNI-SPOOFING-CREDITS.md"; Flags: ignoreversion
 Source: "..\..\..\NOTICE"; DestDir: "{app}"; DestName: "NOTICE.txt"; Flags: ignoreversion
 Source: "..\..\..\LICENSE"; DestDir: "{app}"; DestName: "LICENSE.txt"; Flags: ignoreversion
 Source: "..\..\..\third_party\wintun\PREBUILT-BINARIES-LICENSE.txt"; DestDir: "{app}"; DestName: "WINTUN-LICENSE.txt"; Flags: ignoreversion

@@ -6,6 +6,7 @@
 # the control it drives stops updating without a reload.
 
 ## fields
+  antiDPI      bool
   connected    bool
   cutBanner    string
   cutLabel     string
@@ -15,6 +16,7 @@
   events       null
   hasConfig    bool
   heroClass    string
+  localProxy   string
   nextStep     string
   powerClass   string
   powerLabel   string

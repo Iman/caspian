@@ -1,10 +1,12 @@
-# Troubleshooting for home users
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr)
+[English](https://github.com/Iman/caspian/wiki/Troubleshooting) | [فارسی](https://github.com/Iman/caspian/wiki/Troubleshooting.fa) | [Русский](https://github.com/Iman/caspian/wiki/Troubleshooting.ru) | [中文](https://github.com/Iman/caspian/wiki/Troubleshooting.zh) | [العربية](https://github.com/Iman/caspian/wiki/Troubleshooting.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Troubleshooting.tr) | [اردو](https://github.com/Iman/caspian/wiki/Troubleshooting.ur)
 
 </div>
+
+# Troubleshooting for home users
+
+
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.
 
@@ -85,7 +87,7 @@ After the command finishes, reopen the panel and switch Caspian on if needed. If
 
 ## Check the configuration format
 
-Caspian accepts VLESS, VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 links, including the hy2 alias. It also accepts supported Clash/Clash.Meta YAML, Xray JSON, lists of links, and base64 subscription content. It uses the first link in a list; it does not fetch a subscription URL. Ask your provider for the actual supported configuration, not an account password or a web page link.
+Caspian accepts VLESS, VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 links, including the hy2 alias. It also accepts supported Clash/Clash.Meta YAML, Xray JSON, lists of links, and base64 subscription content. It uses whichever entry of a list you choose. A subscription address can be saved beside the config and refreshed when you press the button, through the tunnel. Ask your provider for the actual supported configuration, not an account password or a web page link.
 
 Supported transport names include raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp, and kcp/mkcp. Protocol, transport, and security settings must be compatible; not every combination works. TUIC, WireGuard, SSR, AnyTLS, and Hysteria v1 links are not supported. Do not rename an unsupported protocol to make it pass validation. See the protocol guide for restrictions and test evidence.
 
@@ -106,8 +108,8 @@ The defect register records security and recovery gaps. These troubleshooting st
 - [Code and test evidence](https://github.com/Iman/caspian/blob/main/internal/netcfg/plan_test.go)
 - [macOS: Ethernet / Wi-Fi](https://support.apple.com/en-ie/guide/mac-help/mchlp1540/mac)
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
 
-</div>
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

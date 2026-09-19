@@ -448,3 +448,7 @@ captured. Real captures from the target hardware live in
 `internal/netcfg/testdata/`, with their provenance, and that package's own tests
 are what prove the parsers read them. If the real output changes shape, those
 tests catch it and these do not.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

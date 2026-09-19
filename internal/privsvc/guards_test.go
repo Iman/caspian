@@ -364,7 +364,7 @@ func TestNoCredentialCrossesBackOverTheSocket(t *testing.T) {
 
 	var replies []string
 	send := func(req wireRequest) {
-		conn, err := net.Dial("unix", path)
+		conn, err := dialEndpoint(context.Background(), path, 5*time.Second)
 		if err != nil {
 			t.Fatalf("dial: %v", err)
 		}
@@ -377,7 +377,7 @@ func TestNoCredentialCrossesBackOverTheSocket(t *testing.T) {
 		if err := writeFrame(conn, body); err != nil {
 			t.Fatalf("write: %v", err)
 		}
-		_ = conn.(*net.UnixConn).SetReadDeadline(time.Now().Add(10 * time.Second))
+		_ = conn.SetReadDeadline(time.Now().Add(10 * time.Second))
 		b, err := readFrame(conn)
 		if err != nil {
 			t.Fatalf("read: %v", err)

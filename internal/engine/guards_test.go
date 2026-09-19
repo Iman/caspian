@@ -115,6 +115,11 @@ func TestStartFailsWhenTheListenerCannotBind(t *testing.T) {
 	if _, ok := startErr.(*Error); !ok {
 		t.Errorf("Start returned %T, want *Error", startErr)
 	}
+	// And it is classified as the port being taken, which is what lets the
+	// panel say "close the other program" instead of blaming the config.
+	if got := ReasonOf(startErr); got != ReasonPortInUse {
+		t.Errorf("ReasonOf(bind failure) = %q, want %q: %v", got, ReasonPortInUse, startErr)
+	}
 	if got := e.State().Phase; got != PhaseFailed {
 		t.Errorf("phase after a bind failure = %v, want failed", got)
 	}

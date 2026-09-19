@@ -67,7 +67,7 @@ func TestTheBlockingPolicyStartsAndProducesTheBlockingNetcfgOption(t *testing.T)
 		t.Fatalf("Start refused the supported policy: %v", err)
 	}
 
-	o, err := w.svc.netOptionsFor(req)
+	o, err := w.svc.netOptionsFor(req, w.svc.cfg.SocksPort)
 	if err != nil {
 		t.Fatalf("netOptionsFor: %v", err)
 	}

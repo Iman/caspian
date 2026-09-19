@@ -64,7 +64,7 @@ jobs:
         run: |
           bash scripts/build-ui.sh web "${{ github.ref_name }}"
           go test -count=1 -tags flutterui ./internal/panel ./cmd/caspian
-          bash bdd/flutter/run.sh
+          bash test/cucumber/flutter/run.sh
       - name: Preserve Flutter gate evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -72,7 +72,7 @@ jobs:
           name: flutter-release-gate-evidence
           path: |
             ui/build/unit-tests/
-            bdd/flutter/reports/
+            test/cucumber/flutter/reports/
 
   build:
     needs: gate

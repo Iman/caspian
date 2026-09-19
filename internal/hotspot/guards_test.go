@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 	"time"
@@ -728,6 +729,9 @@ func TestExecSystemWriteFileFailures(t *testing.T) {
 	})
 
 	t.Run("a directory that cannot be written to", func(t *testing.T) {
+		if runtime.GOOS == "windows" {
+			t.Skip("Windows directory ACLs do not implement Unix write bits")
+		}
 		if os.Geteuid() == 0 {
 			t.Skip("running as root, which can write into a directory with no write bit")
 		}
@@ -799,6 +803,12 @@ func TestExecSystemProcessAliveOnADeadAndAForeignProcess(t *testing.T) {
 
 	// A pid that cannot exist.
 	alive, err = sys.ProcessAlive(-1)
+	if runtime.GOOS == "windows" {
+		if err == nil || alive {
+			t.Fatalf("invalid Windows pid: alive=%v, err=%v", alive, err)
+		}
+		return
+	}
 	if err != nil {
 		t.Fatalf("ProcessAlive on a negative pid: %v", err)
 	}
@@ -906,6 +916,10 @@ func TestExecSystemSignalsARealProcess(t *testing.T) {
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			cmd := exec.Command("/bin/sh", "-c", "sleep 30")
+			if runtime.GOOS == "windows" {
+				cmd = exec.Command(os.Args[0], "-test.run=^TestExecSystemSignalChild$")
+				cmd.Env = append(os.Environ(), "CASPIAN_SIGNAL_CHILD=1")
+			}
 			if err := cmd.Start(); err != nil {
 				t.Fatalf("could not start a child process: %v", err)
 			}
@@ -963,6 +977,9 @@ func TestExecSystemSignalsARealProcess(t *testing.T) {
 // and delivers nothing. That has to be reported: a stop that could not be
 // performed must not read as a stop that succeeded.
 func TestExecSystemSignalToAProcessItMayNotSignal(t *testing.T) {
+	if runtime.GOOS == "windows" {
+		t.Skip("pid 1 is Unix init, not a Windows permission fixture")
+	}
 	if os.Geteuid() == 0 {
 		t.Skip("running as root, which may signal pid 1; this test must never actually signal init")
 	}
@@ -1011,5 +1028,11 @@ func TestTheTwoAddressFailuresAreToldApart(t *testing.T) {
 	// person in this state is most likely to try.
 	if strings.Contains(strings.ToLower(notAvail), "restart the machine") {
 		t.Errorf("the answer advises a restart, which reproduces this fault: %s", notAvail)
+	}
+}
+
+func TestExecSystemSignalChild(t *testing.T) {
+	if os.Getenv("CASPIAN_SIGNAL_CHILD") == "1" {
+		time.Sleep(30 * time.Second)
 	}
 }

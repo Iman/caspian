@@ -257,7 +257,7 @@ func TestApply_TakeoverReleasesTheInterfaceAndGivesItBack(t *testing.T) {
 	k.Preload("addr", "wlan0", "10.0.0.222/24")
 	before := k.Snapshot()
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -304,7 +304,7 @@ func TestApply_TakeoverThatFailsMidReleaseGivesTheInterfaceBack(t *testing.T) {
 	k.RefuseSetType = "command failed: Input/output error (-5)"
 	before := k.Snapshot()
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -461,7 +461,7 @@ func TestApply_ARemovalThatFindsNothingDoesNotStopTheRelease(t *testing.T) {
 	// interface took it. This is the state the delete meets on the box.
 	k.Preload("addr", "wlan0", "10.83.51.1/24")
 
-	a, err := NewApplier(k, tmpJournal(t))
+	a, err := newTestApplier(t, k, tmpJournal(t))
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -358,7 +358,7 @@ be mirrored in the replay:
 
 Four properties of the replay are deliberate:
 
-- **It only ever runs `ip`, `iw`, `nft` or `sysctl`.** That is the allowlist in
+- **It only ever runs `ip`, `iw`, `nft`, `sysctl` or `nmcli`.** That is the allowlist in
   `internal/netcfg/command.go`, which exists so the privileged side never runs a
   command built from user input. The same reasoning applies with more force to a
   file that has been sitting on disk. The whole file is checked before anything
@@ -492,8 +492,8 @@ Everything below needs a Raspberry Pi and none of it has been run:
   `root:caspian 0750` on the target.
 - Whether a real `sha256sum` on the Pi and the checksums file produced by the
   release pipeline agree in format.
-- Anything about the panel: nothing consumes the first-run password yet, and the
-  printed address has not been shown to be one the panel answers on.
+- Whether the printed address is one the panel answers on. The first-run
+  password handoff itself is implemented and tested (see above).
 - Whether a journal written by a real run replays cleanly. The replay was
   written against `internal/netcfg/journal.go` and is tested against fixtures in
   that shape, but no journal produced by the actual `Applier` on a real box has
@@ -541,3 +541,7 @@ The installer resolves the latest published release once. It downloads the
 binary and checksums from that same release. `CASPIAN_VERSION` still permits
 an explicit version. Downloading the installer script with `curl ... | less`
 only displays the script; it does not update the installed portal.
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](../README.md) · [SNI spoofing for DPI circumvention: setup and limits](SNI.md).

@@ -30,7 +30,7 @@ func TestTheChosenBandReachesThePlanner(t *testing.T) {
 	for _, band := range []string{"", "2.4GHz", "5GHz"} {
 		t.Run("band="+bandName(band), func(t *testing.T) {
 			req.Hotspot.Band = band
-			opts, err := w.svc.netOptionsFor(req)
+			opts, err := w.svc.netOptionsFor(req, w.svc.cfg.SocksPort)
 			if err != nil {
 				t.Fatalf("netOptionsFor: %v", err)
 			}

@@ -68,6 +68,9 @@ if [ ! -f "$root/go.mod" ]; then
 fi
 cd "$root"
 
+# Keep every wiki edition aligned with the English source.
+python3 scripts/check-wiki.py
+
 # --- the coverage floors ----------------------------------------------------
 #
 # One row per gated package:
@@ -124,13 +127,13 @@ cd "$root"
 
 floors=$(
     /bin/cat <<'EOF'
-internal/panel 85.2 darwin
+internal/panel 87.0 darwin
 internal/engine 83.0 linux
-internal/link 98.6 darwin
+internal/link 98.7 darwin
 internal/link 98.4 linux
 internal/hotspot 99.1 darwin
 internal/hotspot 98.9 linux
-internal/state 96.9 darwin
+internal/state 97.3 darwin
 internal/state 96.5 linux
 internal/xcfg 97.0 darwin
 internal/xcfg 96.7 linux
@@ -151,7 +154,7 @@ step "gofmt"
 # gofmt -l lists files whose formatting differs. Anything listed is a failure.
 # -s is not used: it rewrites correct code into shorter code and that is a
 # review opinion, not a formatting fact.
-unformatted=$(gofmt -l . 2>/dev/null || true)
+unformatted=$(git ls-files -co --exclude-standard -z -- '*.go' | xargs -0 gofmt -l)
 if [ -n "$unformatted" ]; then
     echo "these files are not gofmt clean:"
     echo "$unformatted" | sed 's/^/  /'
@@ -180,12 +183,19 @@ fi
 # The output is kept so the coverage floors below are computed from THIS run
 # rather than from a stored number.
 
-step "go test -count=1 -race -cover ./..."
+# The full race matrix exceeded ten minutes on Linux and thirty on Windows.
+# Keep every case, with a bounded package timeout that can be overridden.
+test_timeout=${CASPIAN_TEST_TIMEOUT:-}
+if [ -z "$test_timeout" ]; then
+    test_timeout=30m
+    if [ "$goos" = "windows" ]; then test_timeout=45m; fi
+fi
+step "go test -count=1 -race -cover -timeout=$test_timeout ./..."
 test_output=$(mktemp)
 trap 'rm -f "$test_output"' EXIT
 
 test_status=0
-go test -count=1 -race -cover ./... 2>&1 | tee "$test_output" || test_status=$?
+go test -count=1 -race -cover -timeout="$test_timeout" ./... 2>&1 | tee "$test_output" || test_status=$?
 if [ "$test_status" -ne 0 ]; then
     problem "go test"
 fi

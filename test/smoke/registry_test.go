@@ -161,8 +161,10 @@ var smokeExempt = map[string]string{
 		"update, which is never the thing a smoke run is protecting against",
 	"test/bdd": "the behaviour suite. It is slower than the whole smoke budget and it is what the " +
 		"gate exists for",
-	"test/smoke":  "this package. Its own guards run in the gate",
-	"bdd/harness": "a helper binary for the Cucumber suites, owned elsewhere",
+	"test/smoke":            "this package. Its own guards run in the gate",
+	"test/cucumber/harness": "a helper binary for the Cucumber suites, owned elsewhere",
+	"test/publicprobe": "an opt-in probe that drives public share links through the real engine over the " +
+		"network. Skipped without CASPIAN_PUBLIC_PROBE_DIR, and never part of a build check",
 }
 
 // TestEveryPackageWithTestsIsEitherInSmokeOrExempt.

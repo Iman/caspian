@@ -10,7 +10,7 @@ ui/macos/Flutter/ephemeral
 ui/linux/flutter/ephemeral
 ui/windows/flutter/ephemeral
 internal/panel/flutter
-bdd/flutter/reports
+test/cucumber/flutter/reports
 
 # Local appliance captures and credentials must not enter the build context.
 local

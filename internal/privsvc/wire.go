@@ -67,10 +67,16 @@ import (
 
 // maxFrameBytes bounds one message.
 //
-// The largest thing on this wire is a start request carrying a configuration
-// document, which configFromRequest independently bounds at maxConfigBytes.
-// This is the outer bound, on the socket, before any of it is JSON.
-const maxFrameBytes = 256 << 10
+// The largest thing on this wire is a refresh reply carrying a subscription
+// body of up to maxRefreshBodyBytes, which encoding/json base64-encodes at
+// four thirds of its size, plus four headers of up to maxRefreshHeaderBytes
+// each. TestALargestRefreshReplyFitsInOneFrame pins that the worst case fits.
+// The next largest is a start request carrying a configuration document,
+// which configFromRequest independently bounds at maxConfigBytes. This is the
+// outer bound, on the socket, before any of it is JSON.
+//
+// It was 256 KiB until 2026-09-09, which the refresh reply cannot fit in.
+const maxFrameBytes = 512 << 10
 
 // protocolVersion is sent on every request and checked on every one.
 //
@@ -113,8 +119,14 @@ type wireRequest struct {
 	Version int          `json:"v"`
 	Action  panel.Action `json:"action"`
 
-	// Start is present for, and only for, panel.ActionStart.
+	// Start is present for, and only for, panel.ActionStart and
+	// panel.ActionRecover.
 	Start *panel.StartRequest `json:"start,omitempty"`
+
+	// Refresh is present for, and only for, panel.ActionRefresh. It carries
+	// the subscription address, which is a credential, and it is the one
+	// field of a request that is never logged in any form.
+	Refresh *panel.RefreshRequest `json:"refresh,omitempty"`
 
 	// DeadlineUnixNano is when the caller stops waiting. The privileged side
 	// derives its own context from it, clamped to [minDeadline, maxDeadline],
@@ -157,6 +169,12 @@ type wireResponse struct {
 	Detect *panel.Detection    `json:"detect,omitempty"`
 	Status *panel.SystemStatus `json:"status,omitempty"`
 	Log    *panel.EngineLog    `json:"log,omitempty"`
+
+	// Refresh carries the fetched subscription body back. It is the one
+	// success result that is a credential (the body is the configuration),
+	// and it travels this way only, from the privileged side to the panel
+	// that asked for it, over a socket only the panel's account can open.
+	Refresh *panel.RefreshReply `json:"refresh,omitempty"`
 }
 
 // errFrameTooLarge is returned by readFrame for a length above maxFrameBytes.
@@ -227,14 +245,15 @@ func decodeRequest(payload []byte) (wireRequest, Refusal) {
 		return wireRequest{}, RefusalUnknownAction
 	}
 	// Recover ends in a start, so it carries the same argument start does.
-	if req.Action == panel.ActionStart || req.Action == panel.ActionRecover {
-		if req.Start == nil {
-			return wireRequest{}, RefusalMissingArg
-		}
-	} else if req.Start != nil {
-		// An argument on an action that takes none. It would be ignored, and
-		// an ignored argument is a caller and a service that disagree about
-		// what was asked for.
+	wantStart := req.Action == panel.ActionStart || req.Action == panel.ActionRecover
+	wantRefresh := req.Action == panel.ActionRefresh
+	if (wantStart && req.Start == nil) || (wantRefresh && req.Refresh == nil) {
+		return wireRequest{}, RefusalMissingArg
+	}
+	if (!wantStart && req.Start != nil) || (!wantRefresh && req.Refresh != nil) {
+		// An argument on an action that does not take it. It would be
+		// ignored, and an ignored argument is a caller and a service that
+		// disagree about what was asked for.
 		return wireRequest{}, RefusalUnexpectedArg
 	}
 	return req, ""

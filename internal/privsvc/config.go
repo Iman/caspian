@@ -5,6 +5,7 @@ package privsvc
 
 import (
 	"context"
+	"crypto/x509"
 	"errors"
 	"log/slog"
 	"net/netip"
@@ -13,6 +14,7 @@ import (
 	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/hotspot"
 	"caspianbyoc.org/caspian/internal/netcfg"
+	"caspianbyoc.org/caspian/internal/snispoof"
 	"caspianbyoc.org/caspian/internal/xcfg"
 )
 
@@ -63,6 +65,8 @@ type Reachability interface {
 // environment: cmd/caspian reads docs/LAYOUT.md and passes the values in, so
 // that no package hardcodes a value it does not own.
 type Config struct {
+	// StartSNI owns the optional raw-packet forwarder. Tests can supply a fake.
+	StartSNI SNIStarter
 	// Runner executes the network commands. Required.
 	// Use netcfg.NewSystemRunner on the appliance and netcfg.RecordingRunner
 	// in a test.
@@ -101,7 +105,11 @@ type Config struct {
 	// Empty means netcfg.DefaultOptions().TunName.
 	TunName string
 
-	// SocksPort is the loopback proxy and diagnostics inbound, LAYOUT.md 10808.
+	// SocksPort is the PREFERRED port of the loopback proxy and diagnostics
+	// inbound, LAYOUT.md 10808. Since 2026-09-12 a start probes it and moves
+	// to a free loopback port when another program holds it (socksport.go,
+	// after a Windows 11 report, issue #2); Status reports the port in force
+	// as SystemStatus.LocalProxy.
 	SocksPort uint16
 
 	// LocalDNSPort is the engine's local DNS listener, LAYOUT.md 5354. It is
@@ -163,6 +171,17 @@ type Config struct {
 	// and a full detection runs five commands, so re-running it per poll would
 	// spend the box's CPU on a picture that does not change that fast.
 	DetectTTL time.Duration
+
+	// RefreshRootCAs is the certificate pool a subscription refresh verifies
+	// the provider against. nil means the system roots, which is the only
+	// setting cmd/caspian uses.
+	//
+	// It exists for the tests in refresh_test.go, which stand up a provider
+	// with a self-signed certificate behind a SOCKS relay, and it is the
+	// narrowest seam that lets them: a transport override would bypass the
+	// SOCKS routing that those tests exist to observe. It never turns
+	// verification off; there is no field for that and there will not be.
+	RefreshRootCAs *x509.CertPool
 }
 
 // DefaultDetectTTL is how long Status reuses the last detection.
@@ -195,6 +214,11 @@ func (c Config) check() error {
 }
 
 func (c Config) withDefaults() Config {
+	if c.StartSNI == nil {
+		c.StartSNI = func(remote netip.AddrPort, iface string, options snispoof.Options) (SNIForwarder, error) {
+			return snispoof.StartWithOptions(remote, iface, options)
+		}
+	}
 	if c.Backend == nil {
 		c.Backend = netcfg.BackendFor(netcfg.PlatformLinux)
 	}

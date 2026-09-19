@@ -86,6 +86,7 @@ func (p *Panel) handleIndex(w http.ResponseWriter, r *http.Request) {
 
 	data.SetupIncomplete = p.store.NeedsSetup()
 	data.fillConfig(st.Proxy)
+	data.fillSubscription(st.Proxy, status, fault, p.now())
 	data.fillStatus(status, fault)
 	data.fillTiles(status, fault, p.now)
 	data.fillHotspot(st.Hotspot)
@@ -369,7 +370,12 @@ func (p *Panel) recoverNow(ctx context.Context, st state.State) Problem {
 // which is deliberate. A recovery that took a different path to the same state
 // would be a second implementation of starting, and the two would drift.
 func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Context, StartRequest) error) Problem {
-	l, err := link.Parse(st.Proxy.Raw.Reveal())
+	// The chosen entry, not the first: Selected is an index into the list
+	// internal/link reads out of Raw. A selection the list no longer has falls
+	// back to the first entry (the page says so); an entry this box refuses is
+	// an error, because starting on a neighbour would connect through a server
+	// the person did not choose.
+	l, _, err := link.Select(st.Proxy.Raw.Reveal(), st.Proxy.Selected)
 	if err != nil {
 		p.log.Warn("stored config no longer parses", "config_fingerprint", st.Proxy.Fingerprint())
 		return ParseProblem(err)
@@ -386,13 +392,16 @@ func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Co
 		// Problem.Detail, and this package's rule is that no log line carries
 		// anything derived from the pasted config.
 		p.log.Warn("engine refused the config", "config_fingerprint", st.Proxy.Fingerprint())
-		prob := EngineProblem()
+		prob := EngineRejection(err)
 		prob.Detail = engineDetail(err)
 		return prob
 	}
 
 	req := StartRequest{
-		ConfigJSON: cfgJSON,
+		SpoofSNI:       st.Proxy.SpoofSNI.Reveal(),
+		TCPSplit:       st.Proxy.TCPSplit,
+		TLSRecordSplit: st.Proxy.TLSRecordSplit,
+		ConfigJSON:     cfgJSON,
 		Hotspot: HotspotSpec{
 			SSID:       st.Hotspot.SSID,
 			Passphrase: st.Hotspot.Passphrase.Reveal(),
@@ -457,6 +466,25 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 	if len(label) > maxLabel {
 		label = label[:maxLabel]
 	}
+
+	// The subscription address travels on the same form, because it belongs
+	// to the same config in the person's mind. It is saved on its own when the
+	// paste box is empty, so a person can add the address to a config they
+	// already pasted. It is never echoed back.
+	if u := strings.TrimSpace(r.PostFormValue("subscription_url")); u != "" {
+		if err := p.store.SetSubscriptionURL(u); err != nil {
+			p.log.Info("a subscription address was refused")
+			sess.setFlash(SubscriptionProblem(err), "")
+			p.home(w, r)
+			return
+		}
+		p.log.Info("subscription address saved")
+		if raw == "" {
+			sess.setFlash(Problem{}, MsgNoticeSubscriptionSaved)
+			p.home(w, r)
+			return
+		}
+	}
 	replacing := p.store.Proxy().IsConfigured()
 
 	l, err := link.Parse(raw)
@@ -475,7 +503,7 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := engine.Validate(cfgJSON); err != nil {
-		prob := EngineProblem()
+		prob := EngineRejection(err)
 		prob.Detail = engineDetail(err)
 		p.log.Info("the engine refused a pasted config")
 		sess.setFlash(prob, "")
@@ -496,9 +524,18 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 		p.events.add(EventConfigAdded, FaultNone)
 	}
 
-	// If the tunnel is up it is still using the old config, so it is replaced
-	// rather than left running. Doing nothing here would leave the panel saying
-	// one thing and the box doing another.
+	p.afterConfigChange(w, r, sess, MsgNoticeConfigSaved, MsgNoticeConfigReconn)
+}
+
+// afterConfigChange finishes a request that changed which outbound the box
+// should use, whether by a new paste or by choosing another entry of the
+// stored one.
+//
+// If the tunnel is up it is still using the old outbound, so it is replaced
+// rather than left running. Doing nothing here would leave the panel saying
+// one thing and the box doing another. saved is the notice for a box that is
+// off; reconnected for one that was on and came back on the new outbound.
+func (p *Panel) afterConfigChange(w http.ResponseWriter, r *http.Request, sess *session, saved, reconnected Key) {
 	status, fault := p.status(r)
 	if fault == FaultNone && status.Engine.Phase == engine.PhaseRunning {
 		ctx, cancel := p.privCtx(r)
@@ -513,12 +550,207 @@ func (p *Panel) handleConfig(w http.ResponseWriter, r *http.Request) {
 			p.home(w, r)
 			return
 		}
-		sess.setFlash(Problem{}, MsgNoticeConfigReconn)
+		sess.setFlash(Problem{}, reconnected)
 		p.home(w, r)
 		return
 	}
-	sess.setFlash(Problem{}, MsgNoticeConfigSaved)
+	sess.setFlash(Problem{}, saved)
 	p.home(w, r)
+}
+
+// ---------------------------------------------------------------------------
+// Choosing an entry of a config that holds several
+// ---------------------------------------------------------------------------
+
+// handleSelect records which entry of the stored config the box should use.
+//
+// The engine still receives exactly one outbound; this only decides which. The
+// "entry" field is a position in the list internal/link reads out of the stored
+// text, counting from zero, and it is accepted only when that position is in
+// the list right now: not a number, negative, past the end, or the slot of an
+// entry this box refuses are all answered with the same sentence and change
+// nothing. Nothing about the entry is logged except its position, because the
+// entry's name is provider text.
+func (p *Panel) handleSelect(w http.ResponseWriter, r *http.Request) {
+	sess := sessionFrom(r)
+	proxy := p.store.Proxy()
+	if !proxy.IsConfigured() {
+		sess.setFlash(Problem{Headline: MsgNoConfigYet, Advice: MsgNoConfigYetAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	badEntry := Problem{Headline: MsgSelectBadEntry, Advice: MsgSelectBadEntryAdvice}
+
+	// Atoi, not a lenient parse: " 1 ", "1.5" and "0x1" are not positions.
+	i, err := strconv.Atoi(r.PostFormValue("entry"))
+	if err != nil || i < 0 {
+		sess.setFlash(badEntry, "")
+		p.home(w, r)
+		return
+	}
+	list, err := link.ParseAll(proxy.Raw.Reveal())
+	if err != nil {
+		sess.setFlash(ParseProblem(err), "")
+		p.home(w, r)
+		return
+	}
+	listed := false
+	for _, e := range list.Entries {
+		if e.Index == i {
+			listed = true
+			break
+		}
+	}
+	if !listed {
+		sess.setFlash(badEntry, "")
+		p.home(w, r)
+		return
+	}
+	if i == proxy.Selected {
+		// The same entry again is not a change, so the tunnel is left alone.
+		sess.setFlash(Problem{}, MsgNoticeEntrySelected)
+		p.home(w, r)
+		return
+	}
+	if err := p.store.SelectProxyEntry(i); err != nil {
+		p.log.Error("saving the entry selection failed", "error", err.Error())
+		sess.setFlash(Problem{Headline: MsgSaveSelectFailed, Advice: MsgSaveFailedAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	p.log.Info("config entry selected", "entry", i, "config_fingerprint", proxy.Fingerprint())
+	p.events.add(EventConfigChanged, FaultNone)
+	p.afterConfigChange(w, r, sess, MsgNoticeEntrySelected, MsgNoticeEntryReconn)
+}
+
+// ---------------------------------------------------------------------------
+// Refreshing the config from the provider
+// ---------------------------------------------------------------------------
+
+// handleRefresh fetches the stored subscription address and stores what comes
+// back exactly as it stores a paste.
+//
+// This is the one request Caspian makes for content, and the rules that make
+// it acceptable are all here or in the privileged half:
+//
+//   - the person presses it. There is no timer, no refresh at boot and no
+//     refresh when the tunnel comes up,
+//   - it travels through the engine's own loopback SOCKS inbound, so the
+//     bytes and the name lookup both leave through the tunnel. The privileged
+//     half refuses before any socket opens unless the engine is running,
+//   - the body goes through the same parse, build and validate the paste path
+//     uses before it replaces anything, so a body that would be refused as a
+//     paste is refused here and the stored config is untouched,
+//   - the address is a credential. It is never rendered, never logged, never
+//     put in an event and never in the status document.
+func (p *Panel) handleRefresh(w http.ResponseWriter, r *http.Request) {
+	sess := sessionFrom(r)
+	proxy := p.store.Proxy()
+	if proxy.SubscriptionURL.Reveal() == "" {
+		sess.setFlash(Problem{Headline: MsgRefreshNoURL, Advice: MsgRefreshNoURLAdvice}, "")
+		p.home(w, r)
+		return
+	}
+
+	ctx, cancel := p.privCtx(r)
+	defer cancel()
+	reply, err := p.priv.Refresh(ctx, RefreshRequest{URL: proxy.SubscriptionURL.Reveal()})
+	if err != nil {
+		p.log.Info("a refresh did not finish", "fault", string(FaultOf(err)))
+		p.events.add(EventRefreshFailed, FaultNone)
+		sess.setFlash(refreshProblem(FaultOf(err)), "")
+		p.home(w, r)
+		return
+	}
+	if reply.Status < 200 || reply.Status > 299 {
+		// The code is carried into the advice. It is the provider's own word
+		// about the person's account, and it is the one thing they can quote
+		// back when they ask the provider what went wrong.
+		p.log.Info("a provider refused a refresh", "status", reply.Status)
+		p.events.add(EventRefreshFailed, FaultNone)
+		sess.setFlash(Problem{
+			Headline:   MsgRefreshBadStatus,
+			Advice:     MsgRefreshBadStatusAdvice,
+			AdviceArgs: []any{reply.Status},
+		}, "")
+		p.home(w, r)
+		return
+	}
+	if len(reply.Body) > maxBodyBytes {
+		// The privileged half caps this already. The cap is held here too,
+		// because the rule is about what this box will store and it must not
+		// depend on the other half being right.
+		p.log.Info("a refreshed body was over the cap")
+		p.events.add(EventRefreshFailed, FaultNone)
+		sess.setFlash(Problem{Headline: MsgRefreshTooLarge, Advice: MsgRefreshTooLargeAdvice}, "")
+		p.home(w, r)
+		return
+	}
+
+	body := string(reply.Body)
+	label := proxy.Label
+	if label == "" {
+		label = labelFromHeaders(reply.Headers)
+	}
+	l, err := link.Parse(body)
+	if err != nil {
+		p.log.Info("a refreshed body could not be read")
+		p.events.add(EventRefreshFailed, FaultNone)
+		sess.setFlash(Problem{Headline: MsgRefreshNotConfig, Advice: MsgRefreshNotConfigAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	cfgJSON, err := l.XrayConfig()
+	if err == nil {
+		err = engine.Validate(cfgJSON)
+	}
+	if err != nil {
+		// The same sentence a pasted config gets when the engine refuses it,
+		// because it is the same fact about the same document.
+		prob := EngineRejection(err)
+		prob.Detail = engineDetail(err)
+		p.log.Info("the engine refused a refreshed config")
+		p.events.add(EventRefreshFailed, FaultNone)
+		sess.setFlash(prob, "")
+		p.home(w, r)
+		return
+	}
+
+	q := parseUserinfo(reply.Headers["subscription-userinfo"])
+	if err := p.store.RecordRefresh(body, l.Protocol, label, q, p.now()); err != nil {
+		p.log.Error("saving a refreshed config failed", "error", err.Error())
+		sess.setFlash(Problem{Headline: MsgSaveConfigFailed, Advice: MsgSaveFailedAdvice}, "")
+		p.home(w, r)
+		return
+	}
+	p.log.Info("config refreshed", "scheme", l.Protocol, "config_fingerprint", p.store.Proxy().Fingerprint())
+	p.events.add(EventConfigRefreshed, FaultNone)
+	p.afterConfigChange(w, r, sess, MsgNoticeRefreshed, MsgNoticeRefreshReconn)
+}
+
+// refreshProblem turns the fault the privileged half reported into the two
+// sentences the page shows. A fault with no words of its own falls to the
+// general pair, which says the old config is still in place.
+func refreshProblem(f Fault) Problem {
+	switch f {
+	case FaultNotRunning:
+		return Problem{Headline: MsgRefreshNotRunning}
+	case FaultRefreshBadAddress:
+		return Problem{Headline: MsgRefreshBadAddress, Advice: MsgRefreshBadAddressAdvice}
+	case FaultRefreshNoAnswer:
+		return Problem{Headline: MsgRefreshNoAnswer, Advice: MsgRefreshNoAnswerAdvice}
+	case FaultRefreshTooLarge:
+		return Problem{Headline: MsgRefreshTooLarge, Advice: MsgRefreshTooLargeAdvice}
+	case FaultRefreshNotHTTPS:
+		return Problem{Headline: MsgRefreshNotHTTPS, Advice: MsgRefreshNotHTTPSAdvice}
+	case FaultNone, FaultUnknown:
+		return Problem{Headline: MsgRefreshFailedOther, Advice: MsgRefreshFailedOtherAdvice}
+	default:
+		// A fault about the machine rather than about the refresh keeps its
+		// own words: "the privileged service is not answering" is more use
+		// than "the refresh did not finish".
+		return StartProblem(f)
+	}
 }
 
 // ---------------------------------------------------------------------------

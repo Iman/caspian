@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"strings"
 
+	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/netcfg"
 	"caspianbyoc.org/caspian/internal/panel"
 )
@@ -112,6 +113,11 @@ func faultOf(err error) panel.Fault {
 		// cannot help, because the box boots, the network manager rejoins the
 		// same network, and the refusal is identical.
 		return panel.FaultHotspotInterfaceBusy
+	case errors.Is(err, netcfg.ErrWindowsTooOld):
+		// Not FaultSoftwareMissing: nothing is missing that installing
+		// something would supply. The remedy is a Windows update, and the
+		// sentence has to say so or the person reinstalls Caspian instead.
+		return panel.FaultWindowsTooOld
 	case errors.Is(err, netcfg.ErrUnsupportedPlatform):
 		return panel.FaultSoftwareMissing
 	case errors.Is(err, netcfg.ErrDisallowedBinary):
@@ -183,3 +189,25 @@ const (
 	unitAP   = "hotspot"
 	unitDHCP = "DHCP and DNS server"
 )
+
+// engineFault classifies a refusal from internal/engine at start time. The
+// engine's text stays on this side of the socket, as every other cause does;
+// only the word crosses.
+//
+// Three refusals get a word of their own because each has a remedy the general
+// sentence does not give: another program holding the port, a link that asks to
+// skip the certificate check, and a Shadowsocks method the engine dropped.
+// Everything else is the engine refusing the config, as before. The
+// classification itself lives in internal/engine, next to the redaction it has
+// to survive.
+func engineFault(err error) panel.Fault {
+	switch engine.ReasonOf(err) {
+	case engine.ReasonPortInUse:
+		return panel.FaultPortInUse
+	case engine.ReasonInsecureRemoved:
+		return panel.FaultInsecureRemoved
+	case engine.ReasonCipherRemoved:
+		return panel.FaultCipherRemoved
+	}
+	return panel.FaultEngineRejectedConfig
+}

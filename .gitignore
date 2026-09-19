@@ -10,6 +10,11 @@
 # /local/ holds pasted proxy configurations, hardware run artefacts, captured
 # baselines and the panel password used during testing.
 /local/
+# Flutter BDD run reports. Each run writes JSON, HTML and screenshots that
+# carry the hotspot name and passphrase the run used. The Flutter branch keeps
+# the same rule in test/cucumber/flutter/.gitignore; this one covers a checkout that does
+# not have that file yet.
+/test/cucumber/flutter/reports/
 # Proxy configurations in any shape, wherever they land.
 *.vless
 *.vmess
@@ -31,6 +36,7 @@ state.json.*
 *.pcapng
 key.txt
 *.txt
+!/llms.txt
 *.log
 .gocache
 out/
@@ -64,9 +70,10 @@ out/
 *.out
 coverage.txt
 
-# Node dependency trees for the Cucumber suites. bdd/README.md says how to
+# Node dependency trees for the Cucumber suites. test/cucumber/README.md says how to
 # install them.
-bdd/**/node_modules/
+test/cucumber/**/node_modules/
+test/cucumber/web/se-metadata.json
 
 # NOTE for whoever edits this next.
 #
@@ -87,3 +94,8 @@ bdd/**/node_modules/
 !/ui/assets/fonts/*-OFL.txt
 /internal/panel/flutter/
 /scripts/__pycache__/
+
+# Research and deferred-work notes remain local.
+**/*[Rr][Ee][Ss][Ee][Aa][Rr][Cc][Hh]*.md
+**/*[Tt][Oo][Dd][Oo]*.md
+**/*[Bb][Aa][Cc][Kk][Ll][Oo][Gg]*.md

@@ -6,9 +6,31 @@ param(
 )
 $ErrorActionPreference = "Stop"
 $env:NO_COLOR = "1"
-if ($Version -ne 'dev' -and $Version -notmatch '^v?[0-9]+\.[0-9]+\.[0-9]+$') { throw "Use a release version such as v1.2.3." }
+if ($env:OS -ne "Windows_NT") { throw "Run this build on Windows." }
+if ($Version -ne 'dev' -and $Version -notmatch '^v?\d+\.\d+\.\d+(?:\.\d+)?$') {
+    throw "Use a numeric version such as 1.2.3 or v1.2.3."
+}
+foreach ($tool in @("go.exe", "dotnet.exe", "flutter")) {
+    if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
+        throw "Missing $tool. See docs/WINDOWS-BUILD.md for the build prerequisites."
+    }
+}
+if (-not $PayloadOnly) {
+    $compiler = @(
+        (Get-Command ISCC.exe -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source),
+        "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
+        "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
+        "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
+    ) | Where-Object { $_ -and (Test-Path -LiteralPath $_) } | Select-Object -First 1
+    if (-not $compiler) { throw "Install Inno Setup 6, then run this command again." }
+}
+$sdkVersions = & dotnet.exe --list-sdks
+if ($LASTEXITCODE -ne 0 -or -not ($sdkVersions | Where-Object { $_ -match '^(9|[1-9]\d+)\.' })) {
+    throw "Install .NET SDK 9 or later, then run this command again."
+}
 $numericVersion = if ($Version -eq "dev") { "0.0.0" } else { $Version.TrimStart("v") }
 $releaseVersion = if ($Version -eq "dev") { "dev" } else { "v$numericVersion" }
+$flutterVersion = ($numericVersion.Split(".") | Select-Object -First 3) -join "."
 $runtime = "win-$Architecture"
 $goArchitecture = if ($Architecture -eq "arm64") { "arm64" } else { "amd64" }
 $wintunArchitecture = if ($Architecture -eq "arm64") { "arm64" } else { "amd64" }
@@ -22,18 +44,20 @@ New-Item -ItemType Directory -Force -Path $payload, $output | Out-Null
 Push-Location $repo
 $previousGOOS = $env:GOOS
 $previousGOARCH = $env:GOARCH
+$previousCGO = $env:CGO_ENABLED
+$previousGOCACHE = $env:GOCACHE
 try {
     Push-Location (Join-Path $repo "ui")
     try {
         & flutter --suppress-analytics pub get
         if ($LASTEXITCODE -ne 0) { throw "Flutter dependency resolution failed." }
-        & flutter --suppress-analytics build web --release --no-web-resources-cdn --pwa-strategy=none --build-name $numericVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
+        & flutter --suppress-analytics build web --release --no-web-resources-cdn --pwa-strategy=none --build-name $flutterVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
         if ($LASTEXITCODE -ne 0) { throw "The Flutter web build failed." }
         $webAssets = Join-Path $repo "internal\panel\flutter"
         New-Item -ItemType Directory -Force -Path $webAssets | Out-Null
         Get-ChildItem -LiteralPath $webAssets | Where-Object { $_.Name -ne ".keep" } | Remove-Item -Recurse -Force
         Copy-Item -Path "build\web\*" -Destination $webAssets -Recurse -Force
-        & flutter --suppress-analytics build windows --release --build-name $numericVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
+        & flutter --suppress-analytics build windows --release --build-name $flutterVersion "--dart-define=CASPIAN_VERSION=$releaseVersion"
         if ($LASTEXITCODE -ne 0) { throw "The Flutter Windows build failed." }
         $flutterBundle = "build\windows\$Architecture\runner\Release"
         if (-not (Test-Path "$flutterBundle\caspian_ui.exe")) { throw "Build on a Windows $Architecture host with a matching Flutter SDK." }
@@ -41,27 +65,60 @@ try {
     } finally { Pop-Location }
     $env:GOOS = "windows"
     $env:GOARCH = $goArchitecture
+    # Release builds use Go's Windows implementation without a C compiler.
+    $env:CGO_ENABLED = "0"
+    if (-not $env:GOCACHE) { $env:GOCACHE = Join-Path $repo ".gocache" }
+    Write-Host "Building Caspian $releaseVersion for $Architecture..."
     & go.exe build -tags flutterui -trimpath -buildvcs=false -ldflags "-X main.version=$releaseVersion -X caspianbyoc.org/caspian/internal/panel.Version=$releaseVersion" -o (Join-Path $payload "caspian.exe") .\cmd\caspian
     if ($LASTEXITCODE -ne 0) { throw "The Go build failed." }
     & dotnet.exe publish .\tools\caspian-tethering\caspian-tethering.csproj -c Release -r $runtime --self-contained true -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The hotspot helper build failed." }
-
 } finally {
     $env:GOOS = $previousGOOS
     $env:GOARCH = $previousGOARCH
+    $env:CGO_ENABLED = $previousCGO
+    $env:GOCACHE = $previousGOCACHE
     Pop-Location
 }
 
-$temporary = Join-Path ([IO.Path]::GetTempPath()) ("caspian-wintun-" + [Guid]::NewGuid().ToString("N"))
-$archive = Join-Path $temporary "wintun.zip"
-New-Item -ItemType Directory -Path $temporary | Out-Null
-try {
+$wintunCache = Join-Path $repo ".cache\wintun-0.14.1"
+$archive = Join-Path $wintunCache "wintun.zip"
+New-Item -ItemType Directory -Force -Path $wintunCache | Out-Null
+if (-not (Test-Path -LiteralPath $archive)) {
+    Write-Host "Downloading Wintun 0.14.1..."
     Invoke-WebRequest -UseBasicParsing -Uri "https://www.wintun.net/builds/wintun-0.14.1.zip" -OutFile $archive
-    $actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
-    if ($actual -ne "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51") { throw "The Wintun checksum does not match." }
-    Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $temporary "expanded")
-    Copy-Item -LiteralPath (Join-Path $temporary "expanded\wintun\bin\$wintunArchitecture\wintun.dll") -Destination (Join-Path $payload "wintun.dll") -Force
-} finally { Remove-Item -LiteralPath $temporary -Recurse -Force -ErrorAction SilentlyContinue }
+}
+$actual = (Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+if ($actual -ne "07c256185d6ee3652e09fa55c0b673e2624b565e02c4b9091c79ca7d2f24ef51") {
+    throw "The Wintun checksum does not match. Delete '$archive', then run the build again."
+}
+Expand-Archive -LiteralPath $archive -DestinationPath (Join-Path $wintunCache "expanded") -Force
+Copy-Item -LiteralPath (Join-Path $wintunCache "expanded\wintun\bin\$wintunArchitecture\wintun.dll") -Destination (Join-Path $payload "wintun.dll") -Force
+
+# SNI spoofing is optional and supported by the official x64 driver only.
+if ($Architecture -eq "x64") {
+    $divertCache = Join-Path $repo ".cache\windivert-2.2.2"
+    $divertArchive = Join-Path $divertCache "WinDivert.zip"
+    New-Item -ItemType Directory -Force -Path $divertCache | Out-Null
+    if (-not (Test-Path -LiteralPath $divertArchive)) {
+        Invoke-WebRequest -UseBasicParsing -Uri "https://github.com/basil00/WinDivert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip" -OutFile $divertArchive
+    }
+    if ((Get-FileHash -LiteralPath $divertArchive -Algorithm SHA256).Hash.ToLowerInvariant() -ne "63cb41763bb4b20f600b6de04e991a9c2be73279e317d4d82f237b150c5f3f15") {
+        throw "The WinDivert checksum does not match. Delete '$divertArchive', then run the build again."
+    }
+    $divertSource = Join-Path $divertCache "WinDivert-source.zip"
+    if (-not (Test-Path -LiteralPath $divertSource)) {
+        Invoke-WebRequest -UseBasicParsing -Uri "https://codeload.github.com/basil00/WinDivert/zip/refs/tags/v2.2.2" -OutFile $divertSource
+    }
+    if ((Get-FileHash -LiteralPath $divertSource -Algorithm SHA256).Hash.ToLowerInvariant() -ne "65ec79c9e6afa99f648a3f4d1f6db794640b40d0b65bd438770ea503ee14ecb7") {
+        throw "The WinDivert source checksum does not match. Delete '$divertSource', then run the build again."
+    }
+    Copy-Item -LiteralPath $divertSource -Destination (Join-Path $payload "WinDivert-source.zip") -Force
+    Expand-Archive -LiteralPath $divertArchive -DestinationPath (Join-Path $divertCache "expanded") -Force
+    foreach ($divertFile in @("WinDivert.dll", "WinDivert64.sys")) {
+        Copy-Item -LiteralPath (Join-Path $divertCache "expanded\WinDivert-2.2.2-A\x64\$divertFile") -Destination (Join-Path $payload $divertFile) -Force
+    }
+}
 
 function Assert-PEArchitecture([string]$Path, [uint16]$ExpectedMachine) {
     $bytes = [IO.File]::ReadAllBytes($Path)
@@ -84,15 +141,22 @@ $expectedMachine = if ($Architecture -eq "arm64") { [uint16]0xaa64 } else { [uin
 foreach ($binary in @("caspian.exe", "caspian-tethering.exe", "caspian_ui.exe", "flutter_windows.dll", "msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll", "wintun.dll")) {
     Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
 }
+if ($Architecture -eq "x64") {
+    foreach ($binary in @("WinDivert.dll", "WinDivert64.sys")) {
+        Assert-PEArchitecture (Join-Path $payload $binary) $expectedMachine
+    }
+}
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "lifecycle.ps1") -Destination $payload -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot "service-install.ps1") -Destination $payload -Force
 if ($PayloadOnly) { return }
-$compiler = @(
-    "$env:LOCALAPPDATA\Programs\Inno Setup 6\ISCC.exe",
-    "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe",
-    "$env:ProgramFiles\Inno Setup 6\ISCC.exe"
-) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
-if (-not $compiler) { throw "Install Inno Setup 6, then run this command again." }
+Write-Host "Building the installer..."
 & $compiler "/DAppVersion=$numericVersion" "/DBuildArchitecture=$Architecture" "/DAllowedArchitecture=$installerArchitecture" (Join-Path $PSScriptRoot "Caspian.iss")
 if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed." }
-Get-ChildItem $output -Filter "CaspianSetup-*.exe"
+$installer = Join-Path $output "CaspianSetup-$numericVersion-windows-$Architecture.exe"
+$checksumFile = "$installer.sha256"
+$checksum = (Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant()
+"$checksum  $([IO.Path]::GetFileName($installer))" | Set-Content -LiteralPath $checksumFile -Encoding ASCII
+Write-Host "Build complete."
+Write-Host "App and helpers: $payload"
+Write-Host "Installer:       $installer"
+Write-Host "SHA256:          $checksumFile"

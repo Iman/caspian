@@ -1,10 +1,12 @@
-# Development and testing
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh)
+[English](https://github.com/Iman/caspian/wiki/Development-and-Testing) | [فارسی](https://github.com/Iman/caspian/wiki/Development-and-Testing.fa) | [Русский](https://github.com/Iman/caspian/wiki/Development-and-Testing.ru) | [中文](https://github.com/Iman/caspian/wiki/Development-and-Testing.zh) | [العربية](https://github.com/Iman/caspian/wiki/Development-and-Testing.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Development-and-Testing.tr) | [اردو](https://github.com/Iman/caspian/wiki/Development-and-Testing.ur)
 
 </div>
+
+# Development and testing
+
+
 
 [Caspian wiki](https://github.com/Iman/caspian/wiki/Home)
 
@@ -86,13 +88,13 @@ request is checked against what this machine detected for itself. A refusal is a
 fault code from a closed set, never a sentence, and never a value the caller
 sent.
 
-**The box asks the internet for nothing.** No telemetry, no phone-home, no crash
+**The box asks the internet for nothing you did not ask it to.** No telemetry, no phone-home, no crash
 upload, no web font, no geo data file, and no Google resolver in any default.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
-
-</div>
 
 [Architecture](https://github.com/Iman/caspian/wiki/Architecture) | [Panel-and-Configuration](https://github.com/Iman/caspian/wiki/Panel-and-Configuration) | [Troubleshooting](https://github.com/Iman/caspian/wiki/Troubleshooting)
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

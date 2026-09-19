@@ -6,6 +6,7 @@ package link
 import (
 	"encoding/json"
 	"errors"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -144,7 +145,7 @@ func clashProxy(network string) string {
 //   - the URI path calls Network.Build() itself, in
 //     third_party/libxray-share/stream.go:73-76, and returns the error. That
 //     error is then dropped per line by parsePlainShareLines
-//     (parse_share.go:104-106), so the whole link disappears and Parse reports
+//     (parse_share.go:107-109), so the whole link disappears and Parse reports
 //     ErrNoLink. fillStream is never reached.
 //   - the Clash path, buildStreamFromTransportFields at
 //     third_party/libxray-share/transport_build.go:71-77, assigns
@@ -283,6 +284,43 @@ func TestValidUUIDRejectsNonHex(t *testing.T) {
 	for _, ok := range []string{fakeUUID, strings.ReplaceAll(fakeUUID, "-", "")} {
 		if !validUUID(ok) {
 			t.Errorf("validUUID(%q) rejected a well-formed id", ok)
+		}
+	}
+}
+
+// TestEntryAndListHaveNoSecretFields mirrors TestLinkTypeHasNoSecretFields in
+// link_test.go for the two types ParseAll exposes. They cross into the panel and
+// are marshalled by encoding/json, so the same rule applies: credential
+// material is recorded as presence, never as value, and a field whose name says
+// otherwise fails here on the day it is added.
+func TestEntryAndListHaveNoSecretFields(t *testing.T) {
+	bannedSuffix := []string{"id", "uuid", "key", "password", "secret", "token", "seed", "auth", "credential"}
+	bannedAnywhere := []string{"password", "secret", "privatekey", "publickey", "shortid", "token", "credential", "outbound", "raw"}
+
+	for _, rt := range []reflect.Type{reflect.TypeOf(Entry{}), reflect.TypeOf(List{})} {
+		for i := 0; i < rt.NumField(); i++ {
+			f := rt.Field(i)
+			if f.PkgPath != "" {
+				t.Errorf("%s has an unexported field %q; the display types must hold nothing that needs hiding", rt.Name(), f.Name)
+				continue
+			}
+			name := strings.ToLower(f.Name)
+			for _, b := range bannedSuffix {
+				if strings.HasSuffix(name, b) {
+					t.Errorf("%s has an exported field %q, whose name ends in %q: "+
+						"credential material must be recorded as presence, not value", rt.Name(), f.Name, b)
+				}
+			}
+			for _, b := range bannedAnywhere {
+				if strings.Contains(name, b) {
+					t.Errorf("%s has an exported field %q containing %q", rt.Name(), f.Name, b)
+				}
+			}
+			// No field of either type may be, or contain, an engine config
+			// structure: that is where the credentials live.
+			if strings.Contains(f.Type.String(), "conf.") {
+				t.Errorf("%s.%s has type %s, which is an engine config structure", rt.Name(), f.Name, f.Type)
+			}
 		}
 	}
 }

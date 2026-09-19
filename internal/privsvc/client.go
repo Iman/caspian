@@ -111,6 +111,18 @@ func (c *Client) EngineLog(ctx context.Context) (panel.EngineLog, error) {
 	return *resp.Log, nil
 }
 
+// Refresh implements panel.Privileged.
+func (c *Client) Refresh(ctx context.Context, req panel.RefreshRequest) (panel.RefreshReply, error) {
+	resp, err := c.call(ctx, wireRequest{Action: panel.ActionRefresh, Refresh: &req})
+	if err != nil {
+		return panel.RefreshReply{}, err
+	}
+	if resp.Refresh == nil {
+		return panel.RefreshReply{}, unexpectedReply(panel.ActionRefresh)
+	}
+	return *resp.Refresh, nil
+}
+
 // call is the whole client protocol: dial, send one message, read one, close.
 func (c *Client) call(ctx context.Context, req wireRequest) (wireResponse, error) {
 	req.Version = protocolVersion

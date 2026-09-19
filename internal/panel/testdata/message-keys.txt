@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## fa: 379 keys
+## en: 457 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -87,14 +87,25 @@
   advanced.subnet.hint
   app.name
   config.add
+  config.entries.dropped.many
+  config.entries.dropped.one
+  config.entries.heading
+  config.entries.number
+  config.entries.reset
+  config.entries.submit
   config.heading
   config.name.label
   config.none
   config.paste.hint
   config.paste.label
   config.placeholder
+  config.refresh.button
+  config.refresh.disabled
   config.replace
   config.submit
+  config.subscription.hint
+  config.subscription.label
+  config.subscription.set
   connections.apply
   connections.heading
   connections.hint
@@ -113,12 +124,18 @@
   error.saveadvanced.headline
   error.saveconfig.headline
   error.savehotspot.headline
+  error.saveselect.headline
+  error.savesubscription.headline
+  error.selectentry.advice
+  error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
+  event.configrefreshed
   event.connected
   event.disconnected
   event.hotspotnamed
+  event.refreshfailed
   event.signedin
   event.startfailed
   event.switchedoff
@@ -142,12 +159,15 @@
   fault.nointernet
   fault.notrunning
   fault.permission
+  fault.portinuse
+  fault.portinuse.advice
   fault.radioblocked
   fault.softwaremissing
   fault.tunnelnohotspot
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  fault.windowstooold
   footer.developer
   footer.github
   footer.note
@@ -285,12 +305,17 @@
   notice.configreconnected
   notice.configsaved
   notice.cut
+  notice.entryreconnected
+  notice.entryselected
   notice.hotspotrenamed
   notice.hotspotsaved
   notice.off
   notice.on
   notice.recovered
+  notice.refreshed
+  notice.refreshreconnected
   notice.restored
+  notice.subscriptionsaved
   password.confirm
   password.current
   password.heading
@@ -318,7 +343,11 @@
   problem.crosssite.headline
   problem.detail.label
   problem.engine.advice
+  problem.engine.cipher.advice
+  problem.engine.cipher.headline
   problem.engine.headline
+  problem.engine.insecure.advice
+  problem.engine.insecure.headline
   problem.internal.advice
   problem.internal.headline
   problem.notfound.advice
@@ -334,8 +363,41 @@
   problem.parse.scheme.advice
   problem.parse.transport.advice
   problem.parse.uuid.advice
+  problem.refresh.badaddress.advice
+  problem.refresh.badaddress.headline
+  problem.refresh.badstatus.advice
+  problem.refresh.badstatus.headline
+  problem.refresh.noanswer.advice
+  problem.refresh.noanswer.headline
+  problem.refresh.notconfig.advice
+  problem.refresh.notconfig.headline
+  problem.refresh.nothttps.advice
+  problem.refresh.nothttps.headline
+  problem.refresh.notrunning.headline
+  problem.refresh.nourl.advice
+  problem.refresh.nourl.headline
+  problem.refresh.other.advice
+  problem.refresh.other.headline
+  problem.refresh.toolarge.advice
+  problem.refresh.toolarge.headline
   problem.server.advice
   problem.server.headline
+  problem.subscription.advice
+  problem.subscription.ipliteral.headline
+  problem.subscription.malformed.headline
+  problem.subscription.nohost.headline
+  problem.subscription.nothttps.headline
+  problem.subscription.toolong.headline
+  problem.subscription.userinfo.headline
+  refresh.entries.many
+  refresh.entries.one
+  refresh.expires
+  refresh.line
+  refresh.used
+  refresh.when.days
+  refresh.when.hours
+  refresh.when.justnow
+  refresh.when.minutes
   setup.confirm
   setup.done.advice
   setup.done.headline
@@ -351,9 +413,25 @@
   setup.submit
   setup.title
   setup.writeitdown
+  sni.active_label
+  sni.active_name
+  sni.heading
+  sni.hint
+  sni.invalid
+  sni.label
+  sni.save
+  sni.saved
+  sni.split_hint
+  sni.state_off
+  sni.state_on
+  sni.tcp_split
+  sni.tls_record_split
+  sni.unavailable
+  sni.unsupported
   status.connected
   status.cut
   status.heading
+  status.localproxy
   status.noconfig
   status.notconnected
   status.notworking
@@ -386,7 +464,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## en: 379 keys
+## fa: 457 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -468,14 +546,25 @@
   advanced.subnet.hint
   app.name
   config.add
+  config.entries.dropped.many
+  config.entries.dropped.one
+  config.entries.heading
+  config.entries.number
+  config.entries.reset
+  config.entries.submit
   config.heading
   config.name.label
   config.none
   config.paste.hint
   config.paste.label
   config.placeholder
+  config.refresh.button
+  config.refresh.disabled
   config.replace
   config.submit
+  config.subscription.hint
+  config.subscription.label
+  config.subscription.set
   connections.apply
   connections.heading
   connections.hint
@@ -494,12 +583,18 @@
   error.saveadvanced.headline
   error.saveconfig.headline
   error.savehotspot.headline
+  error.saveselect.headline
+  error.savesubscription.headline
+  error.selectentry.advice
+  error.selectentry.headline
   event.advancedsaved
   event.configadded
   event.configchanged
+  event.configrefreshed
   event.connected
   event.disconnected
   event.hotspotnamed
+  event.refreshfailed
   event.signedin
   event.startfailed
   event.switchedoff
@@ -523,12 +618,15 @@
   fault.nointernet
   fault.notrunning
   fault.permission
+  fault.portinuse
+  fault.portinuse.advice
   fault.radioblocked
   fault.softwaremissing
   fault.tunnelnohotspot
   fault.unavailable
   fault.unknown
   fault.unrecognised
+  fault.windowstooold
   footer.developer
   footer.github
   footer.note
@@ -666,12 +764,17 @@
   notice.configreconnected
   notice.configsaved
   notice.cut
+  notice.entryreconnected
+  notice.entryselected
   notice.hotspotrenamed
   notice.hotspotsaved
   notice.off
   notice.on
   notice.recovered
+  notice.refreshed
+  notice.refreshreconnected
   notice.restored
+  notice.subscriptionsaved
   password.confirm
   password.current
   password.heading
@@ -699,7 +802,11 @@
   problem.crosssite.headline
   problem.detail.label
   problem.engine.advice
+  problem.engine.cipher.advice
+  problem.engine.cipher.headline
   problem.engine.headline
+  problem.engine.insecure.advice
+  problem.engine.insecure.headline
   problem.internal.advice
   problem.internal.headline
   problem.notfound.advice
@@ -715,8 +822,41 @@
   problem.parse.scheme.advice
   problem.parse.transport.advice
   problem.parse.uuid.advice
+  problem.refresh.badaddress.advice
+  problem.refresh.badaddress.headline
+  problem.refresh.badstatus.advice
+  problem.refresh.badstatus.headline
+  problem.refresh.noanswer.advice
+  problem.refresh.noanswer.headline
+  problem.refresh.notconfig.advice
+  problem.refresh.notconfig.headline
+  problem.refresh.nothttps.advice
+  problem.refresh.nothttps.headline
+  problem.refresh.notrunning.headline
+  problem.refresh.nourl.advice
+  problem.refresh.nourl.headline
+  problem.refresh.other.advice
+  problem.refresh.other.headline
+  problem.refresh.toolarge.advice
+  problem.refresh.toolarge.headline
   problem.server.advice
   problem.server.headline
+  problem.subscription.advice
+  problem.subscription.ipliteral.headline
+  problem.subscription.malformed.headline
+  problem.subscription.nohost.headline
+  problem.subscription.nothttps.headline
+  problem.subscription.toolong.headline
+  problem.subscription.userinfo.headline
+  refresh.entries.many
+  refresh.entries.one
+  refresh.expires
+  refresh.line
+  refresh.used
+  refresh.when.days
+  refresh.when.hours
+  refresh.when.justnow
+  refresh.when.minutes
   setup.confirm
   setup.done.advice
   setup.done.headline
@@ -732,9 +872,25 @@
   setup.submit
   setup.title
   setup.writeitdown
+  sni.active_label
+  sni.active_name
+  sni.heading
+  sni.hint
+  sni.invalid
+  sni.label
+  sni.save
+  sni.saved
+  sni.split_hint
+  sni.state_off
+  sni.state_on
+  sni.tcp_split
+  sni.tls_record_split
+  sni.unavailable
+  sni.unsupported
   status.connected
   status.cut
   status.heading
+  status.localproxy
   status.noconfig
   status.notconnected
   status.notworking

@@ -33,6 +33,11 @@ const (
 	// Windows 11. The access point is Mobile Hotspot, the
 	// firewall is the Windows Filtering Platform, and routes come from the IP
 	// Helper API.
+	//
+	// The version is a floor rather than a description: the backend compiles
+	// and detects on every build back to 1607, and refuses to apply a plan
+	// below 19041 because that is where the call that points DNS at the tunnel
+	// arrives. See winversion.go, which says which build brought what.
 	PlatformWindows Platform = "windows"
 )
 

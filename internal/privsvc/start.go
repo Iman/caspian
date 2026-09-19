@@ -40,6 +40,12 @@ func (s *Service) Start(ctx context.Context, req panel.StartRequest) error {
 	s.opMu.Lock()
 	defer s.opMu.Unlock()
 
+	if checker, ok := s.cfg.Runner.(interface{ CheckSupport() error }); ok {
+		if err := checker.CheckSupport(); err != nil {
+			return fail("platform", faultOf(err), err)
+		}
+	}
+
 	fp := s.requestFingerprint(req)
 
 	if s.isRunning() {
@@ -110,6 +116,9 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	if err := s.validateStatic(req); err != nil {
 		return err
 	}
+	if err := validateSpoof(l, req.SpoofSNI, req.TCPSplit, req.TLSRecordSplit); err != nil {
+		return err
+	}
 
 	// -----------------------------------------------------------------------
 	// 3. Clean up after a previous run that was killed. Nothing is applied at
@@ -148,8 +157,32 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 
 	// -----------------------------------------------------------------------
 	// 6. Decide.
+	//
+	// The loopback SOCKS port first, because two of the decisions below carry
+	// it: the network plan names it as the macOS system proxy endpoint, and
+	// the engine document names it as the inbound's port. Deciding it here,
+	// once, is what keeps the two from disagreeing. See socksport.go for why
+	// it is decided at all rather than fixed: on 2026-09-12 a Windows 11 box
+	// (issue #2) had another proxy client on 127.0.0.1:10808 and the engine
+	// could not bind.
 	// -----------------------------------------------------------------------
-	netOpts, err := s.netOptionsFor(req)
+	socksPort, moved, err := chooseSocksPort(s.cfg.SocksPort)
+	if err != nil {
+		// Not FaultPortInUse: that word says another program holds the port
+		// and the remedy is to close it. Here not even an ephemeral loopback
+		// port could be bound, which no other program explains.
+		return fail("local proxy port", panel.FaultUnknown, err)
+	}
+	if moved {
+		// Fixed words and two port numbers. Neither is a credential.
+		s.cfg.Logger.Info("another program holds the preferred local proxy port, using a free one",
+			"preferred", s.cfg.SocksPort, "chosen", socksPort)
+	}
+	s.mu.Lock()
+	s.socksPort = socksPort
+	s.mu.Unlock()
+
+	netOpts, err := s.netOptionsFor(req, socksPort)
 	if err != nil {
 		return err
 	}
@@ -267,6 +300,12 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	if err := s.assertHotspotInterfaceReleased(ctx, plan); err != nil {
 		return err
 	}
+	if req.SpoofSNI != "" || req.TCPSplit || req.TLSRecordSplit {
+		doc, err = s.spoofDocument(l, req, plan, netOpts)
+		if err != nil {
+			return err
+		}
+	}
 
 	s.mu.Lock()
 	s.plan = plan
@@ -280,8 +319,13 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// -----------------------------------------------------------------------
 	if err := s.cfg.Engine.Start(ctx, doc); err != nil {
 		s.recordFailure("the engine would not start", "", err)
-		return fail("engine", panel.FaultEngineRejectedConfig, err)
+		return fail("engine", engineFault(err), err)
 	}
+	// The engine has bound its inbounds, so the address is a fact now and not
+	// a plan. It goes to the advanced view because it is the one place a
+	// person at the box can read which port the local proxy is on when the
+	// preferred one was taken. The loopback address is not a secret.
+	s.note("local proxy listening at " + localProxyAddr(socksPort))
 
 	// -----------------------------------------------------------------------
 	// 11. Steps that depend on engine-owned resources: tunnel-device routes,
@@ -375,7 +419,7 @@ func (s *Service) reassertLocked(ctx context.Context) error {
 	}
 
 	if err := s.cfg.Engine.Start(ctx, doc); err != nil {
-		return fail("engine", panel.FaultEngineRejectedConfig, err)
+		return fail("engine", engineFault(err), err)
 	}
 	st, err := s.sup.Start(ctx, hp)
 	if err != nil {
@@ -507,6 +551,12 @@ func (s *Service) stopLocked(ctx context.Context) error {
 		s.cfg.Logger.Warn("the engine complained while stopping", "error", err.Error())
 		errs = append(errs, err)
 	}
+	if s.sniForwarder != nil {
+		if err := s.sniForwarder.Close(); err != nil {
+			errs = append(errs, err)
+		}
+		s.sniForwarder = nil
+	}
 	if err := s.sup.Stop(ctx); err != nil {
 		s.cfg.Logger.Warn("the hotspot complained while stopping", "error", err.Error())
 		errs = append(errs, err)
@@ -520,6 +570,7 @@ func (s *Service) stopLocked(ctx context.Context) error {
 	s.fingerprint = ""
 	s.forward = netcfg.ForwardNormal
 	s.engineDoc = nil
+	s.socksPort = 0
 	s.lastDetectAt = time.Time{}
 	s.mu.Unlock()
 
@@ -604,6 +655,17 @@ func (s *Service) requestFingerprint(req panel.StartRequest) string {
 		h.Write([]byte(s))
 	}
 	write(string(req.ConfigJSON))
+	write(req.SpoofSNI)
+	if req.TCPSplit {
+		write("tcp-split")
+	} else {
+		write("")
+	}
+	if req.TLSRecordSplit {
+		write("tls-record-split")
+	} else {
+		write("")
+	}
 	write(req.Hotspot.SSID)
 	write(req.Hotspot.Passphrase)
 	write(req.Hotspot.Interface)

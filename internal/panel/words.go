@@ -7,7 +7,9 @@ import (
 	"errors"
 	"time"
 
+	"caspianbyoc.org/caspian/internal/engine"
 	"caspianbyoc.org/caspian/internal/link"
+	"caspianbyoc.org/caspian/internal/state"
 )
 
 // ---------------------------------------------------------------------------
@@ -121,6 +123,35 @@ func (p Problem) HeadlineText() string { return p.HeadlineIn(LangEN) }
 // so a reworded sentinel does not silently fall through to the last resort. It
 // never carries any part of the pasted text, including the scheme, because an
 // error page is a document people screenshot and send to somebody for help.
+// SubscriptionProblem turns the reason internal/state refused a subscription
+// address into the sentence the person reads. Each rule gets its own headline,
+// because "that address will not do" without saying which rule it broke sends
+// the person back to their provider with nothing to ask for.
+//
+// No sentence quotes the address. It carries the token that authorises the
+// person's account, and a page that echoes it back is a page that leaks it to
+// anyone standing behind them.
+func SubscriptionProblem(err error) Problem {
+	p := Problem{Stage: StageParse, Advice: MsgSubscriptionAdvice}
+	switch {
+	case err == nil:
+		return Problem{}
+	case errors.Is(err, state.ErrSubscriptionNotHTTPS):
+		p.Headline = MsgSubscriptionNotHTTPS
+	case errors.Is(err, state.ErrSubscriptionNoHost):
+		p.Headline = MsgSubscriptionNoHost
+	case errors.Is(err, state.ErrSubscriptionIPLiteral):
+		p.Headline = MsgSubscriptionIPLiteral
+	case errors.Is(err, state.ErrSubscriptionUserinfo):
+		p.Headline = MsgSubscriptionUserinfo
+	case errors.Is(err, state.ErrSubscriptionTooLong):
+		p.Headline = MsgSubscriptionTooLong
+	default:
+		p.Headline = MsgSubscriptionMalformed
+	}
+	return p
+}
+
 func ParseProblem(err error) Problem {
 	p := Problem{Stage: StageParse, Headline: MsgParseHeadline}
 	switch {
@@ -154,6 +185,32 @@ func EngineProblem() Problem {
 	return Problem{Stage: StageEngine, Headline: MsgEngineHeadline, Advice: MsgEngineAdvice}
 }
 
+// EngineRejection is EngineProblem with the two refusals that have a remedy of
+// their own told apart. internal/engine classifies the text; this package only
+// chooses the words. Anything it does not classify keeps the general sentence,
+// so a reworded engine error degrades to that and never to silence.
+//
+// Both are still the second state, StageEngine: the link parsed and the engine
+// refused the document built from it. What differs is that the person can be
+// told which setting to ask their provider about.
+func EngineRejection(err error) Problem {
+	switch engine.ReasonOf(err) {
+	case engine.ReasonInsecureRemoved:
+		return insecureProblem()
+	case engine.ReasonCipherRemoved:
+		return cipherProblem()
+	}
+	return EngineProblem()
+}
+
+func insecureProblem() Problem {
+	return Problem{Stage: StageEngine, Headline: MsgEngineInsecureHeadline, Advice: MsgEngineInsecureAdvice}
+}
+
+func cipherProblem() Problem {
+	return Problem{Stage: StageEngine, Headline: MsgEngineCipherHeadline, Advice: MsgEngineCipherAdvice}
+}
+
 // ServerProblem is the third state: the config loaded and nothing answered.
 //
 // The advice puts the machine's own internet connection first, because that is
@@ -177,6 +234,14 @@ func StartProblem(f Fault) Problem {
 		return Problem{}
 	case FaultEngineRejectedConfig:
 		return EngineProblem()
+	case FaultInsecureRemoved:
+		return insecureProblem()
+	case FaultCipherRemoved:
+		return cipherProblem()
+	case FaultPortInUse:
+		// Not a config state: the link is fine and another program holds the
+		// port. StageNone, so nothing on the page points at the config.
+		return Problem{Stage: StageNone, Headline: MsgFaultPortInUse, Advice: MsgFaultPortInUseAdvice}
 	case FaultServerNoAnswer:
 		return ServerProblem()
 	case FaultCountryMissing:
@@ -189,6 +254,12 @@ func StartProblem(f Fault) Problem {
 // Key is the message for a fault.
 func (f Fault) Key() Key {
 	switch f {
+	case FaultSNISpoofInvalid:
+		return MsgSNISpoofInvalid
+	case FaultSNISpoofUnsupported:
+		return MsgSNISpoofUnsupported
+	case FaultSNISpoofUnavailable:
+		return MsgSNISpoofUnavailable
 	case FaultNone:
 		return ""
 	case FaultNoAPAdapter:
@@ -209,6 +280,12 @@ func (f Fault) Key() Key {
 		return MsgFaultDHCP
 	case FaultEngineRejectedConfig:
 		return MsgEngineHeadline
+	case FaultInsecureRemoved:
+		return MsgEngineInsecureHeadline
+	case FaultCipherRemoved:
+		return MsgEngineCipherHeadline
+	case FaultPortInUse:
+		return MsgFaultPortInUse
 	case FaultServerNoAnswer:
 		return MsgServerHeadline
 	case FaultClockImplausible:
@@ -223,6 +300,16 @@ func (f Fault) Key() Key {
 		return MsgFaultIPv6Unsupported
 	case FaultCountryMissing:
 		return MsgCountryMissing
+	case FaultWindowsTooOld:
+		return MsgFaultWindowsTooOld
+	case FaultRefreshBadAddress:
+		return MsgRefreshBadAddress
+	case FaultRefreshNoAnswer:
+		return MsgRefreshNoAnswer
+	case FaultRefreshTooLarge:
+		return MsgRefreshTooLarge
+	case FaultRefreshNotHTTPS:
+		return MsgRefreshNotHTTPS
 	case FaultUnknown:
 		return MsgFaultUnknown
 	default:
@@ -241,6 +328,8 @@ var faults = []Fault{
 	FaultHotspotFailed, FaultDHCPFailed, FaultEngineRejectedConfig, FaultServerNoAnswer,
 	FaultClockImplausible, FaultPermissionDenied, FaultSoftwareMissing, FaultUnavailable,
 	FaultIPv6Unsupported, FaultCountryMissing, FaultUnknown,
+	FaultRefreshBadAddress, FaultRefreshNoAnswer, FaultRefreshTooLarge, FaultRefreshNotHTTPS,
+	FaultWindowsTooOld, FaultPortInUse, FaultInsecureRemoved, FaultCipherRemoved,
 }
 
 // Key is what to call an interface kind on screen.

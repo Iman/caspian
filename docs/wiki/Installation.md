@@ -1,10 +1,12 @@
-# Installation
+<div dir="ltr">
 
-<div dir="ltr" align="left">
-
-[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr)
+[English](https://github.com/Iman/caspian/wiki/Installation) | [فارسی](https://github.com/Iman/caspian/wiki/Installation.fa) | [Русский](https://github.com/Iman/caspian/wiki/Installation.ru) | [中文](https://github.com/Iman/caspian/wiki/Installation.zh) | [العربية](https://github.com/Iman/caspian/wiki/Installation.ar) | [Türkçe](https://github.com/Iman/caspian/wiki/Installation.tr) | [اردو](https://github.com/Iman/caspian/wiki/Installation.ur)
 
 </div>
+
+# Installation
+
+
 
 [For connection diagrams, cable-first setup, service restarts, and common errors, read the home-user troubleshooting guide.](https://github.com/Iman/caspian/wiki/Troubleshooting)
 
@@ -31,6 +33,11 @@ PowerShell, Go, or the .NET SDK.
 #### What you need
 
 - A computer running Windows 10 version 2004 (build 19041) or later, or Windows 11, on x64 or ARM64.
+  The installer refuses anything older than Windows 10 version 1607, which is the
+  first with Mobile Hotspot. Between 1607 and 1909 Caspian installs and the panel
+  opens, but connecting is refused with a message naming the version: those builds
+  have no way to send name lookups through the tunnel, and Caspian will not run in
+  a state where names either leak or stop resolving.
 - An administrator account on that computer.
 - A Wi-Fi adapter that supports Windows Mobile Hotspot.
 - An internet connection.
@@ -412,8 +419,13 @@ subset. It exits non-zero on failure. Do not pipe it anywhere: a shell pipeline
 reports the status of its last command, so piping it into `tail` throws away
 the answer you asked for.
 
-<div dir="ltr" align="left">
 
-[English](https://github.com/Iman/caspian/blob/main/README.md) | [فارسی](https://github.com/Iman/caspian/blob/main/README.fa.md) | [Русский](https://github.com/Iman/caspian/blob/main/README.ru.md) | [中文](https://github.com/Iman/caspian/blob/main/README.zh.md)
 
-</div>
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](https://github.com/Iman/caspian/blob/main/docs/THIRD-PARTY.md).
+
+<!-- Caspian guide navigation -->
+
+Caspian guides: [setup and supported protocols](https://github.com/Iman/caspian/wiki/Home) · [SNI spoofing for DPI circumvention: setup and limits](https://github.com/Iman/caspian/wiki/SNI-Spoofing).

@@ -319,6 +319,25 @@
     <bdi dir="ltr" class="mono muted">vless example.invalid</bdi>
   </p>
   
+  
+  
+  
+  
+
+
+  <details class="disclose">
+    <summary>Anti-DPI (DPI circumvention): off</summary>
+    <form method="post" action="/sni" class="stack">
+      <input type="hidden" name="csrf" value="<redacted:csrf-token>">
+      <label for="spoof_sni">Decoy server name</label>
+      <input id="spoof_sni" name="spoof_sni" type="text" value="" dir="ltr" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <p class="hint">Send a fake TLS greeting before the real connection. The server name in your configuration stays unchanged. Leave this empty to turn spoofing off. Requires an IPv4 TCP connection.</p>
+      <label><input type="checkbox" name="tcp_split" > TCP split</label>
+      <label><input type="checkbox" name="tls_record_split" > TLS-record split</label>
+      <p class="hint">Each option is independent; leave the fake name blank to disable SNI spoofing. Splitting requires TLS over TCP and may not work with every server. Saving reconnects an active tunnel.</p>
+      <button type="submit">Save anti-DPI settings</button>
+    </form>
+  </details>
 
   <details class="disclose" >
     <summary>Replace the config</summary>
@@ -331,12 +350,21 @@
       <p class="hint">Caspian never shows this back to you and never writes it to a log.</p>
       <label for="label">A name for it, so you know which one it is (optional)</label>
       <input id="label" name="label" type="text" maxlength="64" autocomplete="off">
+      <label for="subscription_url">Subscription address from your provider (optional)</label>
+      <input id="subscription_url" name="subscription_url" type="text" dir="ltr"
+             autocapitalize="off" autocorrect="off" spellcheck="false"
+             autocomplete="off" inputmode="url">
+      <p class="hint">An https address. Caspian fetches it only when you press the button, and only through the tunnel.</p>
       <button type="submit" class="go">Add this config</button>
     </form>
   </details>
 </section>
 
-<p class="detected" id="detected">Internet: Ethernet. Hotspot: built-in WiFi.</p>
+<p class="detected" id="detected">Internet: Ethernet. Hotspot: built-in WiFi.</p><p class="detected" id="local-proxy">
+  <span class="label">Local proxy</span>
+  <bdi dir="ltr" class="mono" id="local-proxy-value">127.0.0.1:10808</bdi></p><p class="detected" id="anti-dpi" hidden>
+  <span class="label">Anti-DPI</span>
+  <span id="anti-dpi-value"></span></p>
 
 <section class="card" aria-labelledby="events-heading">
   <h2 id="events-heading"><svg aria-hidden="true" focusable="false"><use href="#i-list"/></svg>What has happened</h2>
@@ -587,7 +615,7 @@
       <span>Developed by Iman Samizadeh</span>
       <a href="https://github.com/Iman/caspian" target="_blank" rel="noopener noreferrer">GitHub project</a>
     </div>
-    <span>This panel comes from this box itself. It fetches nothing from the internet.</span>
+    <span>This panel comes from this box itself. It fetches nothing from the internet on its own.</span>
   </footer>
 </div>
 <script src="/assets/panel.js" defer></script>

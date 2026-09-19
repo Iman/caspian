@@ -37,7 +37,17 @@ import (
 // the blocking value explicit. A v1 file therefore still loads; only a v2 file
 // read by a v1 build is refused, which is ErrFutureVersion telling the user to
 // update rather than a silent field drop.
-const CurrentVersion = 2
+//
+// Raised from 2 to 3 on 2026-09-09 by the addition of Proxy.SubscriptionURL,
+// RefreshedAt and Quota. A v2 file has none of the keys and decodes them zero,
+// which is the correct reading (no address, never refreshed), so the migration
+// changes no field. The version is raised anyway, for the other direction: the
+// address is a credential the person typed, and a v2 build reading a v3 file
+// would drop it on its next Save without a word. ErrFutureVersion turns that
+// into "install a newer release".
+// Version 4 retains the optional spoof name. Version 5 adds independent split
+// settings. Older builds must not silently drop these choices.
+const CurrentVersion = 5
 
 // DefaultDir is where the appliance keeps its state. Callers may override it;
 // nothing in this package assumes it.
@@ -128,6 +138,9 @@ type State struct {
 // ProxyConfig is the config the user pasted, plus what was detected from it.
 // Design sections 5.2 and 5.4.
 type ProxyConfig struct {
+	SpoofSNI       Secret `json:"spoof_sni,omitempty"`
+	TCPSplit       bool   `json:"tcp_split,omitempty"`
+	TLSRecordSplit bool   `json:"tls_record_split,omitempty"`
 	// Raw is the pasted share link, raw xray JSON, or subscription text,
 	// stored verbatim. It is untrusted input (design section 6) and it is a
 	// credential: it carries the UUID, the REALITY private material and the
@@ -141,7 +154,43 @@ type ProxyConfig struct {
 	// Label is the user's own name for this config. Not secret.
 	Label string `json:"label,omitempty"`
 
+	// Selected is which entry of Raw the box uses, counting from zero, when
+	// Raw holds more than one (a subscription list, a Clash profile). It is an
+	// index into the list internal/link reads out of Raw, and it is written
+	// only by SelectProxyEntry; SetProxyConfig resets it, because a new paste
+	// is a new list and an index into the old one means nothing in it.
+	//
+	// Zero is both the default and the meaning every file written before this
+	// field existed had: the first entry was the only one anything could use.
+	// So a file without the key reads correctly with no migration, and the
+	// schema version was not raised for it. That is safe here in a way it is
+	// not for the policy fields, because the wrong reading of an absent
+	// selection is a different server in the same list, not client traffic
+	// leaving the box unprotected. An index past the end of the list is
+	// tolerated on read and corrected on screen; see internal/link.Select.
+	Selected int `json:"selected"`
+
 	AddedAt time.Time `json:"added_at,omitzero"`
+
+	// SubscriptionURL is the address a refresh is fetched from, or empty when
+	// none is set. It is a credential: providers put the account token in the
+	// path or the query, so it is a Secret and Redacted says only whether one
+	// is set. The rules it has to meet are in subscription.go.
+	//
+	// The JSON key is spelled subscriptionUrl, unlike its snake-case
+	// neighbours, because that is the name the 2026-09-09 subscription
+	// refresh brief fixed for it. Renaming it is a file every client reads
+	// differently, so it stays.
+	SubscriptionURL Secret `json:"subscriptionUrl"`
+
+	// RefreshedAt is when Raw was last replaced by a refresh, or zero when it
+	// was pasted. A paste clears it, because the figures below describe the
+	// config that was fetched and not the one that replaced it.
+	RefreshedAt time.Time `json:"refreshed_at,omitzero"`
+
+	// Quota is what the provider reported at that refresh. Zero when the
+	// provider sent nothing, and cleared by a paste for the reason above.
+	Quota Quota `json:"quota"`
 }
 
 // Fingerprint identifies a stored config in diagnostics without revealing any
@@ -313,8 +362,17 @@ func (s State) Redacted() string {
 		// A hash prefix, not the config: enough to tell two configs apart in a
 		// log without disclosing either.
 		fmt.Fprintf(&b, " proxy.fingerprint=%s", fp)
+		// Which entry of a list the box is on. A position, not a name: the
+		// entry's display name is provider text and does not belong in a log.
+		fmt.Fprintf(&b, " proxy.selected=%d", s.Proxy.Selected)
 	}
 	fmt.Fprintf(&b, " proxy.raw=%s", redacted)
+	// Whether an address is set and when it was last used, never the address:
+	// it carries the account token.
+	fmt.Fprintf(&b, " proxy.subscription_set=%t", s.Proxy.HasSubscription())
+	if !s.Proxy.RefreshedAt.IsZero() {
+		fmt.Fprintf(&b, " proxy.refreshed_at=%s", formatTime(s.Proxy.RefreshedAt))
+	}
 
 	fmt.Fprintf(&b, " hotspot.ssid=%q", s.Hotspot.SSID)
 	fmt.Fprintf(&b, " hotspot.passphrase=%s", redacted)

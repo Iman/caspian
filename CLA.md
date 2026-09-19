@@ -70,3 +70,8 @@ Say so in your first pull request:
 This document records the author's position. It is not legal advice and it was
 not drafted by a lawyer. If this project ever grows to the point where the
 agreement matters commercially, replace it with a reviewed one.
+
+<!-- SNI upstream credits -->
+
+SNI spoofing credits: [patterniha/SNI-Spoofing](https://github.com/patterniha/SNI-Spoofing) (GPL-3.0), with WinDivert (LGPL-3.0) on Windows x64.
+[Third-party licenses, source versions, and credits](docs/THIRD-PARTY.md).
