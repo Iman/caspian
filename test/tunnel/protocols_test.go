@@ -260,6 +260,100 @@ func protocolCases() []protocolCase {
 				return hysteriaShareLink("hy2", port, secret, pin)
 			},
 		},
+		// The two shapes of full xray JSON config from GitHub issue 7, pasted
+		// whole. Neither can be written as a share link: the first carries an
+		// HTTP request and response header on raw TCP, the second a finalmask
+		// fragment, and both put the server under vnext or servers rather than
+		// in the flat form. "scheme" names the protocol so the scheme coverage
+		// test counts them with the link rows; the text itself has no scheme.
+		//
+		// The fragment length is the one the BPB sample uses, 100-200. Measured
+		// 2026-09-23 on the first row: with "length": "10-20" the request fails
+		// three runs of three with an unexpected EOF, and with 100-200 or with
+		// no finalmask it carries three of three. The mask reaches the engine
+		// byte for byte either way (internal/link TestXrayJSON*), so the cause
+		// is on the engine's side of the document and was not diagnosed here.
+		{
+			name:        "vless from a v2rayN custom JSON config (vnext, tcp http header, finalmask fragment)",
+			scheme:      "vless",
+			secret:      credVLess,
+			wrongSecret: wrongUUID,
+			inbound: func(port int, _ serverCert) string {
+				return fmt.Sprintf(`{
+    "tag": "in",
+    "listen": "127.0.0.1",
+    "port": %d,
+    "protocol": "vless",
+    "settings": {"clients": [{"id": "%s"}], "decryption": "none"},
+    "streamSettings": {"network": "raw", "rawSettings": {"header": {"type": "http",
+      "response": {"version": "1.1", "status": "200", "reason": "OK", "headers": {"Content-Type": ["application/octet-stream"]}}}}}
+  }`, port, credVLess)
+			},
+			shareLink: func(port int, secret, _ string) string {
+				return fmt.Sprintf(`{
+  "remarks": "Caspian test",
+  "log": {"loglevel": "debug"},
+  "inbounds": [{"tag": "socks", "port": 10808, "listen": "0.0.0.0", "protocol": "socks"}],
+  "outbounds": [
+    {"tag": "proxy", "protocol": "vless",
+     "settings": {"vnext": [{"address": "127.0.0.1", "port": %d, "users": [{"id": "%s", "encryption": "none", "level": 8}]}]},
+     "streamSettings": {"network": "tcp",
+       "tcpSettings": {"header": {"type": "http", "request": {"version": "1.1", "method": "GET", "path": ["/"],
+         "headers": {"Host": ["www.example.invalid"], "Connection": ["keep-alive"]}}}},
+       "finalmask": {"tcp": [{"type": "fragment", "settings": {"packets": "1-1", "length": "100-200", "delay": "1"}}]}}},
+    {"tag": "direct", "protocol": "freedom", "settings": {}},
+    {"tag": "block", "protocol": "blackhole", "settings": {}}
+  ],
+  "routing": {"rules": [{"type": "field", "port": "0-65535", "outboundTag": "direct"}]}
+}`, port, secret)
+			},
+		},
+		{
+			name:        "trojan from a BPB JSON array (servers, tls, finalmask tlshello fragment)",
+			scheme:      "trojan",
+			secret:      credTrojan,
+			wrongSecret: wrongCredential,
+			usesTLS:     true,
+			inbound: func(port int, cert serverCert) string {
+				return fmt.Sprintf(`{
+    "tag": "in",
+    "listen": "127.0.0.1",
+    "port": %d,
+    "protocol": "trojan",
+    "settings": {"clients": [{"password": "%s"}]},
+    "streamSettings": {
+      "network": "raw",
+      "security": "tls",
+      "tlsSettings": {"alpn": ["http/1.1"], "certificates": [{"usage": "encipherment", "certificate": %s, "key": %s}]}
+    }
+  }`, port, credTrojan, jsonArray(cert.certPEM), jsonArray(cert.keyPEM))
+			},
+			shareLink: func(port int, secret, pin string) string {
+				// An array of two configs; the test selects entry zero through
+				// link.Parse, and the second entry is a freedom-only config of
+				// the kind BPB also serves, which must not be chosen.
+				return fmt.Sprintf(`[{
+  "remarks": "Caspian test 1",
+  "version": {"min": "26.2.6"},
+  "dns": {"servers": ["198.51.100.53"]},
+  "outbounds": [
+    {"protocol": "trojan",
+     "settings": {"servers": [{"address": "127.0.0.1", "port": %d, "password": "%s"}]},
+     "streamSettings": {"network": "tcp", "security": "tls",
+       "tlsSettings": {"serverName": "Caspian-Test-Server.Invalid", "fingerprint": "chrome", "alpn": ["http/1.1"], "pinnedPeerCertSha256": "%s"},
+       "sockopt": {"domainStrategy": "UseIP", "happyEyeballs": {"tryDelayMs": 250, "prioritizeIPv6": false, "interleave": 2, "maxConcurrentTry": 4}},
+       "finalmask": {"tcp": [{"type": "fragment", "settings": {"packets": "tlshello", "length": "100-200", "delay": "1"}}]}},
+     "tag": "proxy"},
+    {"tag": "dns-out", "protocol": "dns"},
+    {"tag": "direct", "protocol": "freedom", "settings": {}},
+    {"tag": "block", "protocol": "blackhole", "settings": {}}
+  ]
+}, {
+  "remarks": "Caspian test 2",
+  "outbounds": [{"tag": "proxy", "protocol": "freedom", "settings": {}}]
+}]`, port, secret, pin)
+			},
+		},
 	}
 }
 

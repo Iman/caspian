@@ -78,7 +78,7 @@ D  [1] --Wi-Fi--> [2: one radio] --Wi-Fi--> [3]
 
 These are the arrangements the current code can plan or refuse. They do not certify every adapter, OS update, or laptop. A Wi-Fi adapter that can join your home network may still be unable to create a hotspot. Linux USB arrangements have modelled tests; the existing hardware record does not establish that every USB adapter works. On macOS, use Ethernet and built-in Wi-Fi for the documented path. Plugging in USB Wi-Fi does not remove that restriction.
 
-Caspian accepts VLESS, VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 links, including the hy2 alias. It also accepts supported Clash/Clash.Meta YAML, Xray JSON, lists of links, and base64 subscription content. It uses whichever entry of a list you choose. A subscription address can be saved beside the config and refreshed when you press the button, through the tunnel. Ask your provider for the actual supported configuration, not an account password or a web page link.
+Caspian accepts VLESS, VMess, Shadowsocks, SOCKS, Trojan, and Hysteria2 links, including the hy2 alias. It also accepts supported Clash/Clash.Meta YAML, full Xray JSON configs (one, or a JSON array of them such as a BPB subscription served for xray), lists of links, and base64 subscription content. From a JSON config it takes the proxy outbound only. It uses whichever entry of a list you choose. A subscription address can be saved beside the config and refreshed when you press the button, through the tunnel. Ask your provider for the actual supported configuration, not an account password or a web page link.
 
 Supported transport names include raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp, and kcp/mkcp. Protocol, transport, and security settings must be compatible; not every combination works. TUIC, WireGuard, SSR, AnyTLS, and Hysteria v1 links are not supported. Do not rename an unsupported protocol to make it pass validation. See the protocol guide for restrictions and test evidence.
 
@@ -159,6 +159,8 @@ product path, unmodified: `link.Parse`, then `xcfg.Build`, then
 | SOCKS | tcp (raw) | none | yes |
 | Trojan | tcp (raw) | TLS, pinned by digest | yes |
 | Hysteria2, and the `hy2` alias | QUIC | TLS, pinned by digest | yes |
+| VLESS, pasted as a v2rayN custom JSON config | tcp (raw) with an HTTP header, finalmask fragment | none | yes |
+| Trojan, pasted as a BPB JSON array | tcp (raw), finalmask ClientHello fragment | TLS, pinned by digest | yes |
 
 Four controls stop a request that skipped the tunnel from passing, and all four
 run rather than being asserted in prose. The client is never told where the
