@@ -44,10 +44,15 @@ type logSection struct {
 // Servers are plain strings: NameServerConfig.UnmarshalJSON at
 // infra/conf/dns.go:37-42 takes a bare address before it tries the object
 // form, and the object form buys nothing this appliance uses.
+//
+// Hosts is omitted when empty, which is every document whose link names its
+// server by an IP literal: those documents are byte-identical to the ones
+// built before the key existed. See servername.go for when it is present.
 type dnsSection struct {
-	Servers       []string `json:"servers"`
-	QueryStrategy string   `json:"queryStrategy"`
-	Tag           string   `json:"tag"`
+	Servers       []string            `json:"servers"`
+	Hosts         map[string][]string `json:"hosts,omitempty"`
+	QueryStrategy string              `json:"queryStrategy"`
+	Tag           string              `json:"tag"`
 }
 
 // routingSection is infra/conf.RouterConfig, infra/conf/router.go:77-81.
@@ -171,8 +176,11 @@ type dnsOutSettings struct {
 // per connect is not a cost worth trading readability for.
 //
 // Nothing in the returned document comes from user text except the outbound
-// object, which internal/link parsed and re-serialised. No string is
-// interpolated anywhere in this file.
+// object, which internal/link parsed and re-serialised, and, when
+// Options.PinnedServer is set for a link that names its server by a domain,
+// that same domain as the dns.hosts key (servername.go). No string is
+// interpolated anywhere in this file; the hosts key is a map key that
+// encoding/json escapes.
 func Build(o Options) ([]byte, error) {
 	if o.Link == nil {
 		return nil, ErrNoLink
@@ -183,6 +191,10 @@ func Build(o Options) ([]byte, error) {
 	}
 
 	proxy, err := proxyOutbound(o.Link)
+	if err != nil {
+		return nil, err
+	}
+	proxy, hosts, err := pinServerName(o, proxy)
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +276,7 @@ func Build(o Options) ([]byte, error) {
 		OutboundTag: TagProxy,
 	})
 
-	return assemble(o, outbounds, rules)
+	return assemble(o, outbounds, rules, hosts)
 }
 
 // BuildFailClosed composes the configuration for when there is no usable
@@ -293,11 +305,14 @@ func BuildFailClosed(o Options) ([]byte, error) {
 		Network:     "tcp,udp",
 		OutboundTag: TagBlock,
 	}}
-	return assemble(o, outbounds, rules)
+	return assemble(o, outbounds, rules, nil)
 }
 
 // assemble marshals the parts into the final document.
-func assemble(o Options, outbounds []any, rules []rule) ([]byte, error) {
+//
+// hosts is the dns.hosts mapping, nil for every document except one whose link
+// names its server by a domain and was given the pinned addresses for it.
+func assemble(o Options, outbounds []any, rules []rule, hosts map[string][]string) ([]byte, error) {
 	inbounds := []any{}
 	if !o.TUN.Disabled {
 		inbounds = append(inbounds, tunInbound{
@@ -338,6 +353,7 @@ func assemble(o Options, outbounds []any, rules []rule) ([]byte, error) {
 		},
 		DNS: dnsSection{
 			Servers:       o.DNS.Servers,
+			Hosts:         hosts,
 			QueryStrategy: string(o.DNS.Strategy),
 			// Set explicitly so a routing rule can name the DNS app's own
 			// upstream queries. Empty would make app/dns/dns.go:119-121

@@ -134,6 +134,17 @@ func axes() [][]axis {
 			}},
 		},
 		{
+			// Every fixture names its server by a domain, so "pinned" puts
+			// dns.hosts and the ForceIP sockopt into every document of the
+			// sweep that carries it. One address per family, so that every
+			// query strategy axis above leaves at least one usable and no
+			// combination is refused by ErrPinnedServerFamily.
+			{"unpinned", func(o *Options) { o.PinnedServer = nil }},
+			{"pinned", func(o *Options) {
+				o.PinnedServer = []netip.Addr{netip.MustParseAddr("203.0.113.10"), netip.MustParseAddr("2001:db8::10")}
+			}},
+		},
+		{
 			{"log-debug", func(o *Options) { o.LogLevel = LogDebug }},
 			{"log-info", func(o *Options) { o.LogLevel = LogInfo }},
 			{"log-warning", func(o *Options) { o.LogLevel = LogWarning }},
@@ -220,6 +231,7 @@ func trackedOptionFields() []string {
 		"SOCKS.Listen", "SOCKS.Port", "SOCKS.UDP",
 		"DNS.Servers", "DNS.Strategy", "DNS.Intercept",
 		"LocalDNS.Enabled", "LocalDNS.Listen", "LocalDNS.Port",
+		"PinnedServer",
 	}
 }
 
@@ -257,6 +269,8 @@ func fieldString(o Options, path string) string {
 		return o.LocalDNS.Listen
 	case "LocalDNS.Port":
 		return fmt.Sprint(o.LocalDNS.Port)
+	case "PinnedServer":
+		return fmt.Sprint(o.PinnedServer)
 	default:
 		panic("unknown Options path in test: " + path)
 	}

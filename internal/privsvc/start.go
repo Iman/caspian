@@ -221,7 +221,13 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	//    failure states (design section 8, step 11) and it has to be reachable
 	//    without having reconfigured anything.
 	// -----------------------------------------------------------------------
-	doc, err := s.engineDocument(l, req, netOpts)
+	// The addresses the plan pins, not every address the lookup returned: an
+	// address with no pinned route would be dialled through whatever route the
+	// machine has for it, and on Windows that is the tunnel. The takeover
+	// fallback in step 8 copies the plan and keeps its server addresses and
+	// uplink (netcfg.Plan.HotspotTakeover), so the set this document was built
+	// from is still the pinned one after a fallback.
+	doc, err := s.engineDocument(l, req, netOpts, plan.PinnedServers())
 	if err != nil {
 		return err
 	}

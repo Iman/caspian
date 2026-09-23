@@ -220,9 +220,10 @@ type DNS struct {
 	//
 	// # The consequence of leaving it off, stated plainly
 	//
-	// With BOTH this and LocalDNS.Enabled unset, nothing in the generated
-	// document consults the built-in DNS app. That is a claim about every path
-	// in, so here they are:
+	// With BOTH this and LocalDNS.Enabled unset, and PinnedServer unset or the
+	// link's server an IP literal, nothing in the generated document consults
+	// the built-in DNS app. That is a claim about every path in, so here they
+	// are:
 	//
 	//   - The router asks the DNS client only when its domainStrategy is
 	//     IpOnDemand or IpIfNonMatch (app/router/router.go:253 and :263).
@@ -234,6 +235,14 @@ type DNS struct {
 	//     and LocalDNS.Enabled. Either is sufficient.
 	//   - The fakedns sniffer is the fourth, and this package emits no
 	//     sniffing section at all.
+	//   - The proxy outbound's sockopt.domainStrategy is the fifth
+	//     (transport/internet/dialer.go:252). This package sets it, to
+	//     ForceIP, only when PinnedServer is set for a link that names its
+	//     server by a domain, and in that case also maps exactly that name in
+	//     dns.hosts, so the lookup is answered from the static table and no
+	//     nameserver is queried (app/dns/dns.go:235-256). See servername.go.
+	//     Added 2026-09-23 for GitHub issue 7; before that date this list had
+	//     four entries and was complete.
 	//
 	// The condition is BOTH, not this field alone. An earlier version of this
 	// comment said "with Intercept unset" because the loopback listener did
@@ -245,7 +254,9 @@ type DNS struct {
 	// executes: it is what the panel's advanced mode shows and what the
 	// operator's choice is recorded in, and it starts doing work the moment
 	// either field is set. TestDNSAppIsUnreachableWithoutIntercept asserts the
-	// four paths above stay closed when neither is set.
+	// first four paths above stay closed when neither is set, and
+	// TestPinnedServerIsTheOnlyWayTheProxyDialConsultsTheDNSApp holds the
+	// fifth to its condition.
 	Intercept bool
 }
 
@@ -265,6 +276,11 @@ type Options struct {
 	SOCKS    SOCKS
 	DNS      DNS
 	LocalDNS LocalDNS
+
+	// PinnedServer is the set of addresses the network plan pins host routes
+	// to for the link's server. See servername.go for what it does to the
+	// document and why the engine must never look the server name up itself.
+	PinnedServer []netip.Addr
 }
 
 // DefaultSocksPort is the loopback proxy and diagnostics port.

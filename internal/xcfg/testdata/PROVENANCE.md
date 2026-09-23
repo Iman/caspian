@@ -105,6 +105,24 @@ failed for real once: `LocalDNS` was added to `Options` and not to the case, and
 the file still generated, still validated and still matched itself while covering
 one fewer field than its name claims.
 
+### The pinned server address, ADDED 2026-09-23
+
+    reality-pinned.json       reality-default.json with Options.PinnedServer set
+    vless-tls-ws-pinned.json  vless-tls-ws.json with Options.PinnedServer set
+
+What `internal/privsvc` builds for every link that names its server by a domain
+(GitHub issue 7; `servername.go` has the mechanism). Diff each against its
+unpinned twin: the only additions are `dns.hosts` mapping `full:example.invalid`
+to the pinned address and `streamSettings.sockopt.domainStrategy` `ForceIP` on
+the proxy outbound. The REALITY server name, the TLS server name, the websocket
+Host and the outbound's address are unchanged, which is the property those two
+files exist to show. `reality-everything-overridden.json` gained the same two
+keys on the same day, because `PinnedServer` is an `Options` field and that case
+sets every one.
+
+The pinned addresses are 203.0.113.10 (RFC 5737 documentation range) and
+2001:db8::10 (RFC 3849 documentation prefix). Neither is anybody's server.
+
 ### One per protocol shape
 
     vless-tls-ws.json   predates 2026-08-30

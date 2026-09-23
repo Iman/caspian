@@ -5,6 +5,7 @@ package privsvc
 
 import (
 	"context"
+	"encoding/json"
 	"net/netip"
 	"regexp"
 	"strconv"
@@ -310,9 +311,34 @@ func TestTheResolverPathDoesNotDependOnAPacketMarkNothingSets(t *testing.T) {
 	if len(docs) != 1 {
 		t.Fatalf("the engine was handed %d documents, want 1", len(docs))
 	}
-	if strings.Contains(string(docs[0]), "sockopt") || strings.Contains(string(docs[0]), `"mark"`) {
-		t.Errorf("the engine's document now carries a socket option or a mark. The fwmark policy rule is " +
+	// Tripped once, on 2026-09-23, and re-read then rather than loosened. The
+	// engine document gained a sockopt on the proxy outbound for GitHub issue
+	// 7 (internal/xcfg/servername.go), and it carries exactly one key,
+	// domainStrategy, which decides how the server's address is found and
+	// sets no mark. The fwmark rule stayed inert. So the check below allows
+	// that one key and nothing else: a mark, or any other socket option
+	// appearing next to it, still trips this test.
+	if strings.Contains(string(docs[0]), `"mark"`) {
+		t.Errorf("the engine's document now carries a mark. The fwmark policy rule is " +
 			"no longer inert and the reason recorded beside it has to be re-read")
+	}
+	var d struct {
+		Outbounds []struct {
+			StreamSettings struct {
+				Sockopt map[string]json.RawMessage `json:"sockopt"`
+			} `json:"streamSettings"`
+		} `json:"outbounds"`
+	}
+	if err := json.Unmarshal(docs[0], &d); err != nil {
+		t.Fatalf("decoding the engine document: %v", err)
+	}
+	for _, ob := range d.Outbounds {
+		for k := range ob.StreamSettings.Sockopt {
+			if k != "domainStrategy" {
+				t.Errorf("the engine's document now carries the socket option %q. The fwmark policy rule may "+
+					"no longer be inert and the reason recorded beside it has to be re-read", k)
+			}
+		}
 	}
 
 	// The rule itself is still expected, so that this test says what it means:

@@ -60,7 +60,10 @@ func (s *Service) spoofDocument(l *link.Link, req panel.StartRequest, plan *netc
 	if err != nil {
 		return nil, fail("SNI spoofing", panel.FaultSNISpoofUnavailable, snispoof.ErrUnavailable)
 	}
-	doc, err := s.engineDocument(forwarded, req, opts)
+	// No pinned addresses: the forwarded link names the loopback forwarder by
+	// an IP literal, so there is no name for the engine to look up, and the
+	// forwarder itself was handed an address above rather than a name.
+	doc, err := s.engineDocument(forwarded, req, opts, nil)
 	if err != nil {
 		return nil, err
 	}

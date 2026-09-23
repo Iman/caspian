@@ -36,8 +36,17 @@ import (
 //     192.168.137.0/24 and cannot be chosen, so the plan is pinned to it.
 //   - Windows has no per-source routing, so the whole host is tunnelled: the
 //     default route goes through the tunnel adapter and the engine's own
-//     connection to the server is kept off it by a pinned host route (and, in
-//     the engine document, by binding its outbounds to the uplink adapter).
+//     connection to the server is kept off it by a pinned host route.
+//     Corrected 2026-09-23: this bullet used to end "(and, in the engine
+//     document, by binding its outbounds to the uplink adapter)". No such
+//     binding has ever been emitted: internal/xcfg writes no sockopt
+//     "interface" and internal/link clears sendThrough, so the pinned route
+//     was the only thing keeping that connection out of the tunnel. What the
+//     engine document does carry since the same date is the pinned address
+//     set itself (Plan.PinnedServers), because the whole-host tunnel also
+//     captures the host's DNS (windowsPostEngineSteps) and an engine that
+//     looked the server's name up after start asked the tunnel for the
+//     answer. That was GitHub issue 7; internal/xcfg/servername.go has it.
 //   - Fail closed is enforced by WFP filters at the IP forwarding layer, not by
 //     Windows Firewall rules, which never see forwarded traffic.
 type windowsBackend struct{}

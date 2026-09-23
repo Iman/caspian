@@ -99,9 +99,19 @@ func (s *Service) netOptionsFor(req panel.StartRequest, socksPort uint16) (netcf
 // and routes through it by name, and xcfg tells the engine to create it. A
 // drift between them is a tunnel the routes do not name, which presents as a
 // box that connects and carries nothing.
-func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options) ([]byte, error) {
+//
+// pinned is the second value handed to both: the server addresses the network
+// plan pins host routes to (netcfg.Plan.PinnedServers). The engine is told to
+// dial exactly those and never to look the server's name up itself, because
+// after the engine starts the machine's own resolver may only be reachable
+// through the tunnel that is waiting for the answer. That is GitHub issue 7 on
+// Windows, and internal/xcfg/servername.go has the mechanism. It is ignored
+// for a link that names its server by an IP literal, and nil is passed for the
+// SNI forwarder's loopback link, which is one.
+func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options, pinned []netip.Addr) ([]byte, error) {
 	o := xcfg.Defaults()
 	o.Link = l
+	o.PinnedServer = pinned
 	o.TUN.Disabled = s.cfg.TUNDisabled
 	o.TUN.Name = netOpts.TunName
 	// The port this run chose, not the preferred one (socksport.go). This is

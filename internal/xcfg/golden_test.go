@@ -5,6 +5,7 @@ package xcfg
 
 import (
 	"flag"
+	"net/netip"
 	"os"
 	"path/filepath"
 	"testing"
@@ -106,6 +107,23 @@ func goldenCases() []goldenCase {
 		// an exit IP before any addressing exists.
 		{file: "reality-socks-only.json", build: withLink(vlessRealityLink, func(o *Options) {
 			o.TUN.Disabled = true
+		})},
+
+		// The reference document with the server's pinned address supplied,
+		// which is what internal/privsvc builds for every link that names its
+		// server by a domain. Diff it against reality-default.json: the only
+		// changes are dns.hosts and the proxy outbound's sockopt, and neither
+		// touches the REALITY server name. See servername.go and GitHub
+		// issue 7.
+		{file: "reality-pinned.json", build: withLink(vlessRealityLink, func(o *Options) {
+			o.PinnedServer = []netip.Addr{netip.MustParseAddr("203.0.113.10")}
+		})},
+
+		// The same for a TLS websocket link, the shape whose server name and
+		// Host header are most likely to be disturbed by a change to the
+		// address. They are not: both still read cdn.fake.invalid.
+		{file: "vless-tls-ws-pinned.json", build: withLink(vlessTLSWebsocketLink, func(o *Options) {
+			o.PinnedServer = []netip.Addr{netip.MustParseAddr("203.0.113.10")}
 		})},
 
 		// Every option moved off its default at once, so that a change to any
@@ -270,6 +288,10 @@ func everythingOverriddenMutation(o *Options) {
 	o.LocalDNS.Enabled = true
 	o.LocalDNS.Listen = "::1"
 	o.LocalDNS.Port = 15353
+	// Both families, because DNS.Strategy above is UseIPv4: the IPv6 entry is
+	// carried into dns.hosts and filtered by the engine at lookup time, and
+	// the IPv4 one is what keeps the document from ErrPinnedServerFamily.
+	o.PinnedServer = []netip.Addr{netip.MustParseAddr("203.0.113.10"), netip.MustParseAddr("2001:db8::10")}
 }
 
 func everythingOverridden(withLink func(func() string, func(*Options)) func(*testing.T) []byte) goldenCase {

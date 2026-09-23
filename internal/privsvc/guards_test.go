@@ -258,7 +258,7 @@ func TestTheComposedDocumentCarriesTheTunInboundOnTheAppliance(t *testing.T) {
 	if err != nil {
 		t.Fatalf("parse: %v", err)
 	}
-	doc, err := w.svc.engineDocument(l, startRequest(t), w.cfg.netOptions())
+	doc, err := w.svc.engineDocument(l, startRequest(t), w.cfg.netOptions(), nil)
 	if err != nil {
 		t.Fatalf("composing: %v", err)
 	}
@@ -296,7 +296,7 @@ func TestTheTunnelDeviceHasOneNameAcrossBothPackages(t *testing.T) {
 	if err != nil {
 		t.Fatalf("parse: %v", err)
 	}
-	doc, err := w.svc.engineDocument(l, startRequest(t), w.cfg.netOptions())
+	doc, err := w.svc.engineDocument(l, startRequest(t), w.cfg.netOptions(), nil)
 	if err != nil {
 		t.Fatalf("composing: %v", err)
 	}

@@ -110,3 +110,19 @@ var (
 	// accepted and the user is looking at a box that will not come up.
 	ErrInboundCollision = errors.New("two inbounds were asked to bind the same address and port")
 )
+
+// Errors for the pinned server addresses. Added for GitHub issue 7; see
+// servername.go.
+var (
+	// ErrPinnedServerAddress means Options.PinnedServer holds the zero
+	// netip.Addr. Not reachable from internal/privsvc, which passes what the
+	// network plan pinned, and refused rather than skipped because a skipped
+	// entry would leave a set smaller than the one the routes were built from.
+	ErrPinnedServerAddress = errors.New("a pinned server address is not a valid IP address")
+
+	// ErrPinnedServerFamily means every pinned address is in a family the
+	// DNS query strategy excludes. The engine's static hosts are filtered by
+	// that strategy, so the mapping would answer nothing and every dial to
+	// the server would fail with an empty response.
+	ErrPinnedServerFamily = errors.New("every pinned server address is in a family the DNS query strategy excludes")
+)

@@ -1168,6 +1168,36 @@ func (p *Plan) acceptHotspot(f Facts, c apCandidate, o Options) error {
 	return nil
 }
 
+// PinnedServers returns the server addresses this plan pins a host route to,
+// in plan order: exactly the set the platform's pre-engine server route steps
+// install, and nothing else.
+//
+// It exists because the engine has to be told the same set. internal/privsvc
+// writes these into the engine document so the engine dials them rather than
+// looking the server's name up after the tunnel exists (GitHub issue 7, see
+// internal/xcfg/servername.go). An address that is resolved but not pinned
+// would be dialled through whatever route the machine has for it, which on
+// Windows is the tunnel itself, so the two sets must not be allowed to drift.
+// TestPinnedServersIsExactlyWhatTheRouteStepsPin compares this against the
+// route commands each backend emits.
+//
+// The Windows exclusion of IPv6 mirrors windowsServerRouteSteps, which pins
+// IPv4 only. On Windows a server with nothing but IPv6 addresses therefore
+// gets an empty set here even though the plan was accepted.
+func (p *Plan) PinnedServers() []netip.Addr {
+	var out []netip.Addr
+	for _, s := range p.ServerAddr {
+		if !p.canPin(s) {
+			continue
+		}
+		if p.Platform == PlatformWindows && s.Is6() {
+			continue
+		}
+		out = append(out, s)
+	}
+	return out
+}
+
 // canPin reports whether a host route to this server address can be written.
 // It needs a gateway, or a device on a point-to-point link, in the address's
 // own family.
