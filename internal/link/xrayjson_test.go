@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"caspianbyoc.org/caspian/internal/engine"
+	"github.com/xtls/xray-core/infra/conf"
 )
 
 // The fixtures here have the SHAPE of the two documents GitHub issue 7 was
@@ -405,5 +406,102 @@ func TestXrayJSONThroughLoopback(t *testing.T) {
 	}
 	if fwd.Address != "127.0.0.1" || !strings.Contains(string(b), fakeUUID) {
 		t.Errorf("forwarded to %s, id kept %v", fwd.Address, strings.Contains(string(b), fakeUUID))
+	}
+}
+
+// TestXrayJSONFlattenRefusesEachMalformedShape drives flattenSettings through
+// every protocol's refusal branches directly. Each shape is one a pasted
+// document can carry and the engine would reject later, or worse, accept with
+// the wrong server: settings of the wrong type, more than one server or user,
+// and a user entry that is not an object. The flat form must pass through
+// untouched, because that is the form every share link already produces.
+func TestXrayJSONFlattenRefusesEachMalformedShape(t *testing.T) {
+	srv := `"address":"` + fakeHost + `","port":443`
+	user := func(s string) string { return `{` + s + `}` }
+	cases := []struct {
+		protocol, settings string
+		want               error
+	}{
+		{"vless", `7`, ErrNoLink},
+		{"vless", `{"vnext":[{` + srv + `,"users":[7]}]}`, ErrNoLink},
+		{"vless", `{"vnext":[{` + srv + `,"users":[]}]}`, ErrManyServers},
+		{"vmess", `7`, ErrNoLink},
+		{"vmess", `{"vnext":[{` + srv + `,"users":[7]}]}`, ErrNoLink},
+		{"vmess", `{"vnext":[{` + srv + `,"users":[` + user(`"id":"`+fakeUUID+`"`) + `,` + user(`"id":"`+fakeUUID+`"`) + `]}]}`, ErrManyServers},
+		{"trojan", `7`, ErrNoLink},
+		{"shadowsocks", `7`, ErrNoLink},
+		{"shadowsocks", `{"servers":[{` + srv + `,"method":"aes-128-gcm","password":"` + fakePassword + `"},{` + srv + `,"method":"aes-128-gcm","password":"` + fakePassword + `"}]}`, ErrManyServers},
+		{"socks", `7`, ErrNoLink},
+		{"socks", `{"servers":[{` + srv + `},{` + srv + `}]}`, ErrManyServers},
+		{"socks", `{"servers":[{` + srv + `,"users":[7]}]}`, ErrNoLink},
+		{"socks", `{"servers":[{` + srv + `,"users":[` + user(`"user":"a"`) + `,` + user(`"user":"b"`) + `]}]}`, ErrManyServers},
+	}
+	for _, c := range cases {
+		t.Run(c.protocol+" "+c.settings, func(t *testing.T) {
+			msg := json.RawMessage(c.settings)
+			ob := conf.OutboundDetourConfig{Protocol: c.protocol, Settings: &msg}
+			if err := flattenSettings(&ob); !errors.Is(err, c.want) {
+				t.Fatalf("flattenSettings returned %v, want %v", err, c.want)
+			}
+		})
+	}
+
+	for _, protocol := range []string{"vless", "vmess", "trojan", "shadowsocks", "socks", "hysteria"} {
+		t.Run(protocol+" flat form is left alone", func(t *testing.T) {
+			flat := `{"address":"` + fakeHost + `","port":443}`
+			msg := json.RawMessage(flat)
+			ob := conf.OutboundDetourConfig{Protocol: protocol, Settings: &msg}
+			if err := flattenSettings(&ob); err != nil {
+				t.Fatalf("flattenSettings refused the flat form: %v", err)
+			}
+			if string(*ob.Settings) != flat {
+				t.Errorf("the flat form was rewritten to %s", *ob.Settings)
+			}
+		})
+	}
+	t.Run("no settings at all", func(t *testing.T) {
+		ob := conf.OutboundDetourConfig{Protocol: "vless"}
+		if err := flattenSettings(&ob); err != nil || ob.Settings != nil {
+			t.Fatalf("flattenSettings on nil settings: err %v, settings %v", err, ob.Settings)
+		}
+	})
+}
+
+// TestXrayJSONSocksServerWithoutUsersFlattens covers the one server form that
+// carries no credential: a socks server with no users list is a valid
+// anonymous proxy and must keep its address and port.
+func TestXrayJSONSocksServerWithoutUsersFlattens(t *testing.T) {
+	msg := json.RawMessage(`{"servers":[{"address":"` + fakeHost + `","port":1080}]}`)
+	ob := conf.OutboundDetourConfig{Protocol: "socks", Settings: &msg}
+	if err := flattenSettings(&ob); err != nil {
+		t.Fatalf("flattenSettings: %v", err)
+	}
+	var got struct {
+		Address string `json:"address"`
+		Port    uint16 `json:"port"`
+	}
+	if err := json.Unmarshal(*ob.Settings, &got); err != nil || got.Address != fakeHost || got.Port != 1080 {
+		t.Fatalf("flattened socks settings %s, decode err %v", *ob.Settings, err)
+	}
+}
+
+// TestXrayJSONDocumentLevelRefusals covers the refusals that happen before an
+// outbound is chosen or after it is chosen and cannot be decoded, and one
+// that fill makes on a protocol with no server list to flatten.
+func TestXrayJSONDocumentLevelRefusals(t *testing.T) {
+	cases := []struct {
+		name, raw string
+		want      error
+	}{
+		{"array that is not valid JSON", `[{"outbounds":[` + bpbProxy("vless") + `]}`, ErrNoLink},
+		{"proxy whose stream settings are the wrong type", customConfig("x", `{"tag":"proxy","protocol":"vless","streamSettings":7}`), ErrNoLink},
+		{"hysteria whose address is not a string", customConfig("x", `{"tag":"proxy","protocol":"hysteria","settings":{"address":7,"port":443}}`), ErrNoLink},
+	}
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			if _, err := ParseAll(c.raw); !errors.Is(err, c.want) {
+				t.Fatalf("ParseAll returned %v, want %v", err, c.want)
+			}
+		})
 	}
 }
