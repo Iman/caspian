@@ -96,7 +96,7 @@ sudo systemctl restart caspian.service caspian-panel.service
 <a id="check-the-configuration-format"></a>
 ## تحقق من تنسيق التكوين
 
-يقبل Caspian روابط VLESS وVMess وShadowsocks وSOCKS وTrojan وHysteria2، بما في ذلك الاسم المستعار hy2. كما أنه يقبل أيضًا Clash/Clash.Meta YAML وXray JSON وقوائم الروابط ومحتوى اشتراك Base64 المدعوم. ويستخدم أي إدخال في القائمة التي تختارها. يمكن حفظ عنوان الاشتراك بجانب التكوين وتحديثه عند الضغط على الزر عبر النفق. اطلب من مزود الخدمة الخاص بك التكوين المدعوم الفعلي، وليس كلمة مرور الحساب أو رابط صفحة الويب.
+يقبل Caspian روابط VLESS وVMess وShadowsocks وSOCKS وTrojan وHysteria2، بما في ذلك الاسم المستعار hy2. كما أنه يقبل أيضًا Clash/Clash.Meta YAML وإعدادات Xray JSON الكاملة (إعداد واحد، أو مصفوفة JSON منها مثل اشتراك BPB يُقدَّم لـ xray) وقوائم الروابط ومحتوى اشتراك Base64 المدعوم. ويستخدم أي إدخال في القائمة التي تختارها. يمكن حفظ عنوان الاشتراك بجانب التكوين وتحديثه عند الضغط على الزر عبر النفق. اطلب من مزود الخدمة الخاص بك التكوين المدعوم الفعلي، وليس كلمة مرور الحساب أو رابط صفحة الويب.
 
 تتضمن أسماء النقل المدعومة Raw/tcp، وws، وgrpc، وhttpupgrade، وxhttp/splithttp، وkcp/mkcp. يجب أن تكون إعدادات البروتوكول والنقل والأمان متوافقة؛ ليست كل مجموعة تعمل. روابط TUIC وWireGuard وSSR وAnyTLS وHysteria v1 غير مدعومة. لا تقم بإعادة تسمية بروتوكول غير مدعوم حتى يتمكن من اجتياز عملية التحقق من الصحة. راجع دليل البروتوكول للتعرف على القيود وأدلة الاختبار.
 
@@ -128,4 +128,4 @@ sudo systemctl restart caspian.service caspian-panel.service
 </div>
 
 
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 9a34210ee8a30a02504bad84453f07f2b97ff2859fa7742439a1d79b83f3cfff -->

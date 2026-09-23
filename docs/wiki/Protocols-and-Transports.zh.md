@@ -24,7 +24,7 @@
 |  | 它有效 | 被拒绝了 |
 |---|---|---|
 | 分享链接 | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://`（版本 1） |
-| 粘贴文档 | Clash 和 Clash.Meta YAML、原始 xray JSON、每行一个链接列表、base64 订阅 blob | 订阅 URL、base64 包装的 Clash 文档、JSON 数组、第一行是注释的文本 |
+| 粘贴文档 | Clash 和 Clash.Meta YAML、完整的 xray JSON 配置或由其组成的 JSON 数组（v2rayN 或 v2rayNG 的“Custom”配置、为 xray 提供的 BPB 订阅）、每行一个链接列表、base64 订阅 blob | 订阅 URL、base64 包装的 Clash 文档、代理经由另一个 outbound 拨号的 xray JSON 配置、第一行是注释的文本 |
 | 交通 | `raw`（也写为 `tcp`）、`ws`、`grpc`、`httpupgrade`、`xhttp`（也写为 `splithttp`）、`kcp` 和`mkcp` | `h2`、`h3`、`http`、`quic`、`gun` |
 | 安全 | `none`、`tls`、`reality` | `xtls`（传统类型）、`allowInsecure` |
 | VLESS流量 | `xtls-rprx-vision`、`xtls-rprx-vision-udp443` 或无 | 所有其他值 |
@@ -47,6 +47,14 @@ WebSocket 在粘贴时被引擎拒绝，而不是稍后失败。
 粘贴到配置框中的 URL 被拒绝，因为该框采用配置：
 地址放在它旁边的订阅字段中，Caspian 只获取它
 当你按下按钮时，穿过隧道。
+
+完整的 xray JSON 配置只读取其中的代理，其他一概不读。每个对象是列表中的一个条目，
+以其 remarks 字段命名。从每个对象中取标记为 proxy 的 outbound，否则取第一个使用代理协议的
+outbound；其 stream 设置按原样保留，包括 finalmask、套接字选项、TCP 的 HTTP 头以及 TLS
+指纹、ALPN 和服务器名。配置中的 inbounds、路由、DNS、policy 和其他 outbounds 会被忽略，
+因为这些由盒子自己决定。不含代理服务器的配置会被拒绝，例如代理是 freedom outbound 的
+BPB 条目。通过 dialer proxy 或 proxy settings 链接到另一个 outbound 的代理同样会被拒绝：
+请把分片放进代理自身的 finalmask，BPB 本来就是这样写的。
 
 完整的图片，包括其中哪些携带了真实字节以及哪些
 已被证明在硬件上端到端地捕获了退出地址，正在
@@ -316,4 +324,4 @@ sni=example.com 主机=cdn.example.com
 Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
 
-<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->
+<!-- English-source-sha256: b21d7af58479e89fc6983b92088c575e6ed88c7af840036382980a025b2e5695 -->

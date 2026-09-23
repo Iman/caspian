@@ -94,7 +94,7 @@ Komut tamamlandıktan sonra paneli yeniden açın ve gerekirse Caspian'ı açın
 <a id="check-the-configuration-format"></a>
 ## Yapılandırma formatını kontrol edin
 
-Caspian, hy2 takma adı da dahil olmak üzere VLESS, VMess, Shadowsocks, SOCKS, Trojan ve Hysteria2 bağlantılarını kabul eder. Ayrıca desteklenen Clash/Clash.Meta YAML, Xray JSON, bağlantı listeleri ve base64 abonelik içeriğini de kabul eder. Seçtiğiniz listenin hangi girişini kullanır. Yapılandırmanın yanına bir abonelik adresi kaydedilebilir ve tünel aracılığıyla düğmeye bastığınızda yenilenebilir. Sağlayıcınızdan hesap şifresini veya web sayfası bağlantısını değil, desteklenen gerçek yapılandırmayı isteyin.
+Caspian, hy2 takma adı da dahil olmak üzere VLESS, VMess, Shadowsocks, SOCKS, Trojan ve Hysteria2 bağlantılarını kabul eder. Ayrıca desteklenen Clash/Clash.Meta YAML, tam Xray JSON yapılandırmalarını (bir tane ya da xray için sunulan bir BPB aboneliği gibi bunlardan oluşan bir JSON dizisi), bağlantı listeleri ve base64 abonelik içeriğini de kabul eder. Seçtiğiniz listenin hangi girişini kullanır. Yapılandırmanın yanına bir abonelik adresi kaydedilebilir ve tünel aracılığıyla düğmeye bastığınızda yenilenebilir. Sağlayıcınızdan hesap şifresini veya web sayfası bağlantısını değil, desteklenen gerçek yapılandırmayı isteyin.
 
 Desteklenen aktarım adları arasında raw/tcp, ws, grpc, httpupgrade, xhttp/splithttp ve kcp/mkcp bulunur. Protokol, aktarım ve güvenlik ayarları uyumlu olmalıdır; her kombinasyon işe yaramaz. TUIC, WireGuard, SSR, AnyTLS ve Hysteria v1 bağlantıları desteklenmez. Desteklenmeyen bir protokolün doğrulamayı geçmesini sağlamak için yeniden adlandırmayın. Kısıtlamalar ve test kanıtları için protokol kılavuzuna bakın.
 
@@ -124,4 +124,4 @@ Kusur kaydı, güvenlik ve kurtarma boşluklarını kaydeder. Bu sorun giderme a
 Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
 
 
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 9a34210ee8a30a02504bad84453f07f2b97ff2859fa7742439a1d79b83f3cfff -->

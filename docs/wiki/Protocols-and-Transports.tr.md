@@ -24,7 +24,7 @@ bir istek listesinden ziyade kabul etmeyi yapar. Her sıra ölçüldü
 |  | Çalışıyor | Reddedildi |
 |---|---|---|
 | Bağlantıları paylaş | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://` (versiyon 1) |
-| Yapıştırılan belgeler | Clash ve Clash.Meta YAML, ham xray JSON, her satıra bir bağlantı listesi, bir base64 abonelik blobu | bir abonelik URL'si, base64 ile sarılmış bir Clash belgesi, bir JSON dizisi, ilk satırı yorum olan metin |
+| Yapıştırılan belgeler | Clash ve Clash.Meta YAML, tam bir xray JSON yapılandırması veya bunlardan oluşan bir JSON dizisi (v2rayN veya v2rayNG "Custom" yapılandırması, xray için sunulan bir BPB aboneliği), her satıra bir bağlantı listesi, bir base64 abonelik blobu | bir abonelik URL'si, base64 ile sarılmış bir Clash belgesi, proxy'si başka bir outbound üzerinden bağlanan bir xray JSON yapılandırması, ilk satırı yorum olan metin |
 | Taşımalar | `raw` (aynı zamanda `tcp` olarak da yazılır), `ws`, `grpc`, `httpupgrade`, `xhttp` (ayrıca `splithttp`), `kcp` ve `mkcp` | `h2`, `h3`, `http`, `quic`, `gun` |
 | Güvenlik | `none`, `tls`, `reality` | `xtls` (eski tür), `allowInsecure` |
 | VLESS akışı | `xtls-rprx-vision`, `xtls-rprx-vision-udp443` veya hiçbiri | diğer tüm değerler |
@@ -47,6 +47,17 @@ ve büyük harf `TLS` size `none` olarak bildirilir. Bir `plugin=`
 Yapılandırma kutusuna yapıştırılan URL reddedildi çünkü bu kutu yapılandırmaları alıyor:
 adresi yanındaki abonelik alanına gider ve Caspian yalnızca onu getirir
 düğmeye bastığınızda tünelden.
+
+Tam bir xray JSON yapılandırması yalnızca proxy'si için okunur, başka hiçbir şey için
+değil. Her nesne listede bir giriştir ve remarks alanıyla adlandırılır. Her birinden proxy
+etiketli outbound alınır, yoksa bir proxy protokolündeki ilk outbound; stream ayarları
+yazıldığı gibi korunur, buna finalmask, soket seçenekleri, bir TCP HTTP başlığı ve TLS parmak
+izi, ALPN ve sunucu adı dahildir. Yapılandırmanın inbound'ları, yönlendirmesi, DNS'i,
+policy'si ve diğer outbound'ları yok sayılır, çünkü bunlara kutu kendisi karar verir. İçinde
+proxy sunucusu olmayan bir yapılandırma, örneğin proxy'si bir freedom outbound olan bir BPB
+girişi, reddedilir. dialer proxy veya proxy settings ile başka bir outbound üzerinden
+zincirlenen bir proxy de reddedilir: bunun yerine parçayı (fragment) proxy'nin kendi
+finalmask'ına koyun, BPB zaten böyle yazar.
 
 Bunlardan hangisinin gerçek bayt taşıdığı ve hangisinin olduğu da dahil olmak üzere resmin tamamı
 çıkış adresinin yakalandığı donanımda uçtan uca kanıtlanmıştır.
@@ -316,4 +327,4 @@ dahil.
 Caspian kılavuzları: [kurulum ve desteklenen protokoller](https://github.com/Iman/caspian/wiki/Home.tr) · [DPI'yı aşmak için SNI sahtekarlığı: kurulum ve sınırlar](https://github.com/Iman/caspian/wiki/SNI-Spoofing.tr).
 
 
-<!-- English-source-sha256: caae2c1c2ed8f7b292b28b1371b95851d6f133b60ac1e202d1b6a74a314aeadc -->
+<!-- English-source-sha256: b21d7af58479e89fc6983b92088c575e6ed88c7af840036382980a025b2e5695 -->

@@ -94,7 +94,7 @@ sudo systemctl restart caspian.service caspian-panel.service
 <a id="check-the-configuration-format"></a>
 ## 检查配置格式
 
-Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接，包括 hy2 别名。它还接受受支持的 Clash/Clash.Meta YAML、Xray JSON、链接列表和 base64 订阅内容。它使用您选择的列表中的任何条目。订阅地址可以保存在配置旁边，并在您通过隧道按下按钮时刷新。向您的提供商询问实际支持的配置，而不是帐户密码或网页链接。
+Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接，包括 hy2 别名。它还接受受支持的 Clash/Clash.Meta YAML、完整的 Xray JSON 配置（单个，或由其组成的 JSON 数组，例如为 xray 提供的 BPB 订阅）、链接列表和 base64 订阅内容。它使用您选择的列表中的任何条目。订阅地址可以保存在配置旁边，并在您通过隧道按下按钮时刷新。向您的提供商询问实际支持的配置，而不是帐户密码或网页链接。
 
 支持的传输名称包括 raw/tcp、ws、grpc、httpupgrade、xhttp/splithttp 和 kcp/mkcp。协议、传输和安全设置必须兼容；并非所有组合都有效。不支持 TUIC、WireGuard、SSR、AnyTLS 和 Hysteria v1 链接。不要重命名不受支持的协议以使其通过验证。有关限制和测试证据，请参阅方案指南。
 
@@ -124,4 +124,4 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 Caspian指南：[设置和支持的协议](https://github.com/Iman/caspian/wiki/Home.zh)·[用于 DPI 规避的 SNI 欺骗：设置和限制](https://github.com/Iman/caspian/wiki/SNI-Spoofing.zh)。
 
 
-<!-- English-source-sha256: d78e0c5791a008273b814aa9a9f9c4e6ba14c9875fd74ecd8a734c8e600f7ed4 -->
+<!-- English-source-sha256: 9a34210ee8a30a02504bad84453f07f2b97ff2859fa7742439a1d79b83f3cfff -->
