@@ -107,12 +107,17 @@ func TestPublicListsParseAndBuild(t *testing.T) {
 		}
 
 		// The engine's verdict on each document, and the shape of what it took.
-		built := 0
+		built, masked := 0, 0
 		shapes := map[string]int{}
 		buildFail := map[string]int{}
 		for _, l := range links {
 			shape := fmt.Sprintf("%s/%s/%s", l.Protocol, l.Network, l.Security)
 			b, err := l.XrayConfig()
+			if err == nil && strings.Contains(string(b), `"finalmask"`) {
+				// A full xray JSON config can carry a transport mask, such as
+				// BPB's TLS ClientHello fragment; a share link cannot.
+				masked++
+			}
 			if err == nil {
 				var c conf.Config
 				if err = json.Unmarshal(b, &c); err == nil {
@@ -126,8 +131,8 @@ func TestPublicListsParseAndBuild(t *testing.T) {
 			built++
 			shapes[shape]++
 		}
-		fmt.Fprintf(&report, "\n   built by the engine: %d of %d parsed%s\n   shapes that build:%s",
-			built, len(links), topCounts(buildFail, 10), topCounts(shapes, 30))
+		fmt.Fprintf(&report, "\n   built by the engine: %d of %d parsed%s\n   documents carrying finalmask: %d\n   shapes that build:%s",
+			built, len(links), topCounts(buildFail, 10), masked, topCounts(shapes, 30))
 		t.Log(report.String())
 	}
 }

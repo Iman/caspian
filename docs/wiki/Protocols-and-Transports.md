@@ -22,7 +22,7 @@ does the accepting rather than from a wish list. Every row was measured against
 | | It works | It is refused |
 |---|---|---|
 | Share links | `vless://` `vmess://` `ss://` `socks://` `trojan://` `hysteria2://` `hy2://` | `tuic://` `ssr://` `wireguard://` `anytls://` `naive+https://` `hysteria://` (version 1) |
-| Pasted documents | Clash and Clash.Meta YAML, raw xray JSON, a list of links one per line, a base64 subscription blob | a subscription URL, a base64-wrapped Clash document, a JSON array, text whose first line is a comment |
+| Pasted documents | Clash and Clash.Meta YAML, a full xray JSON config or a JSON array of them (a v2rayN or v2rayNG "Custom" config, a BPB subscription served for xray), a list of links one per line, a base64 subscription blob | a subscription URL, a base64-wrapped Clash document, an xray JSON config whose proxy dials through another outbound, text whose first line is a comment |
 | Transports | `raw` (also written `tcp`), `ws`, `grpc`, `httpupgrade`, `xhttp` (also `splithttp`), `kcp` and `mkcp` | `h2`, `h3`, `http`, `quic`, `gun` |
 | Security | `none`, `tls`, `reality` | `xtls` (the legacy kind), `allowInsecure` |
 | VLESS flow | `xtls-rprx-vision`, `xtls-rprx-vision-udp443`, or none | every other value |
@@ -45,6 +45,17 @@ parameter on an `ss://` link is ignored without saying so. And a subscription
 URL pasted into the config box is refused, because that box takes configs: the
 address goes in the subscription field beside it, and Caspian fetches it only
 when you press the button, through the tunnel.
+
+A full xray JSON config is read for its proxy and nothing else. Each object is
+one entry in the list, named by its remarks field. From each one the outbound
+tagged proxy is taken, or else the first outbound in a proxy protocol; its
+stream settings are kept as written, including finalmask, socket options, a TCP
+HTTP header and TLS fingerprint, ALPN and server name. The config's inbounds,
+routing, DNS, policy and other outbounds are ignored, because the box decides
+those itself. A config with no proxy server in it, such as a BPB entry whose
+proxy is a freedom outbound, is refused. So is a proxy chained through another
+outbound by dialer proxy or proxy settings: put a fragment in the proxy's own
+finalmask instead, which is how BPB already writes it.
 
 The full picture, including which of these have carried real bytes and which
 have been proven end to end on hardware with an exit address captured, is under

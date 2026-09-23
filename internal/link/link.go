@@ -257,6 +257,17 @@ func (l *Link) fill() error {
 	ob := l.outbound
 	l.Protocol = ob.Protocol
 
+	// Both before the address is read. flattenSettings makes the flat form
+	// below the only form in the document, so what is read here is what the
+	// engine dials; checkChain refuses an outbound that would dial through
+	// another one. See xrayjson.go for each.
+	if err := checkChain(ob); err != nil {
+		return err
+	}
+	if err := flattenSettings(ob); err != nil {
+		return err
+	}
+
 	var s outboundSettings
 	if ob.Settings != nil {
 		if err := json.Unmarshal(*ob.Settings, &s); err != nil {

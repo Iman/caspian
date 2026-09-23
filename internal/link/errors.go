@@ -63,4 +63,25 @@ var (
 	// ErrUnsupportedTransport means the transport named by the link is one the
 	// engine no longer carries.
 	ErrUnsupportedTransport = errors.New("this link uses a transport the engine no longer supports")
+
+	// ErrNoProxyOutbound means a pasted xray JSON config has no outbound in a
+	// protocol this box can use as its proxy. Its other outbounds (freedom,
+	// blackhole, dns) are not proxies, and a config whose "proxy" is a
+	// freedom outbound sends traffic straight out rather than to a server.
+	ErrNoProxyOutbound = errors.New("the pasted config has no proxy server this box can use")
+
+	// ErrChainedOutbound means the proxy outbound in a pasted xray JSON config
+	// dials through another outbound, by sockopt.dialerProxy or
+	// proxySettings.tag. This box carries exactly one outbound from what was
+	// pasted, and the tag it points at would otherwise resolve against this
+	// box's own outbounds. See xrayjson.go, checkChain.
+	ErrChainedOutbound = errors.New("the proxy in this config is chained through another outbound, which this box does not carry; " +
+		"put a fragment setting in the proxy's own streamSettings.finalmask instead")
+
+	// ErrManyServers means a vnext or servers list names more than one server,
+	// or one server with more than one user. The engine refuses that shape
+	// itself (infra/conf/vless.go:260-269 and the same check in vmess.go,
+	// trojan.go, shadowsocks.go and socks.go); this says so before it gets
+	// there, in words that name no value.
+	ErrManyServers = errors.New("the proxy in this config lists more than one server or user; this box uses exactly one")
 )

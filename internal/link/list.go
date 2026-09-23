@@ -94,6 +94,17 @@ type parsed struct {
 	outbounds []conf.OutboundDetourConfig
 	// dropped is the first of the two classes List.Dropped counts.
 	dropped int
+
+	// names and refused are set only by the xray JSON path (xrayjson.go),
+	// where each entry is one pasted config object rather than one outbound.
+	// names[i] is that object's "remarks", the display name, which on that
+	// path does not travel in SendThrough. refused[i] is non-nil when the
+	// object held no usable proxy outbound; outbounds[i] is then the zero
+	// value and linkAt returns the error instead of reading it. Keeping the
+	// slot rather than removing it is what keeps the index of every later
+	// entry equal to its position in the pasted array.
+	names   []string
+	refused []error
 }
 
 // parseOutbounds is the front half shared by Parse, ParseAll and Select: the
@@ -119,6 +130,11 @@ func parseOutbounds(raw string) (*parsed, error) {
 	if err := checkTransport(text); err != nil {
 		return nil, err
 	}
+	// A full xray JSON config, one object or an array of them, is read here
+	// rather than by the vendored parser: see xrayjson.go for why.
+	if isXrayJSON(text) {
+		return parseXrayJSON(text)
+	}
 
 	// The vendored parser's errors quote the user's input, so its error value
 	// is dropped rather than wrapped. See the comment in errors.go.
@@ -139,8 +155,18 @@ func parseOutbounds(raw string) (*parsed, error) {
 // makes to whatever it is handed. It is what Parse has always done to outbound
 // zero, done to the outbound that was asked for.
 func linkAt(p *parsed, i int) (*Link, error) {
+	if p.refused != nil && p.refused[i] != nil {
+		return nil, p.refused[i]
+	}
 	ob := p.outbounds[i]
+	// Cleared on every path. On the share-link path the vendored parser put
+	// the display name there; on the JSON path it is whatever the pasted
+	// config said, which the engine would read as a bind address, and the
+	// display name comes from "remarks" instead.
 	name := clearSendThrough(&ob)
+	if p.names != nil {
+		name = p.names[i]
+	}
 	ob.Tag = OutboundTag
 
 	l := &Link{Tag: name, Index: i, Count: len(p.outbounds), outbound: &ob}
