@@ -5,9 +5,12 @@ param(
 )
 $ErrorActionPreference = "Stop"
 if ($env:OS -ne "Windows_NT") { throw "Run this build on Windows." }
-if ($Version -notmatch '^v?\d+\.\d+\.\d+(?:\.\d+)?$') {
-    throw "Use a numeric version such as 1.2.3 or v1.2.3."
+if ($Version -notmatch '^v?(\d+\.\d+\.\d+(?:\.\d+)?)(-[0-9A-Za-z.]+)?$') {
+    throw "Use a numeric version such as 1.2.3 or v1.2.3, optionally with a pre-release suffix such as v1.2.3-rc.1."
 }
+# .NET file versions must be numeric, so the pre-release suffix lives only in
+# the informational version, the installer name and the Go binary.
+$fileVersion = $Matches[1]
 foreach ($tool in @("go.exe", "dotnet.exe")) {
     if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) {
         throw "Missing $tool. See docs/WINDOWS-BUILD.md for the build prerequisites."
@@ -51,7 +54,7 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "The Go build failed." }
     & dotnet.exe publish .\tools\caspian-tethering\caspian-tethering.csproj -c Release -r $runtime --self-contained true -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The hotspot helper build failed." }
-    & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$numericVersion -p:InformationalVersion=$releaseVersion -p:IncludeSourceRevisionInInformationalVersion=false -o $payload
+    & dotnet.exe publish .\tools\caspian-control\caspian-control.csproj -c Release -r $runtime --self-contained true -p:Version=$fileVersion -p:InformationalVersion=$releaseVersion -p:IncludeSourceRevisionInInformationalVersion=false -o $payload
     if ($LASTEXITCODE -ne 0) { throw "The tray app build failed." }
     $controlVersion = [Diagnostics.FileVersionInfo]::GetVersionInfo((Join-Path $payload "CaspianControl.exe")).ProductVersion
     if ($controlVersion -ne $releaseVersion) { throw "The control window version '$controlVersion' does not match build version '$releaseVersion'." }

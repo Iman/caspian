@@ -167,3 +167,8 @@ jobs:
         with:
           files: dist/*
           generate_release_notes: true
+          # A tag with a suffix, such as v1.2.3-rc.1, is a pre-release. GitHub
+          # leaves pre-releases out of releases/latest, which is what install.sh
+          # and the download links resolve, so testers can have it without it
+          # reaching everybody else.
+          prerelease: ${{ contains(github.ref_name, '-') }}

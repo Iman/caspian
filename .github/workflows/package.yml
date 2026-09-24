@@ -50,8 +50,10 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
+          # A pre-release tag (one with a suffix, such as v1.2.3-rc.1) gets its
+          # own image tag but must not move :latest.
           tags: |
             ghcr.io/${{ steps.img.outputs.name }}:${{ github.ref_name }}
-            ghcr.io/${{ steps.img.outputs.name }}:latest
+            ${{ !contains(github.ref_name, '-') && format('ghcr.io/{0}:latest', steps.img.outputs.name) || '' }}
           provenance: true
           sbom: true
