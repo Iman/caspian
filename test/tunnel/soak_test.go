@@ -31,14 +31,19 @@ import (
 // # The load test, and why it exists
 //
 // GitHub issue 7: on v0.2.12-rc.2, caspian.exe on Windows grew to 1.9 GB at
-// 0% CPU. This test found the cause. Windows sends NetBIOS broadcasts into
-// the tunnel adapter. The private rule sent them direct, and the direct
-// outbound sent them back into the tunnel. Every turn left a new UDP session.
-// xcfg.loopGuardRule is the fix.
+// 0% CPU. This test found 2 loops through the tunnel. In both, the private
+// rule sent traffic direct, and the direct connection went back into the
+// tunnel as a new flow.
+//
+//   - Variant T: Windows sends NetBIOS broadcasts to the tunnel subnet.
+//     xcfg.loopGuardRule blocks them. Before, T ended at 48,946 goroutines.
+//   - Variant V: a private address off the LAN, which on Windows only the
+//     tunnel has a route for. Binding direct to the uplink (xcfg
+//     Direct.Interface) fixes it. Before, V ended at 44,415 goroutines.
 //
 // The test puts sustained load through the real engine for each variant
 // below. It passes when the goroutine count falls back near its start value
-// after the load stops. Before the fix, variant T ended at 48,946 goroutines.
+// after the load stops.
 //
 // It is opt-in, because it runs for minutes and moves gigabytes on loopback:
 //
@@ -50,7 +55,8 @@ import (
 //	CASPIAN_SOAK_ONLY     variant letters to run, for example "TU"
 //	CASPIAN_SOAK_PROF     directory for heap and goroutine profiles and the engine log
 //	CASPIAN_SOAK_INFO     set to raise the engine log level to info
-//	CASPIAN_SOAK_NOGUARD  set to leave out the tunnel subnet, which shows the old leak
+//	CASPIAN_SOAK_NOGUARD  set to leave out the tunnel subnet and the direct
+//	                      binding, which shows the old leak
 //
 // Variants T and U use the real TUN inbound. They run on Windows only, as
 // administrator, with wintun.dll next to the test binary:
@@ -67,6 +73,7 @@ const (
 	soakTunAddr   = "10.231.99.1"
 	soakTunSubnet = "10.231.99.0/24"
 	soakTarget    = "203.0.113.0/24"
+	soakPrivate   = "10.99.0.0/16"
 	soakWorkers   = 16
 	// soakSlack is how many goroutines above the start value the idle sample
 	// can keep. The fixed engine ends below its start value. The leak ended
@@ -85,6 +92,10 @@ type soakVariant struct {
 	fragment bool
 	stall    bool
 	tun      bool
+	// private sends the load to a private address that only the tunnel has
+	// a route for. On Windows that is every private address off the LAN,
+	// because the default route of the whole host is the tunnel.
+	private bool
 }
 
 func soakVariants() []soakVariant {
@@ -103,6 +114,7 @@ func soakVariants() []soakVariant {
 		{name: "I-domain-2pin-happy-stall", address: serverName, pinned: two, happy: true, fragment: true, stall: true},
 		{name: "T-tun-ip-literal", address: "127.0.0.1", happy: true, fragment: true, tun: true},
 		{name: "U-tun-domain-2pin-happy-fragment", address: serverName, pinned: two, happy: true, fragment: true, tun: true},
+		{name: "V-tun-private-off-lan", address: "127.0.0.1", happy: true, fragment: true, tun: true, private: true},
 	}
 }
 
@@ -242,8 +254,13 @@ func soakOne(t *testing.T, v soakVariant, dur time.Duration) {
 	o.Link = l
 	o.TUN.Disabled = !v.tun
 	o.TUN.Name = soakTunName
-	if os.Getenv("CASPIAN_SOAK_NOGUARD") == "" {
+	guard := os.Getenv("CASPIAN_SOAK_NOGUARD") == ""
+	if guard {
 		o.TUN.Subnet = netip.MustParsePrefix(soakTunSubnet)
+		if v.tun {
+			// As internal/privsvc does on Windows: bind direct to the uplink.
+			o.Direct.Interface = soakUplink(t)
+		}
 	}
 	o.SOCKS.Listen = "127.0.0.1"
 	o.SOCKS.Port = uint16(socksPort)
@@ -273,9 +290,22 @@ func soakOne(t *testing.T, v soakVariant, dur time.Duration) {
 			_ = exec.Command("powershell", "-NoProfile", "-Command",
 				fmt.Sprintf("Remove-NetRoute -DestinationPrefix %s -Confirm:$false -ErrorAction SilentlyContinue", soakTarget)).Run()
 		})
+		if v.private {
+			soakPowerShell(t, fmt.Sprintf("New-NetRoute -InterfaceAlias %s -DestinationPrefix %s -RouteMetric 0 -PolicyStore ActiveStore | Out-Null", soakTunName, soakPrivate))
+			t.Cleanup(func() {
+				_ = exec.Command("powershell", "-NoProfile", "-Command",
+					fmt.Sprintf("Remove-NetRoute -DestinationPrefix %s -Confirm:$false -ErrorAction SilentlyContinue", soakPrivate)).Run()
+			})
+		}
 		time.Sleep(2 * time.Second)
+		if guard {
+			soakDirectReachesLoopback(t, socksPort, originPort, v.stall)
+		}
 		d = &net.Dialer{Timeout: 8 * time.Second}
 		target = "203.0.113.10:80"
+		if v.private {
+			target = "10.99.1.1:80"
+		}
 	} else {
 		d, err = proxy.SOCKS5("tcp", fmt.Sprintf("127.0.0.1:%d", socksPort), nil, proxy.Direct)
 		if err != nil {
@@ -350,7 +380,7 @@ func soakOne(t *testing.T, v soakVariant, dur time.Duration) {
 	if dir := os.Getenv("CASPIAN_SOAK_PROF"); dir != "" {
 		soakProfiles(t, dir, v.name, e)
 	}
-	if !v.stall && ok.Load() == 0 {
+	if !v.stall && !v.private && ok.Load() == 0 {
 		t.Fatalf("no request completed, so the test measured nothing")
 	}
 	if idle > start+soakSlack {
@@ -392,4 +422,46 @@ func soakProfiles(t *testing.T, dir, name string, e *engine.Engine) {
 		}
 		return nil
 	})
+}
+
+// soakUplink returns the alias of the adapter that carries the default route
+// of this machine, the same adapter netcfg.Plan.Uplink names on Windows.
+func soakUplink(t *testing.T) string {
+	t.Helper()
+	out, err := exec.Command("powershell", "-NoProfile", "-Command",
+		"Get-NetRoute -DestinationPrefix 0.0.0.0/0 | Sort-Object { $_.RouteMetric + "+
+			"(Get-NetIPInterface -InterfaceIndex $_.InterfaceIndex -AddressFamily IPv4).InterfaceMetric } | "+
+			"Select-Object -First 1 -ExpandProperty InterfaceAlias").Output()
+	alias := strings.TrimSpace(string(out))
+	if err != nil || alias == "" {
+		t.Fatalf("no default route on this machine, so there is no uplink to bind to: %v", err)
+	}
+	return alias
+}
+
+// soakDirectReachesLoopback sends one request through the SOCKS inbound to a
+// loopback address. The private rule sends it direct. It proves that the
+// binding to the uplink does not cut the direct outbound off from loopback.
+func soakDirectReachesLoopback(t *testing.T, socksPort, originPort int, stalled bool) {
+	t.Helper()
+	if stalled {
+		return
+	}
+	d, err := proxy.SOCKS5("tcp", fmt.Sprintf("127.0.0.1:%d", socksPort), nil, proxy.Direct)
+	if err != nil {
+		t.Fatalf("SOCKS dialer: %v", err)
+	}
+	c := &http.Client{
+		Transport: &http.Transport{DialContext: func(_ context.Context, nw, a string) (net.Conn, error) { return d.Dial(nw, a) }},
+		Timeout:   8 * time.Second,
+	}
+	resp, err := c.Get(fmt.Sprintf("http://127.0.0.1:%d/?n=16", originPort))
+	if err != nil {
+		t.Fatalf("the bound direct outbound did not reach loopback: %v", err)
+	}
+	n, _ := io.Copy(io.Discard, resp.Body)
+	_ = resp.Body.Close()
+	if n != 16 {
+		t.Fatalf("the bound direct outbound returned %d bytes from loopback, want 16", n)
+	}
 }

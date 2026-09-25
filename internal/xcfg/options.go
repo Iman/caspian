@@ -27,6 +27,11 @@ const (
 	// TagBlock is the blackhole outbound.
 	TagBlock = "block"
 
+	// TagDirectLocal is a second direct outbound with no interface binding.
+	// It exists only when Direct.Interface is set, and carries loopback only:
+	// a socket bound to the uplink cannot reach 127.0.0.1 on Windows.
+	TagDirectLocal = "direct-local"
+
 	// TagDNSOut is the dns outbound: the thing that answers a DNS query from
 	// the built-in resolver instead of forwarding it. Present when either
 	// LocalDNS.Enabled or DNS.Intercept is set, since both need something to
@@ -70,6 +75,7 @@ const (
 // connection where. That is the difference between an advanced-mode log a
 // person can read and a wall of "taking detour [proxy]".
 const (
+	ruleTagLoopback  = "loopback-direct"
 	ruleTagLoopGuard = "loop-guard-block"
 	ruleTagPrivate   = "private-direct"
 	ruleTagLocalDNS  = "local-dns-to-tunnel"
@@ -166,6 +172,22 @@ type TUN struct {
 	// straight back in as a new flow. See loopGuardRule. The zero value adds
 	// nothing, which is every SOCKS-only document.
 	Subnet netip.Prefix
+}
+
+// Direct configures the direct outbound, which carries the private ranges.
+type Direct struct {
+	// Interface binds every direct connection to one network adapter, by
+	// name. Empty leaves the choice to the routing table.
+	//
+	// A plan that tunnels the host itself needs it: Windows always, and the
+	// split-default strategy. Then the routing table sends a direct connection
+	// to any address off the LAN back into the tunnel. The TUN inbound reads it as a new flow, and the
+	// flow loops. GitHub issue 7 showed 1.3 GB after 30 minutes with 1 phone.
+	// Bound to the uplink, a direct connection leaves through the uplink.
+	//
+	// The engine applies it with IP_UNICAST_IF on Windows and SO_BINDTODEVICE
+	// on Linux (transport/internet/sockopt_windows.go, sockopt_linux.go).
+	Interface string
 }
 
 // SOCKS configures the loopback proxy and diagnostics inbound.
@@ -284,6 +306,7 @@ type Options struct {
 	SOCKS    SOCKS
 	DNS      DNS
 	LocalDNS LocalDNS
+	Direct   Direct
 
 	// PinnedServer is the set of addresses the network plan pins host routes
 	// to for the link's server. See servername.go for what it does to the

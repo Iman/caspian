@@ -108,6 +108,11 @@
       "protocol": "freedom",
       "settings": {
         "domainStrategy": "AsIs"
+      },
+      "streamSettings": {
+        "sockopt": {
+          "interface": "Ethernet"
+        }
       }
     },
     {
@@ -117,6 +122,13 @@
         "response": {
           "type": "none"
         }
+      }
+    },
+    {
+      "tag": "direct-local",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
       }
     },
     {
@@ -149,6 +161,14 @@
         "port": "53",
         "network": "tcp,udp",
         "outboundTag": "dns-out"
+      },
+      {
+        "ruleTag": "loopback-direct",
+        "ip": [
+          "127.0.0.0/8",
+          "::1/128"
+        ],
+        "outboundTag": "direct-local"
       },
       {
         "ruleTag": "loop-guard-block",

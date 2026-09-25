@@ -63,7 +63,7 @@ func (s *Service) spoofDocument(l *link.Link, req panel.StartRequest, plan *netc
 	// No pinned addresses: the forwarded link names the loopback forwarder by
 	// an IP literal, so there is no name for the engine to look up, and the
 	// forwarder itself was handed an address above rather than a name.
-	doc, err := s.engineDocument(forwarded, req, opts, nil, plan.TunSubnet)
+	doc, err := s.engineDocument(forwarded, req, opts, nil, tunnelFactsOf(plan))
 	if err != nil {
 		return nil, err
 	}

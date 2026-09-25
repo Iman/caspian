@@ -207,10 +207,17 @@ func TestPinnedServerIsTheOnlyWayTheProxyDialConsultsTheDNSApp(t *testing.T) {
 			if err != nil {
 				t.Fatalf("%s/%s: Build: %v", f.name, c.name, err)
 			}
-			has := strings.Contains(string(raw), `"sockopt"`)
+			// The proxy outbound only: the direct outbound can carry a sockopt
+			// with an interface binding (Direct.Interface), which never
+			// consults the DNS app. The ForceIP check keeps the whole
+			// document to the same condition.
+			stream, _ := proxyOf(t, raw)["streamSettings"].(map[string]any)
+			_, has := stream["sockopt"]
+			forced := strings.Contains(string(raw), `"ForceIP"`)
 			want := ipErr != nil && len(o.PinnedServer) > 0
-			if has != want {
-				t.Fatalf("%s/%s: sockopt present is %v, want %v", f.name, c.name, has, want)
+			if has != want || forced != want {
+				t.Fatalf("%s/%s: proxy sockopt present is %v and ForceIP present is %v, want %v",
+					f.name, c.name, has, forced, want)
 			}
 		}
 	}

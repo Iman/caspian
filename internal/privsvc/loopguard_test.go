@@ -5,7 +5,10 @@ package privsvc
 
 import (
 	"encoding/json"
+	"net/netip"
 	"testing"
+
+	"caspianbyoc.org/caspian/internal/netcfg"
 )
 
 // TestTheEngineBlocksTheTunnelSubnetThePlanChose holds the start path to
@@ -52,4 +55,35 @@ func TestTheEngineBlocksTheTunnelSubnetThePlanChose(t *testing.T) {
 		return
 	}
 	t.Fatal("the engine document has no loop-guard-block rule")
+}
+
+// TestTheDirectOutboundBindsToTheUplinkWhenTheHostIsTunnelled holds
+// tunnelFactsOf to its rule. When the plan routes the traffic of the host
+// itself into the tunnel, an unbound direct connection to a private address
+// off the LAN loops back into it (GitHub issue 7, rc.3). That is Windows, and
+// the split-default strategy. The default policy strategy tunnels only
+// hotspot traffic, and needs no binding.
+func TestTheDirectOutboundBindsToTheUplinkWhenTheHostIsTunnelled(t *testing.T) {
+	subnet := netip.MustParsePrefix("198.18.51.0/30")
+	for _, c := range []struct {
+		platform netcfg.Platform
+		strategy netcfg.RouteStrategy
+		want     string
+	}{
+		{netcfg.PlatformWindows, netcfg.StrategyPolicy, "Wi-Fi"},
+		{netcfg.PlatformLinux, netcfg.StrategyPolicy, ""},
+		{netcfg.PlatformDarwin, netcfg.StrategyPolicy, ""},
+		{netcfg.PlatformDarwin, netcfg.StrategySplitDefault, "Wi-Fi"},
+		{netcfg.PlatformLinux, netcfg.StrategySplitDefault, "Wi-Fi"},
+	} {
+		p := &netcfg.Plan{Platform: c.platform, Uplink: "Wi-Fi", TunSubnet: subnet}
+		p.Opts.Strategy = c.strategy
+		got := tunnelFactsOf(p)
+		if got.directInterface != c.want {
+			t.Errorf("%s strategy %d: direct binds to %q, want %q", c.platform, c.strategy, got.directInterface, c.want)
+		}
+		if got.subnet != subnet {
+			t.Errorf("%s: tunnel subnet %v, want %v", c.platform, got.subnet, subnet)
+		}
+	}
 }

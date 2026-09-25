@@ -277,6 +277,7 @@ func everythingOverriddenMutation(o *Options) {
 	o.TUN.MTU = 1420
 	o.TUN.UserLevel = 1
 	o.TUN.Subnet = netip.MustParsePrefix("198.18.51.0/30")
+	o.Direct.Interface = "Ethernet"
 	o.SOCKS.Listen = "::1"
 	o.SOCKS.Port = 19999
 	o.SOCKS.UDP = true

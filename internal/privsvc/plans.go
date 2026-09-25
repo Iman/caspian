@@ -109,18 +109,15 @@ func (s *Service) netOptionsFor(req panel.StartRequest, socksPort uint16) (netcf
 // for a link that names its server by an IP literal, and nil is passed for the
 // SNI forwarder's loopback link, which is one.
 //
-// tunSubnet is the tunnel adapter's subnet from the same plan
-// (netcfg.Plan.TunSubnet). The engine blocks it instead of sending it direct,
-// because on Windows a direct packet to it goes back into the tunnel; see
-// xcfg.loopGuardRule. The zero prefix leaves only the multicast and broadcast
-// part of that rule.
-func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options, pinned []netip.Addr, tunSubnet netip.Prefix) ([]byte, error) {
+// tunnel carries 2 more facts from the same plan. See tunnelFacts.
+func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options, pinned []netip.Addr, tunnel tunnelFacts) ([]byte, error) {
 	o := xcfg.Defaults()
 	o.Link = l
 	o.PinnedServer = pinned
 	o.TUN.Disabled = s.cfg.TUNDisabled
 	o.TUN.Name = netOpts.TunName
-	o.TUN.Subnet = tunSubnet
+	o.TUN.Subnet = tunnel.subnet
+	o.Direct.Interface = tunnel.directInterface
 	// The port this run chose, not the preferred one (socksport.go). This is
 	// the same value netOptionsFor gave the macOS system proxy steps and the
 	// same value Status reports as LocalProxy.
@@ -288,4 +285,32 @@ func nthAddress(p netip.Prefix, n int) (netip.Addr, error) {
 		}
 	}
 	return a, nil
+}
+
+// tunnelFacts is what the engine document needs from the applied network plan
+// to keep the direct outbound out of the tunnel. GitHub issue 7 found 2 ways
+// in on Windows, where the default route of the whole host is the tunnel:
+//
+//   - subnet is netcfg.Plan.TunSubnet. xcfg.loopGuardRule blocks it, because
+//     its broadcast address and its peer are on-link through the tunnel only.
+//   - directInterface is netcfg.Plan.Uplink, set when the plan routes the
+//     traffic of the host itself into the tunnel. The direct outbound binds
+//     to it, so a connection to a private address off the LAN leaves through
+//     the uplink instead of the tunnel. That is Windows, and
+//     netcfg.StrategySplitDefault. Under the default netcfg.StrategyPolicy,
+//     only hotspot traffic enters the tunnel, and the routing table of the
+//     host already sends a direct connection out through the uplink.
+//
+// The zero value adds neither.
+type tunnelFacts struct {
+	subnet          netip.Prefix
+	directInterface string
+}
+
+func tunnelFactsOf(p *netcfg.Plan) tunnelFacts {
+	f := tunnelFacts{subnet: p.TunSubnet}
+	if p.Platform == netcfg.PlatformWindows || p.Opts.Strategy == netcfg.StrategySplitDefault {
+		f.directInterface = p.Uplink
+	}
+	return f
 }

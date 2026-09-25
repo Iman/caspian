@@ -92,6 +92,9 @@ func axes() [][]axis {
 				o.TUN.MTU = 1420
 				o.TUN.UserLevel = 1
 				o.TUN.Subnet = netip.MustParsePrefix("198.18.51.0/30")
+				// On this axis because privsvc sets it together with the
+				// tunnel subnet, on Windows only.
+				o.Direct.Interface = "Ethernet"
 			}},
 			{"tun-mtu-min", func(o *Options) { o.TUN.MTU = MinTunMTU }},
 			{"tun-mtu-max", func(o *Options) { o.TUN.MTU = MaxTunMTU }},
@@ -233,6 +236,7 @@ func trackedOptionFields() []string {
 	return []string{
 		"LogLevel",
 		"TUN.Disabled", "TUN.Name", "TUN.MTU", "TUN.UserLevel", "TUN.Subnet",
+		"Direct.Interface",
 		"SOCKS.Listen", "SOCKS.Port", "SOCKS.UDP",
 		"DNS.Servers", "DNS.Strategy", "DNS.Intercept",
 		"LocalDNS.Enabled", "LocalDNS.Listen", "LocalDNS.Port",
@@ -258,6 +262,8 @@ func fieldString(o Options, path string) string {
 		return fmt.Sprint(o.TUN.UserLevel)
 	case "TUN.Subnet":
 		return fmt.Sprint(o.TUN.Subnet)
+	case "Direct.Interface":
+		return o.Direct.Interface
 	case "SOCKS.Listen":
 		return o.SOCKS.Listen
 	case "SOCKS.Port":
@@ -477,6 +483,13 @@ func TestPrivateRangesRouteDirect(t *testing.T) {
 			if above.RuleTag == ruleTagDNS {
 				if above.Port != "53" || above.Network != "tcp,udp" || above.OutboundTag != TagDNSOut || len(above.IP) != 0 || len(above.InboundTag) != 0 {
 					t.Fatal("DNS exception must match only TCP/UDP port 53 and use Xray DNS")
+				}
+				continue
+			}
+			if above.RuleTag == ruleTagLoopback {
+				// Loopback only, to the unbound direct outbound.
+				if above.OutboundTag != TagDirectLocal || strings.Join(above.IP, " ") != "127.0.0.0/8 ::1/128" {
+					t.Errorf("%s: the loopback rule is %+v", c.name, above)
 				}
 				continue
 			}
@@ -1025,6 +1038,88 @@ func TestLoopGuardBlocksWhatDirectCanOnlyLoop(t *testing.T) {
 			}
 			if g.Port != "" || g.Network != "" || len(g.InboundTag) != 0 {
 				t.Errorf("the guard carries a condition besides the address: %+v", g)
+			}
+		})
+	}
+}
+
+// TestDirectBindsToTheUplinkAndKeepsLoopback is the regression guard for the
+// second loop found on GitHub issue 7 (rc.3: 1.3 GB after 30 minutes with 1
+// phone). On Windows the default route of the whole host is the tunnel, so an
+// unbound direct connection to a private address off the LAN goes back into
+// the tunnel. With Direct.Interface set, the direct outbound binds to it, and
+// loopback, which a bound socket cannot reach, takes an unbound outbound.
+func TestDirectBindsToTheUplinkAndKeepsLoopback(t *testing.T) {
+	l := mustParse(t, vlessRealityLink())
+	for _, c := range []struct {
+		name  string
+		iface string
+	}{{"unbound", ""}, {"bound", "Wi-Fi 2"}} {
+		t.Run(c.name, func(t *testing.T) {
+			o := Defaults()
+			o.Link = l
+			o.Direct.Interface = c.iface
+			raw, err := Build(o)
+			if err != nil {
+				t.Fatalf("Build: %v", err)
+			}
+			var d struct {
+				Outbounds []struct {
+					Tag            string `json:"tag"`
+					StreamSettings *struct {
+						Sockopt struct {
+							Interface string `json:"interface"`
+						} `json:"sockopt"`
+					} `json:"streamSettings"`
+				} `json:"outbounds"`
+				Routing struct {
+					Rules []struct {
+						RuleTag     string   `json:"ruleTag"`
+						IP          []string `json:"ip"`
+						OutboundTag string   `json:"outboundTag"`
+					} `json:"rules"`
+				} `json:"routing"`
+			}
+			if err := json.Unmarshal(raw, &d); err != nil {
+				t.Fatalf("decode: %v", err)
+			}
+			bound, local := "", false
+			for _, ob := range d.Outbounds {
+				switch ob.Tag {
+				case TagDirect:
+					if ob.StreamSettings != nil {
+						bound = ob.StreamSettings.Sockopt.Interface
+					}
+				case TagDirectLocal:
+					local = true
+					if ob.StreamSettings != nil {
+						t.Error("the loopback outbound carries stream settings; it must stay unbound")
+					}
+				}
+			}
+			if bound != c.iface {
+				t.Errorf("the direct outbound binds to %q, want %q", bound, c.iface)
+			}
+			if local != (c.iface != "") {
+				t.Errorf("the unbound loopback outbound is present=%v, want %v", local, c.iface != "")
+			}
+			loopback, private := -1, -1
+			for i, r := range d.Routing.Rules {
+				switch r.RuleTag {
+				case ruleTagLoopback:
+					loopback = i
+				case ruleTagPrivate:
+					private = i
+				}
+			}
+			if c.iface == "" {
+				if loopback >= 0 {
+					t.Error("an unbound document carries the loopback rule")
+				}
+				return
+			}
+			if loopback < 0 || loopback > private {
+				t.Fatalf("the loopback rule is at %d and the private rule at %d; it must come first", loopback, private)
 			}
 		})
 	}

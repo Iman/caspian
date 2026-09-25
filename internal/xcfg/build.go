@@ -119,9 +119,21 @@ type socksSettings struct {
 }
 
 type freedomOutbound struct {
-	Tag      string          `json:"tag"`
-	Protocol string          `json:"protocol"`
-	Settings freedomSettings `json:"settings"`
+	Tag            string          `json:"tag"`
+	Protocol       string          `json:"protocol"`
+	Settings       freedomSettings `json:"settings"`
+	StreamSettings *freedomStream  `json:"streamSettings,omitempty"`
+}
+
+// freedomStream is the part of infra/conf.StreamConfig the direct outbound
+// uses: only sockopt.interface. Omitted when no interface is set, so those
+// documents stay byte-identical to the ones built before it existed.
+type freedomStream struct {
+	Sockopt freedomSockopt `json:"sockopt"`
+}
+
+type freedomSockopt struct {
+	Interface string `json:"interface"`
 }
 
 // freedomSettings carries domainStrategy explicitly.
@@ -207,7 +219,10 @@ func Build(o Options) ([]byte, error) {
 	// hands any connection no rule matched to it. Whatever is first is what
 	// carries traffic when the rules are wrong, so it is the tunnel.
 	outbounds = append(outbounds, proxy)
-	outbounds = append(outbounds, direct(), blackhole())
+	outbounds = append(outbounds, direct(o), blackhole())
+	if o.Direct.Interface != "" {
+		outbounds = append(outbounds, freedomOutbound{Tag: TagDirectLocal, Protocol: "freedom", Settings: freedomSettings{DomainStrategy: "AsIs"}})
+	}
 	if o.DNS.Intercept || o.LocalDNS.Enabled {
 		outbounds = append(outbounds, dnsOut())
 	}
@@ -261,6 +276,11 @@ func Build(o Options) ([]byte, error) {
 	}
 	// Below the DNS rules, so a query to a private resolver is still DNS, and
 	// above the private rule, whose ranges these overlap. See loopGuardRule.
+	if o.Direct.Interface != "" {
+		// Loopback never enters the tunnel, and the uplink binding cannot
+		// reach it, so it takes the unbound direct outbound.
+		rules = append(rules, rule{RuleTag: ruleTagLoopback, IP: []string{"127.0.0.0/8", "::1/128"}, OutboundTag: TagDirectLocal})
+	}
 	rules = append(rules, loopGuardRule(o.TUN.Subnet))
 	// A private DNS destination is still DNS, not an exemption from tunnel
 	// policy. Intercept it before allowing ordinary local-network access.
@@ -475,12 +495,16 @@ func outboundFromDocument(raw []byte) (json.RawMessage, error) {
 	return doc.Outbounds[0], nil
 }
 
-func direct() freedomOutbound {
-	return freedomOutbound{
+func direct(o Options) freedomOutbound {
+	out := freedomOutbound{
 		Tag:      TagDirect,
 		Protocol: "freedom",
 		Settings: freedomSettings{DomainStrategy: "AsIs"},
 	}
+	if o.Direct.Interface != "" {
+		out.StreamSettings = &freedomStream{Sockopt: freedomSockopt{Interface: o.Direct.Interface}}
+	}
+	return out
 }
 
 func blackhole() blackholeOutbound {
