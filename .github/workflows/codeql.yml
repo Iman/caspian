@@ -53,6 +53,15 @@ jobs:
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
+          # The Cucumber harness injects defects on purpose (echoed secrets,
+          # unescaped names, dropped headers) so the suites can prove the
+          # panel refuses them. Every finding there is the fault being
+          # modelled, not a fault in Caspian, and the harness is test-only
+          # tooling that never ships. Alert 13 and its re-open as 14 after
+          # the bdd/ move were both this.
+          config: |
+            paths-ignore:
+              - test/cucumber/harness
       - uses: github/codeql-action/autobuild@v4
         if: matrix.build-mode == 'autobuild'
       - name: Build Swift sources
