@@ -5,7 +5,7 @@
 # NOT pinned: it changes often and a churning golden trains people to
 # accept diffs unread. A key vanishing is the failure this file catches.
 
-## en: 457 keys
+## en: 468 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -85,6 +85,17 @@
   advanced.show
   advanced.subnet
   advanced.subnet.hint
+  advanced.upstream.address
+  advanced.upstream.authbad
+  advanced.upstream.bad
+  advanced.upstream.enable
+  advanced.upstream.heading
+  advanced.upstream.hint
+  advanced.upstream.password
+  advanced.upstream.passwordset
+  advanced.upstream.port
+  advanced.upstream.portbad
+  advanced.upstream.username
   app.name
   config.add
   config.entries.dropped.many
@@ -464,7 +475,7 @@
   wifi.qr.caption
   wifi.qr.failed
 
-## fa: 457 keys
+## fa: 468 keys
   action.failed
   action.stale
   action.stoppedremote
@@ -544,6 +555,17 @@
   advanced.show
   advanced.subnet
   advanced.subnet.hint
+  advanced.upstream.address
+  advanced.upstream.authbad
+  advanced.upstream.bad
+  advanced.upstream.enable
+  advanced.upstream.heading
+  advanced.upstream.hint
+  advanced.upstream.password
+  advanced.upstream.passwordset
+  advanced.upstream.port
+  advanced.upstream.portbad
+  advanced.upstream.username
   app.name
   config.add
   config.entries.dropped.many

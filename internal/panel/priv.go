@@ -551,6 +551,14 @@ type EngineLog struct {
 // than trusting the panel.
 //
 // It carries two credentials, so it redacts itself; see String below.
+type UpstreamSOCKS5Spec struct {
+	Enabled  bool
+	Address  string
+	Port     uint16
+	Username string
+	Password string
+}
+
 type StartRequest struct {
 	// SpoofSNI is separate from the real TLS name in ConfigJSON.
 	SpoofSNI       string
@@ -567,6 +575,11 @@ type StartRequest struct {
 
 	// Network is how the machine should be wired up.
 	Network NetworkSpec
+
+	// Upstream is an optional front proxy used to reach the configured tunnel
+	// server. It is a typed value so the privileged side cannot be asked to run
+	// an arbitrary command or proxy configuration.
+	Upstream UpstreamSOCKS5Spec
 
 	// EngineLogLevel is one of EngineLogLevels, or empty for the engine's own
 	// default. It is carried here rather than read from the state file by the
@@ -673,8 +686,8 @@ type NetworkSpec struct {
 // Its size is reported because "did we send anything at all" is a real
 // question, and a byte count discloses nothing useful.
 func (r StartRequest) String() string {
-	return fmt.Sprintf("start config=[redacted %d bytes] %v network=%+v engine_log_level=%q",
-		len(r.ConfigJSON), r.Hotspot, r.Network, r.EngineLogLevel)
+	return fmt.Sprintf("start config=[redacted %d bytes] %v network=%+v upstream_socks5=%t engine_log_level=%q",
+		len(r.ConfigJSON), r.Hotspot, r.Network, r.Upstream.Enabled, r.EngineLogLevel)
 }
 
 // GoString covers %#v.

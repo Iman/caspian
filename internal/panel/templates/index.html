@@ -433,6 +433,29 @@ TestEveryIsolatedValueIsIsolated fails if a value of that kind is rendered bare.
            placeholder="{{.PlaceSubnet}}" autocomplete="off" spellcheck="false">
     <p class="hint">{{.T "advanced.subnet.hint"}}</p>
 
+    <h3>{{.T "advanced.upstream.heading"}}</h3>
+    <label class="checkline">
+      <input type="checkbox" name="upstream_socks5_enabled" value="1" {{if .UpstreamEnabled}}checked{{end}}>
+      {{.T "advanced.upstream.enable"}}
+    </label>
+    <label for="upstream_socks5_address">{{.T "advanced.upstream.address"}}</label>
+    <input id="upstream_socks5_address" name="upstream_socks5_address" type="text"
+           dir="ltr" value="{{.UpstreamAddress}}" autocomplete="off" spellcheck="false"
+           placeholder="127.0.0.1">
+    <label for="upstream_socks5_port">{{.T "advanced.upstream.port"}}</label>
+    <input id="upstream_socks5_port" name="upstream_socks5_port" type="number"
+           min="1" max="65535" inputmode="numeric" dir="ltr" value="{{.UpstreamPort}}"
+           placeholder="1080">
+    <label for="upstream_socks5_username">{{.T "advanced.upstream.username"}}</label>
+    <input id="upstream_socks5_username" name="upstream_socks5_username" type="text"
+           dir="ltr" value="{{.UpstreamUsername}}" autocomplete="username"
+           autocapitalize="off" spellcheck="false">
+    <label for="upstream_socks5_password">{{.T "advanced.upstream.password"}}</label>
+    <input id="upstream_socks5_password" name="upstream_socks5_password" type="password"
+           dir="ltr" value="" autocomplete="new-password" spellcheck="false">
+{{if .UpstreamAuthSet}}    <p class="hint">{{.T "advanced.upstream.passwordset"}}</p>{{end}}
+    <p class="hint">{{.T "advanced.upstream.hint"}}</p>
+
     <label for="engine_log_level">{{.T "advanced.loglevel"}}</label>
     <select id="engine_log_level" name="engine_log_level" dir="ltr">
       <option value="">{{.AutoLogLevel}}</option>

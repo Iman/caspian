@@ -56,6 +56,27 @@ Each control is independent and can be combined with the others. Saving reconnec
 
 DPI bypass depends on the network and its filtering rules. Caspian does not promise to be undetectable or universally "DPI safe". The loopback tests verify unchanged data, a real TLS handshake, and rejection of a wrong certificate name; they do not establish bypass against an internet provider. See [SNI setup, supported platforms, and limits](docs/SNI.md) and [upstream research and credits](docs/THIRD-PARTY.md).
 
+## Upstream SOCKS5
+
+Caspian can optionally establish the connection to your configured tunnel server through an upstream SOCKS5 proxy. The upstream proxy is a **front-proxy for the tunnel connection**, not a replacement for the tunnel itself: client traffic still follows Caspian's normal routing into the configured VLESS, VMess, Shadowsocks, SOCKS, Trojan, or Hysteria2 outbound.
+
+Open **Advanced → Upstream SOCKS5**, enable it, and enter the proxy address and port. Username and password are optional. Saving the settings reconnects a running tunnel with the new configuration.
+
+Example:
+
+```text
+Address: 127.0.0.1
+Port:    1080
+Username: optional
+Password: optional
+```
+
+The password is never rendered back into the page. Leaving the password field blank keeps the saved password when the username is unchanged; leaving both username and password blank clears upstream authentication.
+
+When enabled, Caspian emits an Xray SOCKS5 outbound and chains the configured tunnel outbound through it. The catch-all route remains pointed at the tunnel outbound, so enabling the upstream does not accidentally route ordinary client traffic into the SOCKS5 proxy by itself.
+
+The repository includes an end-to-end test with an in-process SOCKS5 server. It verifies real VLESS traffic in both unauthenticated and authenticated upstream modes and checks that the SOCKS5 server actually received the connection to the VLESS server.
+
 ## Connections and supported formats
 
 Start with Ethernet from your router to the computer running Caspian. Use that computer's built-in Wi-Fi for the hotspot, or a compatible USB Wi-Fi adapter on Linux. This gives the internet connection and hotspot separate adapters. It is the recommended starting arrangement, not a measured speed guarantee.

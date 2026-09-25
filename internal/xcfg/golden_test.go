@@ -294,6 +294,13 @@ func everythingOverriddenMutation(o *Options) {
 	// carried into dns.hosts and filtered by the engine at lookup time, and
 	// the IPv4 one is what keeps the document from ErrPinnedServerFamily.
 	o.PinnedServer = []netip.Addr{netip.MustParseAddr("203.0.113.10"), netip.MustParseAddr("2001:db8::10")}
+	o.Upstream = UpstreamSOCKS5{
+		Enabled:  true,
+		Address:  "127.0.0.1",
+		Port:     1080,
+		Username: "u",
+		Password: "p",
+	}
 }
 
 func everythingOverridden(withLink func(func() string, func(*Options)) func(*testing.T) []byte) goldenCase {

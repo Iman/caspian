@@ -422,6 +422,13 @@ func (p *Panel) bringUp(ctx context.Context, st state.State, via func(context.Co
 			ClientIPv6: st.Advanced.ClientIPv6,
 		},
 		EngineLogLevel: st.Advanced.EngineLogLevel,
+		Upstream: UpstreamSOCKS5Spec{
+			Enabled:  st.Advanced.UpstreamSOCKS5.Enabled,
+			Address:  st.Advanced.UpstreamSOCKS5.Address,
+			Port:     st.Advanced.UpstreamSOCKS5.Port,
+			Username: st.Advanced.UpstreamSOCKS5.Username.Reveal(),
+			Password: st.Advanced.UpstreamSOCKS5.Password.Reveal(),
+		},
 	}
 	if err := via(ctx, req); err != nil {
 		f := FaultOf(err)
@@ -841,6 +848,35 @@ func (p *Panel) handleAdvanced(w http.ResponseWriter, r *http.Request) {
 	onLAN := r.PostFormValue("panel_on_lan") == "1"
 	connectionsOnly := r.PostFormValue("connections_only") == "1"
 
+	upstreamEnabled := r.PostFormValue("upstream_socks5_enabled") == "1"
+	upstreamAddress := strings.TrimSpace(r.PostFormValue("upstream_socks5_address"))
+	upstreamUsername := strings.TrimSpace(r.PostFormValue("upstream_socks5_username"))
+	upstreamPassword := r.PostFormValue("upstream_socks5_password")
+	upstreamPort := uint16(0)
+	if v := strings.TrimSpace(r.PostFormValue("upstream_socks5_port")); v != "" {
+		n, convErr := strconv.ParseUint(v, 10, 16)
+		if convErr != nil {
+			sess.setFlash(Problem{Headline: Key("advanced.upstream.portbad")}, "")
+			p.home(w, r)
+			return
+		}
+		upstreamPort = uint16(n)
+	}
+	currentUpstream := p.store.Snapshot().Advanced.UpstreamSOCKS5
+	if !connectionsOnly {
+		// A blank password keeps the stored password when the username is
+		// unchanged. Leaving both credential fields blank clears authentication.
+		if upstreamUsername != "" && upstreamPassword == "" &&
+			upstreamUsername == currentUpstream.Username.Reveal() {
+			upstreamPassword = currentUpstream.Password.Reveal()
+		}
+		if prob := validateUpstreamSOCKS5(upstreamEnabled, upstreamAddress, upstreamPort, upstreamUsername, upstreamPassword); !prob.Empty() {
+			sess.setFlash(prob, "")
+			p.home(w, r)
+			return
+		}
+	}
+
 	channel := 0
 	if v := strings.TrimSpace(r.PostFormValue("channel")); v != "" {
 		n, convErr := strconv.Atoi(v)
@@ -874,6 +910,13 @@ func (p *Panel) handleAdvanced(w http.ResponseWriter, r *http.Request) {
 		st.Advanced.Subnet = subnet
 		st.Advanced.EngineLogLevel = logLevel
 		st.Advanced.PanelOnLAN = onLAN
+		if !connectionsOnly {
+			st.Advanced.UpstreamSOCKS5.Enabled = upstreamEnabled
+			st.Advanced.UpstreamSOCKS5.Address = upstreamAddress
+			st.Advanced.UpstreamSOCKS5.Port = upstreamPort
+			st.Advanced.UpstreamSOCKS5.Username = state.Secret(upstreamUsername)
+			st.Advanced.UpstreamSOCKS5.Password = state.Secret(upstreamPassword)
+		}
 		return nil
 	})
 	if err != nil {

@@ -46,8 +46,9 @@ import (
 // would drop it on its next Save without a word. ErrFutureVersion turns that
 // into "install a newer release".
 // Version 4 retains the optional spoof name. Version 5 adds independent split
+// settings. Version 6 adds the optional persisted upstream SOCKS5 front-proxy
 // settings. Older builds must not silently drop these choices.
-const CurrentVersion = 5
+const CurrentVersion = 6
 
 // DefaultDir is where the appliance keeps its state. Callers may override it;
 // nothing in this package assumes it.
@@ -321,6 +322,18 @@ type Advanced struct {
 	// user choice. That is safe here only because the two coincide: false is
 	// the closed position.
 	PanelOnLAN bool `json:"panel_on_lan,omitempty"`
+
+	// UpstreamSOCKS5 is an optional front proxy used only to reach the configured
+	// tunnel server. Credentials are Secrets so they never print through fmt.
+	UpstreamSOCKS5 UpstreamSOCKS5 `json:"upstream_socks5,omitempty"`
+}
+
+type UpstreamSOCKS5 struct {
+	Enabled  bool   `json:"enabled,omitempty"`
+	Address  string `json:"address,omitempty"`
+	Port     uint16 `json:"port,omitempty"`
+	Username Secret `json:"username,omitempty"`
+	Password Secret `json:"password,omitempty"`
 }
 
 // defaultState is the usable starting point a first run gets. It is not Go's
@@ -395,6 +408,7 @@ func (s State) Redacted() string {
 	fmt.Fprintf(&b, " adv.client_ipv6=%q", s.Advanced.ClientIPv6)
 	fmt.Fprintf(&b, " adv.engine_log_level=%q", s.Advanced.EngineLogLevel)
 	fmt.Fprintf(&b, " adv.panel_on_lan=%t", s.Advanced.PanelOnLAN)
+	fmt.Fprintf(&b, " adv.upstream_socks5.enabled=%t", s.Advanced.UpstreamSOCKS5.Enabled)
 
 	return b.String()
 }

@@ -513,6 +513,29 @@
            placeholder="10.62.0.0/24" autocomplete="off" spellcheck="false">
     <p class="hint">محدوده آدرس‌هایی که به دستگاه‌های وصل‌شده داده می‌شود. کاسپین محدوده‌ای را انتخاب می‌کند که با شبکه فعلی این دستگاه تداخل نداشته باشد.</p>
 
+    <h3>پراکسی بالادستی SOCKS5</h3>
+    <label class="checkline">
+      <input type="checkbox" name="upstream_socks5_enabled" value="1" >
+      استفاده از یک پراکسی SOCKS5 به‌عنوان پراکسی واسط برای سرور تونل
+    </label>
+    <label for="upstream_socks5_address">نشانی سرور SOCKS5</label>
+    <input id="upstream_socks5_address" name="upstream_socks5_address" type="text"
+           dir="ltr" value="" autocomplete="off" spellcheck="false"
+           placeholder="127.0.0.1">
+    <label for="upstream_socks5_port">پورت سرور SOCKS5</label>
+    <input id="upstream_socks5_port" name="upstream_socks5_port" type="number"
+           min="1" max="65535" inputmode="numeric" dir="ltr" value=""
+           placeholder="1080">
+    <label for="upstream_socks5_username">نام کاربری (اختیاری)</label>
+    <input id="upstream_socks5_username" name="upstream_socks5_username" type="text"
+           dir="ltr" value="" autocomplete="username"
+           autocapitalize="off" spellcheck="false">
+    <label for="upstream_socks5_password">رمز عبور (اختیاری)</label>
+    <input id="upstream_socks5_password" name="upstream_socks5_password" type="password"
+           dir="ltr" value="" autocomplete="new-password" spellcheck="false">
+
+    <p class="hint">کاسپین ابتدا به این سرور SOCKS5 وصل می‌شود و سپس از طریق آن به سرور تونل تنظیم‌شده می‌رسد. ترافیک کاربران همچنان از تونل انتخاب‌شده عبور می‌کند. برای استفاده بدون احراز هویت، هر دو کادر نام کاربری و رمز عبور را خالی کنید.</p>
+
     <label for="engine_log_level">نرم‌افزار اتصال چقدر جزئیات ثبت کند</label>
     <select id="engine_log_level" name="engine_log_level" dir="ltr">
       <option value="">کاسپین تصمیم بگیرد (الان: ⁦warning⁩)</option>
