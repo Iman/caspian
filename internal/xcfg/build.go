@@ -6,6 +6,7 @@ package xcfg
 import (
 	"bytes"
 	"encoding/json"
+	"net/netip"
 
 	"caspianbyoc.org/caspian/internal/link"
 )
@@ -258,6 +259,9 @@ func Build(o Options) ([]byte, error) {
 			OutboundTag: TagDNSOut,
 		})
 	}
+	// Below the DNS rules, so a query to a private resolver is still DNS, and
+	// above the private rule, whose ranges these overlap. See loopGuardRule.
+	rules = append(rules, loopGuardRule(o.TUN.Subnet))
 	// A private DNS destination is still DNS, not an exemption from tunnel
 	// policy. Intercept it before allowing ordinary local-network access.
 	rules = append(rules, privateRule(TagDirect))
@@ -492,6 +496,44 @@ func dnsOut() dnsOutbound {
 		Tag:      TagDNSOut,
 		Protocol: "dns",
 		Settings: dnsOutSettings{NonIPQuery: "reject"},
+	}
+}
+
+// loopGuardRule blocks the destinations that the direct outbound can only
+// deliver back into the tunnel.
+//
+// GitHub issue 7, reported on v0.2.12-rc.2: caspian.exe on Windows grew to
+// 1.9 GB with no CPU and almost no traffic. Reproduced on Windows 11 with the
+// real TUN inbound: Windows sends a NetBIOS name broadcast (udp/137) to the
+// tunnel subnet's broadcast address; the private rule hands it to freedom;
+// freedom opens a new UDP socket and sends it to that same broadcast address,
+// which Windows routes out through the tunnel adapter; the TUN inbound reads
+// it as a new flow from a new source port, and the cycle repeats. Each turn
+// leaves a UDP session nothing answers, three goroutines and its buffers, held
+// until it idles out: about 16,000 sessions, 49,000 goroutines and 400 MB of
+// live heap within 30 seconds of the adapter getting its address.
+//
+// The ranges are the ones for which "direct" has no destination but the
+// tunnel itself:
+//
+//   - The tunnel's own subnet, when known. Its broadcast address and its peer
+//     are on-link through the tunnel adapter and nowhere else.
+//   - Multicast and the limited broadcast. On Windows the tunnel's default
+//     route has metric 0, so the host sends multicast out of the tunnel
+//     adapter; elsewhere a proxied multicast packet reaches nobody anyway,
+//     because link-local multicast is not routed.
+//
+// Blocked rather than proxied: none of these means anything on the far side
+// of the proxy server either.
+func loopGuardRule(tunSubnet netip.Prefix) rule {
+	ips := []string{"224.0.0.0/4", "255.255.255.255/32", "ff00::/8"}
+	if tunSubnet.IsValid() {
+		ips = append([]string{tunSubnet.Masked().String()}, ips...)
+	}
+	return rule{
+		RuleTag:     ruleTagLoopGuard,
+		IP:          ips,
+		OutboundTag: TagBlock,
 	}
 }
 

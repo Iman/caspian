@@ -206,7 +206,12 @@ func TestAnIPLiteralLinkLeavesTheEngineDocumentAsItWas(t *testing.T) {
 	if err != nil {
 		t.Fatalf("parse: %v", err)
 	}
-	unpinned, err := w.svc.engineDocument(l, requestFor(t, ipLink), w.cfg.netOptions(), nil)
+	// The same tunnel subnet the start used, so that the pinned addresses are
+	// the only input that differs between the two documents.
+	w.svc.mu.RLock()
+	tunSubnet := w.svc.plan.TunSubnet
+	w.svc.mu.RUnlock()
+	unpinned, err := w.svc.engineDocument(l, requestFor(t, ipLink), w.cfg.netOptions(), nil, tunSubnet)
 	if err != nil {
 		t.Fatalf("composing without pinned addresses: %v", err)
 	}

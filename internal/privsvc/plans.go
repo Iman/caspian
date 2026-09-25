@@ -108,12 +108,19 @@ func (s *Service) netOptionsFor(req panel.StartRequest, socksPort uint16) (netcf
 // Windows, and internal/xcfg/servername.go has the mechanism. It is ignored
 // for a link that names its server by an IP literal, and nil is passed for the
 // SNI forwarder's loopback link, which is one.
-func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options, pinned []netip.Addr) ([]byte, error) {
+//
+// tunSubnet is the tunnel adapter's subnet from the same plan
+// (netcfg.Plan.TunSubnet). The engine blocks it instead of sending it direct,
+// because on Windows a direct packet to it goes back into the tunnel; see
+// xcfg.loopGuardRule. The zero prefix leaves only the multicast and broadcast
+// part of that rule.
+func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts netcfg.Options, pinned []netip.Addr, tunSubnet netip.Prefix) ([]byte, error) {
 	o := xcfg.Defaults()
 	o.Link = l
 	o.PinnedServer = pinned
 	o.TUN.Disabled = s.cfg.TUNDisabled
 	o.TUN.Name = netOpts.TunName
+	o.TUN.Subnet = tunSubnet
 	// The port this run chose, not the preferred one (socksport.go). This is
 	// the same value netOptionsFor gave the macOS system proxy steps and the
 	// same value Status reports as LocalProxy.

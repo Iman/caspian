@@ -227,7 +227,7 @@ func (s *Service) applyLocked(ctx context.Context, req panel.StartRequest, fp st
 	// fallback in step 8 copies the plan and keeps its server addresses and
 	// uplink (netcfg.Plan.HotspotTakeover), so the set this document was built
 	// from is still the pinned one after a fallback.
-	doc, err := s.engineDocument(l, req, netOpts, plan.PinnedServers())
+	doc, err := s.engineDocument(l, req, netOpts, plan.PinnedServers(), plan.TunSubnet)
 	if err != nil {
 		return err
 	}

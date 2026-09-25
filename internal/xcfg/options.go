@@ -70,6 +70,7 @@ const (
 // connection where. That is the difference between an advanced-mode log a
 // person can read and a wall of "taking detour [proxy]".
 const (
+	ruleTagLoopGuard = "loop-guard-block"
 	ruleTagPrivate   = "private-direct"
 	ruleTagLocalDNS  = "local-dns-to-tunnel"
 	ruleTagResolvers = "resolver-through-tunnel"
@@ -158,6 +159,13 @@ type TUN struct {
 	// UserLevel selects a policy entry. Zero is the engine's default level
 	// and this appliance emits no policy section, so it has no effect today.
 	UserLevel uint32
+
+	// Subnet is the tunnel adapter's own subnet (netcfg.Plan.TunSubnet). A
+	// destination inside it is blocked rather than sent direct, because the
+	// direct outbound's packet would leave through the tunnel adapter and come
+	// straight back in as a new flow. See loopGuardRule. The zero value adds
+	// nothing, which is every SOCKS-only document.
+	Subnet netip.Prefix
 }
 
 // SOCKS configures the loopback proxy and diagnostics inbound.

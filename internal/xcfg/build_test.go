@@ -87,7 +87,12 @@ func axes() [][]axis {
 		},
 		{
 			{"tun-default", func(o *Options) {}},
-			{"tun-custom", func(o *Options) { o.TUN.Name = "csp0"; o.TUN.MTU = 1420; o.TUN.UserLevel = 1 }},
+			{"tun-custom", func(o *Options) {
+				o.TUN.Name = "csp0"
+				o.TUN.MTU = 1420
+				o.TUN.UserLevel = 1
+				o.TUN.Subnet = netip.MustParsePrefix("198.18.51.0/30")
+			}},
 			{"tun-mtu-min", func(o *Options) { o.TUN.MTU = MinTunMTU }},
 			{"tun-mtu-max", func(o *Options) { o.TUN.MTU = MaxTunMTU }},
 		},
@@ -227,7 +232,7 @@ func TestAxesCoverEveryOptionsField(t *testing.T) {
 func trackedOptionFields() []string {
 	return []string{
 		"LogLevel",
-		"TUN.Disabled", "TUN.Name", "TUN.MTU", "TUN.UserLevel",
+		"TUN.Disabled", "TUN.Name", "TUN.MTU", "TUN.UserLevel", "TUN.Subnet",
 		"SOCKS.Listen", "SOCKS.Port", "SOCKS.UDP",
 		"DNS.Servers", "DNS.Strategy", "DNS.Intercept",
 		"LocalDNS.Enabled", "LocalDNS.Listen", "LocalDNS.Port",
@@ -251,6 +256,8 @@ func fieldString(o Options, path string) string {
 		return fmt.Sprint(o.TUN.MTU)
 	case "TUN.UserLevel":
 		return fmt.Sprint(o.TUN.UserLevel)
+	case "TUN.Subnet":
+		return fmt.Sprint(o.TUN.Subnet)
 	case "SOCKS.Listen":
 		return o.SOCKS.Listen
 	case "SOCKS.Port":
@@ -470,6 +477,15 @@ func TestPrivateRangesRouteDirect(t *testing.T) {
 			if above.RuleTag == ruleTagDNS {
 				if above.Port != "53" || above.Network != "tcp,udp" || above.OutboundTag != TagDNSOut || len(above.IP) != 0 || len(above.InboundTag) != 0 {
 					t.Fatal("DNS exception must match only TCP/UDP port 53 and use Xray DNS")
+				}
+				continue
+			}
+			if above.RuleTag == ruleTagLoopGuard {
+				// The one IP rule allowed above it, and only because it drops
+				// rather than diverts; TestLoopGuardBlocksWhatDirectCanOnlyLoop
+				// holds it to its ranges.
+				if above.OutboundTag != TagBlock {
+					t.Errorf("%s: the loop guard sends traffic to %q, want %q", c.name, above.OutboundTag, TagBlock)
 				}
 				continue
 			}
@@ -946,5 +962,70 @@ func TestLinkIsTheOnlyUserTextInTheDocument(t *testing.T) {
 	}
 	if strings.Contains(string(raw), "sendThrough") {
 		t.Error("sendThrough reached the generated config; the engine reads it as a bind address")
+	}
+}
+
+// TestLoopGuardBlocksWhatDirectCanOnlyLoop is the regression guard for the
+// memory growth reported on GitHub issue 7 against v0.2.12-rc.2.
+//
+// On Windows the direct outbound delivers a packet for the tunnel's own
+// subnet, for multicast, or for the limited broadcast back into the tunnel
+// adapter, and the TUN inbound reads it as a new flow: a NetBIOS broadcast
+// grew to 49,000 goroutines and 400 MB of live heap in 30 seconds on Windows
+// 11 (loopGuardRule has the mechanism). The rule must block those ranges,
+// carry the tunnel subnet when it is known, sit above the private rule that
+// would otherwise send them direct, and sit below the DNS rules so a query to
+// a private resolver is still DNS.
+func TestLoopGuardBlocksWhatDirectCanOnlyLoop(t *testing.T) {
+	l := mustParse(t, vlessRealityLink())
+	subnet := netip.MustParsePrefix("198.18.51.0/30")
+	for _, c := range []struct {
+		name   string
+		subnet netip.Prefix
+		want   []string
+	}{
+		{"no subnet", netip.Prefix{}, []string{"224.0.0.0/4", "255.255.255.255/32", "ff00::/8"}},
+		{"tunnel subnet", subnet, []string{"198.18.51.0/30", "224.0.0.0/4", "255.255.255.255/32", "ff00::/8"}},
+		{"unmasked subnet", netip.MustParsePrefix("198.18.51.1/30"), []string{"198.18.51.0/30", "224.0.0.0/4", "255.255.255.255/32", "ff00::/8"}},
+	} {
+		t.Run(c.name, func(t *testing.T) {
+			o := Defaults()
+			o.Link = l
+			o.DNS.Intercept = true
+			o.LocalDNS.Enabled = true
+			o.TUN.Subnet = c.subnet
+			raw, err := Build(o)
+			if err != nil {
+				t.Fatalf("Build: %v", err)
+			}
+			rules := decode(t, raw).Routing.Rules
+			guard, private, dns := -1, -1, -1
+			for i, r := range rules {
+				switch r.RuleTag {
+				case ruleTagLoopGuard:
+					guard = i
+				case ruleTagPrivate:
+					private = i
+				case ruleTagDNS:
+					dns = i
+				}
+			}
+			if guard < 0 || private < 0 || dns < 0 {
+				t.Fatalf("missing a rule: guard=%d private=%d dns=%d", guard, private, dns)
+			}
+			if !(dns < guard && guard < private) {
+				t.Errorf("order is dns=%d guard=%d private=%d; want the guard between them", dns, guard, private)
+			}
+			g := rules[guard]
+			if g.OutboundTag != TagBlock {
+				t.Errorf("the guard sends traffic to %q, want %q", g.OutboundTag, TagBlock)
+			}
+			if strings.Join(g.IP, " ") != strings.Join(c.want, " ") {
+				t.Errorf("the guard carries %v, want %v", g.IP, c.want)
+			}
+			if g.Port != "" || g.Network != "" || len(g.InboundTag) != 0 {
+				t.Errorf("the guard carries a condition besides the address: %+v", g)
+			}
+		})
 	}
 }
