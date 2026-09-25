@@ -194,7 +194,9 @@ func TestTheServerNameSurvivesPinning(t *testing.T) {
 
 // TestPinnedServerIsTheOnlyWayTheProxyDialConsultsTheDNSApp holds the fifth
 // path in the DNS.Intercept enumeration to its condition: the proxy outbound's
-// sockopt appears if and only if a domain server has pinned addresses.
+// sockopt carries a domainStrategy if and only if a domain server has pinned
+// addresses. An upstream SOCKS5 adds sockopt.dialerProxy, which hands the name
+// to the front proxy and never consults the DNS app.
 func TestPinnedServerIsTheOnlyWayTheProxyDialConsultsTheDNSApp(t *testing.T) {
 	combos := combinations()
 	for _, f := range fixtures() {
@@ -212,11 +214,12 @@ func TestPinnedServerIsTheOnlyWayTheProxyDialConsultsTheDNSApp(t *testing.T) {
 			// consults the DNS app. The ForceIP check keeps the whole
 			// document to the same condition.
 			stream, _ := proxyOf(t, raw)["streamSettings"].(map[string]any)
-			_, has := stream["sockopt"]
+			sockopt, _ := stream["sockopt"].(map[string]any)
+			_, has := sockopt["domainStrategy"]
 			forced := strings.Contains(string(raw), `"ForceIP"`)
 			want := ipErr != nil && len(o.PinnedServer) > 0
 			if has != want || forced != want {
-				t.Fatalf("%s/%s: proxy sockopt present is %v and ForceIP present is %v, want %v",
+				t.Fatalf("%s/%s: proxy sockopt.domainStrategy present is %v and ForceIP present is %v, want %v",
 					f.name, c.name, has, forced, want)
 			}
 		}
