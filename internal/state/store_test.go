@@ -73,6 +73,13 @@ func fullState(t *testing.T) State {
 			ClientIPv6:        ClientIPv6Block,
 			EngineLogLevel:    "warning",
 			PanelOnLAN:        true,
+			UpstreamSOCKS5: UpstreamSOCKS5{
+				Enabled:  true,
+				Address:  "127.0.0.1",
+				Port:     1080,
+				Username: Secret("upstream-user"),
+				Password: Secret("upstream-pass"),
+			},
 		},
 		UpdatedAt: time.Date(2026, 8, 29, 12, 0, 0, 0, time.UTC),
 	}

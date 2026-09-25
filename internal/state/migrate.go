@@ -29,6 +29,7 @@ var migrations = map[int]func(*State) error{
 	2: migrateV2ToV3,
 	3: migrateV3ToV4,
 	4: migrateV4ToV5,
+	5: migrateV5ToV6,
 }
 
 // ErrFutureVersion is the sentinel behind the refusal of a newer file, so a
@@ -147,5 +148,13 @@ func migrateV4ToV5(st *State) error {
 	st.Proxy.TCPSplit = false
 	st.Proxy.TLSRecordSplit = false
 	st.Version = 5
+	return nil
+}
+
+// migrateV5ToV6 introduces the optional upstream SOCKS5 front-proxy settings.
+// Older state has no such fields, so the zero value means disabled with no
+// credentials, which is the safe default.
+func migrateV5ToV6(st *State) error {
+	st.Version = 6
 	return nil
 }

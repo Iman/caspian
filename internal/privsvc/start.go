@@ -683,6 +683,15 @@ func (s *Service) requestFingerprint(req panel.StartRequest) string {
 	write(req.Network.DNSMode)
 	write(req.Network.OnTunnelDown)
 	write(req.Network.ClientIPv6)
+	if req.Upstream.Enabled {
+		write("upstream-socks5")
+	} else {
+		write("")
+	}
+	write(req.Upstream.Address)
+	write(fmt.Sprintf("%d", req.Upstream.Port))
+	write(req.Upstream.Username)
+	write(req.Upstream.Password)
 	write(req.EngineLogLevel)
 	return hex.EncodeToString(h.Sum(nil))
 }

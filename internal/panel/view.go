@@ -189,18 +189,23 @@ type pageData struct {
 	Events []EventLine
 
 	// ---- advanced ----
-	Interfaces      []IfaceChoice
-	Channels        []ChannelChoice
-	Bands           []BandOption
-	LogLevels       []LogLevelOption
-	CurrentInternet LTR
-	CurrentHotspot  LTR
-	CurrentChannel  LTR
-	CurrentBand     string
-	CurrentCountry  LTR
-	CurrentSubnet   LTR
-	PlaceCountry    LTR
-	PlaceSubnet     LTR
+	Interfaces       []IfaceChoice
+	Channels         []ChannelChoice
+	Bands            []BandOption
+	LogLevels        []LogLevelOption
+	CurrentInternet  LTR
+	CurrentHotspot   LTR
+	CurrentChannel   LTR
+	CurrentBand      string
+	CurrentCountry   LTR
+	CurrentSubnet    LTR
+	UpstreamEnabled  bool
+	UpstreamAddress  LTR
+	UpstreamPort     LTR
+	UpstreamUsername LTR
+	UpstreamAuthSet  bool
+	PlaceCountry     LTR
+	PlaceSubnet      LTR
 
 	// AutoInternet and the four below it are the "let Caspian decide" option
 	// of each menu, already carrying what Caspian would choose right now.
@@ -732,6 +737,13 @@ func (d *pageData) fillAdvanced(adv state.Advanced, det Detection, log EngineLog
 	d.PlaceSubnet = LTR(det.Subnet)
 	d.ChannelPinned = det.ChannelPinned
 	d.PanelOnLAN = adv.PanelOnLAN
+	d.UpstreamEnabled = adv.UpstreamSOCKS5.Enabled
+	d.UpstreamAddress = LTR(adv.UpstreamSOCKS5.Address)
+	if adv.UpstreamSOCKS5.Port != 0 {
+		d.UpstreamPort = LTR(strconv.Itoa(int(adv.UpstreamSOCKS5.Port)))
+	}
+	d.UpstreamUsername = LTR(adv.UpstreamSOCKS5.Username.Reveal())
+	d.UpstreamAuthSet = !adv.UpstreamSOCKS5.Username.IsZero() || !adv.UpstreamSOCKS5.Password.IsZero()
 	if adv.Channel != 0 {
 		d.CurrentChannel = LTR(strconv.Itoa(adv.Channel))
 	}

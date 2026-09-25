@@ -158,6 +158,11 @@ func axes() [][]axis {
 			{"log-warning", func(o *Options) { o.LogLevel = LogWarning }},
 			{"log-error", func(o *Options) { o.LogLevel = LogError }},
 		},
+		{
+			{"upstream-auth", func(o *Options) {
+				o.Upstream = UpstreamSOCKS5{Enabled: true, Address: "127.0.0.1", Port: 1080, Username: "user", Password: "pass"}
+			}},
+		},
 	}
 }
 
@@ -241,6 +246,7 @@ func trackedOptionFields() []string {
 		"DNS.Servers", "DNS.Strategy", "DNS.Intercept",
 		"LocalDNS.Enabled", "LocalDNS.Listen", "LocalDNS.Port",
 		"PinnedServer",
+		"Upstream.Enabled", "Upstream.Address", "Upstream.Port", "Upstream.Username", "Upstream.Password",
 	}
 }
 
@@ -284,6 +290,16 @@ func fieldString(o Options, path string) string {
 		return fmt.Sprint(o.LocalDNS.Port)
 	case "PinnedServer":
 		return fmt.Sprint(o.PinnedServer)
+	case "Upstream.Enabled":
+		return fmt.Sprint(o.Upstream.Enabled)
+	case "Upstream.Address":
+		return o.Upstream.Address
+	case "Upstream.Port":
+		return fmt.Sprint(o.Upstream.Port)
+	case "Upstream.Username":
+		return o.Upstream.Username
+	case "Upstream.Password":
+		return o.Upstream.Password
 	default:
 		panic("unknown Options path in test: " + path)
 	}

@@ -131,6 +131,13 @@ func (s *Service) engineDocument(l *link.Link, req panel.StartRequest, netOpts n
 	// port from the same field.
 	o.LocalDNS.Enabled = true
 	o.LocalDNS.Port = s.cfg.LocalDNSPort
+	o.Upstream = xcfg.UpstreamSOCKS5{
+		Enabled:  req.Upstream.Enabled,
+		Address:  req.Upstream.Address,
+		Port:     req.Upstream.Port,
+		Username: req.Upstream.Username,
+		Password: req.Upstream.Password,
+	}
 	// Apply the same interception policy on every implemented platform. This
 	// covers DNS entering Xray, including clients using a hardcoded resolver;
 	// OS-level DNS that never enters the tunnel needs backend enforcement too.

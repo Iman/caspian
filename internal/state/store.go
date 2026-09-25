@@ -11,6 +11,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -325,6 +326,20 @@ func (s State) validate() error {
 	}
 	if s.Advanced.ClientIPv6 == "" {
 		return errors.New("state: refusing to write an empty client IPv6 policy; empty must never be readable as 'let client IPv6 out', which bypasses the tunnel entirely")
+	}
+	up := s.Advanced.UpstreamSOCKS5
+	if up.Enabled {
+		if strings.TrimSpace(up.Address) == "" || strings.TrimSpace(up.Address) != up.Address || up.Port == 0 {
+			return errors.New("state: refusing to write an invalid upstream SOCKS5 configuration")
+		}
+		for _, r := range up.Address {
+			if r == 0 || r == ' ' || r == '\t' || r == '\r' || r == '\n' {
+				return errors.New("state: refusing to write an invalid upstream SOCKS5 configuration")
+			}
+		}
+		if up.Username.IsZero() != up.Password.IsZero() {
+			return errors.New("state: refusing to write incomplete upstream SOCKS5 credentials")
+		}
 	}
 	return nil
 }
