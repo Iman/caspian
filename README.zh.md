@@ -81,6 +81,8 @@ Caspian 接受 VLESS、VMess、Shadowsocks、SOCKS、Trojan 和 Hysteria2 链接
 
 处理器和内存：Caspian 尚未通过测量确定最低内存容量、处理器核心数或时钟频率。资源占用取决于流量、代理协议和并发连接数。发布最低配置要求前，需要测量空闲和负载状态下的资源占用。
 
+CPU 架构：Linux 安装程序支持 x86-64、ARM64 和 32 位 ARM（armv6 和 armv7）。旧款 Raspberry Pi 或 Orange Pi 这类 32 位开发板，用同一条单行命令安装。开发板能否开热点取决于它的 WiFi 芯片。安装后 `caspian check` 会报告这一点。
+
 <div dir="ltr" align="left">
 
 | 主题 | English | فارسی | Русский | 中文 | العربية | اردو | Türkçe |

@@ -48,7 +48,9 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          platforms: linux/amd64,linux/arm64
+          # linux/arm/v7 is for 32-bit boards such as an Orange Pi. It shows
+          # the binary starts there; install.sh is still how to run it.
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
           # A pre-release tag (one with a suffix, such as v1.2.3-rc.1) gets its
           # own image tag but must not move :latest.

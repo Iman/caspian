@@ -88,6 +88,8 @@ Supported transport names include raw/tcp, ws, grpc, httpupgrade, xhttp/splithtt
 
 CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed yet. Resource use depends on traffic volume, proxy protocol, and simultaneous connections. Idle and load benchmarks are needed before minimum requirements can be published.
 
+CPU architecture: the Linux installer covers x86-64, ARM64 and 32-bit ARM (armv6 and armv7). A 32-bit board, such as an older Raspberry Pi or an Orange Pi, installs with the same one-line command. The WiFi chip of the board decides if it can run the hotspot. After install, `caspian check` reports it.
+
 <div dir="ltr" align="left">
 
 | Topic | English | فارسی | Русский | 中文 | العربية | اردو | Türkçe |
