@@ -95,10 +95,8 @@ func TestMain(m *testing.M) {
 // Ports
 // ---------------------------------------------------------------------------
 
-// freeLoopbackPort asks the kernel for an unused port and gives it straight
-// back. Same helper, and the same reasoning, as
-// internal/engine/engine_test.go: a hardcoded port collides with a parallel
-// test every time, this collides essentially never.
+// freeLoopbackPort returns an unreserved port. Listener startup must use
+// startOnLoopbackPort because another socket can claim it after Close.
 func freeLoopbackPort(t *testing.T) int {
 	t.Helper()
 	l, err := net.Listen("tcp", "127.0.0.1:0")
@@ -110,6 +108,25 @@ func freeLoopbackPort(t *testing.T) int {
 		t.Fatalf("releasing the reserved port: %v", err)
 	}
 	return port
+}
+
+func startOnLoopbackPort(t *testing.T, start func(int) error) (int, error) {
+	t.Helper()
+	var err error
+	for attempt := 0; attempt < 5; attempt++ {
+		port := freeLoopbackPort(t)
+		err = start(port)
+		if err == nil {
+			return port, nil
+		}
+		// Xray and engine.Error flatten the underlying socket error into text.
+		message := err.Error()
+		if !strings.Contains(message, "bind: address already in use") &&
+			!strings.Contains(message, "bind: Only one usage of each socket address") {
+			return 0, err
+		}
+	}
+	return 0, fmt.Errorf("loopback listener could not start after five port attempts: %w", err)
 }
 
 // ---------------------------------------------------------------------------
@@ -272,20 +289,29 @@ func jsonArray(v []string) string {
 // loader internal/engine uses (internal/engine/engine.go, loadConfig), so a
 // server this package fails to start is a server the appliance's own loader
 // would also have refused.
-func startXrayServer(t *testing.T, configJSON string) {
+func startXrayServer(t *testing.T, config func(int) string) int {
 	t.Helper()
-	cfg, err := confserial.LoadJSONConfig(strings.NewReader(configJSON))
+	port, err := startOnLoopbackPort(t, func(port int) error {
+		configJSON := config(port)
+		cfg, err := confserial.LoadJSONConfig(strings.NewReader(configJSON))
+		if err != nil {
+			return fmt.Errorf("the test server config did not load: %w\n%s", err, configJSON)
+		}
+		inst, err := core.New(cfg)
+		if err != nil {
+			return fmt.Errorf("core.New for the test server: %w", err)
+		}
+		if err := inst.Start(); err != nil {
+			_ = inst.Close()
+			return fmt.Errorf("starting the test server: %w", err)
+		}
+		t.Cleanup(func() { _ = inst.Close() })
+		return nil
+	})
 	if err != nil {
-		t.Fatalf("the test server config did not load: %v\n%s", err, configJSON)
+		t.Fatal(err)
 	}
-	inst, err := core.New(cfg)
-	if err != nil {
-		t.Fatalf("core.New for the test server: %v", err)
-	}
-	if err := inst.Start(); err != nil {
-		t.Fatalf("starting the test server: %v", err)
-	}
-	t.Cleanup(func() { _ = inst.Close() })
+	return port
 }
 
 // serverConfig wraps one inbound in the surrounding document.

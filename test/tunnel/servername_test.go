@@ -130,12 +130,17 @@ func namedCarry(t *testing.T, c nameCase, pinned []netip.Addr, timeout time.Dura
 	origin := startEndpoint(t, token)
 	sentinel := startEndpoint(t, newToken(t, "bypass-sentinel"))
 	cert := makeServerCert(t)
-	serverPort := freeLoopbackPort(t)
-	socksPort := freeLoopbackPort(t)
 	path := "/" + token
 
-	startXrayServer(t, serverConfig(c.inbound(serverPort, cert), origin.port))
-	e, err := startNamedClient(t, c.namedLink(serverPort, c.secret, cert.pinHex), socksPort, pinned)
+	serverPort := startXrayServer(t, func(port int) string {
+		return serverConfig(c.inbound(port, cert), origin.port)
+	})
+	var e *engine.Engine
+	socksPort, err := startOnLoopbackPort(t, func(port int) error {
+		var err error
+		e, err = startNamedClient(t, c.namedLink(serverPort, c.secret, cert.pinHex), port, pinned)
+		return err
+	})
 	if err != nil {
 		t.Fatalf("setting up the client: %v", err)
 	}

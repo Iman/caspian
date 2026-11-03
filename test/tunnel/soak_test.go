@@ -205,16 +205,18 @@ func soakStallOrigin(t *testing.T) int {
 
 // soakServer runs VLESS over WebSocket and TLS on 127.0.0.1 and 127.0.0.2, so
 // a name can pin to 2 live addresses.
-func soakServer(t *testing.T, port int, cert serverCert, originPort int) {
+func soakServer(t *testing.T, cert serverCert, originPort int) int {
 	t.Helper()
-	in := func(tag, ip string) string {
-		return fmt.Sprintf(`{"tag": %q, "listen": %q, "port": %d, "protocol": "vless",
+	return startXrayServer(t, func(port int) string {
+		in := func(tag, ip string) string {
+			return fmt.Sprintf(`{"tag": %q, "listen": %q, "port": %d, "protocol": "vless",
   "settings": {"clients": [{"id": %q}], "decryption": "none"},
   "streamSettings": {"network": "ws", "wsSettings": {"path": "/soak"}, "security": "tls",
     "tlsSettings": {"alpn": ["http/1.1"], "certificates": [{"usage": "encipherment", "certificate": %s, "key": %s}]}}}`,
-			tag, ip, port, credVLess, jsonArray(cert.certPEM), jsonArray(cert.keyPEM))
-	}
-	startXrayServer(t, serverConfig(in("in1", "127.0.0.1")+","+in("in2", "127.0.0.2"), originPort))
+				tag, ip, port, credVLess, jsonArray(cert.certPEM), jsonArray(cert.keyPEM))
+		}
+		return serverConfig(in("in1", "127.0.0.1")+","+in("in2", "127.0.0.2"), originPort)
+	})
 }
 
 // soakClientJSON is a BPB-style xray JSON config. It enters the product
@@ -242,9 +244,7 @@ func soakOne(t *testing.T, v soakVariant, dur time.Duration) {
 		originPort = soakStallOrigin(t)
 	}
 	cert := makeServerCert(t)
-	serverPort := freeLoopbackPort(t)
-	socksPort := freeLoopbackPort(t)
-	soakServer(t, serverPort, cert, originPort)
+	serverPort := soakServer(t, cert, originPort)
 
 	l, err := link.Parse(soakClientJSON(v, serverPort, cert.pinHex))
 	if err != nil {
@@ -263,17 +263,20 @@ func soakOne(t *testing.T, v soakVariant, dur time.Duration) {
 		}
 	}
 	o.SOCKS.Listen = "127.0.0.1"
-	o.SOCKS.Port = uint16(socksPort)
 	o.PinnedServer = v.pinned
 	if os.Getenv("CASPIAN_SOAK_INFO") != "" {
 		o.LogLevel = xcfg.LogInfo
 	}
-	doc, err := xcfg.Build(o)
-	if err != nil {
-		t.Fatalf("xcfg.Build: %v", err)
-	}
 	e := engine.New()
-	if err := e.Start(context.Background(), doc); err != nil {
+	socksPort, err := startOnLoopbackPort(t, func(port int) error {
+		o.SOCKS.Port = uint16(port)
+		doc, err := xcfg.Build(o)
+		if err != nil {
+			return fmt.Errorf("xcfg.Build: %w", err)
+		}
+		return e.Start(context.Background(), doc)
+	})
+	if err != nil {
 		t.Fatalf("engine start: %v", err)
 	}
 	defer func() { _ = e.Stop() }()

@@ -130,14 +130,14 @@ func carry(t *testing.T, p protocolCase, a attempt) error {
 	origin := startEndpoint(t, token)
 	sentinel := startEndpoint(t, newToken(t, "bypass-sentinel"))
 	cert := makeServerCert(t)
-	serverPort := freeLoopbackPort(t)
-	socksPort := freeLoopbackPort(t)
 	path := "/" + token
 
 	// The origin's port enters the test here and nowhere else. Everything
 	// below this line works with the DECOY authority, which is the sentinel's
 	// port under a name that does not resolve.
-	startXrayServer(t, serverConfig(p.inbound(serverPort, cert), origin.port))
+	serverPort := startXrayServer(t, func(port int) string {
+		return serverConfig(p.inbound(port, cert), origin.port)
+	})
 
 	if a.clientSecret == "" {
 		a.clientSecret = p.secret
@@ -175,12 +175,18 @@ func carry(t *testing.T, p protocolCase, a attempt) error {
 	sentinelBeforeTunnel := len(sentinel.requests())
 
 	var e *engine.Engine
+	var socksPort int
 	if a.startTunnel {
 		var err error
-		e, err = startClient(t, shareLink, socksPort)
+		socksPort, err = startOnLoopbackPort(t, func(port int) error {
+			e, err = startClient(t, shareLink, port)
+			return err
+		})
 		if err != nil {
 			return fmt.Errorf("the client did not come up: %w", err)
 		}
+	} else {
+		socksPort = freeLoopbackPort(t)
 	}
 
 	body, err := socksGet(fmt.Sprintf("127.0.0.1:%d", socksPort), originHost, sentinel.port, path, a.timeout)
@@ -475,13 +481,18 @@ func TestALoopbackDestinationIsRoutedDirectAndTheProofSaysSo(t *testing.T) {
 	token := newToken(t, "tunnel-token")
 	origin := startEndpoint(t, token)
 	cert := makeServerCert(t)
-	serverPort := freeLoopbackPort(t)
-	socksPort := freeLoopbackPort(t)
 	path := "/" + token
 
-	startXrayServer(t, serverConfig(p.inbound(serverPort, cert), origin.port))
+	serverPort := startXrayServer(t, func(port int) string {
+		return serverConfig(p.inbound(port, cert), origin.port)
+	})
 
-	e, err := startClient(t, p.shareLink(serverPort, p.secret, cert.pinHex), socksPort)
+	var e *engine.Engine
+	socksPort, err := startOnLoopbackPort(t, func(port int) error {
+		var err error
+		e, err = startClient(t, p.shareLink(serverPort, p.secret, cert.pinHex), port)
+		return err
+	})
 	if err != nil {
 		t.Fatalf("the client did not come up: %v", err)
 	}
