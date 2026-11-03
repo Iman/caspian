@@ -66,8 +66,9 @@ func startEntryServer(t *testing.T, protocol string) entryServer {
 	p := protocolNamed(t, protocol)
 	origin := startEndpoint(t, newToken(t, "origin-"+protocol))
 	cert := makeServerCert(t)
-	port := freeLoopbackPort(t)
-	startXrayServer(t, serverConfig(p.inbound(port, cert), origin.port))
+	port := startXrayServer(t, func(port int) string {
+		return serverConfig(p.inbound(port, cert), origin.port)
+	})
 	return entryServer{
 		name:   protocol,
 		port:   port,
@@ -137,7 +138,6 @@ func carryEntry(t *testing.T, raw string, entry int, wantClamp bool, want, other
 	t.Helper()
 
 	sentinel := startEndpoint(t, newToken(t, "bypass-sentinel"))
-	socksPort := freeLoopbackPort(t)
 	path := "/" + newToken(t, "entry-path")
 	decoyAuthority := fmt.Sprintf("%s:%d", originHost, sentinel.port)
 
@@ -151,7 +151,14 @@ func carryEntry(t *testing.T, raw string, entry int, wantClamp bool, want, other
 	wantBefore := len(want.origin.requests())
 	otherBefore := len(other.origin.requests())
 
-	e, doc, clamped, err := startClientEntry(t, raw, entry, socksPort)
+	var e *engine.Engine
+	var doc []byte
+	var clamped bool
+	socksPort, err := startOnLoopbackPort(t, func(port int) error {
+		var err error
+		e, doc, clamped, err = startClientEntry(t, raw, entry, port)
+		return err
+	})
 	if err != nil {
 		return fmt.Errorf("the client did not come up: %w", err)
 	}
