@@ -2,6 +2,8 @@
 
 [**下载最新版本**](https://github.com/Iman/caspian/releases/latest) | [**打开 Wiki**](https://github.com/Iman/caspian/wiki/Home.zh)
 
+v0.2.14 为隧道测试增加端口占用时的重试。主 CI 工作流现在使用基于 Node.js 24 的操作。发布工作流构建文件并生成校验和。维护者验证这些文件后发布版本。详情见[发布和维护](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.zh)。
+
 <div dir="ltr" align="left">
 
 [English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [中文](README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)

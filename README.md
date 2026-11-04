@@ -2,7 +2,7 @@
 
 [**Download latest release**](https://github.com/Iman/caspian/releases/latest) | [**Open wiki**](https://github.com/Iman/caspian/wiki/Home)
 
-The v0.2.14 maintenance update adds retries for tunnel test port collisions and updates CI actions to Node.js 24. CI builds the native release files and checksums; the maintainer verifies and publishes them. See [releases and maintenance](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance).
+Version v0.2.14 adds retries for ports already in use during tunnel tests. The main CI workflow now uses actions that run on Node.js 24. The release workflow builds the files and checksums. The maintainer verifies these files and publishes the release. Details are in [releases and maintenance](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance).
 
 To build the Windows app and installer locally, see [Windows build instructions](docs/WINDOWS-BUILD.md).
 

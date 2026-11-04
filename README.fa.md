@@ -4,6 +4,8 @@
 
 [**دانلود آخرین نسخه**](https://github.com/Iman/caspian/releases/latest) | [**باز کردن ویکی**](https://github.com/Iman/caspian/wiki/Home.fa)
 
+نسخهٔ <code dir="ltr">v0.2.14</code> در آزمون‌های تونل، برای درگاه‌های اشغال‌شده تلاش دوباره را اضافه می‌کند. گردش‌کار اصلی <span dir="ltr">CI</span> اکنون از اکشن‌هایی استفاده می‌کند که با <span dir="ltr">Node.js 24</span> اجرا می‌شوند. گردش‌کار انتشار، فایل‌ها و جمع‌های وارسی را می‌سازد. نگهدارندهٔ پروژه این فایل‌ها را بررسی و نسخه را منتشر می‌کند. جزئیات در [انتشار و نگهداری](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.fa) آمده است.
+
 <div dir="ltr" align="left">
 
 [English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [中文](README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)

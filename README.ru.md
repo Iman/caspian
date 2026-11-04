@@ -2,6 +2,8 @@
 
 [**Скачать последнюю версию**](https://github.com/Iman/caspian/releases/latest) | [**Открыть вики**](https://github.com/Iman/caspian/wiki/Home.ru)
 
+Версия v0.2.14 добавляет повторные попытки в тестах туннеля, если выбранный порт уже занят. Основной процесс CI теперь использует действия на Node.js 24. Процесс подготовки релиза собирает файлы и создает контрольные суммы. Сопровождающий проекта проверяет эти файлы и публикует релиз. Подробности приведены в разделе [«Релизы и обслуживание»](https://github.com/Iman/caspian/wiki/Releases-and-Maintenance.ru).
+
 <div dir="ltr" align="left">
 
 [English](README.md) | [فارسی](README.fa.md) | [Русский](README.ru.md) | [中文](README.zh.md) | [العربية](https://github.com/Iman/caspian/wiki/Home.ar) | [اردو](https://github.com/Iman/caspian/wiki/Home.ur) | [Türkçe](https://github.com/Iman/caspian/wiki/Home.tr)
