@@ -1,5 +1,5 @@
-# Build the release artefacts and publish them, so that install.sh can fetch a
-# verified binary instead of asking somebody to build Go on a Raspberry Pi.
+# Build release artefacts and checksums for the maintainer to verify and publish.
+# install.sh downloads the published files without requiring a local Go build.
 #
 # The names here are a CONTRACT with install.sh and must not drift:
 #
@@ -23,7 +23,7 @@ on:
       - "v*"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: release-${{ github.ref }}
@@ -148,7 +148,7 @@ jobs:
           name: darwin-${{ matrix.architecture }}-release
           path: dist/Caspian-*-macos-${{ matrix.architecture }}.dmg
 
-  publish:
+  bundle:
     needs: [build, windows, darwin]
     runs-on: ubuntu-latest
     steps:
@@ -162,26 +162,9 @@ jobs:
           cd dist
           sha256sum caspian-linux-* CaspianSetup-*-windows-*.exe Caspian-*-macos-*.dmg > SHA256SUMS
           cat SHA256SUMS
-      - name: Publish the release
-        id: release
-        uses: softprops/action-gh-release@v2
+      - name: Keep the release bundle for maintainer publication
+        uses: actions/upload-artifact@v4
         with:
-          files: dist/*
-          generate_release_notes: true
-          # A tag with a suffix, such as v1.2.3-rc.1, is a pre-release. GitHub
-          # leaves pre-releases out of releases/latest, which is what install.sh
-          # and the download links resolve, so testers can have it without it
-          # reaching everybody else.
-          prerelease: ${{ contains(github.ref_name, '-') }}
-          # Releases here are immutable, and the action publishes a pre-release
-          # before uploading its files, which an immutable release then refuses
-          # (v0.2.12-rc.1 was left empty that way). A pre-release is therefore
-          # made as a draft, filled, and published by the next step.
-          draft: ${{ contains(github.ref_name, '-') }}
-      - name: Publish the pre-release draft
-        if: contains(github.ref_name, '-')
-        env:
-          GH_TOKEN: ${{ github.token }}
-          RELEASE_ID: ${{ steps.release.outputs.id }}
-        # By id, because GitHub's by-tag lookup does not see drafts.
-        run: gh api --method PATCH "repos/$GITHUB_REPOSITORY/releases/$RELEASE_ID" -F draft=false -F prerelease=true
+          name: release-${{ github.ref_name }}
+          path: dist/*
+          if-no-files-found: error
