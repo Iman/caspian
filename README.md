@@ -92,6 +92,8 @@ CPU and RAM: Caspian has no measured minimum RAM, CPU core count, or clock speed
 
 CPU architecture: the Linux installer covers x86-64, ARM64 and 32-bit ARM (armv6 and armv7). A 32-bit board, such as an older Raspberry Pi or an Orange Pi, installs with the same one-line command. The WiFi chip of the board decides if it can run the hotspot. After install, `caspian check` reports it.
 
+Windows 7 and older Windows: the Windows app needs Windows 10 or 11, so run Caspian in a small Linux virtual machine with VirtualBox and a USB Wi-Fi adapter. Read [Caspian on Windows 7](docs/WINDOWS-7.md) ([فارسی](docs/WINDOWS-7.fa.md)). This path is not yet tested on a Windows 7 PC.
+
 <div dir="ltr" align="left">
 
 | Topic | English | فارسی | Русский | 中文 | العربية | اردو | Türkçe |
